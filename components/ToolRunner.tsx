@@ -1871,19 +1871,65 @@ function AddTextToPdf() {
   const [signatureItems, setSignatureItems] = useState<PdfSignatureItem[]>([]);
   const [signatureWidth, setSignatureWidth] = useState(160);
   const [hasSignature, setHasSignature] = useState(false);
+  const [activePdfTab, setActivePdfTab] = useState<"text" | "signature">("text");
+  const [signatureMode, setSignatureMode] = useState<"type" | "draw" | "upload">("draw");
+  const [typedSignature, setTypedSignature] = useState("");
+  const [uploadedSignature, setUploadedSignature] = useState("");
   const [output, setOutput] = useState<Output | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [renderingPreview, setRenderingPreview] = useState(false);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const signatureCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawingSignatureRef = useRef(false);
   useObjectUrlCleanup(output);
 
   const currentSize = pageSizes[page - 1] ?? { width: 612, height: 792 };
-  const previewWidth = 360;
-  const previewHeight = Math.round((currentSize.height / currentSize.width) * previewWidth);
   const pageItems = items.filter((item) => item.page === page);
   const pageSignatureItems = signatureItems.filter((item) => item.page === page);
   const signatureHeight = Math.round(signatureWidth * 0.35);
+
+  useEffect(() => {
+    if (!file || !pageCount) return;
+    const pdfFile = file;
+    let cancelled = false;
+    let renderTask: { cancel: () => void; promise: Promise<unknown> } | null = null;
+    async function renderPreview() {
+      setRenderingPreview(true);
+      try {
+        const pdfjs = await import("pdfjs-dist");
+        pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+        const source = new Uint8Array(await pdfFile.arrayBuffer());
+        const loadingTask = pdfjs.getDocument({ data: source });
+        const pdf = await loadingTask.promise;
+        const pdfPage = await pdf.getPage(page);
+        const viewport = pdfPage.getViewport({ scale: 1.35 });
+        const canvas = previewCanvasRef.current;
+        if (!canvas || cancelled) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          setError("Could not render the PDF preview in this browser.");
+          return;
+        }
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+        renderTask = pdfPage.render({ canvas, canvasContext: ctx, viewport });
+        await renderTask.promise;
+        if (!cancelled) setError("");
+      } catch (err) {
+        if (!cancelled && !(err instanceof Error && err.name === "RenderingCancelledException")) {
+          setError(err instanceof Error ? err.message : "Unable to render the PDF preview.");
+        }
+      } finally {
+        if (!cancelled) setRenderingPreview(false);
+      }
+    }
+    renderPreview();
+    return () => {
+      cancelled = true;
+      renderTask?.cancel();
+    };
+  }, [file, page, pageCount]);
 
   useEffect(() => {
     const canvas = signatureCanvasRef.current;
@@ -1901,6 +1947,8 @@ function AddTextToPdf() {
     setItems([]);
     setSignatureItems([]);
     setHasSignature(false);
+    setTypedSignature("");
+    setUploadedSignature("");
     setOutput(null);
     setError("");
     setPage(1);
@@ -1932,13 +1980,22 @@ function AddTextToPdf() {
     }
   }
 
-  function placeFromClick(event: React.MouseEvent<HTMLDivElement>) {
-    const target = event.currentTarget;
-    const rect = target.getBoundingClientRect();
+  function placeFromClick(event: React.MouseEvent<HTMLCanvasElement>) {
+    const canvas = previewCanvasRef.current;
+    if (!canvas) {
+      setError("PDF preview is not ready yet. Please try again.");
+      return;
+    }
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      setError("PDF preview is not ready yet. Please try again.");
+      return;
+    }
     const nextX = Math.round((event.clientX - rect.left) * (currentSize.width / rect.width));
     const nextY = Math.round(currentSize.height - ((event.clientY - rect.top) * (currentSize.height / rect.height)));
     setX(Math.max(0, Math.min(Math.round(currentSize.width), nextX)));
     setY(Math.max(0, Math.min(Math.round(currentSize.height), nextY)));
+    setError("");
   }
 
   function addItem() {
@@ -2004,19 +2061,58 @@ function AddTextToPdf() {
     setHasSignature(false);
   }
 
+  function typedSignatureDataUrl() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 720;
+    canvas.height = 220;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return "";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "96px Brush Script MT, Segoe Script, Snell Roundhand, cursive";
+    ctx.textBaseline = "middle";
+    ctx.fillText(typedSignature.trim(), 32, 112);
+    return canvas.toDataURL("image/png");
+  }
+
+  function currentSignatureDataUrl() {
+    if (signatureMode === "type") return typedSignature.trim() ? typedSignatureDataUrl() : "";
+    if (signatureMode === "upload") return uploadedSignature;
+    const canvas = signatureCanvasRef.current;
+    return canvas && hasSignature ? canvas.toDataURL("image/png") : "";
+  }
+
   function addSignature() {
     const canvas = signatureCanvasRef.current;
     if (!file) {
       setError("Upload a PDF before adding a signature.");
       return;
     }
-    if (!canvas || !hasSignature) {
-      setError("Draw a signature before adding it to the PDF.");
+    const dataUrl = currentSignatureDataUrl();
+    if (!dataUrl) {
+      setError(signatureMode === "type" ? "Type a signature before adding it to the PDF." : signatureMode === "upload" ? "Upload a signature image before adding it to the PDF." : "Draw a signature before adding it to the PDF.");
       return;
     }
-    setSignatureItems([...signatureItems, { id: crypto.randomUUID(), page, dataUrl: canvas.toDataURL("image/png"), x, y, width: signatureWidth, height: signatureHeight }]);
+    setSignatureItems([...signatureItems, { id: crypto.randomUUID(), page, dataUrl, x, y, width: signatureWidth, height: signatureHeight }]);
     setError("");
     setOutput(null);
+  }
+
+  function loadSignatureImage(files: FileList | null) {
+    const next = files?.[0];
+    setUploadedSignature("");
+    if (!next) return;
+    if (!next.type.startsWith("image/")) {
+      setError("Please upload a PNG or JPG signature image.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUploadedSignature(String(reader.result ?? ""));
+      setError("");
+    };
+    reader.onerror = () => setError("Unable to read the signature image.");
+    reader.readAsDataURL(next);
   }
 
   async function applyText() {
@@ -2041,7 +2137,7 @@ function AddTextToPdf() {
       });
       for (const signature of signatureItems) {
         const pdfPage = pdf.getPage(signature.page - 1);
-        const embeddedSignature = await pdf.embedPng(signature.dataUrl);
+        const embeddedSignature = signature.dataUrl.startsWith("data:image/jpeg") || signature.dataUrl.startsWith("data:image/jpg") ? await pdf.embedJpg(signature.dataUrl) : await pdf.embedPng(signature.dataUrl);
         pdfPage.drawImage(embeddedSignature, {
           x: signature.x,
           y: signature.y,
@@ -2072,6 +2168,10 @@ function AddTextToPdf() {
     setSignatureItems([]);
     setSignatureWidth(160);
     setHasSignature(false);
+    setActivePdfTab("text");
+    setSignatureMode("draw");
+    setTypedSignature("");
+    setUploadedSignature("");
     clearSignature();
     setOutput(null);
     setError("");
@@ -2083,42 +2183,73 @@ function AddTextToPdf() {
       <FileInfo file={file} />
       {busy && !output ? <p className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Reading or updating PDF...</p> : null}
       {file && pageCount ? (
-        <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)]">
           <div className="grid gap-4">
             <label className="text-sm font-bold text-slate-700">Page <Select className="mt-2" value={page} onChange={(event) => setPage(Number(event.target.value))}>{Array.from({ length: pageCount }, (_, index) => <option key={index + 1} value={index + 1}>Page {index + 1}</option>)}</Select></label>
-            <label className="text-sm font-bold text-slate-700">Text to add <Input className="mt-2" value={text} onChange={(event) => setText(event.target.value)} placeholder="Date, note, label, or name..." /></label>
+            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1">
+              {(["text", "signature"] as const).map((tab) => (
+                <button key={tab} className={`rounded-xl px-4 py-3 text-sm font-black ${activePdfTab === tab ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActivePdfTab(tab)}>
+                  {tab === "text" ? "Add Text" : "Sign PDF"}
+                </button>
+              ))}
+            </div>
+            <p className="rounded-2xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm font-bold leading-6 text-brand-700">
+              Click on the real PDF preview to place your {activePdfTab === "text" ? "text" : "signature"}. Your PDF is processed in your browser where supported. Files are not uploaded to a server by this tool.
+            </p>
+            {activePdfTab === "text" ? (
+              <>
+                <label className="text-sm font-bold text-slate-700">Text to add <Input className="mt-2" value={text} onChange={(event) => setText(event.target.value)} placeholder="Date, note, label, or name..." /></label>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="text-sm font-bold text-slate-700">Font size: {size}<input className="mt-3 w-full accent-brand-600" type="range" min={8} max={72} value={size} onChange={(event) => setSize(Number(event.target.value))} /></label>
+                  <label className="text-sm font-bold text-slate-700">Text color <Input className="mt-2 h-12 p-1" type="color" value={color} onChange={(event) => setColor(event.target.value)} /></label>
+                </div>
+              </>
+            ) : (
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {(["type", "draw", "upload"] as const).map((mode) => (
+                    <button key={mode} className={`rounded-xl border px-4 py-3 text-sm font-black capitalize ${signatureMode === mode ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => setSignatureMode(mode)}>
+                      {mode}
+                    </button>
+                  ))}
+                </div>
+                {signatureMode === "type" ? (
+                  <div className="mt-4">
+                    <label className="text-sm font-bold text-slate-700">Typed signature <Input className="mt-2" value={typedSignature} onChange={(event) => setTypedSignature(event.target.value)} placeholder="Your name" /></label>
+                    {typedSignature ? <p className="mt-3 rounded-2xl bg-white p-4 text-4xl text-slate-950 [font-family:'Brush_Script_MT','Segoe_Script',cursive]">{typedSignature}</p> : null}
+                  </div>
+                ) : null}
+                {signatureMode === "draw" ? (
+                  <>
+                    <canvas
+                      ref={signatureCanvasRef}
+                      width={520}
+                      height={180}
+                      className="mt-4 h-36 w-full touch-none rounded-2xl border border-dashed border-slate-300 bg-white shadow-inner"
+                      onPointerDown={startSignature}
+                      onPointerMove={drawSignature}
+                      onPointerUp={stopSignature}
+                      onPointerCancel={stopSignature}
+                      aria-label="Draw signature"
+                    />
+                    <SecondaryButton className="mt-3" onClick={clearSignature}>Clear drawing</SecondaryButton>
+                  </>
+                ) : null}
+                {signatureMode === "upload" ? (
+                  <div className="mt-4">
+                    <label className="text-sm font-bold text-slate-700">Upload signature image <Input className="mt-2" type="file" accept="image/png,image/jpeg" onChange={(event) => loadSignatureImage(event.target.files)} /></label>
+                    {uploadedSignature ? <img src={uploadedSignature} alt="Uploaded signature preview" className="mt-3 max-h-32 rounded-2xl border border-slate-200 bg-white p-3" /> : null}
+                  </div>
+                ) : null}
+                <label className="mt-4 block text-sm font-bold text-slate-700">Signature width: {signatureWidth}px<input className="mt-2 w-full accent-brand-600" type="range" min={80} max={320} value={signatureWidth} onChange={(event) => setSignatureWidth(Number(event.target.value))} /></label>
+              </div>
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="text-sm font-bold text-slate-700">Font size: {size}<input className="mt-3 w-full accent-brand-600" type="range" min={8} max={72} value={size} onChange={(event) => setSize(Number(event.target.value))} /></label>
-              <label className="text-sm font-bold text-slate-700">Text color <Input className="mt-2 h-12 p-1" type="color" value={color} onChange={(event) => setColor(event.target.value)} /></label>
               <label className="text-sm font-bold text-slate-700">X position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.width)} value={x} onChange={(event) => setX(Number(event.target.value))} /></label>
               <label className="text-sm font-bold text-slate-700">Y position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.height)} value={y} onChange={(event) => setY(Number(event.target.value))} /></label>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-sm font-black text-slate-900">Signature</p>
-                  <p className="mt-1 text-xs font-semibold text-slate-500">Draw with mouse, trackpad, or touch, then place it using the same X/Y controls.</p>
-                </div>
-                <label className="text-sm font-bold text-slate-700">Signature width: {signatureWidth}px<input className="mt-2 w-full accent-brand-600 sm:w-52" type="range" min={80} max={320} value={signatureWidth} onChange={(event) => setSignatureWidth(Number(event.target.value))} /></label>
-              </div>
-              <canvas
-                ref={signatureCanvasRef}
-                width={520}
-                height={180}
-                className="mt-4 h-36 w-full touch-none rounded-2xl border border-dashed border-slate-300 bg-white shadow-inner"
-                onPointerDown={startSignature}
-                onPointerMove={drawSignature}
-                onPointerUp={stopSignature}
-                onPointerCancel={stopSignature}
-                aria-label="Draw signature"
-              />
-              <div className="mt-3 flex flex-wrap gap-3">
-                <SecondaryButton onClick={addSignature} disabled={!file || !hasSignature}>Add Signature</SecondaryButton>
-                <SecondaryButton onClick={clearSignature}>Clear signature</SecondaryButton>
-              </div>
-            </div>
             <div className="flex flex-wrap gap-3">
-              <Button onClick={addItem} disabled={!file || !text.trim()}>Add Text</Button>
+              {activePdfTab === "text" ? <Button onClick={addItem} disabled={!file || !text.trim()}>Add Text</Button> : <Button onClick={addSignature} disabled={!file}>Add Signature</Button>}
               <Button onClick={applyText} disabled={!file || (!items.length && !signatureItems.length) || busy}>{busy ? "Applying..." : "Apply changes"}</Button>
               <SecondaryButton onClick={reset}>Reset</SecondaryButton>
             </div>
@@ -2133,19 +2264,23 @@ function AddTextToPdf() {
             ) : null}
           </div>
           <div>
-            <p className="mb-2 text-sm font-bold text-slate-700">Placement preview. Click to set X/Y.</p>
-            <div className="relative mx-auto cursor-crosshair rounded-2xl border border-slate-300 bg-white shadow-inner" style={{ width: previewWidth, height: previewHeight }} onClick={placeFromClick}>
-              <div className="absolute inset-0 rounded-2xl bg-[linear-gradient(0deg,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:24px_24px]" />
+            <p className="mb-2 text-sm font-bold text-slate-700">Real PDF preview. Click the page to set X/Y.</p>
+            {renderingPreview ? <p className="mb-3 rounded-2xl bg-slate-50 p-3 text-sm font-bold text-slate-600">Rendering page preview...</p> : null}
+            <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-inner">
+              <canvas ref={previewCanvasRef} className="block h-auto w-full cursor-crosshair" onClick={placeFromClick} aria-label="PDF page preview" />
+              <div className="pointer-events-none absolute inset-0">
               {[...pageItems, ...(text.trim() ? [{ id: "draft", page, text, x, y, size, color }] : [])].map((item) => (
-                <span key={item.id} className="absolute max-w-[85%] -translate-y-full break-words rounded-md bg-white/80 px-1 font-bold shadow-sm" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, color: item.color, fontSize: Math.max(10, Math.round(item.size * (previewWidth / currentSize.width))) }}>
+                <span key={item.id} className="absolute max-w-[85%] -translate-y-full break-words rounded-md bg-white/80 px-1 font-bold shadow-sm" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, color: item.color, fontSize: Math.max(10, Math.round(item.size * (520 / currentSize.width))) }}>
                   {item.text}
                 </span>
               ))}
               {pageSignatureItems.map((item) => (
                 <img key={item.id} src={item.dataUrl} alt="Signature placement preview" className="absolute -translate-y-full rounded-sm bg-white/70" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, width: `${(item.width / currentSize.width) * 100}%`, height: "auto" }} />
               ))}
+              {activePdfTab === "signature" && currentSignatureDataUrl() ? <img src={currentSignatureDataUrl()} alt="Draft signature placement preview" className="absolute -translate-y-full rounded-sm bg-white/70" style={{ left: `${(x / currentSize.width) * 100}%`, top: `${100 - (y / currentSize.height) * 100}%`, width: `${(signatureWidth / currentSize.width) * 100}%`, height: "auto" }} /> : null}
+              </div>
             </div>
-            <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">Preview shows placement only, not the original PDF artwork. The downloaded PDF keeps the original page content and draws your text or signature on top.</p>
+            <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">PDF coordinates start at the bottom-left, while browser clicks start at the top-left. FreeToolKit maps the click position automatically.</p>
           </div>
         </div>
       ) : null}
