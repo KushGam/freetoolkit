@@ -1829,6 +1829,197 @@ function ImageColorPicker() {
   );
 }
 
+type PdfTextItem = {
+  id: string;
+  page: number;
+  text: string;
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+};
+
+function hexToPdfRgb(hex: string) {
+  const clean = hex.replace("#", "");
+  const r = parseInt(clean.slice(0, 2), 16) / 255;
+  const g = parseInt(clean.slice(2, 4), 16) / 255;
+  const b = parseInt(clean.slice(4, 6), 16) / 255;
+  return { r: Number.isFinite(r) ? r : 0, g: Number.isFinite(g) ? g : 0, b: Number.isFinite(b) ? b : 0 };
+}
+
+function AddTextToPdf() {
+  const [file, setFile] = useState<File | null>(null);
+  const [pageCount, setPageCount] = useState(0);
+  const [pageSizes, setPageSizes] = useState<Array<{ width: number; height: number }>>([]);
+  const [page, setPage] = useState(1);
+  const [text, setText] = useState("");
+  const [size, setSize] = useState(18);
+  const [color, setColor] = useState("#0F172A");
+  const [x, setX] = useState(120);
+  const [y, setY] = useState(120);
+  const [items, setItems] = useState<PdfTextItem[]>([]);
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  const currentSize = pageSizes[page - 1] ?? { width: 612, height: 792 };
+  const previewWidth = 360;
+  const previewHeight = Math.round((currentSize.height / currentSize.width) * previewWidth);
+  const pageItems = items.filter((item) => item.page === page);
+
+  async function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setItems([]);
+    setOutput(null);
+    setError("");
+    setPage(1);
+    if (!next) {
+      setPageCount(0);
+      setPageSizes([]);
+      return;
+    }
+    if (next.type && next.type !== "application/pdf") {
+      setError("Please upload a valid PDF file.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { PDFDocument } = await import("pdf-lib");
+      const pdf = await PDFDocument.load(await next.arrayBuffer(), { ignoreEncryption: true });
+      setPageCount(pdf.getPageCount());
+      setPageSizes(pdf.getPages().map((pdfPage) => {
+        const dimensions = pdfPage.getSize();
+        return { width: dimensions.width, height: dimensions.height };
+      }));
+      const first = pdf.getPage(0).getSize();
+      setX(Math.round(first.width / 2));
+      setY(Math.round(first.height / 2));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to read this PDF. Try an unlocked PDF file.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function placeFromClick(event: React.MouseEvent<HTMLDivElement>) {
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const nextX = Math.round((event.clientX - rect.left) * (currentSize.width / rect.width));
+    const nextY = Math.round(currentSize.height - ((event.clientY - rect.top) * (currentSize.height / rect.height)));
+    setX(Math.max(0, Math.min(Math.round(currentSize.width), nextX)));
+    setY(Math.max(0, Math.min(Math.round(currentSize.height), nextY)));
+  }
+
+  function addItem() {
+    if (!file) {
+      setError("Upload a PDF before adding text.");
+      return;
+    }
+    if (!text.trim()) {
+      setError("Enter text to add to the PDF.");
+      return;
+    }
+    setError("");
+    setItems([...items, { id: crypto.randomUUID(), page, text: text.trim(), x, y, size, color }]);
+    setOutput(null);
+  }
+
+  async function applyText() {
+    if (!file || !items.length) return;
+    setBusy(true);
+    setError("");
+    try {
+      const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+      const pdf = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+      const font = await pdf.embedFont(StandardFonts.Helvetica);
+      items.forEach((item) => {
+        const pdfPage = pdf.getPage(item.page - 1);
+        const pageHeight = pdfPage.getSize().height;
+        const colorValue = hexToPdfRgb(item.color);
+        pdfPage.drawText(item.text, {
+          x: item.x,
+          y: Math.max(0, Math.min(pageHeight, item.y)),
+          size: item.size,
+          font,
+          color: rgb(colorValue.r, colorValue.g, colorValue.b)
+        });
+      });
+      const bytes = await pdf.save();
+      setOutput(downloadBlob(bytesToPdfBlob(bytes), `text-added-${file.name.replace(/\.[^.]+$/, ".pdf")}`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to add text to this PDF.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    setPageCount(0);
+    setPageSizes([]);
+    setPage(1);
+    setText("");
+    setSize(18);
+    setColor("#0F172A");
+    setX(120);
+    setY(120);
+    setItems([]);
+    setOutput(null);
+    setError("");
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={load} />
+      <FileInfo file={file} />
+      {busy && !output ? <p className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Reading or updating PDF...</p> : null}
+      {file && pageCount ? (
+        <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="grid gap-4">
+            <label className="text-sm font-bold text-slate-700">Page <Select className="mt-2" value={page} onChange={(event) => setPage(Number(event.target.value))}>{Array.from({ length: pageCount }, (_, index) => <option key={index + 1} value={index + 1}>Page {index + 1}</option>)}</Select></label>
+            <label className="text-sm font-bold text-slate-700">Text to add <Input className="mt-2" value={text} onChange={(event) => setText(event.target.value)} placeholder="Date, note, label, or name..." /></label>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="text-sm font-bold text-slate-700">Font size: {size}<input className="mt-3 w-full accent-brand-600" type="range" min={8} max={72} value={size} onChange={(event) => setSize(Number(event.target.value))} /></label>
+              <label className="text-sm font-bold text-slate-700">Text color <Input className="mt-2 h-12 p-1" type="color" value={color} onChange={(event) => setColor(event.target.value)} /></label>
+              <label className="text-sm font-bold text-slate-700">X position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.width)} value={x} onChange={(event) => setX(Number(event.target.value))} /></label>
+              <label className="text-sm font-bold text-slate-700">Y position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.height)} value={y} onChange={(event) => setY(Number(event.target.value))} /></label>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={addItem} disabled={!file || !text.trim()}>Add Text</Button>
+              <Button onClick={applyText} disabled={!file || !items.length || busy}>{busy ? "Applying..." : "Apply changes"}</Button>
+              <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+            </div>
+            {items.length ? (
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <p className="text-sm font-black text-slate-800">Text items</p>
+                <div className="mt-3 grid gap-2">
+                  {items.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-white p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: {item.text}</span><SecondaryButton onClick={() => setItems(items.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
+                </div>
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <p className="mb-2 text-sm font-bold text-slate-700">Placement preview. Click to set X/Y.</p>
+            <div className="relative mx-auto cursor-crosshair rounded-2xl border border-slate-300 bg-white shadow-inner" style={{ width: previewWidth, height: previewHeight }} onClick={placeFromClick}>
+              <div className="absolute inset-0 rounded-2xl bg-[linear-gradient(0deg,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:24px_24px]" />
+              {[...pageItems, ...(text.trim() ? [{ id: "draft", page, text, x, y, size, color }] : [])].map((item) => (
+                <span key={item.id} className="absolute max-w-[85%] -translate-y-full break-words rounded-md bg-white/80 px-1 font-bold shadow-sm" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, color: item.color, fontSize: Math.max(10, Math.round(item.size * (previewWidth / currentSize.width))) }}>
+                  {item.text}
+                </span>
+              ))}
+            </div>
+            <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">Preview shows placement only, not the original PDF artwork. The downloaded PDF keeps the original page content and draws your text on top.</p>
+          </div>
+        </div>
+      ) : null}
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
 export function ToolRunner({ slug }: { slug: string }) {
   const map: Record<string, React.ReactNode> = {
     "image-compressor": <ImageCompressor />,
@@ -1877,7 +2068,8 @@ export function ToolRunner({ slug }: { slug: string }) {
     "image-metadata": <ImageMetadataTool />,
     "image-color-picker": <ImageColorPicker />,
     "image-dpi-checker": <ImageMetadataTool dpiOnly />,
-    "image-grayscale": <AdvancedImageConverter mode="grayscale" />
+    "image-grayscale": <AdvancedImageConverter mode="grayscale" />,
+    "add-text-to-pdf": <AddTextToPdf />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;

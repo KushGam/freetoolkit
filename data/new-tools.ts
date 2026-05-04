@@ -862,5 +862,32 @@ export const newTools: Tool[] = [
     benefit: "Grayscale conversion is a quick way to simplify visuals, create a consistent style, or prepare images for documents.",
     caution: "Fine color contrast can disappear in grayscale, so review the preview before using the output.",
     related: "Use Image Compressor after conversion, Image Resizer for dimensions, or Image Converter for final format."
+  }),
+  tool({
+    slug: "add-text-to-pdf",
+    title: "Add Text to PDF",
+    category: "PDF Tools",
+    popular: true,
+    description: "Add custom text, notes, dates, or labels on top of a PDF and download the updated file directly in your browser.",
+    intro: "Add text to PDF online free for notes, dates, labels, quick annotations, and document updates. Upload a PDF, choose a page, place your text, and download the updated file directly in your browser with no signup.",
+    metaTitle: "Add Text to PDF Online Free | FreeToolKit",
+    metaDescription: "Add text, notes, or labels to a PDF online for free. No signup required. Works directly in your browser.",
+    howToUse: ["Upload a PDF file from your device.", "Choose the page where the text should appear.", "Enter the text, font size, color, and position.", "Click on the page preview or use X and Y inputs to place the text.", "Apply the text and download the updated PDF."],
+    features: ["Adds custom text to selected PDF pages", "Click-to-place preview with X and Y inputs", "Font size and color controls", "Supports multiple text items", "Uses pdf-lib in your browser with no signup"],
+    faq: [
+      { question: "Can I add text to a PDF online free?", answer: "Yes. Upload a PDF, place the text, and download the edited file directly from your browser." },
+      { question: "Are my PDFs uploaded to a server?", answer: "No. The PDF is processed client-side in your browser where supported." },
+      { question: "Can I add text to different pages?", answer: "Yes. Select a page number before adding each text item." },
+      { question: "Can I change text color and size?", answer: "Yes. The tool includes color and font-size controls." },
+      { question: "Does this replace a full PDF editor?", answer: "No. It is designed for quick text overlays, labels, dates, notes, and simple annotations." }
+    ],
+    primary: "add text to PDF",
+    audience: "students, office workers, freelancers, administrators, teachers, and anyone who needs quick PDF annotations",
+    does: "It draws custom text onto a selected PDF page using pdf-lib and exports a new downloadable document.",
+    when: "you need to add a date, note, label, name, short comment, or simple instruction to an existing PDF",
+    workflow: "upload the PDF, choose a page, type the text, adjust size and color, place it on the preview, apply it, and download the updated file",
+    benefit: "A browser-based text overlay tool saves time when a full PDF editor is too heavy for a small change.",
+    caution: "The preview is a placement guide and the tool is intended for text overlays, not editing existing PDF text content.",
+    related: "Use Merge PDF to combine files, Split PDF to select pages, Rotate PDF to fix orientation, or Word to PDF to create a new document."
   })
 ];
