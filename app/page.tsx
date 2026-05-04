@@ -5,6 +5,7 @@ import { ToolCard } from "@/components/ui";
 import { categoryRoutes, getToolsByCategory, tools, toolHref, type ToolCategory } from "@/data/tools";
 
 const popularSlugs = [
+  "ai-resume-cover-letter",
   "image-compressor",
   "merge-pdf",
   "word-counter",
@@ -90,11 +91,14 @@ export default function HomePage() {
               Free Online Tools for Everyday Tasks
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-              Compress images, edit PDFs, format text, calculate values, and boost productivity — fast, free, and no signup required.
+              Compress images, edit PDFs, generate AI resumes, format text, calculate values, and boost productivity — fast, free, and no signup required.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link href="/all-tools" className="rounded-2xl bg-brand-600 px-6 py-3 text-sm font-black text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:bg-brand-700">
                 Explore All Tools
+              </Link>
+              <Link href="/student-tools/ai-resume-cover-letter" className="rounded-2xl border border-brand-200 bg-white px-6 py-3 text-sm font-black text-brand-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-brand-50">
+                Try AI Resume Generator
               </Link>
               <Link href="/image-compressor" className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
                 Try Image Compressor
