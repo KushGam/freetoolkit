@@ -13,29 +13,32 @@ export function HomeToolSearch() {
   }, [query]);
 
   return (
-    <div className="relative z-10 mt-8 max-w-2xl">
+    <div className="relative z-10 mx-auto mt-7 w-full max-w-3xl">
       <label className="sr-only" htmlFor="home-tool-search">Search tools</label>
-      <form action="/all-tools" className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_22px_50px_rgba(15,23,42,0.10)] sm:flex-row">
-        <input
-          id="home-tool-search"
-          name="q"
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search tools..."
-          autoComplete="off"
-          className="min-h-12 min-w-0 flex-1 rounded-xl bg-slate-50 px-4 text-base font-semibold text-slate-900 outline-none placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-brand-100"
-        />
-        <button className="min-h-12 rounded-xl bg-slate-950 px-5 text-sm font-black text-white transition hover:bg-brand-700" type="submit">
+      <form action="/all-tools" className="flex flex-col gap-2 rounded-[1.35rem] border border-slate-200/90 bg-white/95 p-2 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur sm:flex-row sm:items-center">
+        <div className="flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-2xl bg-slate-50 px-4 ring-1 ring-transparent transition focus-within:bg-white focus-within:ring-4 focus-within:ring-brand-100">
+          <span className="text-xs font-black uppercase tracking-wide text-brand-600" aria-hidden="true">Find</span>
+          <input
+            id="home-tool-search"
+            name="q"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search tools..."
+            autoComplete="off"
+            className="min-h-12 min-w-0 flex-1 bg-transparent text-base font-semibold text-slate-900 outline-none placeholder:text-slate-400"
+          />
+        </div>
+        <button className="min-h-12 rounded-2xl bg-slate-950 px-6 text-sm font-black text-white transition hover:bg-brand-700 sm:min-w-28" type="submit">
           Search
         </button>
       </form>
       {query.trim() ? (
-        <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
+        <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 text-left shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
           {matches.length ? (
-            <div className="grid gap-2">
+            <div className="grid gap-1">
               {matches.map((tool) => (
-                <Link key={tool.slug} href={`/${tool.slug}`} className="group flex items-center justify-between gap-4 rounded-xl px-3 py-3 hover:bg-brand-50">
+                <Link key={tool.slug} href={`/${tool.slug}`} className="group flex items-center justify-between gap-4 rounded-xl px-3 py-2.5 hover:bg-brand-50">
                   <span>
                     <span className="block text-sm font-black text-slate-950 group-hover:text-brand-700">{tool.title}</span>
                     <span className="block text-xs font-semibold text-slate-500">{tool.category}</span>

@@ -57,32 +57,32 @@ export default function HomePage() {
 
   return (
     <main className="overflow-hidden">
-      <section className="relative border-b border-slate-200/70 bg-[radial-gradient(circle_at_20%_10%,#dbeafe,transparent_34%),radial-gradient(circle_at_85%_20%,#e0e7ff,transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-xs font-black uppercase tracking-wide text-brand-700 shadow-sm">
+      <section className="relative border-b border-slate-200/70 bg-[radial-gradient(circle_at_18%_8%,#dbeafe,transparent_30%),radial-gradient(circle_at_82%_18%,#e0e7ff,transparent_26%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16 lg:py-20">
+          <div className="mx-auto max-w-5xl text-center">
+            <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-[11px] font-black uppercase tracking-wide text-brand-700 shadow-sm sm:text-xs">
               Fast, free, no-login online tools
             </p>
-            <h1 className="mt-5 text-4xl font-black tracking-normal text-slate-950 sm:text-6xl lg:text-7xl">
+            <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-black leading-[1.05] tracking-normal text-slate-950 sm:text-5xl sm:leading-[1.04] lg:text-6xl xl:text-[4.65rem]">
               Free Online Tools for Images, PDFs &amp; Students
             </h1>
-            <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-slate-600 sm:text-xl sm:leading-9">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
               Compress images, edit PDFs, calculate GPA, count words, and stay productive — fast, free, and no signup required.
             </p>
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href="/all-tools" className="rounded-2xl bg-brand-600 px-6 py-3.5 text-sm font-black text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:bg-brand-700">
+            <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href="/all-tools" className="rounded-2xl bg-brand-600 px-6 py-3 text-sm font-black text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:bg-brand-700">
                 Explore All Tools
               </Link>
-              <Link href="/image-compressor" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+              <Link href="/image-compressor" className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
                 Try Image Compressor
               </Link>
             </div>
             <div className="mx-auto text-left">
               <HomeToolSearch />
             </div>
-            <div className="mx-auto mt-7 flex max-w-4xl flex-wrap justify-center gap-3">
+            <div className="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-2.5">
               {trustBadges.map((badge) => (
-                <span key={badge} className="rounded-full border border-slate-200 bg-white/85 px-4 py-2 text-xs font-black text-slate-700 shadow-sm">
+                <span key={badge} className="rounded-full border border-slate-200 bg-white/85 px-3.5 py-2 text-[11px] font-black text-slate-700 shadow-sm sm:text-xs">
                   {badge}
                 </span>
               ))}
