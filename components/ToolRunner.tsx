@@ -1536,6 +1536,242 @@ function GpaToPercentageConverter() {
   );
 }
 
+function imageOutputName(file: File, prefix: string, type?: string) {
+  const ext = type === "image/png" ? "png" : type === "image/webp" ? "webp" : "jpg";
+  return `${prefix}-${file.name.replace(/\.[^.]+$/, "")}.${ext}`;
+}
+
+function AdvancedImageConverter({ mode }: { mode: "rotate" | "convert" | "watermark" | "grayscale" }) {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [rotation, setRotation] = useState("90");
+  const [flip, setFlip] = useState("none");
+  const [format, setFormat] = useState("image/webp");
+  const [quality, setQuality] = useState(0.85);
+  const [watermark, setWatermark] = useState("FreeToolKit");
+  const [position, setPosition] = useState("bottom-right");
+  const [opacity, setOpacity] = useState(0.65);
+  const [fontSize, setFontSize] = useState(42);
+  useObjectUrlCleanup(output);
+
+  function setImage(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setOutput(null);
+    setError("");
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(next ? URL.createObjectURL(next) : "");
+  }
+
+  async function run() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const image = await fileToImage(file);
+      const angle = mode === "rotate" ? Number(rotation) : 0;
+      const swap = angle === 90 || angle === 270;
+      const canvas = document.createElement("canvas");
+      canvas.width = swap ? image.naturalHeight : image.naturalWidth;
+      canvas.height = swap ? image.naturalWidth : image.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas is not supported in this browser.");
+      if (mode === "convert" && format === "image/jpeg") {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      if (mode === "rotate") {
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((angle * Math.PI) / 180);
+        const scaleX = flip === "horizontal" ? -1 : 1;
+        const scaleY = flip === "vertical" ? -1 : 1;
+        ctx.scale(scaleX, scaleY);
+        ctx.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2);
+      } else {
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      }
+      if (mode === "grayscale") {
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        for (let index = 0; index < data.data.length; index += 4) {
+          const gray = Math.round(data.data[index] * 0.299 + data.data[index + 1] * 0.587 + data.data[index + 2] * 0.114);
+          data.data[index] = gray;
+          data.data[index + 1] = gray;
+          data.data[index + 2] = gray;
+        }
+        ctx.putImageData(data, 0, 0);
+      }
+      if (mode === "watermark") {
+        ctx.globalAlpha = opacity;
+        ctx.fillStyle = "#ffffff";
+        ctx.strokeStyle = "rgba(15, 23, 42, 0.55)";
+        ctx.lineWidth = Math.max(2, Math.round(fontSize / 12));
+        ctx.font = `700 ${fontSize}px Arial, sans-serif`;
+        const metrics = ctx.measureText(watermark || "Watermark");
+        const padding = Math.max(20, Math.round(fontSize * 0.65));
+        const x = position === "center" ? (canvas.width - metrics.width) / 2 : position === "top-left" ? padding : canvas.width - metrics.width - padding;
+        const y = position === "center" ? canvas.height / 2 : position === "top-left" ? padding + fontSize : canvas.height - padding;
+        ctx.strokeText(watermark || "Watermark", x, y);
+        ctx.fillText(watermark || "Watermark", x, y);
+        ctx.globalAlpha = 1;
+      }
+      const type = mode === "convert" ? format : file.type || "image/png";
+      const blob = await canvasToBlob(canvas, type, quality);
+      setOutput(downloadBlob(blob, imageOutputName(file, mode === "rotate" ? "transformed" : mode === "watermark" ? "watermarked" : mode === "grayscale" ? "grayscale" : "converted", type)));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Image processing failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={setImage} />
+      <FileInfo file={file} />
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Preview" /> : null}
+      {file && mode === "rotate" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Rotate <Select className="mt-2" value={rotation} onChange={(event) => setRotation(event.target.value)}><option value="90">90 degrees</option><option value="180">180 degrees</option><option value="270">270 degrees</option></Select></label><label className="text-sm font-bold text-slate-700">Flip <Select className="mt-2" value={flip} onChange={(event) => setFlip(event.target.value)}><option value="none">No flip</option><option value="horizontal">Flip horizontal</option><option value="vertical">Flip vertical</option></Select></label></div> : null}
+      {file && mode === "convert" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Output format <Select className="mt-2" value={format} onChange={(event) => setFormat(event.target.value)}><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></Select></label><label className="text-sm font-bold text-slate-700">Quality: {quality.toFixed(2)}<input className="mt-3 w-full accent-brand-600" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} /></label></div> : null}
+      {file && mode === "watermark" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Watermark text <Input className="mt-2" value={watermark} onChange={(event) => setWatermark(event.target.value)} /></label><label className="text-sm font-bold text-slate-700">Position <Select className="mt-2" value={position} onChange={(event) => setPosition(event.target.value)}><option value="top-left">Top-left</option><option value="center">Center</option><option value="bottom-right">Bottom-right</option></Select></label><label className="text-sm font-bold text-slate-700">Opacity: {opacity.toFixed(2)}<input className="mt-3 w-full accent-brand-600" type="range" min="0.1" max="1" step="0.05" value={opacity} onChange={(event) => setOpacity(Number(event.target.value))} /></label><label className="text-sm font-bold text-slate-700">Font size <Input className="mt-2" type="number" min={12} value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} /></label></div> : null}
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={run} disabled={!file || busy}>{busy ? "Working..." : mode === "rotate" ? "Apply transform" : mode === "watermark" ? "Add watermark" : mode === "grayscale" ? "Convert to grayscale" : "Convert image"}</Button><SecondaryButton onClick={() => { setImage([]); setOutput(null); }}>Reset</SecondaryButton></div>
+      <ErrorMessage message={error} />
+      <Download output={output} />
+      {output ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-emerald-200 bg-emerald-50 object-contain p-2" src={output.url} alt="Result preview" /> : null}
+    </div>
+  );
+}
+
+async function inspectImage(file: File) {
+  const image = await fileToImage(file);
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  const details: Array<[string, string]> = [
+    ["File name", file.name],
+    ["File size", formatBytes(file.size)],
+    ["File type", file.type || "Unknown"],
+    ["Dimensions", `${image.naturalWidth} × ${image.naturalHeight}px`],
+    ["Last modified", new Date(file.lastModified).toLocaleString()]
+  ];
+  const readAscii = (start: number, end: number) => {
+    let value = "";
+    for (let index = start; index < end; index += 1) value += String.fromCharCode(bytes[index]);
+    return value;
+  };
+  let dpi = "Not available";
+  if (bytes[0] === 0xff && bytes[1] === 0xd8) {
+    for (let offset = 2; offset < bytes.length - 10;) {
+      if (bytes[offset] !== 0xff) break;
+      const marker = bytes[offset + 1];
+      const length = (bytes[offset + 2] << 8) + bytes[offset + 3];
+      if (marker === 0xe0 && readAscii(offset + 4, offset + 9) === "JFIF\0") {
+        const unit = bytes[offset + 11];
+        const x = (bytes[offset + 12] << 8) + bytes[offset + 13];
+        const y = (bytes[offset + 14] << 8) + bytes[offset + 15];
+        dpi = unit === 1 ? `${x} × ${y} DPI` : unit === 2 ? `${Math.round(x * 2.54)} × ${Math.round(y * 2.54)} DPI` : "Density stored without unit";
+        details.push(["JPEG density", dpi]);
+        break;
+      }
+      offset += 2 + length;
+    }
+  }
+  if (bytes[0] === 0x89 && bytes[1] === 0x50) {
+    for (let offset = 8; offset < bytes.length - 16;) {
+      const length = (bytes[offset] << 24) + (bytes[offset + 1] << 16) + (bytes[offset + 2] << 8) + bytes[offset + 3];
+      const type = readAscii(offset + 4, offset + 8);
+      if (type === "pHYs") {
+        const x = ((bytes[offset + 8] << 24) + (bytes[offset + 9] << 16) + (bytes[offset + 10] << 8) + bytes[offset + 11]) >>> 0;
+        const y = ((bytes[offset + 12] << 24) + (bytes[offset + 13] << 16) + (bytes[offset + 14] << 8) + bytes[offset + 15]) >>> 0;
+        dpi = bytes[offset + 16] === 1 ? `${Math.round(x * 0.0254)} × ${Math.round(y * 0.0254)} DPI` : "Pixel density stored without meter unit";
+        details.push(["PNG density", dpi]);
+        break;
+      }
+      offset += 12 + length;
+    }
+  }
+  details.push(["DPI", dpi]);
+  return { details, dpi, width: image.naturalWidth, height: image.naturalHeight };
+}
+
+function ImageMetadataTool({ dpiOnly = false }: { dpiOnly?: boolean }) {
+  const [file, setFile] = useState<File | null>(null);
+  const [details, setDetails] = useState<Array<[string, string]>>([]);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setDetails([]);
+    setError("");
+    if (!next) return;
+    setBusy(true);
+    try {
+      const info = await inspectImage(next);
+      setDetails(dpiOnly ? info.details.filter(([key]) => ["File name", "File size", "File type", "Dimensions", "DPI", "JPEG density", "PNG density"].includes(key)) : info.details);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to inspect this image.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div>
+      <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
+      <FileInfo file={file} />
+      {busy ? <p className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Reading image details...</p> : null}
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">{details.map(([key, value]) => <div key={key} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><p className="text-xs font-black uppercase tracking-wide text-slate-500">{key}</p><p className="mt-2 break-words text-lg font-black text-slate-950">{value}</p></div>)}</div>
+      <div className="mt-4"><SecondaryButton onClick={() => { setFile(null); setDetails([]); setError(""); }}>Reset</SecondaryButton></div>
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+function ImageColorPicker() {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [color, setColor] = useState<{ hex: string; rgb: string; x: number; y: number } | null>(null);
+  const [error, setError] = useState("");
+  async function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setColor(null);
+    setError("");
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(next ? URL.createObjectURL(next) : "");
+  }
+  async function pick(event: React.MouseEvent<HTMLImageElement>) {
+    if (!file) return;
+    try {
+      const image = await fileToImage(file);
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = Math.floor(((event.clientX - rect.left) / rect.width) * image.naturalWidth);
+      const y = Math.floor(((event.clientY - rect.top) / rect.height) * image.naturalHeight);
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas is not supported in this browser.");
+      ctx.drawImage(image, 0, 0);
+      const [r, g, b] = Array.from(ctx.getImageData(x, y, 1, 1).data);
+      const hex = `#${[r, g, b].map((part) => part.toString(16).padStart(2, "0")).join("").toUpperCase()}`;
+      setColor({ hex, rgb: `rgb(${r}, ${g}, ${b})`, x, y });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to pick a color.");
+    }
+  }
+  return (
+    <div>
+      <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
+      <FileInfo file={file} />
+      {preview ? <img className="mt-5 max-h-96 w-full cursor-crosshair rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Click to pick color" onClick={pick} /> : null}
+      {color ? <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="HEX" value={color.hex} /><ResultBox label="RGB" value={color.rgb} /><ResultBox label="Pixel" value={`${color.x}, ${color.y}`} /><CopyAction value={color.hex} label="Copy HEX" /><CopyAction value={color.rgb} label="Copy RGB" /><div className="min-h-16 rounded-2xl border border-slate-200" style={{ backgroundColor: color.hex }} /></div> : null}
+      <div className="mt-4"><SecondaryButton onClick={() => { setFile(null); setPreview(""); setColor(null); setError(""); }}>Reset</SecondaryButton></div>
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
 export function ToolRunner({ slug }: { slug: string }) {
   const map: Record<string, React.ReactNode> = {
     "image-compressor": <ImageCompressor />,
@@ -1577,7 +1813,14 @@ export function ToolRunner({ slug }: { slug: string }) {
     "weighted-grade-calculator": <WeightedGradeCalculator />,
     "attendance-calculator": <AttendanceCalculator />,
     "interest-calculator": <InterestCalculator />,
-    "gpa-to-percentage-converter": <GpaToPercentageConverter />
+    "gpa-to-percentage-converter": <GpaToPercentageConverter />,
+    "image-rotator": <AdvancedImageConverter mode="rotate" />,
+    "image-converter": <AdvancedImageConverter mode="convert" />,
+    "image-watermark": <AdvancedImageConverter mode="watermark" />,
+    "image-metadata": <ImageMetadataTool />,
+    "image-color-picker": <ImageColorPicker />,
+    "image-dpi-checker": <ImageMetadataTool dpiOnly />,
+    "image-grayscale": <AdvancedImageConverter mode="grayscale" />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;
