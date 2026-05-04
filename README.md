@@ -20,6 +20,10 @@ npm run build
 npm run lint
 ```
 
+## Vercel Deployment
+
+Use the Next.js framework preset in Vercel. Leave the Output Directory setting empty/default; do not set it to `public`.
+
 ## AdSense
 
 `components/AdSlot.tsx` renders labeled advertisement placeholders. Replace that component later with the official Google AdSense script and your real publisher ID.
