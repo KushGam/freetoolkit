@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploadDropzone } from "@/components/FileUploadDropzone";
 import { Button, Input, SecondaryButton, Select, Textarea } from "@/components/ui";
 import { formatBytes } from "@/lib/utils";
@@ -1729,33 +1729,80 @@ function ImageMetadataTool({ dpiOnly = false }: { dpiOnly?: boolean }) {
 
 function ImageColorPicker() {
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState("");
   const [color, setColor] = useState<{ hex: string; rgb: string; x: number; y: number } | null>(null);
   const [error, setError] = useState("");
-  async function load(files: File[]) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    if (!file) {
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext("2d");
+      if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+    const currentFile = file;
+    let cancelled = false;
+    async function drawImage() {
+      try {
+        const image = await fileToImage(currentFile);
+        if (cancelled) return;
+        const canvas = canvasRef.current;
+        if (!canvas) {
+          setError("Image preview is not ready yet. Please try again.");
+          return;
+        }
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        if (!ctx) {
+          setError("Could not read image colors in this browser.");
+          return;
+        }
+        ctx.drawImage(image, 0, 0);
+        setError("");
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : "Unable to load image colors.");
+      }
+    }
+    drawImage();
+    return () => {
+      cancelled = true;
+    };
+  }, [file]);
+
+  function load(files: File[]) {
     const next = files[0] ?? null;
     setFile(next);
     setColor(null);
     setError("");
-    if (preview) URL.revokeObjectURL(preview);
-    setPreview(next ? URL.createObjectURL(next) : "");
   }
-  async function pick(event: React.MouseEvent<HTMLImageElement>) {
-    if (!file) return;
+
+  function pick(clientX: number, clientY: number) {
+    const canvas = canvasRef.current;
+    if (!canvas || !canvas.width || !canvas.height) {
+      setError("Image is not ready yet. Please try again.");
+      return;
+    }
     try {
-      const image = await fileToImage(file);
-      const rect = event.currentTarget.getBoundingClientRect();
-      const x = Math.floor(((event.clientX - rect.left) / rect.width) * image.naturalWidth);
-      const y = Math.floor(((event.clientY - rect.top) / rect.height) * image.naturalHeight);
-      const canvas = document.createElement("canvas");
-      canvas.width = image.naturalWidth;
-      canvas.height = image.naturalHeight;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("Canvas is not supported in this browser.");
-      ctx.drawImage(image, 0, 0);
-      const [r, g, b] = Array.from(ctx.getImageData(x, y, 1, 1).data);
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) {
+        setError("Image preview is not ready yet. Please try again.");
+        return;
+      }
+      const x = Math.max(0, Math.min(canvas.width - 1, Math.floor((clientX - rect.left) * (canvas.width / rect.width))));
+      const y = Math.max(0, Math.min(canvas.height - 1, Math.floor((clientY - rect.top) * (canvas.height / rect.height))));
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) {
+        setError("Could not read image colors.");
+        return;
+      }
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      const r = pixel[0];
+      const g = pixel[1];
+      const b = pixel[2];
       const hex = `#${[r, g, b].map((part) => part.toString(16).padStart(2, "0")).join("").toUpperCase()}`;
       setColor({ hex, rgb: `rgb(${r}, ${g}, ${b})`, x, y });
+      setError("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to pick a color.");
     }
@@ -1764,9 +1811,19 @@ function ImageColorPicker() {
     <div>
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
       <FileInfo file={file} />
-      {preview ? <img className="mt-5 max-h-96 w-full cursor-crosshair rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Click to pick color" onClick={pick} /> : null}
+      {file ? (
+        <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-2">
+          <canvas
+            ref={canvasRef}
+            className="mx-auto max-h-96 max-w-full cursor-crosshair rounded-xl"
+            onClick={(event) => pick(event.clientX, event.clientY)}
+            onPointerDown={(event) => pick(event.clientX, event.clientY)}
+            aria-label="Click image to pick a color"
+          />
+        </div>
+      ) : null}
       {color ? <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="HEX" value={color.hex} /><ResultBox label="RGB" value={color.rgb} /><ResultBox label="Pixel" value={`${color.x}, ${color.y}`} /><CopyAction value={color.hex} label="Copy HEX" /><CopyAction value={color.rgb} label="Copy RGB" /><div className="min-h-16 rounded-2xl border border-slate-200" style={{ backgroundColor: color.hex }} /></div> : null}
-      <div className="mt-4"><SecondaryButton onClick={() => { setFile(null); setPreview(""); setColor(null); setError(""); }}>Reset</SecondaryButton></div>
+      <div className="mt-4"><SecondaryButton onClick={() => { setFile(null); setColor(null); setError(""); }}>Reset</SecondaryButton></div>
       <ErrorMessage message={error} />
     </div>
   );
