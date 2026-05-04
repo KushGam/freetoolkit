@@ -7,6 +7,21 @@ import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
 import { ToolRunner } from "@/components/ToolRunner";
 
 export function ToolLayout({ tool }: { tool: Tool }) {
+  const categoryShort =
+    tool.category === "Image Tools"
+      ? "Browser image workflow"
+      : tool.category === "PDF Tools"
+        ? "Private PDF workspace"
+        : tool.category === "Student Tools"
+          ? "Study and grade helper"
+          : tool.category === "Developer Tools"
+            ? "Developer utility"
+            : tool.category === "Security Tools"
+              ? "Security helper"
+              : tool.category === "Calculator Tools"
+                ? "Fast calculator"
+                : "Text cleanup tool";
+
   const categoryCopy =
     tool.category === "Image Tools"
       ? "Image tools are most useful when they make routine publishing tasks faster without asking you to install heavy software. Use the preview and file size details to decide whether the output is suitable before you upload it to a website, application form, content management system, or classroom portal."
@@ -27,13 +42,21 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         <span>/</span>
         <span className="text-slate-800">{tool.title}</span>
       </nav>
-      <section className="mt-8 rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_top_left,#dbeafe,transparent_38%),linear-gradient(180deg,#ffffff,#f8fafc)] p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:p-8">
-        <div>
-          <p className="w-fit rounded-full border border-brand-100 bg-white/80 px-4 py-2 text-xs font-black uppercase tracking-wide text-brand-700 shadow-sm">{tool.category}</p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-normal text-slate-950 sm:text-5xl">{tool.title}</h1>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">{tool.intro}</p>
+      <section className="relative mt-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_50%_0%,#dbeafe,transparent_44%),radial-gradient(circle_at_90%_15%,#e0e7ff,transparent_28%),linear-gradient(180deg,#ffffff,#f8fafc)] px-5 py-10 text-center shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:px-8 sm:py-12 lg:px-14 lg:py-14">
+        <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
+        <div className="mx-auto max-w-4xl">
+          <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-xs font-black uppercase tracking-wide text-brand-700 shadow-sm">{tool.category}</p>
+          <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-black leading-[1.05] tracking-normal text-slate-950 sm:text-5xl lg:text-6xl">{tool.title}</h1>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{tool.intro}</p>
+          <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-3">
+            {["Free to use", "No signup", categoryShort].map((item) => (
+              <div key={item} className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm font-black text-slate-700 shadow-sm backdrop-blur">
+                {item}
+              </div>
+            ))}
+          </div>
           {(tool.category === "Image Tools" || tool.category === "PDF Tools") ? (
-            <p className="mt-5 max-w-3xl rounded-2xl border border-brand-100 bg-white/80 px-4 py-3 text-sm font-bold leading-6 text-brand-700 shadow-sm">
+            <p className="mx-auto mt-5 max-w-3xl rounded-2xl border border-brand-100 bg-white/80 px-4 py-3 text-sm font-bold leading-6 text-brand-700 shadow-sm">
               Privacy note: files are processed in the browser where possible and are not uploaded to a server by this tool.
             </p>
           ) : null}
