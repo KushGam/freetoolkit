@@ -87,10 +87,10 @@ export default function HomePage() {
               Fast, free, no-login online tools
             </p>
             <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-black leading-[1.05] tracking-normal text-slate-950 sm:text-5xl sm:leading-[1.04] lg:text-6xl xl:text-[4.65rem]">
-              Free Online Tools for Images, PDFs &amp; Students
+              Free Online Tools for Everyday Tasks
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-              Compress images, edit PDFs, calculate GPA, count words, and stay productive — fast, free, and no signup required.
+              Compress images, edit PDFs, format text, calculate values, and boost productivity — fast, free, and no signup required.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link href="/all-tools" className="rounded-2xl bg-brand-600 px-6 py-3 text-sm font-black text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:bg-brand-700">
