@@ -868,26 +868,27 @@ export const newTools: Tool[] = [
     title: "Add Text to PDF",
     category: "PDF Tools",
     popular: true,
-    description: "Add custom text, notes, dates, or labels on top of a PDF and download the updated file directly in your browser.",
-    intro: "Add text to PDF online free for notes, dates, labels, quick annotations, and document updates. Upload a PDF, choose a page, place your text, and download the updated file directly in your browser with no signup.",
+    description: "Add custom text, notes, dates, labels, or a drawn signature on top of a PDF and download the updated file directly in your browser.",
+    intro: "Add text or a signature to PDF online free for notes, dates, labels, quick annotations, signing, and document updates. Upload a PDF, choose a page, place your text or signature, and download the updated file directly in your browser with no signup.",
     metaTitle: "Add Text to PDF Online Free | FreeToolKit",
-    metaDescription: "Add text, notes, or labels to a PDF online for free. No signup required. Works directly in your browser.",
-    howToUse: ["Upload a PDF file from your device.", "Choose the page where the text should appear.", "Enter the text, font size, color, and position.", "Click on the page preview or use X and Y inputs to place the text.", "Apply the text and download the updated PDF."],
-    features: ["Adds custom text to selected PDF pages", "Click-to-place preview with X and Y inputs", "Font size and color controls", "Supports multiple text items", "Uses pdf-lib in your browser with no signup"],
+    metaDescription: "Add text, notes, labels, or signatures to a PDF online for free. No signup required. Works directly in your browser.",
+    howToUse: ["Upload a PDF file from your device.", "Choose the page where the text or signature should appear.", "Enter text or draw your signature in the signature pad.", "Click on the page preview or use X and Y inputs to place the item.", "Apply changes and download the updated PDF."],
+    features: ["Adds custom text to selected PDF pages", "Drawn signature pad for simple signing", "Click-to-place preview with X and Y inputs", "Font size and color controls", "Uses pdf-lib in your browser with no signup"],
     faq: [
       { question: "Can I add text to a PDF online free?", answer: "Yes. Upload a PDF, place the text, and download the edited file directly from your browser." },
       { question: "Are my PDFs uploaded to a server?", answer: "No. The PDF is processed client-side in your browser where supported." },
       { question: "Can I add text to different pages?", answer: "Yes. Select a page number before adding each text item." },
+      { question: "Can I sign a PDF with this tool?", answer: "Yes. Draw a signature in the signature pad, place it on the selected page, and apply the changes." },
       { question: "Can I change text color and size?", answer: "Yes. The tool includes color and font-size controls." },
-      { question: "Does this replace a full PDF editor?", answer: "No. It is designed for quick text overlays, labels, dates, notes, and simple annotations." }
+      { question: "Does this replace a full PDF editor?", answer: "No. It is designed for quick text overlays, labels, dates, notes, signatures, and simple annotations." }
     ],
     primary: "add text to PDF",
     audience: "students, office workers, freelancers, administrators, teachers, and anyone who needs quick PDF annotations",
-    does: "It draws custom text onto a selected PDF page using pdf-lib and exports a new downloadable document.",
-    when: "you need to add a date, note, label, name, short comment, or simple instruction to an existing PDF",
-    workflow: "upload the PDF, choose a page, type the text, adjust size and color, place it on the preview, apply it, and download the updated file",
-    benefit: "A browser-based text overlay tool saves time when a full PDF editor is too heavy for a small change.",
-    caution: "The preview is a placement guide and the tool is intended for text overlays, not editing existing PDF text content.",
+    does: "It draws custom text and signature images onto selected PDF pages using pdf-lib and exports a new downloadable document.",
+    when: "you need to add a date, note, label, name, short comment, simple instruction, or signature to an existing PDF",
+    workflow: "upload the PDF, choose a page, type text or draw a signature, place it on the preview, apply changes, and download the updated file",
+    benefit: "A browser-based text and signature overlay tool saves time when a full PDF editor is too heavy for a small change.",
+    caution: "The preview is a placement guide and the tool is intended for overlays, not editing existing PDF text content or creating legally verified digital signatures.",
     related: "Use Merge PDF to combine files, Split PDF to select pages, Rotate PDF to fix orientation, or Word to PDF to create a new document."
   })
 ];

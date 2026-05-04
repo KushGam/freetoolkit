@@ -1839,6 +1839,16 @@ type PdfTextItem = {
   color: string;
 };
 
+type PdfSignatureItem = {
+  id: string;
+  page: number;
+  dataUrl: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
 function hexToPdfRgb(hex: string) {
   const clean = hex.replace("#", "");
   const r = parseInt(clean.slice(0, 2), 16) / 255;
@@ -1858,20 +1868,39 @@ function AddTextToPdf() {
   const [x, setX] = useState(120);
   const [y, setY] = useState(120);
   const [items, setItems] = useState<PdfTextItem[]>([]);
+  const [signatureItems, setSignatureItems] = useState<PdfSignatureItem[]>([]);
+  const [signatureWidth, setSignatureWidth] = useState(160);
+  const [hasSignature, setHasSignature] = useState(false);
   const [output, setOutput] = useState<Output | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const signatureCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const drawingSignatureRef = useRef(false);
   useObjectUrlCleanup(output);
 
   const currentSize = pageSizes[page - 1] ?? { width: 612, height: 792 };
   const previewWidth = 360;
   const previewHeight = Math.round((currentSize.height / currentSize.width) * previewWidth);
   const pageItems = items.filter((item) => item.page === page);
+  const pageSignatureItems = signatureItems.filter((item) => item.page === page);
+  const signatureHeight = Math.round(signatureWidth * 0.35);
+
+  useEffect(() => {
+    const canvas = signatureCanvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#0f172a";
+  }, [file]);
 
   async function load(files: File[]) {
     const next = files[0] ?? null;
     setFile(next);
     setItems([]);
+    setSignatureItems([]);
+    setHasSignature(false);
     setOutput(null);
     setError("");
     setPage(1);
@@ -1926,8 +1955,72 @@ function AddTextToPdf() {
     setOutput(null);
   }
 
+  function signaturePoint(event: React.PointerEvent<HTMLCanvasElement>) {
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (event.clientX - rect.left) * (canvas.width / rect.width),
+      y: (event.clientY - rect.top) * (canvas.height / rect.height)
+    };
+  }
+
+  function startSignature(event: React.PointerEvent<HTMLCanvasElement>) {
+    const canvas = signatureCanvasRef.current;
+    const point = signaturePoint(event);
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx || !point) {
+      setError("Signature pad is not ready yet. Please try again.");
+      return;
+    }
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drawingSignatureRef.current = true;
+    setHasSignature(true);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#0f172a";
+    ctx.beginPath();
+    ctx.moveTo(point.x, point.y);
+  }
+
+  function drawSignature(event: React.PointerEvent<HTMLCanvasElement>) {
+    if (!drawingSignatureRef.current) return;
+    const point = signaturePoint(event);
+    const ctx = signatureCanvasRef.current?.getContext("2d");
+    if (!ctx || !point) return;
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+  }
+
+  function stopSignature() {
+    drawingSignatureRef.current = false;
+  }
+
+  function clearSignature() {
+    const canvas = signatureCanvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setHasSignature(false);
+  }
+
+  function addSignature() {
+    const canvas = signatureCanvasRef.current;
+    if (!file) {
+      setError("Upload a PDF before adding a signature.");
+      return;
+    }
+    if (!canvas || !hasSignature) {
+      setError("Draw a signature before adding it to the PDF.");
+      return;
+    }
+    setSignatureItems([...signatureItems, { id: crypto.randomUUID(), page, dataUrl: canvas.toDataURL("image/png"), x, y, width: signatureWidth, height: signatureHeight }]);
+    setError("");
+    setOutput(null);
+  }
+
   async function applyText() {
-    if (!file || !items.length) return;
+    if (!file || (!items.length && !signatureItems.length)) return;
     setBusy(true);
     setError("");
     try {
@@ -1946,8 +2039,18 @@ function AddTextToPdf() {
           color: rgb(colorValue.r, colorValue.g, colorValue.b)
         });
       });
+      for (const signature of signatureItems) {
+        const pdfPage = pdf.getPage(signature.page - 1);
+        const embeddedSignature = await pdf.embedPng(signature.dataUrl);
+        pdfPage.drawImage(embeddedSignature, {
+          x: signature.x,
+          y: signature.y,
+          width: signature.width,
+          height: signature.height
+        });
+      }
       const bytes = await pdf.save();
-      setOutput(downloadBlob(bytesToPdfBlob(bytes), `text-added-${file.name.replace(/\.[^.]+$/, ".pdf")}`));
+      setOutput(downloadBlob(bytesToPdfBlob(bytes), `edited-${file.name.replace(/\.[^.]+$/, ".pdf")}`));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to add text to this PDF.");
     } finally {
@@ -1966,6 +2069,10 @@ function AddTextToPdf() {
     setX(120);
     setY(120);
     setItems([]);
+    setSignatureItems([]);
+    setSignatureWidth(160);
+    setHasSignature(false);
+    clearSignature();
     setOutput(null);
     setError("");
   }
@@ -1986,16 +2093,41 @@ function AddTextToPdf() {
               <label className="text-sm font-bold text-slate-700">X position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.width)} value={x} onChange={(event) => setX(Number(event.target.value))} /></label>
               <label className="text-sm font-bold text-slate-700">Y position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.height)} value={y} onChange={(event) => setY(Number(event.target.value))} /></label>
             </div>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-sm font-black text-slate-900">Signature</p>
+                  <p className="mt-1 text-xs font-semibold text-slate-500">Draw with mouse, trackpad, or touch, then place it using the same X/Y controls.</p>
+                </div>
+                <label className="text-sm font-bold text-slate-700">Signature width: {signatureWidth}px<input className="mt-2 w-full accent-brand-600 sm:w-52" type="range" min={80} max={320} value={signatureWidth} onChange={(event) => setSignatureWidth(Number(event.target.value))} /></label>
+              </div>
+              <canvas
+                ref={signatureCanvasRef}
+                width={520}
+                height={180}
+                className="mt-4 h-36 w-full touch-none rounded-2xl border border-dashed border-slate-300 bg-white shadow-inner"
+                onPointerDown={startSignature}
+                onPointerMove={drawSignature}
+                onPointerUp={stopSignature}
+                onPointerCancel={stopSignature}
+                aria-label="Draw signature"
+              />
+              <div className="mt-3 flex flex-wrap gap-3">
+                <SecondaryButton onClick={addSignature} disabled={!file || !hasSignature}>Add Signature</SecondaryButton>
+                <SecondaryButton onClick={clearSignature}>Clear signature</SecondaryButton>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-3">
               <Button onClick={addItem} disabled={!file || !text.trim()}>Add Text</Button>
-              <Button onClick={applyText} disabled={!file || !items.length || busy}>{busy ? "Applying..." : "Apply changes"}</Button>
+              <Button onClick={applyText} disabled={!file || (!items.length && !signatureItems.length) || busy}>{busy ? "Applying..." : "Apply changes"}</Button>
               <SecondaryButton onClick={reset}>Reset</SecondaryButton>
             </div>
-            {items.length ? (
+            {(items.length || signatureItems.length) ? (
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-sm font-black text-slate-800">Text items</p>
+                <p className="text-sm font-black text-slate-800">PDF items</p>
                 <div className="mt-3 grid gap-2">
                   {items.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-white p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: {item.text}</span><SecondaryButton onClick={() => setItems(items.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
+                  {signatureItems.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-white p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: Signature at X {item.x}, Y {item.y}</span><SecondaryButton onClick={() => setSignatureItems(signatureItems.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
                 </div>
               </div>
             ) : null}
@@ -2009,8 +2141,11 @@ function AddTextToPdf() {
                   {item.text}
                 </span>
               ))}
+              {pageSignatureItems.map((item) => (
+                <img key={item.id} src={item.dataUrl} alt="Signature placement preview" className="absolute -translate-y-full rounded-sm bg-white/70" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, width: `${(item.width / currentSize.width) * 100}%`, height: "auto" }} />
+              ))}
             </div>
-            <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">Preview shows placement only, not the original PDF artwork. The downloaded PDF keeps the original page content and draws your text on top.</p>
+            <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">Preview shows placement only, not the original PDF artwork. The downloaded PDF keeps the original page content and draws your text or signature on top.</p>
           </div>
         </div>
       ) : null}
