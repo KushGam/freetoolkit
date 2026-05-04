@@ -1354,6 +1354,134 @@ function ImageToBase64() {
   );
 }
 
+function FinalGradeCalculator() {
+  const [current, setCurrent] = useState(82);
+  const [target, setTarget] = useState(90);
+  const [finalWeight, setFinalWeight] = useState(30);
+  const currentWeight = 100 - finalWeight;
+  const needed = finalWeight ? (target - (current * currentWeight / 100)) / (finalWeight / 100) : 0;
+  const status = needed <= 0 ? "You have already reached this target based on these inputs." : needed > 100 ? "This target likely needs extra credit or a higher current grade." : "This target is mathematically reachable.";
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">Current grade % <Input className="mt-2" type="number" value={current} onChange={(event) => setCurrent(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Target grade % <Input className="mt-2" type="number" value={target} onChange={(event) => setTarget(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Final exam weight % <Input className="mt-2" type="number" min={1} max={100} value={finalWeight} onChange={(event) => setFinalWeight(Number(event.target.value))} /></label>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <ResultBox label="Needed on final" value={`${Number.isFinite(needed) ? needed.toFixed(2) : "0.00"}%`} />
+        <ResultBox label="Current coursework weight" value={`${currentWeight}%`} />
+      </div>
+      <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold leading-6 text-slate-700">{status}</p>
+    </div>
+  );
+}
+
+function WeightedGradeCalculator() {
+  const [rows, setRows] = useState([{ name: "Assignments", score: 88, weight: 40 }, { name: "Exam", score: 76, weight: 60 }]);
+  const weightTotal = rows.reduce((sum, row) => sum + Number(row.weight || 0), 0);
+  const weighted = rows.reduce((sum, row) => sum + Number(row.score || 0) * Number(row.weight || 0), 0);
+  const result = weightTotal ? weighted / weightTotal : 0;
+  return (
+    <div>
+      <div className="grid gap-3">
+        {rows.map((row, index) => (
+          <div key={index} className="grid gap-3 rounded-2xl bg-slate-50 p-3 md:grid-cols-[1fr_130px_130px_auto]">
+            <Input placeholder="Category or assessment" value={row.name} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, name: event.target.value } : item))} />
+            <Input type="number" value={row.score} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, score: Number(event.target.value) } : item))} placeholder="Score %" />
+            <Input type="number" value={row.weight} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, weight: Number(event.target.value) } : item))} placeholder="Weight %" />
+            <SecondaryButton onClick={() => setRows(rows.filter((_, i) => i !== index))}>Remove</SecondaryButton>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <SecondaryButton onClick={() => setRows([...rows, { name: "", score: 100, weight: 0 }])}>Add row</SecondaryButton>
+        <SecondaryButton onClick={() => setRows([{ name: "Assignments", score: 88, weight: 40 }, { name: "Exam", score: 76, weight: 60 }])}>Reset</SecondaryButton>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <ResultBox label="Weighted grade" value={`${result.toFixed(2)}%`} />
+        <ResultBox label="Weight total" value={`${weightTotal}%`} />
+      </div>
+    </div>
+  );
+}
+
+function AttendanceCalculator() {
+  const [held, setHeld] = useState(40);
+  const [attended, setAttended] = useState(34);
+  const [required, setRequired] = useState(75);
+  const percentage = held ? (attended / held) * 100 : 0;
+  const canMiss = useMemo(() => {
+    let missed = 0;
+    while (held + missed + 1 > 0 && (attended / (held + missed + 1)) * 100 >= required && missed < 1000) missed += 1;
+    return missed;
+  }, [attended, held, required]);
+  const needAttend = useMemo(() => {
+    let extra = 0;
+    while (((attended + extra) / (held + extra || 1)) * 100 < required && extra < 1000) extra += 1;
+    return extra;
+  }, [attended, held, required]);
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">Classes held <Input className="mt-2" type="number" min={0} value={held} onChange={(event) => setHeld(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Classes attended <Input className="mt-2" type="number" min={0} value={attended} onChange={(event) => setAttended(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Required attendance % <Input className="mt-2" type="number" min={1} max={100} value={required} onChange={(event) => setRequired(Number(event.target.value))} /></label>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <ResultBox label="Current attendance" value={`${percentage.toFixed(2)}%`} />
+        <ResultBox label="Can miss" value={percentage >= required ? `${canMiss} classes` : "0 classes"} />
+        <ResultBox label="Need to attend" value={percentage >= required ? "Target met" : `${needAttend} classes`} />
+      </div>
+      {attended > held ? <ErrorMessage message="Classes attended cannot be greater than classes held." /> : null}
+    </div>
+  );
+}
+
+function InterestCalculator() {
+  const [principal, setPrincipal] = useState(1000);
+  const [rate, setRate] = useState(5);
+  const [years, setYears] = useState(3);
+  const [frequency, setFrequency] = useState(12);
+  const simpleInterest = principal * (rate / 100) * years;
+  const simpleAmount = principal + simpleInterest;
+  const compoundAmount = principal * ((1 + (rate / 100) / frequency) ** (frequency * years));
+  const compoundInterest = compoundAmount - principal;
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">Principal <Input className="mt-2" type="number" value={principal} onChange={(event) => setPrincipal(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Annual rate % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Time in years <Input className="mt-2" type="number" step={0.1} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Compound frequency <Select className="mt-2" value={frequency} onChange={(event) => setFrequency(Number(event.target.value))}><option value={1}>Yearly</option><option value={2}>Half-yearly</option><option value={4}>Quarterly</option><option value={12}>Monthly</option><option value={365}>Daily</option></Select></label>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ResultBox label="Simple interest" value={`$${simpleInterest.toFixed(2)}`} />
+        <ResultBox label="Simple amount" value={`$${simpleAmount.toFixed(2)}`} />
+        <ResultBox label="Compound interest" value={`$${compoundInterest.toFixed(2)}`} />
+        <ResultBox label="Compound amount" value={`$${compoundAmount.toFixed(2)}`} />
+      </div>
+    </div>
+  );
+}
+
+function GpaToPercentageConverter() {
+  const [scale, setScale] = useState("10-india");
+  const [gpa, setGpa] = useState(8.2);
+  const percentage = scale === "10-india" ? gpa * 9.5 : scale === "10-direct" ? gpa * 10 : (gpa / 4) * 100;
+  const max = scale === "4-direct" ? 4 : 10;
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">Formula <Select className="mt-2" value={scale} onChange={(event) => setScale(event.target.value)}><option value="10-india">10 point CGPA × 9.5</option><option value="10-direct">10 point GPA × 10</option><option value="4-direct">4.0 GPA ÷ 4 × 100</option></Select></label>
+        <label className="text-sm font-bold text-slate-700">GPA / CGPA <Input className="mt-2" type="number" min={0} max={max} step={0.01} value={gpa} onChange={(event) => setGpa(Number(event.target.value))} /></label>
+      </div>
+      <div className="mt-5"><ResultBox label="Estimated percentage" value={`${percentage.toFixed(2)}%`} /></div>
+      <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-800">Use this as an estimate only. Schools, universities, and application portals may require their own official conversion formula.</p>
+    </div>
+  );
+}
+
 export function ToolRunner({ slug }: { slug: string }) {
   const map: Record<string, React.ReactNode> = {
     "image-compressor": <ImageCompressor />,
@@ -1390,7 +1518,12 @@ export function ToolRunner({ slug }: { slug: string }) {
     "text-sorter": <TextSorter />,
     "remove-extra-spaces": <RemoveExtraSpaces />,
     "image-cropper": <ImageCropper />,
-    "image-to-base64": <ImageToBase64 />
+    "image-to-base64": <ImageToBase64 />,
+    "final-grade-calculator": <FinalGradeCalculator />,
+    "weighted-grade-calculator": <WeightedGradeCalculator />,
+    "attendance-calculator": <AttendanceCalculator />,
+    "interest-calculator": <InterestCalculator />,
+    "gpa-to-percentage-converter": <GpaToPercentageConverter />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;
