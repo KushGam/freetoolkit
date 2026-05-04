@@ -109,10 +109,10 @@ ${body.resumeText.slice(0, 12000)}
 JOB DESCRIPTION:
 ${body.jobDescription.slice(0, 12000)}`;
 
-  const model = process.env.GEMINI_MODEL || "gemini-1.5-flash";
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+  const model = (process.env.GEMINI_MODEL || "gemini-2.5-flash").replace(/^models\//, "");
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
     body: JSON.stringify({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
@@ -125,7 +125,14 @@ ${body.jobDescription.slice(0, 12000)}`;
 
   if (!response.ok) {
     const details = await response.text().catch(() => "");
-    return NextResponse.json({ error: "AI generation failed. Please try again later.", details: details.slice(0, 300) }, { status: response.status });
+    let message = "AI generation failed. Please try again later.";
+    try {
+      const parsed = JSON.parse(details) as { error?: { message?: string } };
+      if (parsed.error?.message) message = parsed.error.message;
+    } catch {
+      if (details) message = details.slice(0, 240);
+    }
+    return NextResponse.json({ error: message }, { status: response.status });
   }
 
   const data = await response.json() as { candidates?: GeminiCandidate[] };
