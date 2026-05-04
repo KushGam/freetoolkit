@@ -11,7 +11,7 @@ export function Footer() {
             <span>Free<span className="text-brand-600">ToolKit</span></span>
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-7 text-slate-600">
-            Free browser-based tools for images, PDFs, and students. No login, no paid APIs, and clean pages built for practical everyday work.
+            FreeToolKit is a collection of free online tools for images, PDFs, and students.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             {["No signup", "Free", "Browser-based"].map((item) => (
@@ -38,8 +38,9 @@ export function Footer() {
           <div className="flex flex-wrap gap-4">
             <Link href="/about" className="hover:text-brand-700">About</Link>
             <Link href="/contact" className="hover:text-brand-700">Contact</Link>
-            <Link href="/privacy" className="hover:text-brand-700">Privacy</Link>
+            <Link href="/privacy" className="hover:text-brand-700">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-brand-700">Terms</Link>
+            <span className="text-slate-400">Built by Kushal Gautam</span>
           </div>
         </div>
       </div>

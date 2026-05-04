@@ -5,6 +5,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const links = [
+  { href: "/", label: "Home" },
   { href: "/image-tools", label: "Image Tools" },
   { href: "/pdf-tools", label: "PDF Tools" },
   { href: "/student-tools", label: "Student Tools" },
@@ -42,9 +43,6 @@ export function Header() {
       </div>
       <div className={cn("border-t border-slate-100 bg-white/95 px-4 py-3 shadow-lg shadow-slate-900/[0.04] lg:hidden", !open && "hidden")}>
         <nav className="mx-auto grid max-w-6xl gap-2 text-sm font-bold text-slate-700">
-          <Link href="/" className="rounded-2xl px-3 py-3 hover:bg-brand-50" onClick={() => setOpen(false)}>
-            Home
-          </Link>
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="rounded-2xl px-3 py-3 hover:bg-brand-50" onClick={() => setOpen(false)}>
               {link.label}
