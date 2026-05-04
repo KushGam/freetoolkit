@@ -4,7 +4,7 @@ FreeToolKit is a production-ready Next.js 14 App Router website for free, no-log
 
 ## Features
 
-- 15 functional tools across image, PDF, and student categories
+- 50+ functional tools across image, PDF, student, text, developer, calculator, and security categories
 - Client-side image conversion, resizing, compression, and PDF operations where possible
 - SEO-friendly metadata, FAQ schema, sitemap, and robots routes
 - Google AdSense global script for Auto Ads
@@ -19,6 +19,18 @@ npm run dev
 npm run build
 npm run lint
 ```
+
+## Environment
+
+Create `.env.local` for server-only API keys:
+
+```bash
+GEMINI_API_KEY=your_gemini_api_key
+# Optional:
+GEMINI_MODEL=gemini-1.5-flash
+```
+
+The AI Resume & Cover Letter Generator calls Gemini only from the server route at `app/api/student-tools/ai-generate/route.ts`; the API key is never exposed to the frontend.
 
 ## Vercel Deployment
 

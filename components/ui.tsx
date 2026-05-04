@@ -80,12 +80,14 @@ export function ToolCard({
   title,
   description,
   href,
-  category
+  category,
+  badge
 }: {
   title: string;
   description: string;
   href: string;
   category?: string;
+  badge?: string;
 }) {
   return (
     <Link href={href} className="group flex h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-[0_22px_45px_rgba(37,99,235,0.12)]">
@@ -95,7 +97,10 @@ export function ToolCard({
         </div>
         <span className="text-xl font-black text-slate-300 transition group-hover:translate-x-1 group-hover:text-brand-600">→</span>
       </div>
-      {category ? <p className="mt-4 w-fit rounded-full bg-slate-100 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-slate-600">{category}</p> : null}
+      <div className="mt-4 flex flex-wrap gap-2">
+        {category ? <p className="w-fit rounded-full bg-slate-100 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-slate-600">{category}</p> : null}
+        {badge ? <p className="w-fit rounded-full bg-brand-50 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-brand-700 ring-1 ring-brand-100">{badge}</p> : null}
+      </div>
       <h3 className="mt-3 text-lg font-black text-slate-950 group-hover:text-brand-700">{title}</h3>
       <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{description}</p>
     </Link>

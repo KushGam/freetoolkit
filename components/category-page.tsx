@@ -1,6 +1,6 @@
 import { AdSlot } from "@/components/AdSlot";
 import { ToolCard } from "@/components/ui";
-import { getToolsByCategory, type ToolCategory } from "@/data/tools";
+import { getToolsByCategory, toolHref, type ToolCategory } from "@/data/tools";
 
 export function CategoryPage({ category, intro }: { category: ToolCategory; intro: string }) {
   const categoryTools = getToolsByCategory(category);
@@ -13,7 +13,7 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
       </section>
       <AdSlot size="leaderboard" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {categoryTools.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={`/${tool.slug}`} category={tool.category} />)}
+        {categoryTools.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />)}
       </div>
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2>About these {category.toLowerCase()}</h2>

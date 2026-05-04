@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ToolCard } from "@/components/ui";
-import { tools } from "@/data/tools";
+import { tools, toolHref } from "@/data/tools";
 
 export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string }) {
   const [query, setQuery] = useState(initialQuery);
@@ -22,7 +22,7 @@ export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string })
       />
       <p className="mt-3 text-sm font-semibold text-slate-500">{filtered.length} tool{filtered.length === 1 ? "" : "s"} found</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={`/${tool.slug}`} category={tool.category} />)}
+        {filtered.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />)}
       </div>
     </div>
   );

@@ -681,6 +681,35 @@ export const newTools: Tool[] = [
     related: "Use GPA Calculator for semester GPA, CGPA Calculator for cumulative grades, or Grade Percentage Calculator for marks."
   }),
   tool({
+    slug: "ai-resume-cover-letter",
+    href: "/student-tools/ai-resume-cover-letter",
+    title: "AI Resume & Cover Letter Generator (for Students & Graduates)",
+    category: "Student Tools",
+    badge: "NEW",
+    popular: true,
+    description: "Generate a tailored resume, cover letter, and ATS keywords from your real resume text and a job description.",
+    intro: "Use this AI resume builder and cover letter generator online free to tailor your existing experience for a job application. Paste a job description, upload a TXT resume, confirm the safety rule, and generate a cleaner draft with no signup.",
+    metaTitle: "AI Resume & Cover Letter Generator for Students | FreeToolKit",
+    metaDescription: "Generate a tailored resume and cover letter from your existing resume and job description. Free, fast, and no signup required.",
+    howToUse: ["Upload a .txt resume file or paste resume content after extraction.", "Paste the job description into the large text area.", "Choose a role title, tone, experience level, and output type.", "Confirm that the generated content should only use your real experience.", "Generate, review carefully, then copy or download the resume, cover letter, and keywords."],
+    features: ["Student-friendly AI resume builder", "Cover letter generator from a job description", "ATS keyword suggestions", "Client and server rate limits to control usage", "Gemini API key stays server-side"],
+    faq: [
+      { question: "Is this AI resume builder free online?", answer: "Yes. It is designed as a free online student tool with no signup, with daily limits to keep the service available." },
+      { question: "Can it invent experience for me?", answer: "No. The prompt tells the AI not to invent companies, degrees, skills, or experience. You should still review every line before using it." },
+      { question: "Where is the Gemini API key used?", answer: "The key is only read by the server API route. It is not sent to the browser or stored in frontend code." },
+      { question: "Can I upload PDF or DOCX resumes?", answer: "The MVP accepts TXT files first. A TODO is included for future PDF and DOCX parsing." },
+      { question: "Is this a replacement for career advice?", answer: "No. It creates a helpful draft, but you should edit it, verify accuracy, and follow your school or employer's application requirements." }
+    ],
+    primary: "AI resume builder",
+    audience: "students, graduates, entry-level applicants, career centers, and job seekers preparing tailored applications",
+    does: "It sends resume text, a job description, and selected options to a server-side Gemini call that returns a tailored resume draft, cover letter draft, and ATS keywords.",
+    when: "you need a clearer student resume, entry-level cover letter, or ATS-friendly draft based on a real job posting",
+    workflow: "upload a TXT resume, paste the job description, set the role and tone, confirm the accuracy rule, generate the result, and review before downloading",
+    benefit: "A guided AI resume and cover letter generator can help students turn real experience into clearer, more relevant application language.",
+    caution: "AI output can be wrong or overconfident, so never submit generated content without checking that every claim is true and personally accurate.",
+    related: "Use GPA Calculator for academic planning, Study Timer for interview preparation, or Word Counter to check application length."
+  }),
+  tool({
     slug: "image-rotator",
     title: "Image Rotator / Flipper",
     category: "Image Tools",

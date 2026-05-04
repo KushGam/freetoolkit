@@ -4,6 +4,7 @@ export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "Text
 
 export type Tool = {
   slug: string;
+  href?: string;
   title: string;
   category: ToolCategory;
   description: string;
@@ -11,6 +12,7 @@ export type Tool = {
   metaTitle: string;
   metaDescription: string;
   popular?: boolean;
+  badge?: string;
   howToUse: string[];
   features: string[];
   faq: Array<{ question: string; answer: string }>;
@@ -436,10 +438,18 @@ export function getTool(slug: string) {
   return tools.find((tool) => tool.slug === slug);
 }
 
+export function toolHref(tool: Tool) {
+  return tool.href ?? `/${tool.slug}`;
+}
+
 export function getToolsByCategory(category: ToolCategory) {
   return tools.filter((tool) => tool.category === category);
 }
 
 export function getRelatedTools(tool: Tool) {
+  if (tool.slug === "ai-resume-cover-letter") {
+    const preferred = ["gpa-calculator", "study-timer", "word-counter"];
+    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  }
   return tools.filter((item) => item.category === tool.category && item.slug !== tool.slug).slice(0, 4);
 }

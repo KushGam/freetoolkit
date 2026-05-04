@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { tools } from "@/data/tools";
+import { tools, toolHref } from "@/data/tools";
 
 export function HomeToolSearch() {
   const [query, setQuery] = useState("");
@@ -38,7 +38,7 @@ export function HomeToolSearch() {
           {matches.length ? (
             <div className="grid gap-1">
               {matches.map((tool) => (
-                <Link key={tool.slug} href={`/${tool.slug}`} className="group flex items-center justify-between gap-4 rounded-xl px-3 py-2.5 hover:bg-brand-50">
+                <Link key={tool.slug} href={toolHref(tool)} className="group flex items-center justify-between gap-4 rounded-xl px-3 py-2.5 hover:bg-brand-50">
                   <span>
                     <span className="block text-sm font-black text-slate-950 group-hover:text-brand-700">{tool.title}</span>
                     <span className="block text-xs font-semibold text-slate-500">{tool.category}</span>

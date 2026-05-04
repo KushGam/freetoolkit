@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { tools } from "@/data/tools";
+import { tools, toolHref } from "@/data/tools";
 import { siteUrl } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: route ? 0.7 : 1
     })),
     ...tools.map((tool) => ({
-      url: `${siteUrl}/${tool.slug}`,
+      url: `${siteUrl}${toolHref(tool)}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.8

@@ -1897,8 +1897,8 @@ function AddTextToPdf() {
     async function renderPreview() {
       setRenderingPreview(true);
       try {
-        const pdfjs = await import("pdfjs-dist");
-        pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+        const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+        pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.legacy.min.js";
         const source = new Uint8Array(await pdfFile.arrayBuffer());
         const loadingTask = pdfjs.getDocument({ data: source });
         const pdf = await loadingTask.promise;
@@ -1913,6 +1913,8 @@ function AddTextToPdf() {
         }
         canvas.width = Math.floor(viewport.width);
         canvas.height = Math.floor(viewport.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         renderTask = pdfPage.render({ canvas, canvasContext: ctx, viewport });
         await renderTask.promise;
         if (!cancelled) setError("");
@@ -2290,6 +2292,232 @@ function AddTextToPdf() {
   );
 }
 
+type AiResumeOutput = {
+  resume: string;
+  coverLetter: string;
+  keywords: string;
+};
+
+const AI_USAGE_KEY = "freetoolkit_ai_student_usage";
+const AI_CLIENT_LIMIT = 3;
+
+function localDateKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function readAiUsage() {
+  if (typeof window === "undefined") return { date: localDateKey(), count: 0 };
+  try {
+    const parsed = JSON.parse(localStorage.getItem(AI_USAGE_KEY) || "{}") as { date?: string; count?: number };
+    if (parsed.date === localDateKey()) return { date: parsed.date, count: Number(parsed.count ?? 0) };
+  } catch {
+    // Ignore corrupt localStorage and reset below.
+  }
+  return { date: localDateKey(), count: 0 };
+}
+
+function writeAiUsage(count: number) {
+  localStorage.setItem(AI_USAGE_KEY, JSON.stringify({ date: localDateKey(), count }));
+}
+
+function downloadTextFile(name: string, content: string) {
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function AiResumeCoverLetterGenerator() {
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeText, setResumeText] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [roleTitle, setRoleTitle] = useState("");
+  const [tone, setTone] = useState("Professional");
+  const [experienceLevel, setExperienceLevel] = useState("Student");
+  const [outputType, setOutputType] = useState("Both");
+  const [confirmed, setConfirmed] = useState(false);
+  const [activeOutput, setActiveOutput] = useState<keyof AiResumeOutput>("resume");
+  const [result, setResult] = useState<AiResumeOutput | null>(null);
+  const [copied, setCopied] = useState("");
+  const [usageCount, setUsageCount] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setUsageCount(readAiUsage().count);
+  }, []);
+
+  async function loadResume(files: File[]) {
+    const next = files[0] ?? null;
+    setResumeFile(next);
+    setResumeText("");
+    setResult(null);
+    setError("");
+    if (!next) return;
+    if (!next.name.toLowerCase().endsWith(".txt") && next.type !== "text/plain") {
+      setError("Please upload a .txt resume for this MVP. PDF and DOCX parsing is planned.");
+      return;
+    }
+    try {
+      const text = await next.text();
+      setResumeText(text.trim());
+    } catch {
+      setError("Unable to read this text file. Try saving your resume as a plain .txt file.");
+    }
+  }
+
+  async function copyText(label: string, content: string) {
+    if (!content.trim()) return;
+    await navigator.clipboard.writeText(content);
+    setCopied(label);
+    window.setTimeout(() => setCopied(""), 1600);
+  }
+
+  async function generate() {
+    setError("");
+    setCopied("");
+    if (!resumeText.trim()) {
+      setError("Upload a .txt resume before generating.");
+      return;
+    }
+    if (!jobDescription.trim()) {
+      setError("Paste the job description before generating.");
+      return;
+    }
+    if (!confirmed) {
+      setError("Please confirm that the generated content should only use your real experience.");
+      return;
+    }
+    const usage = readAiUsage();
+    if (usage.count >= AI_CLIENT_LIMIT) {
+      setError("Daily free limit reached. Please try again tomorrow.");
+      return;
+    }
+    writeAiUsage(usage.count + 1);
+    setUsageCount(usage.count + 1);
+    setBusy(true);
+    try {
+      const response = await fetch("/api/student-tools/ai-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resumeText, jobDescription, roleTitle, tone, experienceLevel, outputType })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to generate right now.");
+      const nextResult = {
+        resume: String(data.resume ?? "").trim(),
+        coverLetter: String(data.coverLetter ?? "").trim(),
+        keywords: String(data.keywords ?? "").trim()
+      };
+      setResult(nextResult);
+      setActiveOutput(outputType === "Cover Letter" ? "coverLetter" : "resume");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to generate right now.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setResumeFile(null);
+    setResumeText("");
+    setJobDescription("");
+    setRoleTitle("");
+    setTone("Professional");
+    setExperienceLevel("Student");
+    setOutputType("Both");
+    setConfirmed(false);
+    setActiveOutput("resume");
+    setResult(null);
+    setCopied("");
+    setError("");
+  }
+
+  const outputLabels: Record<keyof AiResumeOutput, string> = {
+    resume: "Resume",
+    coverLetter: "Cover Letter",
+    keywords: "Keywords"
+  };
+  const currentOutput = result?.[activeOutput] ?? "";
+
+  return (
+    <div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
+        <div className="grid gap-5">
+          <FileUploadDropzone label="Upload your resume (.txt)" accept=".txt,text/plain" onFiles={loadResume} />
+          <FileInfo file={resumeFile} />
+          {resumeText ? (
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Extracted resume text preview</p>
+              <p className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-sm leading-6 text-slate-700">{resumeText}</p>
+              <p className="mt-3 text-xs font-semibold text-slate-500">TODO: Add PDF and DOCX parsing in a future version.</p>
+            </div>
+          ) : null}
+          <label className="text-sm font-bold text-slate-700">
+            Job description
+            <Textarea className="mt-2 min-h-56" value={jobDescription} onChange={(event) => setJobDescription(event.target.value)} placeholder="Paste job description here..." />
+          </label>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="text-sm font-bold text-slate-700">Role title <Input className="mt-2" value={roleTitle} onChange={(event) => setRoleTitle(event.target.value)} placeholder="Software Intern, Marketing Assistant..." /></label>
+            <label className="text-sm font-bold text-slate-700">Tone <Select className="mt-2" value={tone} onChange={(event) => setTone(event.target.value)}>{["Professional", "Friendly", "Confident"].map((item) => <option key={item}>{item}</option>)}</Select></label>
+            <label className="text-sm font-bold text-slate-700">Experience level <Select className="mt-2" value={experienceLevel} onChange={(event) => setExperienceLevel(event.target.value)}>{["Student", "Graduate", "Entry-level"].map((item) => <option key={item}>{item}</option>)}</Select></label>
+            <label className="text-sm font-bold text-slate-700">Output type <Select className="mt-2" value={outputType} onChange={(event) => setOutputType(event.target.value)}>{["Resume", "Cover Letter", "Both"].map((item) => <option key={item}>{item}</option>)}</Select></label>
+          </div>
+          <label className="flex gap-3 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm font-bold leading-6 text-brand-800">
+            <input className="mt-1 h-5 w-5 accent-brand-600" type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} />
+            I confirm the generated content should only use my real experience.
+          </label>
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={generate} disabled={busy || !confirmed || !resumeText.trim() || !jobDescription.trim()}>
+              {busy ? "Generating..." : "Generate"}
+            </Button>
+            <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+          </div>
+          <p className="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold leading-6 text-slate-600">
+            This tool improves your resume using AI based on your input. Always review before using.
+          </p>
+          <p className="text-xs font-semibold text-slate-500">Daily free usage: {usageCount}/{AI_CLIENT_LIMIT} requests used in this browser.</p>
+          {busy ? <p className="rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Generating your tailored resume...</p> : null}
+          <ErrorMessage message={error} />
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="grid grid-cols-3 gap-2 rounded-2xl bg-slate-100 p-1">
+            {(Object.keys(outputLabels) as Array<keyof AiResumeOutput>).map((key) => (
+              <button key={key} className={`rounded-xl px-3 py-3 text-xs font-black sm:text-sm ${activeOutput === key ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActiveOutput(key)}>
+                {outputLabels[key]}
+              </button>
+            ))}
+          </div>
+          <div className="mt-4 min-h-[28rem] rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            {currentOutput ? (
+              <pre className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">{currentOutput}</pre>
+            ) : (
+              <div className="flex min-h-[24rem] items-center justify-center text-center">
+                <div>
+                  <p className="text-lg font-black text-slate-900">Your AI output will appear here</p>
+                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Upload your resume, paste a job description, and generate a draft that you can review, copy, or download.</p>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <SecondaryButton onClick={() => copyText(outputLabels[activeOutput], currentOutput)} disabled={!currentOutput}>
+              {copied === outputLabels[activeOutput] ? "Copied" : "Copy"}
+            </SecondaryButton>
+            <SecondaryButton onClick={() => downloadTextFile(`${activeOutput}.txt`, currentOutput)} disabled={!currentOutput}>
+              Download TXT
+            </SecondaryButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ToolRunner({ slug }: { slug: string }) {
   const map: Record<string, React.ReactNode> = {
     "image-compressor": <ImageCompressor />,
@@ -2339,7 +2567,8 @@ export function ToolRunner({ slug }: { slug: string }) {
     "image-color-picker": <ImageColorPicker />,
     "image-dpi-checker": <ImageMetadataTool dpiOnly />,
     "image-grayscale": <AdvancedImageConverter mode="grayscale" />,
-    "add-text-to-pdf": <AddTextToPdf />
+    "add-text-to-pdf": <AddTextToPdf />,
+    "ai-resume-cover-letter": <AiResumeCoverLetterGenerator />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;

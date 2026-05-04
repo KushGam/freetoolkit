@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { HomeToolSearch } from "@/components/HomeToolSearch";
 import { ToolCard } from "@/components/ui";
-import { categoryRoutes, getToolsByCategory, tools, type ToolCategory } from "@/data/tools";
+import { categoryRoutes, getToolsByCategory, tools, toolHref, type ToolCategory } from "@/data/tools";
 
 const popularSlugs = [
   "image-compressor",
@@ -129,7 +129,7 @@ export default function HomePage() {
           </div>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {popularTools.map((tool) => (
-              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={`/${tool!.slug}`} category={tool!.category} />
+              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
             ))}
           </div>
         </section>

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ToolLayout } from "@/components/ToolLayout";
-import { getTool, tools } from "@/data/tools";
+import { getTool, tools, toolHref } from "@/data/tools";
 import { siteUrl } from "@/lib/utils";
 
 export function generateStaticParams() {
-  return tools.map((tool) => ({ slug: tool.slug }));
+  return tools.filter((tool) => !tool.href).map((tool) => ({ slug: tool.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
@@ -14,11 +14,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: tool.metaTitle,
     description: tool.metaDescription,
-    alternates: { canonical: `/${tool.slug}` },
+    alternates: { canonical: toolHref(tool) },
     openGraph: {
       title: `${tool.metaTitle} | FreeToolKit`,
       description: tool.metaDescription,
-      url: `${siteUrl}/${tool.slug}`,
+      url: `${siteUrl}${toolHref(tool)}`,
       siteName: "FreeToolKit",
       type: "website"
     }
@@ -28,6 +28,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function ToolPage({ params }: { params: { slug: string } }) {
   const tool = getTool(params.slug);
   if (!tool) notFound();
+  if (tool.href) redirect(tool.href);
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
