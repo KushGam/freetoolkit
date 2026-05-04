@@ -29,7 +29,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "qr-code-generator",
     title: "QR Code Generator",
-    category: "Daily Tools",
+    category: "Developer Tools",
     popular: true,
     description: "Generate a QR code from text or a URL and download it as a PNG image.",
     intro: "Create a QR code online free for links, contact pages, notes, menus, classroom materials, and quick sharing. Enter text or a URL, generate the code in your browser, and download a PNG with no signup.",
@@ -56,7 +56,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "case-converter",
     title: "Case Converter",
-    category: "Daily Tools",
+    category: "Text Tools",
     description: "Convert text to uppercase, lowercase, title case, sentence case, or capitalized case.",
     intro: "Use this case converter online free to clean up headings, names, paragraphs, labels, and pasted text. Convert text instantly in your browser, copy the result, and reset whenever needed.",
     metaTitle: "Case Converter Online Free | Uppercase & Title Case",
@@ -82,7 +82,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "word-to-pdf",
     title: "Word to PDF Converter",
-    category: "Daily Tools",
+    category: "PDF Tools",
     description: "Turn typed or pasted text into a downloadable PDF document.",
     intro: "Create a simple PDF online free from a title and body text. This browser-based Word to PDF style converter is useful for notes, letters, drafts, and quick documents with no signup.",
     metaTitle: "Word to PDF Converter Online Free | FreeToolKit",
@@ -108,7 +108,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "url-encoder-decoder",
     title: "URL Encoder / Decoder",
-    category: "Daily Tools",
+    category: "Developer Tools",
     description: "Encode or decode URL text safely for links, query strings, and web forms.",
     intro: "Encode and decode URLs online free for links, parameters, redirects, and web development tasks. Paste text, choose encode or decode, and copy the result from your browser.",
     metaTitle: "URL Encoder Decoder Online Free | FreeToolKit",
@@ -134,7 +134,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "json-formatter",
     title: "JSON Formatter",
-    category: "Daily Tools",
+    category: "Developer Tools",
     description: "Format, minify, and validate JSON text with friendly error messages.",
     intro: "Format JSON online free to make API responses, configuration files, and copied data easier to read. Paste JSON, validate it, minify it, or copy a clean formatted result.",
     metaTitle: "JSON Formatter Online Free | Validate & Minify JSON",
@@ -160,7 +160,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "password-generator",
     title: "Password Generator",
-    category: "Daily Tools",
+    category: "Security Tools",
     popular: true,
     description: "Generate strong random passwords with length and character options.",
     intro: "Generate a strong password online free with uppercase letters, lowercase letters, numbers, symbols, and a length slider. Create and copy passwords in your browser with no signup.",
@@ -187,7 +187,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "uuid-generator",
     title: "UUID Generator",
-    category: "Daily Tools",
+    category: "Developer Tools",
     description: "Generate one or multiple UUID v4 values and copy them easily.",
     intro: "Generate UUID v4 values online free for testing, databases, mock data, configuration, and development workflows. Create one or many IDs in your browser with no signup.",
     metaTitle: "UUID Generator Online Free | UUID v4",
@@ -213,7 +213,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "base64-encoder-decoder",
     title: "Base64 Encoder / Decoder",
-    category: "Daily Tools",
+    category: "Developer Tools",
     description: "Encode text to Base64 or decode Base64 back into readable text.",
     intro: "Encode and decode Base64 online free for text snippets, data examples, API testing, and development work. Paste content, convert it in your browser, and copy the result.",
     metaTitle: "Base64 Encoder Decoder Online Free | FreeToolKit",
@@ -500,7 +500,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "image-cropper",
     title: "Image Cropper",
-    category: "Image Add-ons",
+    category: "Image Tools",
     description: "Crop an uploaded image with free, square, 16:9, or 4:3 aspect options.",
     intro: "Crop images online free for profile photos, thumbnails, banners, documents, and social posts. Upload an image, choose crop dimensions, preview, and download the cropped result in your browser.",
     metaTitle: "Image Cropper Online Free | Crop Photos in Browser",
@@ -526,7 +526,7 @@ export const newTools: Tool[] = [
   tool({
     slug: "image-to-base64",
     title: "Image to Base64 Converter",
-    category: "Image Add-ons",
+    category: "Image Tools",
     description: "Convert an uploaded image into a Base64 data URL with preview and copy output.",
     intro: "Convert image to Base64 online free for HTML, CSS, testing, email templates, and quick embedding examples. Upload an image, preview it, and copy the data URL in your browser.",
     metaTitle: "Image to Base64 Converter Online Free | FreeToolKit",

@@ -3,7 +3,7 @@ import { tools } from "@/data/tools";
 import { siteUrl } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "all-tools", "image-tools", "pdf-tools", "student-tools", "daily-tools", "calculator-tools", "text-tools", "image-add-ons", "about", "contact", "privacy", "terms"];
+  const staticRoutes = ["", "all-tools", "image-tools", "pdf-tools", "student-tools", "text-tools", "developer-tools", "calculator-tools", "security-tools", "about", "contact", "privacy", "terms"];
   return [
     ...staticRoutes.map((route) => ({
       url: `${siteUrl}/${route}`,

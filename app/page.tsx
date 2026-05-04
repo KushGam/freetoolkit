@@ -32,25 +32,25 @@ const categoryDetails: Record<ToolCategory, { href: string; icon: string; descri
     icon: "GPA",
     description: "Calculate grades, count words, and stay focused with simple study utilities."
   },
-  "Daily Tools": {
-    href: categoryRoutes["Daily Tools"],
-    icon: "DAY",
-    description: "Generate QR codes, format JSON, create passwords, encode URLs, and handle daily browser tasks."
+  "Text Tools": {
+    href: categoryRoutes["Text Tools"],
+    icon: "TXT",
+    description: "Format, sort, clean, deduplicate, and generate text for writing, data cleanup, and publishing."
+  },
+  "Developer Tools": {
+    href: categoryRoutes["Developer Tools"],
+    icon: "DEV",
+    description: "Format JSON, encode URLs, generate UUIDs, convert Base64, and create QR codes."
   },
   "Calculator Tools": {
     href: categoryRoutes["Calculator Tools"],
     icon: "CAL",
     description: "Calculate ages, units, percentages, EMI payments, and time zones with clean browser calculators."
   },
-  "Text Tools": {
-    href: categoryRoutes["Text Tools"],
-    icon: "TXT",
-    description: "Format, sort, clean, deduplicate, and generate text for writing, data cleanup, and publishing."
-  },
-  "Image Add-ons": {
-    href: categoryRoutes["Image Add-ons"],
-    icon: "ADD",
-    description: "Crop images and convert image files to Base64 for lightweight creative and developer workflows."
+  "Security Tools": {
+    href: categoryRoutes["Security Tools"],
+    icon: "SEC",
+    description: "Generate strong passwords with safe client-side controls and no signup."
   }
 };
 
@@ -168,7 +168,7 @@ export default function HomePage() {
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">New utilities</p>
           <h2 className="mt-2 text-3xl font-black text-slate-950 sm:text-4xl">More Free Browser Tools</h2>
           <div className="mt-7 grid gap-5 lg:grid-cols-4">
-            {(["Daily Tools", "Calculator Tools", "Text Tools", "Image Add-ons"] as ToolCategory[]).map((category) => {
+            {(["Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"] as ToolCategory[]).map((category) => {
               const details = categoryDetails[category];
               return (
                 <Link key={category} href={details.href} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-[0_22px_45px_rgba(37,99,235,0.12)]">
@@ -206,7 +206,7 @@ export default function HomePage() {
             Many online tasks should not require a complicated dashboard. FreeToolKit keeps the experience clean and browser-based where possible, so you can open a page, use the tool, and download or copy your result. The <Link href="/image-tools" className="font-bold text-brand-700 hover:text-brand-900">Image Tools</Link> section includes utilities for compression, resizing, and format conversion. The <Link href="/pdf-tools" className="font-bold text-brand-700 hover:text-brand-900">PDF Tools</Link> section helps with merging, splitting, rotating, extracting pages, and reducing PDF file size. The <Link href="/student-tools" className="font-bold text-brand-700 hover:text-brand-900">Student Tools</Link> section includes GPA calculators, a grade percentage calculator, a study timer, and a word counter.
           </p>
           <p>
-            The site is also built with mobile users in mind. Pages use readable spacing, large controls, clear instructions, and lightweight layouts so the tools feel fast on phones, tablets, and desktops. Since there is no login required, FreeToolKit works well for quick one-time tasks and repeat productivity workflows. New sections for <Link href="/daily-tools" className="font-bold text-brand-700 hover:text-brand-900">Daily Tools</Link>, <Link href="/calculator-tools" className="font-bold text-brand-700 hover:text-brand-900">Calculator Tools</Link>, and <Link href="/text-tools" className="font-bold text-brand-700 hover:text-brand-900">Text Tools</Link> make it easier to find QR, JSON, password, percentage, unit, and text cleanup utilities. Whether you are preparing school files, cleaning up documents for work, optimizing images for a website, or drafting content with a word limit, the goal is the same: useful free tools that are easy to trust and easy to use.
+            The site is also built with mobile users in mind. Pages use readable spacing, large controls, clear instructions, and lightweight layouts so the tools feel fast on phones, tablets, and desktops. Since there is no login required, FreeToolKit works well for quick one-time tasks and repeat productivity workflows. Sections for <Link href="/text-tools" className="font-bold text-brand-700 hover:text-brand-900">Text Tools</Link>, <Link href="/developer-tools" className="font-bold text-brand-700 hover:text-brand-900">Developer Tools</Link>, <Link href="/calculator-tools" className="font-bold text-brand-700 hover:text-brand-900">Calculator Tools</Link>, and <Link href="/security-tools" className="font-bold text-brand-700 hover:text-brand-900">Security Tools</Link> make it easier to find QR, JSON, password, percentage, unit, and text cleanup utilities. Whether you are preparing school files, cleaning up documents for work, optimizing images for a website, or drafting content with a word limit, the goal is the same: useful free tools that are easy to trust and easy to use.
           </p>
         </section>
 

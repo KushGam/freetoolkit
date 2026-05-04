@@ -1,6 +1,6 @@
 import { newTools } from "./new-tools";
 
-export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "Daily Tools" | "Calculator Tools" | "Text Tools" | "Image Add-ons";
+export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools";
 
 export type Tool = {
   slug: string;
@@ -207,7 +207,7 @@ const coreTools: Tool[] = [
   },
   {
     slug: "compress-pdf",
-    title: "Reduce PDF File Size",
+    title: "Compress PDF",
     category: "PDF Tools",
     description: "Optimize a PDF by rebuilding it in the browser and comparing file size.",
     intro: "Reduce PDF file size online free with a lightweight browser optimizer. This tool rebuilds the PDF where possible, shows the original and new size, and explains limits clearly.",
@@ -420,16 +420,16 @@ const coreTools: Tool[] = [
 
 export const tools: Tool[] = [...coreTools, ...newTools];
 
-export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "Daily Tools", "Calculator Tools", "Text Tools", "Image Add-ons"];
+export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"];
 
 export const categoryRoutes: Record<ToolCategory, string> = {
   "Image Tools": "/image-tools",
   "PDF Tools": "/pdf-tools",
   "Student Tools": "/student-tools",
-  "Daily Tools": "/daily-tools",
-  "Calculator Tools": "/calculator-tools",
   "Text Tools": "/text-tools",
-  "Image Add-ons": "/image-add-ons"
+  "Developer Tools": "/developer-tools",
+  "Calculator Tools": "/calculator-tools",
+  "Security Tools": "/security-tools"
 };
 
 export function getTool(slug: string) {

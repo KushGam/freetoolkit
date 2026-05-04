@@ -70,10 +70,10 @@ const toolIcons: Record<string, string> = {
   "Image Tools": "IMG",
   "PDF Tools": "PDF",
   "Student Tools": "GPA",
-  "Daily Tools": "DAY",
   "Calculator Tools": "CAL",
   "Text Tools": "TXT",
-  "Image Add-ons": "ADD"
+  "Developer Tools": "DEV",
+  "Security Tools": "SEC"
 };
 
 export function ToolCard({
