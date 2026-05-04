@@ -2398,8 +2398,6 @@ function AiResumeCoverLetterGenerator() {
       setError("Daily free limit reached. Please try again tomorrow.");
       return;
     }
-    writeAiUsage(usage.count + 1);
-    setUsageCount(usage.count + 1);
     setBusy(true);
     try {
       const response = await fetch("/api/student-tools/ai-generate", {
@@ -2416,6 +2414,8 @@ function AiResumeCoverLetterGenerator() {
       };
       setResult(nextResult);
       setActiveOutput(outputType === "Cover Letter" ? "coverLetter" : "resume");
+      writeAiUsage(usage.count + 1);
+      setUsageCount(usage.count + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to generate right now.");
     } finally {
