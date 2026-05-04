@@ -1,4 +1,6 @@
-export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools";
+import { newTools } from "./new-tools";
+
+export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "Daily Tools" | "Calculator Tools" | "Text Tools" | "Image Add-ons";
 
 export type Tool = {
   slug: string;
@@ -17,7 +19,7 @@ export type Tool = {
 
 const privacyNote = "Your files are processed in your browser where possible. FreeToolKit does not require sign-up, payment, or a server upload workflow for these tools.";
 
-export const tools: Tool[] = [
+const coreTools: Tool[] = [
   {
     slug: "image-compressor",
     title: "Image Compressor",
@@ -416,7 +418,19 @@ export const tools: Tool[] = [
   }
 ];
 
-export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools"];
+export const tools: Tool[] = [...coreTools, ...newTools];
+
+export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "Daily Tools", "Calculator Tools", "Text Tools", "Image Add-ons"];
+
+export const categoryRoutes: Record<ToolCategory, string> = {
+  "Image Tools": "/image-tools",
+  "PDF Tools": "/pdf-tools",
+  "Student Tools": "/student-tools",
+  "Daily Tools": "/daily-tools",
+  "Calculator Tools": "/calculator-tools",
+  "Text Tools": "/text-tools",
+  "Image Add-ons": "/image-add-ons"
+};
 
 export function getTool(slug: string) {
   return tools.find((tool) => tool.slug === slug);

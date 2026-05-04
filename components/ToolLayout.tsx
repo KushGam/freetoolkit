@@ -3,7 +3,7 @@ import { AdSlot } from "@/components/AdSlot";
 import { FAQ } from "@/components/FAQ";
 import { RelatedTools } from "@/components/RelatedTools";
 import { Card } from "@/components/ui";
-import { getRelatedTools, type Tool } from "@/data/tools";
+import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
 import { ToolRunner } from "@/components/ToolRunner";
 
 export function ToolLayout({ tool }: { tool: Tool }) {
@@ -12,14 +12,16 @@ export function ToolLayout({ tool }: { tool: Tool }) {
       ? "Image tools are most useful when they make routine publishing tasks faster without asking you to install heavy software. Use the preview and file size details to decide whether the output is suitable before you upload it to a website, application form, content management system, or classroom portal."
       : tool.category === "PDF Tools"
         ? "PDF tools can save time when you need to organize documents quickly, but it is still worth reviewing the downloaded file before sharing it. Check page order, page ranges, rotation, and file size so the final document matches the requirements of your form, assignment, client, or archive."
-        : "Student tools are intended for planning and productivity rather than official academic reporting. They help you estimate outcomes, organize writing, and manage focus sessions, but your school or instructor may use a different grading policy, word-count rule, or submission requirement.";
+        : tool.category === "Student Tools"
+          ? "Student tools are intended for planning and productivity rather than official academic reporting. They help you estimate outcomes, organize writing, and manage focus sessions, but your school or instructor may use a different grading policy, word-count rule, or submission requirement."
+          : "These browser tools are designed for quick everyday work without accounts, payment flows, or complicated setup. Review the output before using it in final documents, code, messages, or published content.";
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
       <nav className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-500">
         <Link href="/" className="hover:text-brand-700">Home</Link>
         <span>/</span>
-        <Link href={`/${tool.category === "Image Tools" ? "image-tools" : tool.category === "PDF Tools" ? "pdf-tools" : "student-tools"}`} className="hover:text-brand-700">
+        <Link href={categoryRoutes[tool.category]} className="hover:text-brand-700">
           {tool.category}
         </Link>
         <span>/</span>

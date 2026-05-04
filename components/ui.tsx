@@ -69,7 +69,11 @@ export function Card({ className, children }: { className?: string; children: Re
 const toolIcons: Record<string, string> = {
   "Image Tools": "IMG",
   "PDF Tools": "PDF",
-  "Student Tools": "GPA"
+  "Student Tools": "GPA",
+  "Daily Tools": "DAY",
+  "Calculator Tools": "CAL",
+  "Text Tools": "TXT",
+  "Image Add-ons": "ADD"
 };
 
 export function ToolCard({

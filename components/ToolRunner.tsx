@@ -655,6 +655,675 @@ function WordCounter() {
   );
 }
 
+function CopyAction({ value, label = "Copy" }: { value: string; label?: string }) {
+  return <SecondaryButton onClick={() => navigator.clipboard?.writeText(value)} disabled={!value}>{label}</SecondaryButton>;
+}
+
+function ResultBox({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 shadow-sm">
+      <p className="text-xs font-black uppercase tracking-wide text-brand-700">{label}</p>
+      <div className="mt-2 break-words text-2xl font-black text-slate-950">{value}</div>
+    </div>
+  );
+}
+
+function QrCodeGenerator() {
+  const [text, setText] = useState("https://freetoolkit.com");
+  const [qr, setQr] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function generate() {
+    setError("");
+    if (!text.trim()) {
+      setError("Enter text or a URL before generating a QR code.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const QRCode = await import("qrcode");
+      setQr(await QRCode.toDataURL(text.trim(), { width: 768, margin: 2, errorCorrectionLevel: "M" }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to generate QR code.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <label className="text-sm font-bold text-slate-700">Text or URL <Textarea className="mt-2 min-h-36" value={text} onChange={(event) => setText(event.target.value)} placeholder="Enter a URL, note, contact text, or message..." /></label>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={generate} disabled={busy || !text.trim()}>{busy ? "Generating..." : "Generate QR code"}</Button>
+        <CopyAction value={text} label="Copy text" />
+        <SecondaryButton onClick={() => { setText(""); setQr(""); setError(""); }}>Reset</SecondaryButton>
+      </div>
+      {qr ? (
+        <div className="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-[220px_1fr] sm:items-center">
+          <img src={qr} alt="Generated QR code" className="mx-auto h-52 w-52 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm" />
+          <div>
+            <p className="text-sm font-bold leading-6 text-slate-600">Your QR code is ready. Test it with a phone camera before printing or sharing.</p>
+            <a className="mt-4 inline-flex min-h-11 items-center rounded-2xl bg-brand-600 px-5 py-2.5 text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-brand-700" href={qr} download="freetoolkit-qr-code.png">Download PNG</a>
+          </div>
+        </div>
+      ) : null}
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+function toTitleCase(value: string) {
+  return value.toLowerCase().replace(/\b[a-z0-9]/g, (char) => char.toUpperCase());
+}
+
+function toSentenceCase(value: string) {
+  const lower = value.toLowerCase();
+  return lower.replace(/(^\s*[a-z])|([.!?]\s+[a-z])/g, (match) => match.toUpperCase());
+}
+
+function CaseConverter() {
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const convert = (mode: string) => {
+    const value = mode === "upper" ? input.toUpperCase() : mode === "lower" ? input.toLowerCase() : mode === "title" ? toTitleCase(input) : mode === "sentence" ? toSentenceCase(input) : input.replace(/\b[a-z]/g, (char) => char.toUpperCase());
+    setOutput(value);
+  };
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste text to convert..." />
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={() => convert("upper")} disabled={!input}>Uppercase</Button>
+        <Button onClick={() => convert("lower")} disabled={!input}>Lowercase</Button>
+        <SecondaryButton onClick={() => convert("title")} disabled={!input}>Title case</SecondaryButton>
+        <SecondaryButton onClick={() => convert("sentence")} disabled={!input}>Sentence case</SecondaryButton>
+        <SecondaryButton onClick={() => convert("capitalized")} disabled={!input}>Capitalized</SecondaryButton>
+      </div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Converted text appears here..." />
+      <div className="mt-4 flex flex-wrap gap-3"><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
+    </div>
+  );
+}
+
+function WordToPdf() {
+  const [title, setTitle] = useState("Untitled Document");
+  const [body, setBody] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  useObjectUrlCleanup(output);
+
+  async function createPdf() {
+    setError("");
+    if (!body.trim() && !title.trim()) {
+      setError("Add a title or body text before creating a PDF.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF({ unit: "pt", format: "a4" });
+      const margin = 56;
+      let y = margin;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.text(title.trim() || "Untitled Document", margin, y);
+      y += 34;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+      const lines = doc.splitTextToSize(body || " ", 483) as string[];
+      for (const line of lines) {
+        if (y > 780) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.text(line, margin, y);
+        y += 17;
+      }
+      const blob = doc.output("blob");
+      setOutput(downloadBlob(blob, `${(title || "document").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "document"}.pdf`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to create PDF.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <label className="text-sm font-bold text-slate-700">Document title <Input className="mt-2" value={title} onChange={(event) => setTitle(event.target.value)} /></label>
+      <label className="mt-5 block text-sm font-bold text-slate-700">Body text <Textarea className="mt-2" value={body} onChange={(event) => setBody(event.target.value)} placeholder="Write or paste the document body..." /></label>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={createPdf} disabled={busy || (!title.trim() && !body.trim())}>{busy ? "Creating..." : "Create PDF"}</Button><SecondaryButton onClick={() => { setTitle("Untitled Document"); setBody(""); setOutput(null); setError(""); }}>Reset</SecondaryButton></div>
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
+function UrlEncoderDecoder() {
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  function run(mode: "encode" | "decode") {
+    setError("");
+    try {
+      setOutput(mode === "encode" ? encodeURIComponent(input) : decodeURIComponent(input));
+    } catch {
+      setError("This text is not valid URL-encoded content.");
+    }
+  }
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste a URL, query parameter, or encoded value..." />
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={() => run("encode")} disabled={!input}>Encode URL</Button><SecondaryButton onClick={() => run("decode")} disabled={!input}>Decode URL</SecondaryButton><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); setError(""); }}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Output appears here..." />
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+function JsonFormatter() {
+  const [input, setInput] = useState('{"name":"FreeToolKit","free":true}');
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  function run(minify = false) {
+    setError("");
+    try {
+      setOutput(JSON.stringify(JSON.parse(input), null, minify ? 0 : 2));
+    } catch (err) {
+      setOutput("");
+      setError(err instanceof Error ? err.message : "Invalid JSON.");
+    }
+  }
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste JSON here..." />
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={() => run(false)} disabled={!input}>Format JSON</Button><SecondaryButton onClick={() => run(true)} disabled={!input}>Minify JSON</SecondaryButton><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); setError(""); }}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5 font-mono" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Formatted JSON appears here..." />
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+function PasswordGenerator() {
+  const [length, setLength] = useState(16);
+  const [upper, setUpper] = useState(true);
+  const [lower, setLower] = useState(true);
+  const [numbers, setNumbers] = useState(true);
+  const [symbols, setSymbols] = useState(true);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const strength = length >= 18 && [upper, lower, numbers, symbols].filter(Boolean).length >= 3 ? "Strong" : length >= 12 ? "Good" : "Basic";
+  function generate() {
+    const pools = [upper ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "", lower ? "abcdefghijklmnopqrstuvwxyz" : "", numbers ? "0123456789" : "", symbols ? "!@#$%^&*()-_=+[]{};:,.?/" : ""].join("");
+    if (!pools) {
+      setError("Choose at least one character type.");
+      return;
+    }
+    setError("");
+    const bytes = new Uint32Array(length);
+    crypto.getRandomValues(bytes);
+    setPassword(Array.from(bytes, (byte) => pools[byte % pools.length]).join(""));
+  }
+  return (
+    <div>
+      <label className="text-sm font-bold text-slate-700">Length: {length}<input className="mt-3 w-full accent-brand-600" type="range" min="8" max="64" value={length} onChange={(event) => setLength(Number(event.target.value))} /></label>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {[["Uppercase", upper, setUpper], ["Lowercase", lower, setLower], ["Numbers", numbers, setNumbers], ["Symbols", symbols, setSymbols]].map(([label, checked, setter]) => (
+          <label key={label as string} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700"><input className="mr-2" type="checkbox" checked={checked as boolean} onChange={(event) => (setter as (value: boolean) => void)(event.target.checked)} />{label as string}</label>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={generate}>Generate password</Button><CopyAction value={password} /><SecondaryButton onClick={() => { setPassword(""); setError(""); }}>Reset</SecondaryButton></div>
+      {password ? <div className="mt-5 rounded-2xl border border-brand-100 bg-brand-50 p-5"><p className="text-xs font-black uppercase tracking-wide text-brand-700">Strength: {strength}</p><p className="mt-2 break-all font-mono text-xl font-black text-slate-950">{password}</p></div> : null}
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+function UuidGenerator() {
+  const [count, setCount] = useState(5);
+  const [ids, setIds] = useState<string[]>([]);
+  function generate() {
+    const amount = Math.min(100, Math.max(1, count));
+    setIds(Array.from({ length: amount }, () => crypto.randomUUID()));
+  }
+  return (
+    <div>
+      <label className="text-sm font-bold text-slate-700">How many UUIDs? <Input className="mt-2" type="number" min={1} max={100} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={generate}>Generate UUIDs</Button><CopyAction value={ids.join("\n")} label="Copy all" /><SecondaryButton onClick={() => setIds([])}>Reset</SecondaryButton></div>
+      <div className="mt-5 grid gap-2">{ids.map((id) => <div key={id} className="flex flex-col gap-2 rounded-2xl bg-slate-50 p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span className="break-all font-mono">{id}</span><CopyAction value={id} /></div>)}</div>
+    </div>
+  );
+}
+
+function encodeBase64(value: string) {
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+  return btoa(binary);
+}
+
+function decodeBase64(value: string) {
+  return new TextDecoder().decode(Uint8Array.from(atob(value), (char) => char.charCodeAt(0)));
+}
+
+function Base64EncoderDecoder() {
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  function run(mode: "encode" | "decode") {
+    setError("");
+    try {
+      setOutput(mode === "encode" ? encodeBase64(input) : decodeBase64(input));
+    } catch {
+      setOutput("");
+      setError("The input could not be decoded as valid Base64 text.");
+    }
+  }
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste text or Base64 here..." />
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={() => run("encode")} disabled={!input}>Encode Base64</Button><SecondaryButton onClick={() => run("decode")} disabled={!input}>Decode Base64</SecondaryButton><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); setError(""); }}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5 font-mono" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Output appears here..." />
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+function AgeCalculator() {
+  const [dob, setDob] = useState("2000-01-01");
+  const [result, setResult] = useState<{ years: number; months: number; days: number; next: string } | null>(null);
+  const [error, setError] = useState("");
+  function calculate() {
+    const birth = new Date(`${dob}T00:00:00`);
+    const today = new Date();
+    if (!dob || birth > today) {
+      setError("Enter a valid date of birth in the past.");
+      setResult(null);
+      return;
+    }
+    setError("");
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+    if (days < 0) {
+      months -= 1;
+      days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+    const nextBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+    if (nextBirthday < today) nextBirthday.setFullYear(today.getFullYear() + 1);
+    const nextDays = Math.ceil((nextBirthday.getTime() - today.getTime()) / 86400000);
+    setResult({ years, months, days, next: nextDays === 0 ? "Today" : `${nextDays} day${nextDays === 1 ? "" : "s"}` });
+  }
+  return (
+    <div>
+      <label className="text-sm font-bold text-slate-700">Date of birth <Input className="mt-2" type="date" value={dob} onChange={(event) => setDob(event.target.value)} /></label>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={calculate}>Calculate age</Button><SecondaryButton onClick={() => { setDob(""); setResult(null); setError(""); }}>Reset</SecondaryButton></div>
+      {result ? <div className="mt-5 grid gap-3 sm:grid-cols-4"><ResultBox label="Years" value={result.years} /><ResultBox label="Months" value={result.months} /><ResultBox label="Days" value={result.days} /><ResultBox label="Next birthday" value={result.next} /></div> : null}
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
+const unitGroups = {
+  length: { Meter: 1, Kilometer: 1000, Centimeter: 0.01, Millimeter: 0.001, Mile: 1609.344, Yard: 0.9144, Foot: 0.3048, Inch: 0.0254 },
+  mass: { Kilogram: 1, Gram: 0.001, Milligram: 0.000001, Pound: 0.45359237, Ounce: 0.0283495231 },
+  area: { "Square meter": 1, "Square kilometer": 1000000, "Square foot": 0.09290304, Acre: 4046.8564224, Hectare: 10000 },
+  volume: { Liter: 1, Milliliter: 0.001, "Cubic meter": 1000, Gallon: 3.785411784, Cup: 0.2365882365 },
+  speed: { "Meter/second": 1, "Kilometer/hour": 0.2777777778, "Mile/hour": 0.44704, Knot: 0.514444 },
+  temperature: { Celsius: 1, Fahrenheit: 1, Kelvin: 1 }
+};
+
+function UnitConverter() {
+  const [category, setCategory] = useState<keyof typeof unitGroups>("length");
+  const [value, setValue] = useState(1);
+  const units = Object.keys(unitGroups[category]);
+  const [from, setFrom] = useState("Meter");
+  const [to, setTo] = useState("Kilometer");
+  useEffect(() => {
+    const nextUnits = Object.keys(unitGroups[category]);
+    setFrom(nextUnits[0]);
+    setTo(nextUnits[1] ?? nextUnits[0]);
+  }, [category]);
+  const result = useMemo(() => {
+    if (category === "temperature") {
+      const c = from === "Celsius" ? value : from === "Fahrenheit" ? (value - 32) * 5 / 9 : value - 273.15;
+      return to === "Celsius" ? c : to === "Fahrenheit" ? c * 9 / 5 + 32 : c + 273.15;
+    }
+    const group = unitGroups[category] as Record<string, number>;
+    return (value * group[from]) / group[to];
+  }, [category, from, to, value]);
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">Category <Select className="mt-2" value={category} onChange={(event) => setCategory(event.target.value as keyof typeof unitGroups)}>{Object.keys(unitGroups).map((item) => <option key={item} value={item}>{toTitleCase(item)}</option>)}</Select></label>
+        <label className="text-sm font-bold text-slate-700">Value <Input className="mt-2" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">From <Select className="mt-2" value={from} onChange={(event) => setFrom(event.target.value)}>{units.map((unit) => <option key={unit}>{unit}</option>)}</Select></label>
+        <label className="text-sm font-bold text-slate-700">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{units.map((unit) => <option key={unit}>{unit}</option>)}</Select></label>
+      </div>
+      <div className="mt-5"><ResultBox label="Converted result" value={`${Number.isFinite(result) ? result.toLocaleString(undefined, { maximumFractionDigits: 6 }) : "0"} ${to}`} /></div>
+    </div>
+  );
+}
+
+function PercentageCalculator() {
+  const [mode, setMode] = useState("of");
+  const [a, setA] = useState(20);
+  const [b, setB] = useState(100);
+  const result = mode === "of" ? (a / 100) * b : mode === "share" ? b ? (a / b) * 100 : 0 : a ? ((b - a) / a) * 100 : 0;
+  return (
+    <div>
+      <div className="grid gap-2 sm:grid-cols-3">{[["of", "Percent of number"], ["share", "X is what % of Y"], ["change", "Increase/decrease"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${mode === value ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => setMode(value)}>{label}</button>)}</div>
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">{mode === "change" ? "Original value" : mode === "share" ? "X value" : "Percentage"} <Input className="mt-2" type="number" value={a} onChange={(event) => setA(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">{mode === "change" ? "New value" : mode === "share" ? "Y value" : "Number"} <Input className="mt-2" type="number" value={b} onChange={(event) => setB(Number(event.target.value))} /></label>
+      </div>
+      <div className="mt-5"><ResultBox label="Result" value={mode === "of" ? result.toLocaleString(undefined, { maximumFractionDigits: 4 }) : `${result.toLocaleString(undefined, { maximumFractionDigits: 4 })}%`} /></div>
+    </div>
+  );
+}
+
+function LoanEmiCalculator() {
+  const [amount, setAmount] = useState(25000);
+  const [rate, setRate] = useState(6.5);
+  const [years, setYears] = useState(5);
+  const months = years * 12;
+  const monthlyRate = rate / 12 / 100;
+  const emi = monthlyRate ? amount * monthlyRate * ((1 + monthlyRate) ** months) / (((1 + monthlyRate) ** months) - 1) : amount / months;
+  const total = emi * months;
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">Loan amount <Input className="mt-2" type="number" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Annual interest % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Term in years <Input className="mt-2" type="number" step={0.5} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="Monthly EMI" value={`$${emi.toFixed(2)}`} /><ResultBox label="Total interest" value={`$${(total - amount).toFixed(2)}`} /><ResultBox label="Total payment" value={`$${total.toFixed(2)}`} /></div>
+    </div>
+  );
+}
+
+const timeZones = [
+  ["Australia/Sydney", "Sydney"],
+  ["Europe/London", "London"],
+  ["America/New_York", "New York"],
+  ["America/Los_Angeles", "Los Angeles"],
+  ["Asia/Tokyo", "Tokyo"],
+  ["Asia/Dubai", "Dubai"],
+  ["Asia/Kathmandu", "Kathmandu"],
+  ["Asia/Kolkata", "Delhi"]
+];
+
+function zoneOffset(date: Date, timeZone: string) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).formatToParts(date);
+  const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return Date.UTC(Number(map.year), Number(map.month) - 1, Number(map.day), Number(map.hour), Number(map.minute), Number(map.second)) - date.getTime();
+}
+
+function dateTimeInZone(value: string, timeZone: string) {
+  const [datePart, timePart = "00:00"] = value.split("T");
+  const [year, month, day] = datePart.split("-").map(Number);
+  const [hour, minute] = timePart.split(":").map(Number);
+  const guess = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
+  return new Date(guess.getTime() - zoneOffset(guess, timeZone));
+}
+
+function TimeZoneConverter() {
+  const now = new Date();
+  const localValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  const [from, setFrom] = useState("Australia/Sydney");
+  const [to, setTo] = useState("Europe/London");
+  const [value, setValue] = useState(localValue);
+  const [result, setResult] = useState<{ source: string; target: string } | null>(null);
+  function convert() {
+    const date = dateTimeInZone(value, from);
+    const fmt = (zone: string) => new Intl.DateTimeFormat("en-AU", { timeZone: zone, dateStyle: "full", timeStyle: "short" }).format(date);
+    setResult({ source: fmt(from), target: fmt(to) });
+  }
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">From <Select className="mt-2" value={from} onChange={(event) => setFrom(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
+        <label className="text-sm font-bold text-slate-700">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
+        <label className="text-sm font-bold text-slate-700">Date and time <Input className="mt-2" type="datetime-local" value={value} onChange={(event) => setValue(event.target.value)} /></label>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={convert}>Convert time</Button><SecondaryButton onClick={() => setResult(null)}>Reset result</SecondaryButton></div>
+      {result ? <div className="mt-5 grid gap-3 sm:grid-cols-2"><ResultBox label="Source time" value={result.source} /><ResultBox label="Converted time" value={result.target} /></div> : null}
+    </div>
+  );
+}
+
+function stylize(value: string, offsetUpper: number, offsetLower: number) {
+  return Array.from(value, (char) => {
+    const code = char.charCodeAt(0);
+    if (code >= 65 && code <= 90) return String.fromCodePoint(offsetUpper + code - 65);
+    if (code >= 97 && code <= 122) return String.fromCodePoint(offsetLower + code - 97);
+    return char;
+  }).join("");
+}
+
+function TextFormatter() {
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const format = (mode: string) => setOutput(mode === "bold" ? stylize(input, 0x1d400, 0x1d41a) : mode === "italic" ? stylize(input, 0x1d434, 0x1d44e) : mode === "upper" ? input.toUpperCase() : mode === "lower" ? input.toLowerCase() : mode === "title" ? toTitleCase(input) : input.replace(/\s*\n\s*/g, " "));
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste text to format..." />
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={() => format("bold")} disabled={!input}>Bold unicode</Button><SecondaryButton onClick={() => format("italic")} disabled={!input}>Italic unicode</SecondaryButton><SecondaryButton onClick={() => format("upper")} disabled={!input}>Uppercase</SecondaryButton><SecondaryButton onClick={() => format("lower")} disabled={!input}>Lowercase</SecondaryButton><SecondaryButton onClick={() => format("title")} disabled={!input}>Title case</SecondaryButton><SecondaryButton onClick={() => format("lines")} disabled={!input}>Remove line breaks</SecondaryButton></div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Formatted output appears here..." />
+      <div className="mt-4 flex flex-wrap gap-3"><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
+    </div>
+  );
+}
+
+function DuplicateLineRemover() {
+  const [input, setInput] = useState("");
+  const [caseSensitive, setCaseSensitive] = useState(false);
+  const [output, setOutput] = useState("");
+  function remove() {
+    const seen = new Set<string>();
+    const result = input.split(/\r?\n/).filter((line) => {
+      const key = caseSensitive ? line : line.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    setOutput(result.join("\n"));
+  }
+  const before = input ? input.split(/\r?\n/).length : 0;
+  const after = output ? output.split(/\r?\n/).length : 0;
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste one item per line..." />
+      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={caseSensitive} onChange={(event) => setCaseSensitive(event.target.checked)} /> Case-sensitive matching</label>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={remove} disabled={!input}>Remove duplicates</Button><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2"><ResultBox label="Before lines" value={before} /><ResultBox label="After lines" value={after} /></div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Cleaned lines appear here..." />
+    </div>
+  );
+}
+
+const loremWords = "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua facilisis gravida neque convallis a cras semper auctor neque vitae tempus quam pellentesque nec nam aliquam sem et tortor consequat".split(" ");
+
+function RandomTextGenerator() {
+  const [type, setType] = useState("paragraphs");
+  const [count, setCount] = useState(3);
+  const [output, setOutput] = useState("");
+  const sentence = (words = 12) => `${Array.from({ length: words }, (_, i) => loremWords[(i + Math.floor(Math.random() * loremWords.length)) % loremWords.length]).join(" ").replace(/^./, (char) => char.toUpperCase())}.`;
+  function generate() {
+    const amount = Math.min(100, Math.max(1, count));
+    if (type === "words") setOutput(Array.from({ length: amount }, (_, i) => loremWords[i % loremWords.length]).join(" "));
+    else if (type === "sentences") setOutput(Array.from({ length: amount }, () => sentence(10 + Math.floor(Math.random() * 10))).join(" "));
+    else setOutput(Array.from({ length: amount }, () => Array.from({ length: 4 }, () => sentence(10 + Math.floor(Math.random() * 10))).join(" ")).join("\n\n"));
+  }
+  return (
+    <div>
+      <div className="grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Output type <Select className="mt-2" value={type} onChange={(event) => setType(event.target.value)}><option value="words">Words</option><option value="sentences">Sentences</option><option value="paragraphs">Paragraphs</option></Select></label><label className="text-sm font-bold text-slate-700">Amount <Input className="mt-2" type="number" min={1} max={100} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label></div>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={generate}>Generate text</Button><CopyAction value={output} /><SecondaryButton onClick={() => setOutput("")}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Random text appears here..." />
+    </div>
+  );
+}
+
+function TextSorter() {
+  const [input, setInput] = useState("");
+  const [direction, setDirection] = useState("az");
+  const [dedupe, setDedupe] = useState(false);
+  const [output, setOutput] = useState("");
+  function sort() {
+    let lines = input.split(/\r?\n/).filter(Boolean);
+    if (dedupe) lines = Array.from(new Set(lines));
+    lines.sort((a, b) => direction === "az" ? a.localeCompare(b) : b.localeCompare(a));
+    setOutput(lines.join("\n"));
+  }
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste one item per line..." />
+      <div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Sort direction <Select className="mt-2" value={direction} onChange={(event) => setDirection(event.target.value)}><option value="az">A-Z</option><option value="za">Z-A</option></Select></label><label className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700"><input type="checkbox" checked={dedupe} onChange={(event) => setDedupe(event.target.checked)} /> Remove duplicates</label></div>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={sort} disabled={!input}>Sort lines</Button><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Sorted output appears here..." />
+    </div>
+  );
+}
+
+function RemoveExtraSpaces() {
+  const [input, setInput] = useState("");
+  const [removeBlank, setRemoveBlank] = useState(true);
+  const [output, setOutput] = useState("");
+  function clean() {
+    const lines = input.split(/\r?\n/).map((line) => line.replace(/[ \t]+/g, " ").trim());
+    setOutput((removeBlank ? lines.filter(Boolean) : lines).join("\n"));
+  }
+  return (
+    <div>
+      <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste messy text..." />
+      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={removeBlank} onChange={(event) => setRemoveBlank(event.target.checked)} /> Remove blank lines</label>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={clean} disabled={!input}>Clean spaces</Button><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Cleaned text appears here..." />
+    </div>
+  );
+}
+
+function ImageCropper() {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [natural, setNatural] = useState({ width: 0, height: 0 });
+  const [crop, setCrop] = useState({ x: 0, y: 0, width: 400, height: 400 });
+  const [ratio, setRatio] = useState("free");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  async function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setOutput(null);
+    setError("");
+    if (preview) URL.revokeObjectURL(preview);
+    if (!next) return;
+    const image = await fileToImage(next);
+    const start = Math.min(image.naturalWidth, image.naturalHeight);
+    setNatural({ width: image.naturalWidth, height: image.naturalHeight });
+    setCrop({ x: 0, y: 0, width: start, height: start });
+    setPreview(URL.createObjectURL(next));
+  }
+
+  function updateCrop(next: Partial<typeof crop>) {
+    const merged = { ...crop, ...next };
+    if (ratio !== "free" && "width" in next) {
+      const [w, h] = ratio.split(":").map(Number);
+      merged.height = Math.round((merged.width * h) / w);
+    }
+    if (ratio !== "free" && "height" in next) {
+      const [w, h] = ratio.split(":").map(Number);
+      merged.width = Math.round((merged.height * w) / h);
+    }
+    setCrop(merged);
+  }
+
+  async function cropImage() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const image = await fileToImage(file);
+      const sx = Math.max(0, Math.min(crop.x, image.naturalWidth - 1));
+      const sy = Math.max(0, Math.min(crop.y, image.naturalHeight - 1));
+      const sw = Math.max(1, Math.min(crop.width, image.naturalWidth - sx));
+      const sh = Math.max(1, Math.min(crop.height, image.naturalHeight - sy));
+      const canvas = document.createElement("canvas");
+      canvas.width = sw;
+      canvas.height = sh;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas is not supported in this browser.");
+      ctx.drawImage(image, sx, sy, sw, sh, 0, 0, sw, sh);
+      const blob = await canvasToBlob(canvas, file.type || "image/png", 0.9);
+      setOutput(downloadBlob(blob, `cropped-${file.name}`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to crop image.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
+      <FileInfo file={file} />
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Image preview" /> : null}
+      {file ? (
+        <>
+          <div className="mt-5 grid gap-2 sm:grid-cols-4">{[["free", "Free"], ["1:1", "1:1"], ["16:9", "16:9"], ["4:3", "4:3"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${ratio === value ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => setRatio(value)}>{label}</button>)}</div>
+          <p className="mt-4 text-sm font-bold text-slate-600">Image size: {natural.width} × {natural.height}px</p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-4">
+            {(["x", "y", "width", "height"] as const).map((key) => <label key={key} className="text-sm font-bold capitalize text-slate-700">{key}<Input className="mt-2" type="number" min={0} value={crop[key]} onChange={(event) => updateCrop({ [key]: Number(event.target.value) })} /></label>)}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-3"><Button onClick={cropImage} disabled={busy}>{busy ? "Cropping..." : "Crop image"}</Button><SecondaryButton onClick={() => { setFile(null); setPreview(""); setOutput(null); setError(""); }}>Reset</SecondaryButton></div>
+        </>
+      ) : null}
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
+function ImageToBase64() {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setOutput("");
+    setError("");
+    if (preview) URL.revokeObjectURL(preview);
+    if (!next) return;
+    setPreview(URL.createObjectURL(next));
+    const reader = new FileReader();
+    reader.onload = () => setOutput(String(reader.result ?? ""));
+    reader.onerror = () => setError("Unable to read this image file.");
+    reader.readAsDataURL(next);
+  }
+  return (
+    <div>
+      <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp,image/gif" onFiles={load} />
+      <FileInfo file={file} />
+      {preview ? <img className="mt-5 max-h-72 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Uploaded preview" /> : null}
+      <div className="mt-4 flex flex-wrap gap-3"><CopyAction value={output} label="Copy Base64" /><SecondaryButton onClick={() => { setFile(null); setPreview(""); setOutput(""); setError(""); }}>Reset</SecondaryButton></div>
+      <Textarea className="mt-5 min-h-48 font-mono" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Base64 data URL appears here..." />
+      <ErrorMessage message={error} />
+    </div>
+  );
+}
+
 export function ToolRunner({ slug }: { slug: string }) {
   const map: Record<string, React.ReactNode> = {
     "image-compressor": <ImageCompressor />,
@@ -671,7 +1340,27 @@ export function ToolRunner({ slug }: { slug: string }) {
     "cgpa-calculator": <CgpaCalculator />,
     "grade-percentage-calculator": <GradePercentageCalculator />,
     "study-timer": <StudyTimer />,
-    "word-counter": <WordCounter />
+    "word-counter": <WordCounter />,
+    "qr-code-generator": <QrCodeGenerator />,
+    "case-converter": <CaseConverter />,
+    "word-to-pdf": <WordToPdf />,
+    "url-encoder-decoder": <UrlEncoderDecoder />,
+    "json-formatter": <JsonFormatter />,
+    "password-generator": <PasswordGenerator />,
+    "uuid-generator": <UuidGenerator />,
+    "base64-encoder-decoder": <Base64EncoderDecoder />,
+    "age-calculator": <AgeCalculator />,
+    "unit-converter": <UnitConverter />,
+    "percentage-calculator": <PercentageCalculator />,
+    "loan-emi-calculator": <LoanEmiCalculator />,
+    "time-zone-converter": <TimeZoneConverter />,
+    "text-formatter": <TextFormatter />,
+    "duplicate-line-remover": <DuplicateLineRemover />,
+    "random-text-generator": <RandomTextGenerator />,
+    "text-sorter": <TextSorter />,
+    "remove-extra-spaces": <RemoveExtraSpaces />,
+    "image-cropper": <ImageCropper />,
+    "image-to-base64": <ImageToBase64 />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;
