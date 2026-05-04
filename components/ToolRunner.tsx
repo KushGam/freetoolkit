@@ -1221,6 +1221,21 @@ function ImageCropper() {
   const [busy, setBusy] = useState(false);
   useObjectUrlCleanup(output);
 
+  function centeredCrop(imageWidth: number, imageHeight: number, nextRatio: string) {
+    if (nextRatio === "free") return { x: 0, y: 0, width: imageWidth, height: imageHeight };
+    const [ratioWidth, ratioHeight] = nextRatio.split(":").map(Number);
+    const target = ratioWidth / ratioHeight;
+    const imageRatio = imageWidth / imageHeight;
+    const width = imageRatio > target ? Math.round(imageHeight * target) : imageWidth;
+    const height = imageRatio > target ? imageHeight : Math.round(imageWidth / target);
+    return {
+      x: Math.max(0, Math.round((imageWidth - width) / 2)),
+      y: Math.max(0, Math.round((imageHeight - height) / 2)),
+      width,
+      height
+    };
+  }
+
   async function load(files: File[]) {
     const next = files[0] ?? null;
     setFile(next);
@@ -1229,10 +1244,17 @@ function ImageCropper() {
     if (preview) URL.revokeObjectURL(preview);
     if (!next) return;
     const image = await fileToImage(next);
-    const start = Math.min(image.naturalWidth, image.naturalHeight);
     setNatural({ width: image.naturalWidth, height: image.naturalHeight });
-    setCrop({ x: 0, y: 0, width: start, height: start });
+    setRatio("free");
+    setCrop(centeredCrop(image.naturalWidth, image.naturalHeight, "free"));
     setPreview(URL.createObjectURL(next));
+  }
+
+  function applyRatio(nextRatio: string) {
+    setRatio(nextRatio);
+    if (!natural.width || !natural.height) return;
+    setCrop(centeredCrop(natural.width, natural.height, nextRatio));
+    setOutput(null);
   }
 
   function updateCrop(next: Partial<typeof crop>) {
@@ -1245,7 +1267,12 @@ function ImageCropper() {
       const [w, h] = ratio.split(":").map(Number);
       merged.width = Math.round((merged.height * w) / h);
     }
-    setCrop(merged);
+    const width = Math.max(1, Math.min(Math.round(merged.width), natural.width || merged.width));
+    const height = Math.max(1, Math.min(Math.round(merged.height), natural.height || merged.height));
+    const x = Math.max(0, Math.min(Math.round(merged.x), Math.max(0, (natural.width || width) - width)));
+    const y = Math.max(0, Math.min(Math.round(merged.y), Math.max(0, (natural.height || height) - height)));
+    setCrop({ x, y, width, height });
+    setOutput(null);
   }
 
   async function cropImage() {
@@ -1280,8 +1307,11 @@ function ImageCropper() {
       {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Image preview" /> : null}
       {file ? (
         <>
-          <div className="mt-5 grid gap-2 sm:grid-cols-4">{[["free", "Free"], ["1:1", "1:1"], ["16:9", "16:9"], ["4:3", "4:3"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${ratio === value ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => setRatio(value)}>{label}</button>)}</div>
+          <div className="mt-5 grid gap-2 sm:grid-cols-4">{[["free", "Free"], ["1:1", "1:1"], ["16:9", "16:9"], ["4:3", "4:3"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${ratio === value ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => applyRatio(value)}>{label}</button>)}</div>
           <p className="mt-4 text-sm font-bold text-slate-600">Image size: {natural.width} × {natural.height}px</p>
+          <p className="mt-2 rounded-2xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm font-bold text-brand-700">
+            Current crop: {crop.width} × {crop.height}px from X {crop.x}, Y {crop.y}. Aspect buttons center the largest matching crop inside your image.
+          </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-4">
             {(["x", "y", "width", "height"] as const).map((key) => <label key={key} className="text-sm font-bold capitalize text-slate-700">{key}<Input className="mt-2" type="number" min={0} value={crop[key]} onChange={(event) => updateCrop({ [key]: Number(event.target.value) })} /></label>)}
           </div>
