@@ -1049,7 +1049,7 @@ function LoanEmiCalculator() {
   );
 }
 
-const timeZones = [
+const fallbackTimeZones = [
   ["Pacific/Auckland", "Auckland, New Zealand"],
   ["Australia/Sydney", "Sydney, Australia"],
   ["Australia/Melbourne", "Melbourne, Australia"],
@@ -1096,6 +1096,23 @@ const timeZones = [
   ["UTC", "UTC / GMT"]
 ];
 
+function formatTimeZoneLabel(zone: string) {
+  if (zone === "UTC") return "UTC / GMT";
+  const parts = zone.split("/");
+  const city = (parts[parts.length - 1] ?? zone).replace(/_/g, " ");
+  const region = parts[0]?.replace(/_/g, " ");
+  return `${city}, ${region} (${zone})`;
+}
+
+function getTimeZoneOptions() {
+  const intlWithZones = Intl as typeof Intl & { supportedValuesOf?: (key: "timeZone") => string[] };
+  const zones = intlWithZones.supportedValuesOf?.("timeZone");
+  if (!zones?.length) return fallbackTimeZones;
+  return Array.from(new Set(["UTC", ...zones]))
+    .map((zone) => [zone, formatTimeZoneLabel(zone)])
+    .sort((a, b) => a[1].localeCompare(b[1]));
+}
+
 function zoneOffset(date: Date, timeZone: string) {
   const parts = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).formatToParts(date);
   const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
@@ -1113,6 +1130,7 @@ function dateTimeInZone(value: string, timeZone: string) {
 function TimeZoneConverter() {
   const now = new Date();
   const localValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  const timeZones = useMemo(() => getTimeZoneOptions(), []);
   const [from, setFrom] = useState("Australia/Sydney");
   const [to, setTo] = useState("Europe/London");
   const [value, setValue] = useState(localValue);
