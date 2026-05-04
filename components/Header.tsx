@@ -9,7 +9,10 @@ const links = [
   { href: "/image-tools", label: "Image Tools" },
   { href: "/pdf-tools", label: "PDF Tools" },
   { href: "/student-tools", label: "Student Tools" },
-  { href: "/all-tools", label: "All Tools" }
+  { href: "/text-tools", label: "Text Tools" },
+  { href: "/developer-tools", label: "Developer Tools" },
+  { href: "/calculator-tools", label: "Calculator Tools" },
+  { href: "/security-tools", label: "Security Tools" }
 ];
 
 export function Header() {
@@ -22,9 +25,9 @@ export function Header() {
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 text-sm text-white shadow-[0_14px_28px_rgba(37,99,235,0.22)]">FT</span>
           <span>Free<span className="text-brand-600">ToolKit</span></span>
         </Link>
-        <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-white/80 p-1 text-sm font-bold text-slate-600 shadow-sm lg:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-white/80 p-1 text-xs font-bold text-slate-600 shadow-sm xl:flex">
           {links.map((link) => (
-            <Link key={link.href} href={link.href} className="rounded-full px-4 py-2 hover:bg-brand-50 hover:text-brand-700">
+            <Link key={link.href} href={link.href} className="rounded-full px-3 py-2 hover:bg-brand-50 hover:text-brand-700">
               {link.label}
             </Link>
           ))}
@@ -33,7 +36,7 @@ export function Header() {
           All Tools
         </Link>
         <button
-          className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-extrabold text-slate-700 shadow-sm lg:hidden"
+          className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-extrabold text-slate-700 shadow-sm xl:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-label="Toggle navigation"
@@ -41,13 +44,16 @@ export function Header() {
           {open ? "Close" : "Menu"}
         </button>
       </div>
-      <div className={cn("border-t border-slate-100 bg-white/95 px-4 py-3 shadow-lg shadow-slate-900/[0.04] lg:hidden", !open && "hidden")}>
+      <div className={cn("border-t border-slate-100 bg-white/95 px-4 py-3 shadow-lg shadow-slate-900/[0.04] xl:hidden", !open && "hidden")}>
         <nav className="mx-auto grid max-w-6xl gap-2 text-sm font-bold text-slate-700">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="rounded-2xl px-3 py-3 hover:bg-brand-50" onClick={() => setOpen(false)}>
               {link.label}
             </Link>
           ))}
+          <Link href="/all-tools" className="rounded-2xl bg-slate-950 px-3 py-3 text-white" onClick={() => setOpen(false)}>
+            All Tools
+          </Link>
         </nav>
       </div>
     </header>
