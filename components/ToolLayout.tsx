@@ -69,7 +69,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         </p>
         <p>{categoryCopy}</p>
         <p>
-          For best results, start with a copy of your original file or notes, review the result carefully, and download the finished output when it looks right. The simple interface is designed for repeat visits from search, bookmarks, and mobile browsers, with advertisement placeholders kept separate from the main controls.
+          For best results, start with a copy of your original file or notes, review the result carefully, and download the finished output when it looks right. The simple interface is designed for repeat visits from search, bookmarks, and mobile browsers, with the main controls kept clear and easy to use.
         </p>
       </section>
       <FAQ items={tool.faq} />

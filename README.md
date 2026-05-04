@@ -7,7 +7,7 @@ FreeToolKit is a production-ready Next.js 14 App Router website for free, no-log
 - 15 functional tools across image, PDF, and student categories
 - Client-side image conversion, resizing, compression, and PDF operations where possible
 - SEO-friendly metadata, FAQ schema, sitemap, and robots routes
-- Reusable AdSlot placeholders without a fake AdSense publisher ID
+- Google AdSense global script for Auto Ads
 - Privacy, terms, contact, and about pages
 - Mobile-first Tailwind CSS design
 
@@ -26,7 +26,7 @@ Use the Next.js framework preset in Vercel. Leave the Output Directory setting e
 
 ## AdSense
 
-`components/AdSlot.tsx` renders labeled advertisement placeholders. Replace that component later with the official Google AdSense script and your real publisher ID.
+The global AdSense script is included in `app/layout.tsx` for Auto Ads. `components/AdSlot.tsx` currently returns `null` so fake ad placeholders are not shown.
 
 ## Notes
 
