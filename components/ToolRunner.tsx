@@ -1257,10 +1257,99 @@ function AiImageToWord() {
 
 function PdfToWord() {
   const [file, setFile] = useState<File | null>(null);
+  const [text, setText] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  function load(files: File[]) {
+    setFile(files[0] ?? null);
+    setText("");
+    setOutput(null);
+    setError("");
+  }
+
+  async function createDocxFromText(sourceText: string) {
+    const cleaned = sourceText.trim();
+    if (!cleaned) throw new Error("No readable PDF text was found.");
+    const { Document, HeadingLevel, Packer, Paragraph, TextRun } = await import("docx");
+    const children = cleaned.split("\n").map((line) => {
+      const trimmed = line.trim();
+      if (!trimmed) return new Paragraph({ text: "" });
+      if (/^Page \d+$/i.test(trimmed)) {
+        return new Paragraph({
+          text: trimmed,
+          heading: HeadingLevel.HEADING_2
+        });
+      }
+      return new Paragraph({
+        children: [new TextRun(trimmed)],
+        spacing: { after: 120 }
+      });
+    });
+
+    const doc = new Document({
+      sections: [
+        {
+          children
+        }
+      ]
+    });
+    const blob = await Packer.toBlob(doc);
+    const name = `${(file?.name || "converted-pdf").replace(/\.[^.]+$/, "") || "converted-pdf"}.docx`;
+    setOutput(downloadBlob(blob, name));
+  }
+
+  async function convert() {
+    if (!file) {
+      setError("Please upload a PDF first.");
+      return;
+    }
+    setBusy(true);
+    setError("");
+    setOutput(null);
+    try {
+      const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+      pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.legacy.min.js";
+      const loadingTask = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) });
+      const pdf = await loadingTask.promise;
+      const pages: string[] = [];
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+        const page = await pdf.getPage(pageNumber);
+        const content = await page.getTextContent();
+        const pageText = (content.items as Array<{ str?: string }>)
+          .map((item) => item.str || "")
+          .join(" ")
+          .replace(/\s+/g, " ")
+          .trim();
+        if (pageText) pages.push(`Page ${pageNumber}\n${pageText}`);
+      }
+
+      const extracted = pages.join("\n\n").trim();
+      if (!extracted) {
+        throw new Error("No readable text was found. Scanned PDFs may need OCR.");
+      }
+      setText(extracted);
+      await createDocxFromText(extracted);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to convert this PDF.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    setText("");
+    setOutput(null);
+    setError("");
+  }
 
   return (
     <div className="grid gap-6">
-      <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
+      <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={load} />
 
       {file ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -1270,33 +1359,55 @@ function PdfToWord() {
         </div>
       ) : null}
 
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900 shadow-sm">
-        <p className="font-black">PDF to Word conversion is coming soon.</p>
+      <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 text-sm leading-6 text-brand-800 shadow-sm">
+        <p className="font-black">Text-based PDF to Word conversion</p>
         <p className="mt-2">
-          For now, you can use our Extract PDF Pages, Add Text to PDF, or Word to PDF tools.
+          This tool extracts readable text from your PDF in the browser and creates a downloadable DOCX file.
         </p>
         <p className="mt-2 font-semibold">
-          This browser-based converter is best for text PDFs. Scanned PDFs and complex layouts may need OCR.
+          Scanned PDFs, handwriting, tables, and complex layouts may need OCR or a dedicated layout converter.
         </p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        <Button type="button" disabled>
-          Convert to DOCX
+        <Button type="button" onClick={convert} disabled={!file || busy}>
+          {busy ? "Converting..." : "Convert to DOCX"}
         </Button>
-        <SecondaryButton type="button" disabled>
-          Download DOCX
+        <SecondaryButton type="button" onClick={() => createDocxFromText(text).catch((err) => setError(err instanceof Error ? err.message : "Unable to create DOCX."))} disabled={!text.trim() || busy}>
+          Create edited DOCX
         </SecondaryButton>
-        <SecondaryButton type="button" onClick={() => setFile(null)}>
+        <SecondaryButton type="button" onClick={reset}>
           Reset
         </SecondaryButton>
       </div>
 
+      {text ? (
+        <label className="block text-sm font-bold text-slate-700">
+          Extracted text
+          <Textarea className="mt-2 min-h-72 font-mono" value={text} onChange={(event) => setText(event.target.value)} />
+        </label>
+      ) : null}
+
+      <ErrorMessage message={error} />
+      <Download output={output} />
+
       <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
         <p className="font-bold text-slate-950">Text-based conversion note</p>
         <p className="mt-2">
-          The planned MVP will focus on text-based conversion. Complex formatting, tables, scanned pages, handwriting, and exact page layout may not be preserved.
+          This converter focuses on readable PDF text. Complex formatting, tables, scanned pages, handwriting, and exact page layout may not be preserved.
         </p>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <a className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" href="/extract-pdf-pages">
+          Extract PDF Pages
+        </a>
+        <a className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" href="/add-text-to-pdf">
+          Add Text to PDF
+        </a>
+        <a className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" href="/word-to-pdf">
+          Word to PDF
+        </a>
       </div>
     </div>
   );
