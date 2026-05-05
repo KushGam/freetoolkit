@@ -14,9 +14,5 @@ export function AdSlot(_props: {
   const placement = _props.size ?? _props.type ?? "responsive";
   const adFormat = placement === "rectangle" ? "rectangle" : "auto";
 
-  return (
-    <div className="my-8 min-h-[120px] overflow-hidden rounded-2xl border border-slate-100 bg-slate-50/50">
-      <AdSense adSlot={AD_SLOTS[placement]} adFormat={adFormat} priority={Boolean(_props.priority)} />
-    </div>
-  );
+  return <AdSense adSlot={AD_SLOTS[placement]} adFormat={adFormat} priority={Boolean(_props.priority)} scriptOnly />;
 }

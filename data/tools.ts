@@ -491,12 +491,40 @@ export function getToolsByTopLevelCategory(category: TopLevelCategory) {
 }
 
 export function getRelatedTools(tool: Tool) {
+  if (tool.slug === "image-to-pdf") {
+    const preferred = ["image-compressor", "image-resizer", "merge-pdf", "word-to-pdf"];
+    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  }
+  if (tool.slug === "image-to-word") {
+    const preferred = ["image-to-pdf", "word-to-pdf", "pdf-to-word", "extract-pdf-pages"];
+    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  }
+  if (tool.slug === "pdf-to-word") {
+    const preferred = ["word-to-pdf", "merge-pdf", "split-pdf", "add-text-to-pdf", "extract-pdf-pages"];
+    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  }
   if (tool.slug === "ai-resume-cover-letter") {
     const preferred = ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "word-counter"];
     return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item)).slice(0, 4);
   }
   if (tool.category === "AI Tools") {
-    const preferred = ["ai-text-summarizer", "paraphrasing-tool", "keyword-extractor", "grammar-fixer", "title-generator", "bio-generator", "faq-generator", "text-to-bullet-points", "ai-resume-cover-letter"].filter((slug) => slug !== tool.slug);
+    const preferred = [
+      "ai-study-notes",
+      "explain-simple",
+      "ai-email-writer",
+      "chat-reply-generator",
+      "content-rewriter",
+      "productivity-assistant",
+      "ai-text-summarizer",
+      "paraphrasing-tool",
+      "keyword-extractor",
+      "grammar-fixer",
+      "title-generator",
+      "bio-generator",
+      "faq-generator",
+      "text-to-bullet-points",
+      "ai-resume-cover-letter"
+    ].filter((slug) => slug !== tool.slug);
     return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
   }
   return tools.filter((item) => item.category === tool.category && item.slug !== tool.slug).slice(0, 4);

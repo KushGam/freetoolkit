@@ -77,3 +77,8 @@ body {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+
+.adsbygoogle:empty,
+.ad-container:empty {
+  display: none;
+}

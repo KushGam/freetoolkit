@@ -802,6 +802,341 @@ function WordToPdf() {
   );
 }
 
+type ImagePdfItem = {
+  id: string;
+  file: File;
+  dataUrl: string;
+};
+
+function readImageAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(new Error("Unable to read this image file."));
+    reader.readAsDataURL(file);
+  });
+}
+
+function getImageSize(src: string) {
+  return new Promise<{ width: number; height: number }>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve({ width: image.naturalWidth, height: image.naturalHeight });
+    image.onerror = () => reject(new Error("Unable to load image preview."));
+    image.src = src;
+  });
+}
+
+function ImageToPdf() {
+  const [images, setImages] = useState<ImagePdfItem[]>([]);
+  const [orientation, setOrientation] = useState<"portrait" | "landscape">("portrait");
+  const [fit, setFit] = useState<"contain" | "fill">("contain");
+  const [pageSize, setPageSize] = useState<"a4" | "letter">("a4");
+  const [dragId, setDragId] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  async function load(files: File[]) {
+    setError("");
+    setOutput(null);
+    const valid = files.filter((file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type));
+    if (!valid.length) {
+      setError("Upload JPG, PNG, or WebP images.");
+      return;
+    }
+    try {
+      const next = await Promise.all(
+        valid.map(async (file, index) => ({
+          id: `${Date.now()}-${index}-${file.name}`,
+          file,
+          dataUrl: await readImageAsDataUrl(file)
+        }))
+      );
+      setImages((current) => [...current, ...next]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to read images.");
+    }
+  }
+
+  function moveImage(targetId: string) {
+    if (!dragId || dragId === targetId) return;
+    setImages((current) => {
+      const from = current.findIndex((item) => item.id === dragId);
+      const to = current.findIndex((item) => item.id === targetId);
+      if (from < 0 || to < 0) return current;
+      const copy = [...current];
+      const [moved] = copy.splice(from, 1);
+      copy.splice(to, 0, moved);
+      return copy;
+    });
+  }
+
+  async function convert() {
+    if (!images.length) return;
+    setBusy(true);
+    setError("");
+    setOutput(null);
+    try {
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF({ unit: "pt", format: pageSize, orientation });
+      for (let index = 0; index < images.length; index += 1) {
+        if (index > 0) doc.addPage(pageSize, orientation);
+        const item = images[index];
+        const size = await getImageSize(item.dataUrl);
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const pageRatio = pageWidth / pageHeight;
+        const imageRatio = size.width / size.height;
+        let width = pageWidth;
+        let height = pageHeight;
+
+        if (fit === "contain") {
+          if (imageRatio > pageRatio) {
+            width = pageWidth;
+            height = pageWidth / imageRatio;
+          } else {
+            height = pageHeight;
+            width = pageHeight * imageRatio;
+          }
+        } else if (imageRatio > pageRatio) {
+          height = pageHeight;
+          width = pageHeight * imageRatio;
+        } else {
+          width = pageWidth;
+          height = pageWidth / imageRatio;
+        }
+
+        const x = (pageWidth - width) / 2;
+        const y = (pageHeight - height) / 2;
+        const format = item.file.type === "image/png" ? "PNG" : item.file.type === "image/webp" ? "WEBP" : "JPEG";
+        doc.addImage(item.dataUrl, format, x, y, width, height);
+      }
+      const blob = doc.output("blob");
+      setOutput(downloadBlob(blob, "images-to-pdf.pdf"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to create PDF.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setImages([]);
+    setOutput(null);
+    setError("");
+    setBusy(false);
+    setOrientation("portrait");
+    setFit("contain");
+    setPageSize("a4");
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload images" accept="image/jpeg,image/png,image/webp" multiple onFiles={load} />
+      <div className="mt-5 grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">Page orientation <Select className="mt-2" value={orientation} onChange={(event) => setOrientation(event.target.value as "portrait" | "landscape")}><option value="portrait">Portrait</option><option value="landscape">Landscape</option></Select></label>
+        <label className="text-sm font-bold text-slate-700">Image fit <Select className="mt-2" value={fit} onChange={(event) => setFit(event.target.value as "contain" | "fill")}><option value="contain">Contain</option><option value="fill">Fill</option></Select></label>
+        <label className="text-sm font-bold text-slate-700">Page size <Select className="mt-2" value={pageSize} onChange={(event) => setPageSize(event.target.value as "a4" | "letter")}><option value="a4">A4</option><option value="letter">Letter</option></Select></label>
+      </div>
+
+      {images.length ? (
+        <div className="mt-6">
+          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Preview and reorder</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {images.map((item, index) => (
+              <div
+                key={item.id}
+                draggable
+                onDragStart={() => setDragId(item.id)}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={() => moveImage(item.id)}
+                onDragEnd={() => setDragId("")}
+                className="cursor-move rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition hover:border-brand-200"
+              >
+                <img className="h-44 w-full rounded-xl bg-slate-50 object-contain" src={item.dataUrl} alt={`Image ${index + 1} preview`} />
+                <p className="mt-3 break-words text-sm font-bold text-slate-800 [overflow-wrap:anywhere]">{index + 1}. {item.file.name}</p>
+                <p className="mt-1 text-xs font-semibold text-slate-500">{formatBytes(item.file.size)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-500">Choose JPG, PNG, or WebP images to enable this tool.</p>
+      )}
+
+      <div className="mt-5 flex flex-wrap gap-3">
+        <Button onClick={convert} disabled={!images.length || busy}>{busy ? "Creating PDF..." : "Convert to PDF"}</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
+function ImageToWord() {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [text, setText] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [ocrProgress, setOcrProgress] = useState(0);
+  useObjectUrlCleanup(output);
+
+  async function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setText("");
+    setOutput(null);
+    setError("");
+    setOcrProgress(0);
+    if (preview) URL.revokeObjectURL(preview);
+    if (!next) {
+      setPreview("");
+      return;
+    }
+    if (!["image/jpeg", "image/png"].includes(next.type)) {
+      setError("Upload a JPG or PNG image.");
+      setPreview("");
+      return;
+    }
+    setPreview(URL.createObjectURL(next));
+  }
+
+  async function extractText() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    setOcrProgress(0);
+    try {
+      const Tesseract = await import("tesseract.js");
+      const result = await Tesseract.recognize(file, "eng", {
+        logger: (message) => {
+          if (message.status === "recognizing text") setOcrProgress(Math.round(message.progress * 100));
+        }
+      });
+      setText(result.data.text.trim());
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to extract text from this image.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function downloadDocx() {
+    setError("");
+    if (!text.trim()) {
+      setError("Extract or enter text before downloading a Word document.");
+      return;
+    }
+    try {
+      const { Document, Packer, Paragraph, TextRun } = await import("docx");
+      const paragraphs = text
+        .split(/\n+/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => new Paragraph({ children: [new TextRun(line)] }));
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: paragraphs.length ? paragraphs : [new Paragraph({ children: [new TextRun(text.trim())] })]
+          }
+        ]
+      });
+      const blob = await Packer.toBlob(doc);
+      setOutput(downloadBlob(blob, `${(file?.name || "image-text").replace(/\.[^.]+$/, "") || "image-text"}.docx`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to create Word document.");
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview("");
+    setText("");
+    setOutput(null);
+    setError("");
+    setBusy(false);
+    setOcrProgress(0);
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload a JPG or PNG image" accept="image/jpeg,image/png" onFiles={load} />
+      <FileInfo file={file} />
+      <p className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm font-semibold leading-6 text-brand-700">
+        This tool extracts text from images. Formatting and layout may not be preserved.
+      </p>
+
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Uploaded image preview" /> : null}
+
+      <div className="mt-5 flex flex-wrap gap-3">
+        <Button onClick={extractText} disabled={!file || busy}>{busy ? `Extracting${ocrProgress ? ` ${ocrProgress}%` : "..."}` : "Extract text"}</Button>
+        <SecondaryButton onClick={downloadDocx} disabled={!text.trim()}>Download DOCX</SecondaryButton>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+
+      <label className="mt-5 block text-sm font-bold text-slate-700">
+        Extracted text
+        <Textarea className="mt-2 min-h-72" value={text} onChange={(event) => setText(event.target.value)} placeholder="Extracted text will appear here. You can edit it before downloading as DOCX." />
+      </label>
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
+function PdfToWord() {
+  const [file, setFile] = useState<File | null>(null);
+
+  return (
+    <div className="grid gap-6">
+      <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
+
+      {file ? (
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Selected file</p>
+          <p className="mt-2 break-words text-base font-bold text-slate-950 [overflow-wrap:anywhere]">{file.name}</p>
+          <p className="mt-1 text-sm font-semibold text-slate-500">{formatBytes(file.size)}</p>
+        </div>
+      ) : null}
+
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900 shadow-sm">
+        <p className="font-black">PDF to Word conversion is coming soon.</p>
+        <p className="mt-2">
+          For now, you can use our Extract PDF Pages, Add Text to PDF, or Word to PDF tools.
+        </p>
+        <p className="mt-2 font-semibold">
+          This browser-based converter is best for text PDFs. Scanned PDFs and complex layouts may need OCR.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <Button type="button" disabled>
+          Convert to DOCX
+        </Button>
+        <SecondaryButton type="button" disabled>
+          Download DOCX
+        </SecondaryButton>
+        <SecondaryButton type="button" onClick={() => setFile(null)}>
+          Reset
+        </SecondaryButton>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
+        <p className="font-bold text-slate-950">Text-based conversion note</p>
+        <p className="mt-2">
+          The planned MVP will focus on text-based conversion. Complex formatting, tables, scanned pages, handwriting, and exact page layout may not be preserved.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function UrlEncoderDecoder() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -2624,6 +2959,8 @@ export function ToolRunner({ slug }: { slug: string }) {
     "jpg-to-png": <ImageConverter mode="jpg-to-png" />,
     "webp-converter": <ImageConverter mode="webp" />,
     "image-resizer": <ImageResizer />,
+    "image-to-pdf": <ImageToPdf />,
+    "image-to-word": <ImageToWord />,
     "merge-pdf": <PdfTool mode="merge" />,
     "split-pdf": <PdfTool mode="split" />,
     "compress-pdf": <PdfTool mode="compress" />,
@@ -2637,6 +2974,7 @@ export function ToolRunner({ slug }: { slug: string }) {
     "qr-code-generator": <QrCodeGenerator />,
     "case-converter": <CaseConverter />,
     "word-to-pdf": <WordToPdf />,
+    "pdf-to-word": <PdfToWord />,
     "url-encoder-decoder": <UrlEncoderDecoder />,
     "json-formatter": <JsonFormatter />,
     "password-generator": <PasswordGenerator />,
@@ -2676,7 +3014,13 @@ export function ToolRunner({ slug }: { slug: string }) {
     "title-generator": <GeminiAiTool slug="title-generator" />,
     "bio-generator": <GeminiAiTool slug="bio-generator" />,
     "faq-generator": <GeminiAiTool slug="faq-generator" />,
-    "text-to-bullet-points": <GeminiAiTool slug="text-to-bullet-points" />
+    "text-to-bullet-points": <GeminiAiTool slug="text-to-bullet-points" />,
+    "ai-study-notes": <GeminiAiTool slug="ai-study-notes" />,
+    "explain-simple": <GeminiAiTool slug="explain-simple" />,
+    "ai-email-writer": <GeminiAiTool slug="ai-email-writer" />,
+    "chat-reply-generator": <GeminiAiTool slug="chat-reply-generator" />,
+    "content-rewriter": <GeminiAiTool slug="content-rewriter" />,
+    "productivity-assistant": <GeminiAiTool slug="productivity-assistant" />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;

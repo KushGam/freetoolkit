@@ -7,6 +7,7 @@ const CLIENT_LIMIT = 5;
 
 type ToolConfig = {
   title: string;
+  toolType: string;
   placeholder: string;
   minLength: number;
   options?: string[];
@@ -17,6 +18,7 @@ type ToolConfig = {
 const configs: Record<string, ToolConfig> = {
   "ai-text-summarizer": {
     title: "AI Text Summarizer",
+    toolType: "AI Text Summarizer",
     placeholder: "Paste the text you want summarized...",
     minLength: 80,
     optionLabel: "Summary style",
@@ -24,6 +26,7 @@ const configs: Record<string, ToolConfig> = {
   },
   "paraphrasing-tool": {
     title: "Paraphrasing Tool",
+    toolType: "Paraphrasing Tool",
     placeholder: "Paste the text you want rewritten...",
     minLength: 30,
     optionLabel: "Rewrite style",
@@ -31,16 +34,19 @@ const configs: Record<string, ToolConfig> = {
   },
   "keyword-extractor": {
     title: "Keyword Extractor",
+    toolType: "Keyword Extractor",
     placeholder: "Paste text to extract main keywords, secondary keywords, and a short topic summary...",
     minLength: 50
   },
   "grammar-fixer": {
     title: "Grammar Fixer",
+    toolType: "Grammar Fixer",
     placeholder: "Paste text with grammar, spelling, punctuation, or clarity issues...",
     minLength: 20
   },
   "title-generator": {
     title: "Title Generator",
+    toolType: "Title Generator",
     placeholder: "Enter a topic, idea, keyword, or short description...",
     minLength: 10,
     optionLabel: "Title type",
@@ -48,6 +54,7 @@ const configs: Record<string, ToolConfig> = {
   },
   "bio-generator": {
     title: "Bio Generator",
+    toolType: "Bio Generator",
     placeholder: "Skills, interests, achievements, or background details...",
     minLength: 10,
     optionLabel: "Tone",
@@ -56,15 +63,65 @@ const configs: Record<string, ToolConfig> = {
   },
   "faq-generator": {
     title: "FAQ Generator",
+    toolType: "FAQ Generator",
     placeholder: "Enter a topic, product, service, article, or pasted text to turn into FAQs...",
     minLength: 20
   },
   "text-to-bullet-points": {
     title: "Text to Bullet Points",
+    toolType: "Text to Bullet Points",
     placeholder: "Paste paragraphs to convert into clear bullet points...",
     minLength: 40,
     optionLabel: "Bullet style",
     options: ["Short bullets", "Detailed bullets", "Study notes format"]
+  },
+  "ai-study-notes": {
+    title: "AI Study Notes Generator",
+    toolType: "notes",
+    placeholder: "Paste class notes, textbook text, lecture material, or study content...",
+    minLength: 50,
+    optionLabel: "Notes style",
+    options: ["Exam revision", "Lecture notes", "Quick review"]
+  },
+  "explain-simple": {
+    title: "Explain Like I'm 5",
+    toolType: "explain",
+    placeholder: "Paste a difficult paragraph, concept, definition, or topic...",
+    minLength: 50,
+    optionLabel: "Explanation style",
+    options: ["Very simple", "Student friendly", "Short answer"]
+  },
+  "ai-email-writer": {
+    title: "AI Email Writer",
+    toolType: "email",
+    placeholder: "Describe who the email is for, what you need to say, and any key details...",
+    minLength: 50,
+    optionLabel: "Email tone",
+    options: ["Professional", "Friendly", "Formal", "Concise"]
+  },
+  "chat-reply-generator": {
+    title: "AI Chat Reply Generator",
+    toolType: "reply",
+    placeholder: "Paste the message you need to reply to and any context...",
+    minLength: 50,
+    optionLabel: "Reply tone",
+    options: ["Natural", "Friendly", "Professional", "Polite"]
+  },
+  "content-rewriter": {
+    title: "AI Content Rewriter",
+    toolType: "rewrite",
+    placeholder: "Paste the content you want rewritten with the same meaning...",
+    minLength: 50,
+    optionLabel: "Rewrite mode",
+    options: ["Clearer", "More professional", "Shorter", "Smoother"]
+  },
+  "productivity-assistant": {
+    title: "AI Productivity Assistant",
+    toolType: "productivity",
+    placeholder: "Paste messy notes, a plan, meeting notes, or tasks to organize...",
+    minLength: 50,
+    optionLabel: "Task style",
+    options: ["To-do list", "Priority order", "Action plan"]
   }
 };
 
@@ -118,18 +175,18 @@ export function GeminiAiTool({ slug }: { slug: string }) {
     window.localStorage.setItem(getUsageKey(), JSON.stringify({ date: todayKey(), count: nextCount }));
   }
 
-  async function generate() {
+  async function generate({ keepOutput = false }: { keepOutput?: boolean } = {}) {
     if (!hasEnoughInput || loading || remaining <= 0) return;
     setLoading(true);
     setError("");
-    setOutput("");
+    if (!keepOutput) setOutput("");
 
     try {
       const response = await fetch("/api/ai-tools/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          toolType: config.title,
+          toolType: config.toolType,
           input: requestInput,
           options: option ? { mode: option } : {}
         })
@@ -137,13 +194,13 @@ export function GeminiAiTool({ slug }: { slug: string }) {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data?.error || "Unable to generate output right now.");
+        throw new Error(data?.error || "AI is busy, try again later");
       }
 
       setOutput(data.output || "");
       saveSuccessfulUse(successfulUses + 1);
     } catch (generateError) {
-      setError(generateError instanceof Error ? generateError.message : "Unable to generate output right now.");
+      setError(generateError instanceof Error ? generateError.message : "AI is busy, try again later");
     } finally {
       setLoading(false);
     }
@@ -194,7 +251,7 @@ export function GeminiAiTool({ slug }: { slug: string }) {
         ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button type="button" onClick={generate} disabled={!hasEnoughInput || loading || remaining <= 0}>
+          <Button type="button" onClick={() => generate()} disabled={!hasEnoughInput || loading || remaining <= 0}>
             {loading ? "Generating..." : "Generate"}
           </Button>
           <SecondaryButton type="button" onClick={reset}>
@@ -207,7 +264,7 @@ export function GeminiAiTool({ slug }: { slug: string }) {
         </p>
         {!hasEnoughInput ? (
           <p className="text-sm font-semibold leading-6 text-slate-500">
-            Add a little more detail to enable generation.
+            Please enter more text
           </p>
         ) : null}
         {error ? <p className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold leading-6 text-red-700">{error}</p> : null}
@@ -223,6 +280,11 @@ export function GeminiAiTool({ slug }: { slug: string }) {
             Copy
           </SecondaryButton>
         </div>
+        {output ? (
+          <SecondaryButton type="button" onClick={() => generate({ keepOutput: true })} disabled={loading || remaining <= 0} className="mt-4">
+            Regenerate
+          </SecondaryButton>
+        ) : null}
         <div className="mt-5 whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
           {loading ? "Generating your AI output..." : output || "Your AI output will appear here."}
         </div>

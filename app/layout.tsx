@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ConsentLoader } from "@/components/ConsentLoader";
+import { AdSlot } from "@/components/AdSlot";
 import "./globals.css";
 
 const inter = Inter({
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <AdSlot priority />
         <ConsentLoader />
       </body>
     </html>

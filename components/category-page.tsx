@@ -1,4 +1,3 @@
-import { AdSlot } from "@/components/AdSlot";
 import { CategoryToolSearch } from "@/components/CategoryToolSearch";
 import { Container, PageHeader } from "@/components/ui";
 import { getToolsByCategory, type ToolCategory } from "@/data/tools";
@@ -9,7 +8,6 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
     <main>
       <Container className="max-w-6xl py-10 sm:py-12">
       <PageHeader eyebrow="Free browser tools" title={category} description={intro} badges={["No signup", "Fast", "Mobile friendly"]} />
-      <AdSlot size="leaderboard" priority />
       <CategoryToolSearch tools={categoryTools} />
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2>About these {category.toLowerCase()}</h2>

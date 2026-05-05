@@ -100,13 +100,13 @@ export function PageHeader({
   className?: string;
 }) {
   return (
-    <section className={cn("relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_top_left,#dbeafe,transparent_36%),radial-gradient(circle_at_top_right,#e0e7ff,transparent_30%),linear-gradient(180deg,#ffffff,#f8fafc)] p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:p-9 lg:p-12", className)}>
+    <section className={cn("relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_top_left,#dbeafe,transparent_36%),radial-gradient(circle_at_top_right,#e0e7ff,transparent_30%),linear-gradient(180deg,#ffffff,#f8fafc)] p-6 text-center shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:p-9 lg:p-12", className)}>
       <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
-      {eyebrow ? <Badge className="border-brand-100 bg-white/85 text-[11px] font-black uppercase tracking-wide text-brand-700">{eyebrow}</Badge> : null}
-      <h1 className="mt-5 max-w-4xl break-words font-display text-4xl font-bold tracking-tight text-slate-950 [overflow-wrap:anywhere] sm:text-5xl lg:text-6xl">{title}</h1>
-      {description ? <div className="mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{description}</div> : null}
+      {eyebrow ? <Badge className="mx-auto border-brand-100 bg-white/85 text-[11px] font-black uppercase tracking-wide text-brand-700">{eyebrow}</Badge> : null}
+      <h1 className="mx-auto mt-5 max-w-4xl break-words font-display text-4xl font-bold tracking-tight text-slate-950 [overflow-wrap:anywhere] sm:text-5xl lg:text-6xl">{title}</h1>
+      {description ? <div className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{description}</div> : null}
       {badges?.length ? (
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
           {badges.map((badge) => <Badge key={badge}>{badge}</Badge>)}
         </div>
       ) : null}

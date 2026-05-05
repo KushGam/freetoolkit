@@ -14,7 +14,7 @@ const SCRIPT_ID = "freetoolkit-adsbygoogle";
 
 let scriptPromise: Promise<void> | null = null;
 
-function loadAdSense() {
+function ensureAdSenseScript() {
   if (typeof window === "undefined") return Promise.resolve();
 
   const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
@@ -32,7 +32,11 @@ function loadAdSense() {
     });
   }
 
-  return scriptPromise.then(() => {
+  return scriptPromise;
+}
+
+function loadAdSense() {
+  return ensureAdSenseScript().then(() => {
     window.adsbygoogle = window.adsbygoogle || [];
     window.adsbygoogle.push({});
   });
@@ -41,19 +45,22 @@ function loadAdSense() {
 export function AdSense({
   adSlot,
   adFormat = "auto",
-  priority = false
+  priority = false,
+  scriptOnly = false
 }: {
   adSlot: string;
   adFormat?: string;
   priority?: boolean;
+  scriptOnly?: boolean;
 }) {
   const loadedRef = useRef(false);
 
   useEffect(() => {
     const load = () => {
-      if (!adSlot || loadedRef.current) return;
+      if (loadedRef.current) return;
       loadedRef.current = true;
-      loadAdSense().catch((error) => {
+      const loader = scriptOnly ? ensureAdSenseScript : loadAdSense;
+      loader().catch((error) => {
         loadedRef.current = false;
         console.error("AdSense failed to load", error);
       });
@@ -71,7 +78,9 @@ export function AdSense({
 
     const id = window.setTimeout(load, 3000);
     return () => window.clearTimeout(id);
-  }, [adSlot, priority]);
+  }, [adSlot, priority, scriptOnly]);
+
+  if (scriptOnly) return null;
 
   return (
     <ins

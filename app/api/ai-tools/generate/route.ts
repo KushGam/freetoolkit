@@ -56,16 +56,39 @@ function promptFor(toolType: string, input: string, options: Record<string, unkn
     .map(([key, value]) => `${key}: ${String(value ?? "")}`)
     .join("\n");
 
-  return `You are a concise writing assistant for FreeToolKit.
+  const exactPrompts: Record<string, string> = {
+    notes: `You are a study assistant.
+Convert the text into structured notes.
+- Use headings
+- Use bullet points
+- Highlight key terms
+- Do NOT add new info`,
+    explain: `Explain the text simply.
+- Use basic language
+- No jargon
+- Short and clear`,
+    email: `Write a professional email.
+- Include subject
+- Clear structure
+- Concise`,
+    reply: `Generate 3 short replies.
+- Natural tone
+- Human-like
+- No long paragraphs`,
+    rewrite: `Rewrite the text.
+- Keep meaning same
+- Improve clarity
+- No added content`,
+    productivity: `Convert into to-do list.
+- Clear tasks
+- Logical order
+- Short phrases`
+  };
+
+  const basePrompt = exactPrompts[toolType] ?? `You are a concise writing assistant for FreeToolKit.
 
 TOOL TYPE:
 ${toolType}
-
-USER INPUT:
-${input}
-
-OPTIONS:
-${optionText || "none"}
 
 RULES:
 - Keep responses concise.
@@ -77,22 +100,32 @@ RULES:
 - If information is missing, say what is needed instead of inventing it.
 
 Generate the best output for this tool type.`;
+
+  return `${basePrompt}
+
+USER INPUT:
+${input}
+
+OPTIONS:
+${optionText || "none"}`;
 }
 
 function friendlyError(status: number) {
-  if (status === 401 || status === 403) return "AI API key is invalid or missing.";
-  if (status === 404) return "AI model is unavailable. Please check the model name.";
   if (status === 429) return "Daily AI usage limit reached. Please try again later.";
-  if (status >= 500) return "AI service is temporarily unavailable. Please try again shortly.";
-  return "Unable to generate AI output right now. Please try again.";
+  return "AI is busy, try again later";
 }
 
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
+    console.error("Gemini AI tool error", {
+      model: MODELS[0],
+      status: 401,
+      message: "GEMINI_API_KEY is missing"
+    });
     return NextResponse.json(
-      { error: "AI API key is missing. Please configure GEMINI_API_KEY." },
+      { error: "AI is busy, try again later" },
       { status: 401 }
     );
   }
@@ -112,9 +145,12 @@ export async function POST(request: Request) {
   const input = stringifyInput(payload.input);
   const options = payload.options ?? {};
 
-  if (!toolType || input.length < 10) {
+  const strictTools = new Set(["notes", "explain", "email", "reply", "rewrite", "productivity"]);
+  const minimumInputLength = strictTools.has(toolType) ? 50 : 10;
+
+  if (!toolType || input.length < minimumInputLength) {
     return NextResponse.json(
-      { error: "Please enter enough text before generating." },
+      { error: "Please enter more text" },
       { status: 400 }
     );
   }
@@ -184,7 +220,11 @@ export async function POST(request: Request) {
         break;
       }
     } catch (error) {
-      console.error("Gemini fetch error", { model, error });
+      console.error("Gemini fetch error", {
+        model,
+        status: 500,
+        message: error instanceof Error ? error.message : "Unknown Gemini fetch error"
+      });
       lastError = 500;
     }
   }

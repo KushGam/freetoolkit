@@ -116,9 +116,7 @@ export default function HomePage() {
       </section>
 
       <Container className="max-w-6xl py-10">
-        <AdSlot type="leaderboard" priority />
-
-        <section className="mt-12">
+        <section>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-black uppercase tracking-wide text-brand-600">Most used</p>
@@ -134,6 +132,8 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        <AdSlot type="responsive" />
 
         <section className="mt-16">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Tool library</p>
@@ -162,8 +162,6 @@ export default function HomePage() {
             ))}
           </div>
         </section>
-
-        <AdSlot type="responsive" />
 
         <section className="prose-lite mt-16 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.06)] sm:p-8">
           <h2>Free Online Tools for Everyday Work and Study</h2>
