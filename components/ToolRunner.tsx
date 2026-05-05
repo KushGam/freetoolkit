@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploadDropzone } from "@/components/FileUploadDropzone";
+import { ShiftHoursCalculator } from "@/components/tools/ShiftHoursCalculator";
 import { Button, Input, SecondaryButton, Select, Textarea } from "@/components/ui";
 import { formatBytes } from "@/lib/utils";
 
@@ -2656,6 +2657,7 @@ export function ToolRunner({ slug }: { slug: string }) {
     "weighted-grade-calculator": <WeightedGradeCalculator />,
     "attendance-calculator": <AttendanceCalculator />,
     "interest-calculator": <InterestCalculator />,
+    "shift-hours-calculator": <ShiftHoursCalculator />,
     "gpa-to-percentage-converter": <GpaToPercentageConverter />,
     "image-rotator": <AdvancedImageConverter mode="rotate" />,
     "image-converter": <AdvancedImageConverter mode="convert" />,

@@ -629,6 +629,34 @@ export const newTools: Tool[] = [
     related: "Use Study Timer for planning study blocks, Grade Percentage Calculator for marks, or Final Grade Calculator for exam targets."
   }),
   tool({
+    slug: "shift-hours-calculator",
+    href: "/shift-hours-calculator",
+    title: "Shift Hours Calculator",
+    category: "Student Tools",
+    badge: "No AI",
+    description: "Calculate shift hours, weekly totals, and pay estimates. Handles overnight shifts and break deductions.",
+    intro: "Use this shift hours calculator online free to calculate hours worked per shift, weekly totals, break deductions, overnight shifts, and estimated gross pay in Australian dollars with no signup.",
+    metaTitle: "Shift Hours Calculator — Free Online Timesheet Tool | FreeToolKit",
+    metaDescription: "Calculate hours worked per shift and weekly totals free online. Handles overnight shifts, break deductions, and pay estimates. No signup required.",
+    howToUse: ["Enter a start time and end time for a single shift.", "Choose the break duration to deduct unpaid break time.", "Enable the days you worked in the weekly timesheet.", "Enter start, end, and break values for each day.", "Add an hourly rate to estimate gross pay before tax."],
+    features: ["Single shift calculator", "Seven-day weekly timesheet", "Overnight shift handling", "Break deductions", "Estimated gross pay before tax"],
+    faq: [
+      { question: "Can this calculate overnight shifts?", answer: "Yes. If the end time is earlier than or equal to the start time, the calculator treats it as an overnight shift." },
+      { question: "Does it deduct breaks?", answer: "Yes. Choose a break duration from 0 to 90 minutes for each shift." },
+      { question: "Can I calculate weekly hours?", answer: "Yes. Enable the days you worked and the weekly total updates automatically." },
+      { question: "Is the pay estimate before tax?", answer: "Yes. The pay estimator shows estimated gross pay before tax and other deductions." },
+      { question: "Is this tool free?", answer: "Yes. It works in your browser with no signup and no AI usage." }
+    ],
+    primary: "shift hours calculator",
+    audience: "students, casual workers, part-time employees, shift workers, managers, and anyone checking timesheets",
+    does: "It calculates worked hours from start and end times, deducts breaks, handles overnight shifts, totals a seven-day week, and estimates gross pay before tax.",
+    when: "you need to check shift length, weekly timesheet totals, unpaid breaks, overnight work, or a rough pay estimate",
+    workflow: "enter times for a single shift or each day of the week, choose break durations, add an hourly rate if needed, then copy the summary",
+    benefit: "A clear timesheet total helps workers check rosters, estimate weekly pay, and spot errors before submitting hours.",
+    caution: "Pay rules can include penalty rates, overtime, allowances, tax, superannuation, and awards that are not included in this simple gross pay estimate.",
+    related: "Use Time Zone Converter for scheduling, Percentage Calculator for quick math, or Study Timer for planning work and study blocks."
+  }),
+  tool({
     slug: "interest-calculator",
     title: "Interest Calculator",
     category: "Student Tools",
