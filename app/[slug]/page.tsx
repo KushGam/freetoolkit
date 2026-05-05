@@ -14,7 +14,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: tool.metaTitle,
     description: tool.metaDescription,
-    alternates: { canonical: toolHref(tool) },
+    alternates: { canonical: `${siteUrl}${toolHref(tool)}` },
     openGraph: {
       title: `${tool.metaTitle} | FreeToolKit`,
       description: tool.metaDescription,

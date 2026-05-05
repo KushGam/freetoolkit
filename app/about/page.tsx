@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About FreeToolKit",
-  description: "Learn about FreeToolKit, a free no-login website for browser-based image, PDF, and student tools."
+  description: "Learn about FreeToolKit, a free no-login website for browser-based image, PDF, and student tools.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/about" }
 };
 
 export default function AboutPage() {

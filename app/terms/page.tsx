@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
-  description: "Read the FreeToolKit terms of use for free online image, PDF, and student tools."
+  description: "Read the FreeToolKit terms of use for free online image, PDF, and student tools.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/terms" }
 };
 
 export default function TermsPage() {

@@ -16,4 +16,4 @@ export function slugToTitle(slug: string) {
     .join(" ");
 }
 
-export const siteUrl = "https://freetoolkit.com";
+export const siteUrl = "https://www.freetoolkitapp.com";

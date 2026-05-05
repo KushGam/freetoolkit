@@ -3,7 +3,8 @@ import { CategoryPage } from "@/components/category-page";
 
 export const metadata: Metadata = {
   title: "Developer Tools Online Free | FreeToolKit",
-  description: "Use free developer tools for JSON formatting, URL encoding, UUID generation, Base64 conversion, and QR codes with no signup."
+  description: "Use free developer tools for JSON formatting, URL encoding, UUID generation, Base64 conversion, and QR codes with no signup.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/developer-tools" }
 };
 
 export default function DeveloperToolsPage() {

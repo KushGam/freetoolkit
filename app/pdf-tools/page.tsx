@@ -4,6 +4,7 @@ import { CategoryPage } from "@/components/category-page";
 export const metadata: Metadata = {
   title: "Free PDF Tools",
   description: "Merge, split, rotate, extract, and optimize PDFs online for free with browser-based PDF tools.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/pdf-tools" },
   openGraph: { title: "Free PDF Tools | FreeToolKit", description: "Free PDF tools for merging, splitting, rotating, extracting pages, and lightweight optimization." }
 };
 

@@ -669,7 +669,7 @@ function ResultBox({ label, value }: { label: string; value: React.ReactNode }) 
 }
 
 function QrCodeGenerator() {
-  const [text, setText] = useState("https://freetoolkit.com");
+  const [text, setText] = useState("https://www.freetoolkitapp.com");
   const [qr, setQr] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);

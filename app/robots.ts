@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/"
     },
-    sitemap: "https://freetoolkit.com/sitemap.xml"
+    sitemap: "https://www.freetoolkitapp.com/sitemap.xml"
   };
 }

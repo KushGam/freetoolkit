@@ -9,7 +9,7 @@ const tool = getTool("ai-resume-cover-letter");
 export const metadata: Metadata = {
   title: "AI Resume & Cover Letter Generator for Students | FreeToolKit",
   description: "Generate a tailored resume and cover letter from your existing resume and job description. Free, fast, and no signup required.",
-  alternates: { canonical: "/student-tools/ai-resume-cover-letter" },
+  alternates: { canonical: `${siteUrl}/student-tools/ai-resume-cover-letter` },
   openGraph: {
     title: "AI Resume & Cover Letter Generator for Students | FreeToolKit",
     description: "Generate a tailored resume and cover letter from your existing resume and job description. Free, fast, and no signup required.",

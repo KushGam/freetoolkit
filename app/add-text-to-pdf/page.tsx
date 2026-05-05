@@ -8,7 +8,7 @@ const tool = getTool("add-text-to-pdf");
 export const metadata: Metadata = {
   title: "Add Text and Sign PDF Online Free | FreeToolKit",
   description: "Add text, notes, dates, and signatures to PDF files online for free. No signup required. Works directly in your browser.",
-  alternates: { canonical: "/add-text-to-pdf" },
+  alternates: { canonical: `${siteUrl}/add-text-to-pdf` },
   openGraph: {
     title: "Add Text and Sign PDF Online Free | FreeToolKit",
     description: "Add text, notes, dates, and signatures to PDF files online for free. No signup required. Works directly in your browser.",

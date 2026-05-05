@@ -4,6 +4,7 @@ import { AllToolsSearch } from "@/components/AllToolsSearch";
 export const metadata: Metadata = {
   title: "All Free Online Tools",
   description: "Search all FreeToolKit image tools, PDF tools, and student tools in one place.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/all-tools" },
   openGraph: {
     title: "All Free Online Tools | FreeToolKit",
     description: "Find free browser-based tools for images, PDFs, GPA, study timers, and word counting."

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Read the FreeToolKit privacy policy for browser-based tools, analytics, advertising, and contact information."
+  description: "Read the FreeToolKit privacy policy for browser-based tools, analytics, advertising, and contact information.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/privacy" }
 };
 
 export default function PrivacyPage() {

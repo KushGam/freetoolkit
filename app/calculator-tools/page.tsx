@@ -3,7 +3,8 @@ import { CategoryPage } from "@/components/category-page";
 
 export const metadata: Metadata = {
   title: "Calculator Tools Online Free | FreeToolKit",
-  description: "Use free calculator tools for age, units, percentages, loan EMI, and time zones. Fast browser calculators with no signup required."
+  description: "Use free calculator tools for age, units, percentages, loan EMI, and time zones. Fast browser calculators with no signup required.",
+  alternates: { canonical: "https://www.freetoolkitapp.com/calculator-tools" }
 };
 
 export default function CalculatorToolsPage() {

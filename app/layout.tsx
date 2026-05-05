@@ -4,18 +4,35 @@ import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://freetoolkit.com"),
+  metadataBase: new URL("https://www.freetoolkitapp.com"),
   title: {
-    default: "FreeToolKit — Free Online Image, PDF & Student Tools",
+    default: "FreeToolKit — Free Online Tools",
     template: "%s | FreeToolKit"
   },
-  description: "Use free online tools to compress images, convert images, edit PDFs, calculate GPA, count words, and study with a Pomodoro timer. No signup required.",
+  description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities. No signup required.",
+  alternates: {
+    canonical: "https://www.freetoolkitapp.com"
+  },
   openGraph: {
-    title: "FreeToolKit — Free Online Image, PDF & Student Tools",
-    description: "Free browser-based tools for images, PDFs, and students. No signup required.",
-    url: "https://freetoolkit.com",
+    title: "FreeToolKit — Free Online Tools",
+    description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
+    url: "https://www.freetoolkitapp.com",
     siteName: "FreeToolKit",
-    type: "website"
+    type: "website",
+    images: [
+      {
+        url: "https://www.freetoolkitapp.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "FreeToolKit — Free Online Tools"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FreeToolKit — Free Online Tools",
+    description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
+    images: ["https://www.freetoolkitapp.com/og-image.png"]
   }
 };
 
