@@ -1895,6 +1895,13 @@ function AddTextToPdf() {
     let cancelled = false;
     let renderTask: { cancel: () => void; promise: Promise<unknown> } | null = null;
     async function renderPreview() {
+      if (typeof window === "undefined") return;
+      if (!window.DOMMatrix) {
+        setError("PDF preview is not supported in this browser. You can still use page number and X/Y inputs.");
+        setRenderingPreview(false);
+        return;
+      }
+
       setRenderingPreview(true);
       try {
         const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");

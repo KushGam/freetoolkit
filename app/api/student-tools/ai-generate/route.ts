@@ -3,9 +3,12 @@ import { NextResponse } from "next/server";
 
 type UsageBucket = { date: string; count: number };
 type AiOutput = { resume: string; coverLetter: string; keywords: string; improvements: string };
+type DomMatrixGlobal = typeof globalThis & { DOMMatrix?: typeof DOMMatrix };
 
 const SERVER_LIMIT = 10;
 const usage = new Map<string, UsageBucket>();
+
+export const runtime = "nodejs";
 
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
@@ -47,6 +50,15 @@ function parseClaudeOutput(output: string): AiOutput {
   };
 }
 
+async function ensureServerDomMatrix() {
+  const globalWithDomMatrix = globalThis as DomMatrixGlobal;
+  if (globalWithDomMatrix.DOMMatrix) return;
+
+  const dynamicRequire = eval("require") as NodeRequire;
+  const canvasModule = dynamicRequire("@napi-rs/canvas") as { DOMMatrix: typeof DOMMatrix };
+  globalWithDomMatrix.DOMMatrix = canvasModule.DOMMatrix;
+}
+
 async function extractResumeText(file: File) {
   const name = file.name.toLowerCase();
   const type = file.type;
@@ -56,6 +68,7 @@ async function extractResumeText(file: File) {
   }
 
   if (type === "application/pdf" || name.endsWith(".pdf")) {
+    await ensureServerDomMatrix();
     const { PDFParse } = await import("pdf-parse");
     const parser = new PDFParse({ data: Buffer.from(await file.arrayBuffer()) });
     try {
