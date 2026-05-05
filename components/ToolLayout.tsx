@@ -4,7 +4,7 @@ import { FAQ } from "@/components/FAQ";
 import { RelatedTools } from "@/components/RelatedTools";
 import { Card } from "@/components/ui";
 import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
-import { LazyToolRunner } from "@/components/LazyToolRunner";
+import { ToolRunner } from "@/components/ToolRunner";
 
 function workspaceCopy(tool: Tool) {
   if (tool.slug === "image-color-picker") return "Upload an image, then click anywhere on the preview to pick a color.";
@@ -81,7 +81,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">{tool.title}</h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-500">{workspaceCopy(tool)}</p>
         </div>
-        <LazyToolRunner slug={tool.slug} />
+        <ToolRunner slug={tool.slug} />
       </Card>
       <AdSlot size="responsive" />
       <section className="mt-12 grid gap-6 md:grid-cols-2">

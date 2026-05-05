@@ -14,41 +14,28 @@ const SCRIPT_ID = "freetoolkit-adsbygoogle";
 
 let scriptPromise: Promise<void> | null = null;
 
-function loadAdsenseScript() {
+function loadAdSense() {
   if (typeof window === "undefined") return Promise.resolve();
 
   const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
-  if (existing?.dataset.loaded === "true") return Promise.resolve();
-  if (scriptPromise) return scriptPromise;
+  if (!scriptPromise) {
+    scriptPromise = new Promise<void>((resolve, reject) => {
+      const script = existing ?? document.createElement("script");
+      script.id = SCRIPT_ID;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.src = ADSENSE_SRC;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Unable to load Google AdSense."));
 
-  scriptPromise = new Promise<void>((resolve, reject) => {
-    const script = existing ?? document.createElement("script");
-    script.id = SCRIPT_ID;
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    script.src = ADSENSE_SRC;
-    script.onload = () => {
-      script.dataset.loaded = "true";
-      resolve();
-    };
-    script.onerror = () => reject(new Error("Unable to load Google AdSense."));
-
-    if (!existing) document.head.appendChild(script);
-  });
-
-  return scriptPromise;
-}
-
-function runWhenIdle(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-
-  if ("requestIdleCallback" in window && window.requestIdleCallback) {
-    const id = window.requestIdleCallback(callback, { timeout: 2000 });
-    return () => window.cancelIdleCallback?.(id);
+      if (!existing) document.head.appendChild(script);
+    });
   }
 
-  const id = window.setTimeout(callback, 2000);
-  return () => window.clearTimeout(id);
+  return scriptPromise.then(() => {
+    window.adsbygoogle = window.adsbygoogle || [];
+    window.adsbygoogle.push({});
+  });
 }
 
 export function AdSense({
@@ -60,58 +47,34 @@ export function AdSense({
   adFormat?: string;
   priority?: boolean;
 }) {
-  const adRef = useRef<HTMLModElement | null>(null);
   const loadedRef = useRef(false);
 
   useEffect(() => {
-    if (!adSlot || loadedRef.current) return;
-
-    let cleanup = () => {};
-    let observer: IntersectionObserver | null = null;
-    let cancelled = false;
-
     const load = () => {
-      if (cancelled || loadedRef.current) return;
+      if (!adSlot || loadedRef.current) return;
       loadedRef.current = true;
-      loadAdsenseScript()
-        .then(() => {
-          if (cancelled) return;
-          window.adsbygoogle = window.adsbygoogle || [];
-          window.adsbygoogle.push({});
-        })
-        .catch((error) => {
-          loadedRef.current = false;
-          console.error("AdSense failed to load", error);
-        });
+      loadAdSense().catch((error) => {
+        loadedRef.current = false;
+        console.error("AdSense failed to load", error);
+      });
     };
 
     if (priority) {
       load();
-    } else if ("IntersectionObserver" in window && adRef.current) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
-            observer?.disconnect();
-            cleanup = runWhenIdle(load);
-          }
-        },
-        { rootMargin: "600px 0px" }
-      );
-      observer.observe(adRef.current);
-    } else {
-      cleanup = runWhenIdle(load);
+      return;
     }
 
-    return () => {
-      cancelled = true;
-      observer?.disconnect();
-      cleanup();
-    };
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(load, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+
+    const id = window.setTimeout(load, 3000);
+    return () => window.clearTimeout(id);
   }, [adSlot, priority]);
 
   return (
     <ins
-      ref={adRef}
       className="adsbygoogle block"
       data-ad-client={ADSENSE_CLIENT}
       data-ad-slot={adSlot}
