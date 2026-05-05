@@ -606,6 +606,34 @@ export const newTools: Tool[] = [
     related: "Use Image to PDF for combining images, Word to PDF for document export, Image Compressor for large scans, or PDF tools for document cleanup."
   }),
   tool({
+    slug: "ai-image-to-word",
+    title: "AI Image to Word Converter",
+    category: "AI Tools",
+    badge: "AI",
+    popular: true,
+    description: "Upload an image and convert it into a downloadable Word document using AI-powered text and layout extraction.",
+    intro: "Use this AI Image to Word Converter online free to convert JPG, PNG, or WebP images into editable DOCX text. Upload an image, let AI extract readable text and structure, edit the Markdown preview, and download a Word document with no signup.",
+    metaTitle: "AI Image to Word Converter Online Free | FreeToolKit",
+    metaDescription: "Convert images to editable Word documents online using AI. Upload JPG or PNG, extract text and structure, then download as DOCX.",
+    howToUse: ["Upload a JPG, PNG, or WebP image.", "Review the preview, file name, and file size.", "Click Extract with AI to send the image through the secure server route.", "Edit the extracted structured text or Markdown if needed.", "Click Download Word Document to generate and save a DOCX file."],
+    features: ["Gemini Vision text extraction", "JPG, PNG, and WebP upload", "Editable structured Markdown preview", "Client-side DOCX generation", "Daily browser and IP rate limits"],
+    faq: [
+      { question: "Can I convert an image to Word with AI?", answer: "Yes. Upload a supported image and the tool uses Gemini Vision through a server route to extract structured text for a DOCX file." },
+      { question: "Is the Gemini API key exposed?", answer: "No. The browser sends the image to a server API route, and the API key is only used on the server." },
+      { question: "Does it preserve exact layout?", answer: "No. The tool tries to preserve headings, paragraphs, lists, and simple tables, but formatting may vary." },
+      { question: "Can it read handwriting or scanned documents?", answer: "It may read clear handwriting or scans, but complex layouts, handwriting, and low-quality scans may not be perfectly preserved." },
+      { question: "Are uploaded images stored?", answer: "No. The image is processed only for the conversion request and is not stored by FreeToolKit." }
+    ],
+    primary: "AI image to Word converter",
+    audience: "students, office workers, researchers, administrators, job seekers, and anyone converting text-heavy images into editable documents",
+    does: "It sends an uploaded image as inline base64 data to a protected Gemini Vision route, returns structured Markdown, lets the user edit it, and creates a DOCX file in the browser.",
+    when: "a JPG, PNG, WebP, screenshot, document photo, receipt, scan, or text image needs to become editable Word content",
+    workflow: "upload the image, preview it, extract structured text with AI, edit the result, generate a DOCX file, and download the Word document",
+    benefit: "AI extraction can preserve more structure than plain OCR, making headings, paragraphs, bullet points, numbered lists, and simple table text easier to reuse.",
+    caution: "Do not expect perfect formatting; complex layouts, handwriting, scans, tables, columns, and unclear text may require manual review and editing.",
+    related: "Use Image to PDF Converter for image packets, Word to PDF Converter for document export, PDF to Word Converter for PDF workflows, AI Text Summarizer for extracted text, or Image to Base64 Converter for image data."
+  }),
+  tool({
     slug: "image-to-base64",
     title: "Image to Base64 Converter",
     category: "Image Tools",

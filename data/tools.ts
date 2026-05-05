@@ -475,7 +475,12 @@ export function toolHref(tool: Tool) {
 }
 
 export function getToolsByCategory(category: ToolCategory) {
-  return tools.filter((tool) => tool.category === category);
+  const base = tools.filter((tool) => tool.category === category);
+  if (category === "PDF Tools") {
+    const extra = getTool("ai-image-to-word");
+    return extra && !base.some((tool) => tool.slug === extra.slug) ? [...base, extra] : base;
+  }
+  return base;
 }
 
 export function getTopLevelCategory(tool: Tool): TopLevelCategory {
@@ -487,10 +492,19 @@ export function getTopLevelCategory(tool: Tool): TopLevelCategory {
 }
 
 export function getToolsByTopLevelCategory(category: TopLevelCategory) {
-  return tools.filter((tool) => getTopLevelCategory(tool) === category);
+  const base = tools.filter((tool) => getTopLevelCategory(tool) === category);
+  if (category === "Everyday") {
+    const extra = getTool("ai-image-to-word");
+    return extra && !base.some((tool) => tool.slug === extra.slug) ? [...base, extra] : base;
+  }
+  return base;
 }
 
 export function getRelatedTools(tool: Tool) {
+  if (tool.slug === "ai-image-to-word") {
+    const preferred = ["image-to-pdf", "word-to-pdf", "pdf-to-word", "ai-text-summarizer", "image-to-base64"];
+    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  }
   if (tool.slug === "image-to-pdf") {
     const preferred = ["image-compressor", "image-resizer", "merge-pdf", "word-to-pdf"];
     return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));

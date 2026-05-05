@@ -1090,6 +1090,171 @@ function ImageToWord() {
   );
 }
 
+function AiImageToWord() {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [markdown, setMarkdown] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [successfulUses, setSuccessfulUses] = useState(0);
+  useObjectUrlCleanup(output);
+
+  useEffect(() => {
+    const raw = window.localStorage.getItem("freetoolkit-ai-image-to-word-usage");
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw) as { date?: string; count?: number };
+      setSuccessfulUses(parsed.date === new Date().toISOString().slice(0, 10) ? parsed.count ?? 0 : 0);
+    } catch {
+      setSuccessfulUses(0);
+    }
+  }, []);
+
+  const remaining = Math.max(0, 3 - successfulUses);
+
+  async function load(files: File[]) {
+    const next = files[0] ?? null;
+    setFile(next);
+    setMarkdown("");
+    setOutput(null);
+    setError("");
+    if (preview) URL.revokeObjectURL(preview);
+    if (!next) {
+      setPreview("");
+      return;
+    }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(next.type)) {
+      setError("Upload a JPG, PNG, or WebP image.");
+      setPreview("");
+      return;
+    }
+    setPreview(URL.createObjectURL(next));
+  }
+
+  function saveSuccessfulUse(nextCount: number) {
+    setSuccessfulUses(nextCount);
+    window.localStorage.setItem("freetoolkit-ai-image-to-word-usage", JSON.stringify({ date: new Date().toISOString().slice(0, 10), count: nextCount }));
+  }
+
+  async function extract() {
+    if (!file || remaining <= 0) return;
+    setBusy(true);
+    setError("");
+    setOutput(null);
+    try {
+      const imageBase64 = await readImageAsDataUrl(file);
+      const response = await fetch("/api/ai-tools/image-to-word", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageBase64,
+          mimeType: file.type
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data?.error || "AI is busy, try again later.");
+      setMarkdown(data.output || "");
+      saveSuccessfulUse(successfulUses + 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "AI is busy, try again later.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function downloadDocx() {
+    setError("");
+    if (!markdown.trim()) {
+      setError("Extract or enter text before downloading a Word document.");
+      return;
+    }
+    try {
+      const { Document, HeadingLevel, Packer, Paragraph, TextRun } = await import("docx");
+      const children = markdown.split(/\r?\n/).map((rawLine) => {
+        const line = rawLine.trim();
+        if (!line) return new Paragraph({ text: "" });
+        const heading = line.match(/^(#{1,3})\s+(.+)/);
+        if (heading) {
+          return new Paragraph({
+            text: heading[2],
+            heading: heading[1].length === 1 ? HeadingLevel.HEADING_1 : HeadingLevel.HEADING_2
+          });
+        }
+        const bullet = line.match(/^[-*]\s+(.+)/);
+        if (bullet) {
+          return new Paragraph({ text: bullet[1], bullet: { level: 0 } });
+        }
+        const numbered = line.match(/^\d+\.\s+(.+)/);
+        if (numbered) {
+          return new Paragraph({ text: numbered[1], numbering: { reference: "numbered-list", level: 0 } });
+        }
+        return new Paragraph({ children: [new TextRun(line.replace(/\*\*/g, ""))] });
+      });
+      const doc = new Document({
+        numbering: {
+          config: [
+            {
+              reference: "numbered-list",
+              levels: [
+                {
+                  level: 0,
+                  format: "decimal",
+                  text: "%1.",
+                  alignment: "left"
+                }
+              ]
+            }
+          ]
+        },
+        sections: [{ properties: {}, children }]
+      });
+      const blob = await Packer.toBlob(doc);
+      setOutput(downloadBlob(blob, `${(file?.name || "ai-image-to-word").replace(/\.[^.]+$/, "") || "ai-image-to-word"}.docx`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to create Word document.");
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview("");
+    setMarkdown("");
+    setOutput(null);
+    setError("");
+    setBusy(false);
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload a JPG, PNG, or WebP image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
+      <FileInfo file={file} />
+      <p className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm font-semibold leading-6 text-brand-700">
+        This AI tool extracts and structures text from images. Complex layouts, handwriting, and scanned documents may not be perfectly preserved.
+      </p>
+      <p className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-600">
+        {remaining} AI image conversion{remaining === 1 ? "" : "s"} remaining today in this browser.
+      </p>
+
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Uploaded image preview" /> : null}
+
+      <div className="mt-5 flex flex-wrap gap-3">
+        <Button onClick={extract} disabled={!file || busy || remaining <= 0}>{busy ? "Extracting with AI..." : "Extract with AI"}</Button>
+        <SecondaryButton onClick={downloadDocx} disabled={!markdown.trim()}>Download Word Document</SecondaryButton>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+
+      <label className="mt-5 block text-sm font-bold text-slate-700">
+        Extracted structured text / Markdown
+        <Textarea className="mt-2 min-h-80 font-mono" value={markdown} onChange={(event) => setMarkdown(event.target.value)} placeholder="AI-extracted Markdown will appear here. You can edit it before downloading as DOCX." />
+      </label>
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
 function PdfToWord() {
   const [file, setFile] = useState<File | null>(null);
 
@@ -2961,6 +3126,7 @@ export function ToolRunner({ slug }: { slug: string }) {
     "image-resizer": <ImageResizer />,
     "image-to-pdf": <ImageToPdf />,
     "image-to-word": <ImageToWord />,
+    "ai-image-to-word": <AiImageToWord />,
     "merge-pdf": <PdfTool mode="merge" />,
     "split-pdf": <PdfTool mode="split" />,
     "compress-pdf": <PdfTool mode="compress" />,
