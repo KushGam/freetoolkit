@@ -16,7 +16,7 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
           ))}
         </div>
       </section>
-      <AdSlot size="leaderboard" />
+      <AdSlot size="leaderboard" priority />
       <CategoryToolSearch tools={categoryTools} />
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2>About these {category.toLowerCase()}</h2>

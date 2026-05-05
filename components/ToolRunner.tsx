@@ -2306,6 +2306,20 @@ type AiResumeOutput = {
   improvements: string;
 };
 
+function aiSection(output: string, name: string) {
+  const pattern = new RegExp(`---${name}---\\s*([\\s\\S]*?)(?=\\n---[A-Z ]+---|$)`, "i");
+  return output.match(pattern)?.[1]?.trim() ?? "";
+}
+
+function parseAiResumeOutput(output: string): AiResumeOutput {
+  return {
+    resume: aiSection(output, "RESUME") || output.trim(),
+    coverLetter: aiSection(output, "COVER LETTER"),
+    keywords: aiSection(output, "KEYWORDS"),
+    improvements: aiSection(output, "IMPROVEMENTS")
+  };
+}
+
 const AI_USAGE_KEY = "freetoolkit_ai_student_usage";
 const AI_CLIENT_LIMIT = 3;
 
@@ -2352,7 +2366,6 @@ function AiResumeCoverLetterGenerator() {
   const [copied, setCopied] = useState("");
   const [usageCount, setUsageCount] = useState(0);
   const [busy, setBusy] = useState(false);
-  const [extracting, setExtracting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -2366,26 +2379,21 @@ function AiResumeCoverLetterGenerator() {
     setError("");
     if (!next) return;
     const name = next.name.toLowerCase();
-    const isSupported = name.endsWith(".txt") || name.endsWith(".pdf") || name.endsWith(".docx");
-    if (!isSupported) {
-      setError("Please upload a PDF, Word DOCX, or TXT resume file.");
+    const isTxt = next.type === "text/plain" || name.endsWith(".txt");
+    if (!isTxt) {
+      if (next.type === "application/pdf" || name.endsWith(".pdf")) {
+        setError("PDF resume upload is coming soon. Please copy and paste your resume text.");
+      } else {
+        setError("Only TXT resume upload is supported right now. Please copy and paste DOCX or PDF resume text.");
+      }
       return;
     }
 
-    setExtracting(true);
     try {
-      const formData = new FormData();
-      formData.append("action", "extract");
-      formData.append("resumeFile", next);
-      const response = await fetch("/api/student-tools/ai-generate", { method: "POST", body: formData });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Unable to extract resume text.");
-      setResumeText(String(data.resumeText ?? "").trim());
+      setResumeText((await next.text()).trim());
       setError("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to extract resume text.");
-    } finally {
-      setExtracting(false);
+      setError(err instanceof Error ? err.message : "Unable to read that TXT file.");
     }
   }
 
@@ -2399,12 +2407,12 @@ function AiResumeCoverLetterGenerator() {
   async function generate() {
     setError("");
     setCopied("");
-    if (!resumeText.trim()) {
-      setError("Paste your resume or upload a .txt resume before generating.");
+    if (resumeText.trim().length < 200) {
+      setError("Paste at least 200 characters of resume text before generating.");
       return;
     }
-    if (!jobDescription.trim()) {
-      setError("Paste the job description before generating.");
+    if (jobDescription.trim().length < 100) {
+      setError("Paste at least 100 characters of job description before generating.");
       return;
     }
     if (!confirmed) {
@@ -2417,20 +2425,41 @@ function AiResumeCoverLetterGenerator() {
       return;
     }
     setBusy(true);
+    setResult({ resume: "", coverLetter: "", keywords: "", improvements: "" });
+    setActiveOutput("resume");
     try {
+      const trimmedResume = resumeText.slice(0, 3000);
+      const trimmedJD = jobDescription.slice(0, 1500);
       const response = await fetch("/api/student-tools/ai-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resumeText, jobDescription, roleTitle, tone, experienceLevel, outputType })
+        body: JSON.stringify({ resumeText: trimmedResume, jobDescription: trimmedJD, roleTitle, tone, experienceLevel, outputType })
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Unable to generate right now.");
-      const nextResult = {
-        resume: String(data.resume ?? "").trim(),
-        coverLetter: String(data.coverLetter ?? "").trim(),
-        keywords: String(data.keywords ?? "").trim(),
-        improvements: String(data.improvements ?? "").trim()
-      };
+
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type") ?? "";
+        const errorText = contentType.includes("application/json")
+          ? String(((await response.json()) as { error?: string }).error ?? "")
+          : await response.text();
+        throw new Error(errorText || "Unable to generate right now.");
+      }
+
+      if (!response.body) throw new Error("Unable to stream AI output in this browser.");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let streamedText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        streamedText += decoder.decode(value, { stream: true });
+        setResult({ resume: streamedText, coverLetter: "", keywords: "", improvements: "" });
+      }
+
+      streamedText += decoder.decode();
+      if (!streamedText.trim()) throw new Error("AI returned an empty response. Please try again.");
+      const nextResult = parseAiResumeOutput(streamedText);
       setResult(nextResult);
       setActiveOutput(outputType === "Cover Letter" ? "coverLetter" : "resume");
       writeAiUsage(usage.count + 1);
@@ -2454,7 +2483,6 @@ function AiResumeCoverLetterGenerator() {
     setActiveOutput("resume");
     setResult(null);
     setCopied("");
-    setExtracting(false);
     setError("");
   }
 
@@ -2466,25 +2494,35 @@ function AiResumeCoverLetterGenerator() {
   };
   const currentOutput = result?.[activeOutput] ?? "";
   const resumeLength = resumeText.trim().length;
+  const jobDescriptionLength = jobDescription.trim().length;
+  const fileUploaded = Boolean(resumeFile);
 
   return (
-    <div>
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
-        <div className="grid gap-5">
-          <div>
-            <p className="mb-2 text-sm font-bold text-slate-700">Upload your resume (PDF, Word, or TXT)</p>
-            <FileUploadDropzone label="Upload your resume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" onFiles={loadResume} />
-            <FileInfo file={resumeFile} />
-            {extracting ? <p className="mt-3 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Extracting resume text...</p> : null}
+    <div className="min-w-0 overflow-hidden">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+        <div className="grid min-w-0 gap-5">
+          <div className="min-w-0">
+            <p className="mb-2 text-sm font-bold text-slate-700">Optional TXT upload</p>
+            <FileUploadDropzone label="Upload a TXT resume" accept=".txt,text/plain" onFiles={loadResume} />
+            {resumeFile ? (
+              <FileInfo file={resumeFile} />
+            ) : !resumeText.trim() ? (
+              <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-500">
+                Choose a file or paste your resume text to enable this tool.
+              </p>
+            ) : null}
+            <p className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold leading-6 text-slate-600">
+              PDF resume upload is coming soon. Please copy and paste your resume text.
+            </p>
           </div>
           {resumeText ? (
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Extracted preview</p>
-              <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">{resumeText.slice(0, 500)}{resumeText.length > 500 ? "..." : ""}</p>
+            <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Resume preview</p>
+              <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-700 [overflow-wrap:anywhere]">{resumeText.slice(0, 500)}{resumeText.length > 500 ? "..." : ""}</p>
             </div>
           ) : null}
           <label className="text-sm font-bold text-slate-700">
-            Or paste your resume
+            Paste your resume
             <Textarea
               className="mt-2 min-h-72"
               value={resumeText}
@@ -2493,22 +2531,32 @@ function AiResumeCoverLetterGenerator() {
                 setResult(null);
                 setError("");
               }}
-              placeholder="Paste your resume here. You can copy your resume from Word or PDF."
+              onPaste={(event) => {
+                setTimeout(() => {
+                  const el = event.target as HTMLTextAreaElement;
+                  setResumeText(el.value);
+                }, 0);
+              }}
+              placeholder="Paste your resume here."
             />
           </label>
-          <div className="flex flex-col gap-2 text-xs font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-            <p>You can upload a PDF, Word, or TXT file above, or paste resume text manually and edit it before generating.</p>
+          <div className="flex min-w-0 flex-col gap-2 text-xs font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <p className="min-w-0 break-words [overflow-wrap:anywhere]">Copy your resume from Word, PDF, or LinkedIn and paste it here.</p>
             <p className="font-black text-slate-600">{resumeLength.toLocaleString()} characters</p>
           </div>
-          {resumeLength > 0 && resumeLength < 250 ? (
+          <p className="break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold leading-6 text-slate-600 [overflow-wrap:anywhere]">
+            For PDF resumes, copy the text from your PDF and paste it here. PDF upload support is coming soon.
+          </p>
+          {resumeLength > 0 && resumeLength < 200 ? (
             <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-800">
-              Please provide more details in your resume for better results.
+              Add at least {200 - resumeLength} more characters of resume text before generating.
             </p>
           ) : null}
           <label className="text-sm font-bold text-slate-700">
             Job description
             <Textarea className="mt-2 min-h-56" value={jobDescription} onChange={(event) => setJobDescription(event.target.value)} placeholder="Paste job description here..." />
           </label>
+          <p className="text-xs font-black text-slate-600">{jobDescriptionLength.toLocaleString()} job description characters</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="text-sm font-bold text-slate-700">Role title <Input className="mt-2" value={roleTitle} onChange={(event) => setRoleTitle(event.target.value)} placeholder="Software Intern, Marketing Assistant..." /></label>
             <label className="text-sm font-bold text-slate-700">Tone <Select className="mt-2" value={tone} onChange={(event) => setTone(event.target.value)}>{["Professional", "Friendly", "Confident"].map((item) => <option key={item}>{item}</option>)}</Select></label>
@@ -2520,7 +2568,7 @@ function AiResumeCoverLetterGenerator() {
             I confirm the generated content should only use my real experience.
           </label>
           <div className="flex flex-wrap gap-3">
-            <Button onClick={generate} disabled={busy || extracting || !confirmed || !resumeText.trim() || !jobDescription.trim()}>
+            <Button onClick={generate} disabled={!resumeText.trim() && !fileUploaded}>
               {busy ? "Generating..." : "Generate"}
             </Button>
             <SecondaryButton onClick={reset}>Reset</SecondaryButton>
@@ -2529,26 +2577,26 @@ function AiResumeCoverLetterGenerator() {
             This tool improves your resume using AI based on your input. Always review before using.
           </p>
           <p className="text-xs font-semibold text-slate-500">Daily free usage: {usageCount}/{AI_CLIENT_LIMIT} requests used in this browser.</p>
-          {busy ? <p className="rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Analyzing your resume and generating tailored content...</p> : null}
+          {busy ? <p className="rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Generating your tailored resume and cover letter...</p> : null}
           <ErrorMessage message={error} />
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 sm:grid-cols-4">
             {(Object.keys(outputLabels) as Array<keyof AiResumeOutput>).map((key) => (
-              <button key={key} className={`rounded-xl px-3 py-3 text-xs font-black sm:text-sm ${activeOutput === key ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActiveOutput(key)}>
+              <button key={key} className={`min-w-0 rounded-xl px-2 py-3 text-xs font-black leading-tight sm:px-3 sm:text-sm ${activeOutput === key ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActiveOutput(key)}>
                 {outputLabels[key]}
               </button>
             ))}
           </div>
-          <div className="mt-4 min-h-[28rem] rounded-2xl border border-slate-200 bg-slate-50 p-4">
+          <div className="mt-4 min-h-[28rem] min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
             {currentOutput ? (
-              <pre className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">{currentOutput}</pre>
+              <pre className="max-w-full whitespace-pre-wrap break-words text-sm leading-7 text-slate-800 [overflow-wrap:anywhere]">{currentOutput}</pre>
             ) : (
               <div className="flex min-h-[24rem] items-center justify-center text-center">
-                <div>
-                  <p className="text-lg font-black text-slate-900">Your AI output will appear here</p>
-                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Upload or paste your resume, add a job description, and generate polished content that you can review, copy, or download.</p>
+                <div className="min-w-0">
+                  <p className="break-words text-lg font-black text-slate-900 [overflow-wrap:anywhere]">Your AI output will appear here</p>
+                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Your AI output will appear here.</p>
                 </div>
               </div>
             )}

@@ -7,12 +7,12 @@ import { siteUrl } from "@/lib/utils";
 const tool = getTool("ai-resume-cover-letter");
 
 export const metadata: Metadata = {
-  title: "AI Resume & Cover Letter Generator (PDF, Word, TXT) | FreeToolKit",
-  description: "Upload your resume (PDF, Word, or TXT) and generate a tailored resume and cover letter using AI. Free and no signup required.",
+  title: "AI Resume & Cover Letter Generator | FreeToolKit",
+  description: "Paste your resume text, add a job description, and generate a tailored resume and cover letter using Claude. Free and no signup required.",
   alternates: { canonical: `${siteUrl}/student-tools/ai-resume-cover-letter` },
   openGraph: {
-    title: "AI Resume & Cover Letter Generator (PDF, Word, TXT) | FreeToolKit",
-    description: "Upload your resume (PDF, Word, or TXT) and generate a tailored resume and cover letter using AI. Free and no signup required.",
+    title: "AI Resume & Cover Letter Generator | FreeToolKit",
+    description: "Paste your resume text, add a job description, and generate a tailored resume and cover letter using Claude. Free and no signup required.",
     url: `${siteUrl}/student-tools/ai-resume-cover-letter`,
     siteName: "FreeToolKit",
     type: "website"

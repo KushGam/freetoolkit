@@ -4,7 +4,7 @@ import { FAQ } from "@/components/FAQ";
 import { RelatedTools } from "@/components/RelatedTools";
 import { Card } from "@/components/ui";
 import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
-import { ToolRunner } from "@/components/ToolRunner";
+import { LazyToolRunner } from "@/components/LazyToolRunner";
 
 function workspaceCopy(tool: Tool) {
   if (tool.slug === "image-color-picker") return "Upload an image, then click anywhere on the preview to pick a color.";
@@ -58,8 +58,8 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
         <div className="mx-auto max-w-4xl">
           <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-xs font-black uppercase tracking-wide text-brand-700 shadow-sm">{tool.category}</p>
-          <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">{tool.title}</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{tool.intro}</p>
+          <h1 className="mx-auto mt-5 max-w-4xl break-words font-display text-4xl font-bold leading-[1.05] tracking-tight text-slate-950 [overflow-wrap:anywhere] sm:text-5xl lg:text-6xl">{tool.title}</h1>
+          <p className="mx-auto mt-5 max-w-3xl break-words text-base leading-relaxed text-slate-600 [overflow-wrap:anywhere] sm:text-lg">{tool.intro}</p>
           <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-3">
             {["Free to use", "No signup", categoryShort].map((item) => (
               <div key={item} className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm font-black text-slate-700 shadow-sm backdrop-blur">
@@ -74,14 +74,14 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           ) : null}
         </div>
       </section>
-      <AdSlot size="leaderboard" />
-      <Card className="mx-auto mt-8 max-w-5xl p-5 sm:p-7">
+      <AdSlot size="leaderboard" priority />
+      <Card className="mx-auto mt-8 max-w-5xl overflow-hidden p-5 sm:p-7">
         <div className="mb-6 border-b border-slate-100 pb-5">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Tool workspace</p>
           <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">{tool.title}</h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-500">{workspaceCopy(tool)}</p>
         </div>
-        <ToolRunner slug={tool.slug} />
+        <LazyToolRunner slug={tool.slug} />
       </Card>
       <AdSlot size="responsive" />
       <section className="mt-12 grid gap-6 md:grid-cols-2">

@@ -116,7 +116,7 @@ export default function HomePage() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
-        <AdSlot type="leaderboard" />
+        <AdSlot type="leaderboard" priority />
 
         <section className="mt-12">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

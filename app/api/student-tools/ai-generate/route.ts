@@ -2,13 +2,22 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 
 type UsageBucket = { date: string; count: number };
-type AiOutput = { resume: string; coverLetter: string; keywords: string; improvements: string };
-type DomMatrixGlobal = typeof globalThis & { DOMMatrix?: typeof DOMMatrix };
+type GenerateBody = {
+  resumeText: string;
+  jobDescription: string;
+  roleTitle: string;
+  tone: string;
+  experienceLevel: string;
+  outputType: string;
+};
 
+const MODEL = "claude-haiku-4-5-20251001";
 const SERVER_LIMIT = 10;
 const usage = new Map<string, UsageBucket>();
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
@@ -36,79 +45,8 @@ function incrementUsage(ip: string) {
   usage.set(ip, { date, count: current.count + 1 });
 }
 
-function section(output: string, name: string) {
-  const pattern = new RegExp(`---${name}---\\\\s*([\\\\s\\\\S]*?)(?=\\\\n---[A-Z ]+---|$)`, "i");
-  return output.match(pattern)?.[1]?.trim() ?? "";
-}
-
-function parseClaudeOutput(output: string): AiOutput {
+function normalizeBody(body: Record<string, unknown>): GenerateBody {
   return {
-    resume: section(output, "RESUME") || output.trim(),
-    coverLetter: section(output, "COVER LETTER"),
-    keywords: section(output, "KEYWORDS"),
-    improvements: section(output, "IMPROVEMENTS")
-  };
-}
-
-async function ensureServerDomMatrix() {
-  const globalWithDomMatrix = globalThis as DomMatrixGlobal;
-  if (globalWithDomMatrix.DOMMatrix) return;
-
-  const dynamicRequire = eval("require") as NodeRequire;
-  const canvasModule = dynamicRequire("@napi-rs/canvas") as { DOMMatrix: typeof DOMMatrix };
-  globalWithDomMatrix.DOMMatrix = canvasModule.DOMMatrix;
-}
-
-async function extractResumeText(file: File) {
-  const name = file.name.toLowerCase();
-  const type = file.type;
-
-  if (type === "text/plain" || name.endsWith(".txt")) {
-    return (await file.text()).trim();
-  }
-
-  if (type === "application/pdf" || name.endsWith(".pdf")) {
-    await ensureServerDomMatrix();
-    const { PDFParse } = await import("pdf-parse");
-    const parser = new PDFParse({ data: Buffer.from(await file.arrayBuffer()) });
-    try {
-      const data = await parser.getText();
-      return data.text.trim();
-    } finally {
-      await parser.destroy();
-    }
-  }
-
-  if (type.includes("wordprocessingml") || name.endsWith(".docx")) {
-    const mammoth = await import("mammoth");
-    const result = await mammoth.extractRawText({ buffer: Buffer.from(await file.arrayBuffer()) });
-    return result.value.trim();
-  }
-
-  throw new Error("Please upload a PDF, Word DOCX, or TXT resume file.");
-}
-
-async function requestBody(request: Request) {
-  const contentType = request.headers.get("content-type") ?? "";
-  if (contentType.includes("multipart/form-data")) {
-    const formData = await request.formData();
-    const fileValue = formData.get("resumeFile");
-    const file = fileValue instanceof File ? fileValue : null;
-    const resumeText = file ? await extractResumeText(file) : String(formData.get("resumeText") ?? "");
-    return {
-      action: String(formData.get("action") ?? "generate"),
-      resumeText,
-      jobDescription: String(formData.get("jobDescription") ?? ""),
-      roleTitle: String(formData.get("roleTitle") ?? ""),
-      tone: String(formData.get("tone") ?? "Professional"),
-      experienceLevel: String(formData.get("experienceLevel") ?? "Student"),
-      outputType: String(formData.get("outputType") ?? "Both")
-    };
-  }
-
-  const body = await request.json().catch(() => ({})) as Record<string, unknown>;
-  return {
-    action: String(body.action ?? "generate"),
     resumeText: String(body.resumeText ?? ""),
     jobDescription: String(body.jobDescription ?? ""),
     roleTitle: String(body.roleTitle ?? ""),
@@ -118,100 +56,160 @@ async function requestBody(request: Request) {
   };
 }
 
+function getAnthropicStatus(error: unknown) {
+  if (typeof error === "object" && error !== null && "status" in error) {
+    const status = Number((error as { status?: unknown }).status);
+    return Number.isFinite(status) ? status : undefined;
+  }
+  return undefined;
+}
+
+function getAnthropicMessage(error: unknown) {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "object" && error !== null && "message" in error) {
+    return String((error as { message?: unknown }).message ?? "");
+  }
+  return "Unknown Anthropic error";
+}
+
+function publicErrorForStatus(status?: number) {
+  if (status === 401 || status === 403) return { status, message: "AI API key is invalid or missing." };
+  if (status === 404) return { status, message: "AI model is unavailable. Please check the model name." };
+  if (status === 429) return { status, message: "Daily AI usage limit reached. Please try again later." };
+  if (status && status >= 500) return { status, message: "AI service is temporarily unavailable. Please try again shortly." };
+  return { status: 503, message: "AI service is temporarily unavailable. Please try again shortly." };
+}
+
 export async function POST(request: Request) {
-  let body: Awaited<ReturnType<typeof requestBody>>;
-  try {
-    body = await requestBody(request);
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to read resume file." }, { status: 400 });
+  const contentType = request.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    return NextResponse.json({ error: "Only JSON requests are supported." }, { status: 415 });
   }
 
-  if (body.action === "extract") {
-    if (!body.resumeText.trim()) {
-      return NextResponse.json({ error: "No readable resume text was found in that file." }, { status: 400 });
-    }
-    return NextResponse.json({ resumeText: body.resumeText });
+  const rawBody = await request.json().catch(() => null);
+  if (!rawBody || typeof rawBody !== "object") {
+    return NextResponse.json({ error: "Invalid JSON request body." }, { status: 400 });
+  }
+
+  const body = normalizeBody(rawBody as Record<string, unknown>);
+  const resumeText = body.resumeText.trim();
+  const jobDescription = body.jobDescription.trim();
+  const trimmedResume = resumeText.slice(0, 3000);
+  const trimmedJD = jobDescription.slice(0, 1500);
+
+  if (resumeText.length < 200) {
+    return NextResponse.json({ error: "Resume text must be at least 200 characters." }, { status: 400 });
+  }
+
+  if (jobDescription.length < 100) {
+    return NextResponse.json({ error: "Job description must be at least 100 characters." }, { status: 400 });
   }
 
   const ip = getClientIp(request);
-  // TODO: Use Upstash Redis for production rate limiting across server instances.
+  // TODO: Use durable storage for production rate limiting across server instances.
   if (isRateLimited(ip)) {
-    return NextResponse.json({ error: "Daily server limit reached. Please try again tomorrow." }, { status: 429 });
+    return NextResponse.json({ error: "Daily AI usage limit reached. Please try again later." }, { status: 429 });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: "AI generation is not configured yet. Add ANTHROPIC_API_KEY to the server environment." }, { status: 500 });
+    return NextResponse.json({ error: "AI API key is missing. Please configure ANTHROPIC_API_KEY." }, { status: 401 });
   }
 
-  const resumeText = body.resumeText.trim();
-  const jobDescription = body.jobDescription.trim();
-  if (!resumeText || !jobDescription) {
-    return NextResponse.json({ error: "Resume text and job description are required." }, { status: 400 });
-  }
+  const prompt = `You are a professional resume and cover letter assistant.
 
-  const prompt = `
-You are a professional resume and career expert.
+INPUT RESUME:
+${trimmedResume}
 
-INPUT:
-Resume:
-${resumeText.slice(0, 10000)}
+JOB DESCRIPTION:
+${trimmedJD}
 
-Job Description:
-${jobDescription.slice(0, 7000)}
+ROLE TITLE:
+${body.roleTitle}
 
-Context:
-- Role title: ${body.roleTitle || "Not specified"}
-- Tone: ${body.tone || "Professional"}
-- Experience level: ${body.experienceLevel || "Student"}
-- Output type requested: ${body.outputType || "Both"}
+TONE:
+${body.tone}
 
-TASK:
-1. Improve and tailor the resume for this job
-2. Generate a professional cover letter
-3. Extract ATS keywords
-4. Suggest improvements
+EXPERIENCE LEVEL:
+${body.experienceLevel}
+
+OUTPUT TYPE:
+${body.outputType}
 
 RULES:
-- DO NOT invent experience
-- DO NOT add fake companies, degrees, dates, certifications, awards, projects, or skills
-- Only improve and rephrase existing content
-- Make it ATS-friendly
-- Keep formatting clean and structured
-- Keep the resume and cover letter concise
+- Do not invent experience, companies, degrees, certifications, dates, or skills.
+- Only improve and rephrase information provided by the user.
+- Make the resume ATS-friendly.
+- Use clear professional formatting.
+- Keep output concise and realistic.
+- If information is missing, add a “Suggested Improvements” section instead of inventing details.
 
-OUTPUT FORMAT:
+OUTPUT EXACTLY IN THIS STRUCTURE:
 
 ---RESUME---
-[structured resume]
+[tailored resume here]
 
 ---COVER LETTER---
-[cover letter]
+[cover letter here]
 
 ---KEYWORDS---
-[list]
+- keyword 1
+- keyword 2
 
 ---IMPROVEMENTS---
-[list]
-`;
+- improvement 1
+- improvement 2`;
 
   try {
     const anthropic = new Anthropic({ apiKey });
-    const response = await anthropic.messages.create({
-      model: "claude-3-haiku-20240307",
+    const stream = await anthropic.messages.stream({
+      model: MODEL,
       max_tokens: 1500,
+      temperature: 0.4,
       messages: [{ role: "user", content: prompt }]
     });
-    const text = response.content
-      .map((part) => (part.type === "text" ? part.text : ""))
-      .join("\n")
-      .trim();
 
-    if (!text) throw new Error("Empty Claude response.");
-    incrementUsage(ip);
-    return NextResponse.json(parseClaudeOutput(text));
+    return new Response(
+      new ReadableStream({
+        async start(controller) {
+          const encoder = new TextEncoder();
+          let receivedText = false;
+
+          try {
+            for await (const chunk of stream) {
+              if (chunk.type === "content_block_delta" && chunk.delta.type === "text_delta") {
+                receivedText = true;
+                controller.enqueue(encoder.encode(chunk.delta.text));
+              }
+            }
+
+            if (receivedText) incrementUsage(ip);
+            controller.close();
+          } catch (error) {
+            console.error("Anthropic stream failed", {
+              statusCode: getAnthropicStatus(error) ?? "unknown",
+              model: MODEL,
+              message: getAnthropicMessage(error)
+            });
+            controller.error(error);
+          }
+        }
+      }),
+      {
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store"
+        }
+      }
+    );
   } catch (error) {
-    console.error("Claude generation failed:", error);
-    return NextResponse.json({ error: "AI is currently busy. Please try again shortly." }, { status: 503 });
+    const status = getAnthropicStatus(error);
+    const publicError = publicErrorForStatus(status);
+    console.error("Anthropic generation failed", {
+      statusCode: status ?? "unknown",
+      model: MODEL,
+      message: getAnthropicMessage(error)
+    });
+    return NextResponse.json({ error: publicError.message }, { status: publicError.status });
   }
 }
