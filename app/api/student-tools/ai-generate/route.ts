@@ -1,14 +1,10 @@
+import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 
 type UsageBucket = { date: string; count: number };
-type GeminiCandidate = { content?: { parts?: Array<{ text?: string }> } };
+type AiOutput = { resume: string; coverLetter: string; keywords: string; improvements: string };
 
 const SERVER_LIMIT = 10;
-const GEMINI_MODELS = [
-  "gemini-2.0-flash",
-  "gemini-1.5-flash",
-  "gemini-1.5-pro"
-];
 const usage = new Map<string, UsageBucket>();
 
 function todayKey() {
@@ -37,133 +33,172 @@ function incrementUsage(ip: string) {
   usage.set(ip, { date, count: current.count + 1 });
 }
 
-function cleanJsonText(text: string) {
-  return text
-    .trim()
-    .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
+function section(output: string, name: string) {
+  const pattern = new RegExp(`---${name}---\\\\s*([\\\\s\\\\S]*?)(?=\\\\n---[A-Z ]+---|$)`, "i");
+  return output.match(pattern)?.[1]?.trim() ?? "";
 }
 
-function parseGeminiOutput(text: string) {
-  try {
-    const parsed = JSON.parse(cleanJsonText(text)) as { resume?: string; coverLetter?: string; keywords?: string[] | string };
-    return {
-      resume: String(parsed.resume ?? "").trim(),
-      coverLetter: String(parsed.coverLetter ?? "").trim(),
-      keywords: Array.isArray(parsed.keywords) ? parsed.keywords.join(", ") : String(parsed.keywords ?? "").trim()
-    };
-  } catch {
-    return { resume: text.trim(), coverLetter: "", keywords: "" };
+function parseClaudeOutput(output: string): AiOutput {
+  return {
+    resume: section(output, "RESUME") || output.trim(),
+    coverLetter: section(output, "COVER LETTER"),
+    keywords: section(output, "KEYWORDS"),
+    improvements: section(output, "IMPROVEMENTS")
+  };
+}
+
+async function extractResumeText(file: File) {
+  const name = file.name.toLowerCase();
+  const type = file.type;
+
+  if (type === "text/plain" || name.endsWith(".txt")) {
+    return (await file.text()).trim();
   }
+
+  if (type === "application/pdf" || name.endsWith(".pdf")) {
+    const { PDFParse } = await import("pdf-parse");
+    const parser = new PDFParse({ data: Buffer.from(await file.arrayBuffer()) });
+    try {
+      const data = await parser.getText();
+      return data.text.trim();
+    } finally {
+      await parser.destroy();
+    }
+  }
+
+  if (type.includes("wordprocessingml") || name.endsWith(".docx")) {
+    const mammoth = await import("mammoth");
+    const result = await mammoth.extractRawText({ buffer: Buffer.from(await file.arrayBuffer()) });
+    return result.value.trim();
+  }
+
+  throw new Error("Please upload a PDF, Word DOCX, or TXT resume file.");
+}
+
+async function requestBody(request: Request) {
+  const contentType = request.headers.get("content-type") ?? "";
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const fileValue = formData.get("resumeFile");
+    const file = fileValue instanceof File ? fileValue : null;
+    const resumeText = file ? await extractResumeText(file) : String(formData.get("resumeText") ?? "");
+    return {
+      action: String(formData.get("action") ?? "generate"),
+      resumeText,
+      jobDescription: String(formData.get("jobDescription") ?? ""),
+      roleTitle: String(formData.get("roleTitle") ?? ""),
+      tone: String(formData.get("tone") ?? "Professional"),
+      experienceLevel: String(formData.get("experienceLevel") ?? "Student"),
+      outputType: String(formData.get("outputType") ?? "Both")
+    };
+  }
+
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>;
+  return {
+    action: String(body.action ?? "generate"),
+    resumeText: String(body.resumeText ?? ""),
+    jobDescription: String(body.jobDescription ?? ""),
+    roleTitle: String(body.roleTitle ?? ""),
+    tone: String(body.tone ?? "Professional"),
+    experienceLevel: String(body.experienceLevel ?? "Student"),
+    outputType: String(body.outputType ?? "Both")
+  };
 }
 
 export async function POST(request: Request) {
+  let body: Awaited<ReturnType<typeof requestBody>>;
+  try {
+    body = await requestBody(request);
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to read resume file." }, { status: 400 });
+  }
+
+  if (body.action === "extract") {
+    if (!body.resumeText.trim()) {
+      return NextResponse.json({ error: "No readable resume text was found in that file." }, { status: 400 });
+    }
+    return NextResponse.json({ resumeText: body.resumeText });
+  }
+
   const ip = getClientIp(request);
   // TODO: Use Upstash Redis for production rate limiting across server instances.
   if (isRateLimited(ip)) {
     return NextResponse.json({ error: "Daily server limit reached. Please try again tomorrow." }, { status: 429 });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: "AI generation is not configured yet. Add GEMINI_API_KEY to the server environment." }, { status: 500 });
+    return NextResponse.json({ error: "AI generation is not configured yet. Add ANTHROPIC_API_KEY to the server environment." }, { status: 500 });
   }
 
-  const body = await request.json().catch(() => null) as {
-    resumeText?: string;
-    jobDescription?: string;
-    roleTitle?: string;
-    tone?: string;
-    experienceLevel?: string;
-    outputType?: string;
-  } | null;
-
-  if (!body?.resumeText?.trim() || !body.jobDescription?.trim()) {
+  const resumeText = body.resumeText.trim();
+  const jobDescription = body.jobDescription.trim();
+  if (!resumeText || !jobDescription) {
     return NextResponse.json({ error: "Resume text and job description are required." }, { status: 400 });
   }
 
-  const prompt = `You are a professional career assistant.
+  const prompt = `
+You are a professional resume and career expert.
 
-TASK:
-Given:
-- User resume text
-- Job description
+INPUT:
+Resume:
+${resumeText.slice(0, 10000)}
 
-Generate:
-1. Tailored resume (structured sections)
-2. Tailored cover letter
-3. ATS keywords used
+Job Description:
+${jobDescription.slice(0, 7000)}
 
-Keep the response concise:
-- Resume: maximum 450 words.
-- Cover letter: maximum 260 words.
-- Keywords: maximum 20 short items.
-
-OPTIONS:
+Context:
 - Role title: ${body.roleTitle || "Not specified"}
 - Tone: ${body.tone || "Professional"}
 - Experience level: ${body.experienceLevel || "Student"}
 - Output type requested: ${body.outputType || "Both"}
 
+TASK:
+1. Improve and tailor the resume for this job
+2. Generate a professional cover letter
+3. Extract ATS keywords
+4. Suggest improvements
+
 RULES:
-- Do NOT invent experience, companies, degrees, dates, certifications, awards, projects, or skills.
-- Only improve, organize, and rephrase existing content from the resume text.
-- Align with job description keywords only when supported by the resume.
-- Keep formatting clean, concise, professional, and ATS-friendly.
-- If a requested detail is missing, write a neutral placeholder reminder instead of fabricating it.
-- Return strict JSON only with keys: resume, coverLetter, keywords.
-- The keywords value must be an array of short strings.
+- DO NOT invent experience
+- DO NOT add fake companies, degrees, dates, certifications, awards, projects, or skills
+- Only improve and rephrase existing content
+- Make it ATS-friendly
+- Keep formatting clean and structured
+- Keep the resume and cover letter concise
 
-USER RESUME TEXT:
-${body.resumeText.slice(0, 8000)}
+OUTPUT FORMAT:
 
-JOB DESCRIPTION:
-${body.jobDescription.slice(0, 6000)}`;
+---RESUME---
+[structured resume]
 
-  let finalError = "";
-  for (const model of GEMINI_MODELS) {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 2600,
-          responseMimeType: "application/json"
-        }
-      })
+---COVER LETTER---
+[cover letter]
+
+---KEYWORDS---
+[list]
+
+---IMPROVEMENTS---
+[list]
+`;
+
+  try {
+    const anthropic = new Anthropic({ apiKey });
+    const response = await anthropic.messages.create({
+      model: "claude-3-haiku-20240307",
+      max_tokens: 1500,
+      messages: [{ role: "user", content: prompt }]
     });
+    const text = response.content
+      .map((part) => (part.type === "text" ? part.text : ""))
+      .join("\n")
+      .trim();
 
-    if (response.ok) {
-      const data = await response.json() as { candidates?: GeminiCandidate[] };
-      const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("\n").trim() ?? "";
-      if (!text) {
-        finalError = "The AI response was empty.";
-        console.error("Gemini model failed:", model, 502, finalError);
-        continue;
-      }
-      incrementUsage(ip);
-      return NextResponse.json(parseGeminiOutput(text));
-    }
-
-    const errorText = await response.text().catch(() => "");
-    finalError = errorText;
-    console.error("Gemini model failed:", model, response.status, errorText);
-    const lower = errorText.toLowerCase();
-    const retryable =
-      response.status === 404 ||
-      response.status === 429 ||
-      response.status === 503 ||
-      lower.includes("high demand") ||
-      lower.includes("overloaded");
-    if (!retryable) break;
+    if (!text) throw new Error("Empty Claude response.");
+    incrementUsage(ip);
+    return NextResponse.json(parseClaudeOutput(text));
+  } catch (error) {
+    console.error("Claude generation failed:", error);
+    return NextResponse.json({ error: "AI is currently busy. Please try again shortly." }, { status: 503 });
   }
-
-  return NextResponse.json(
-    { error: "AI is currently busy. Please try again shortly.", details: finalError.slice(0, 240) },
-    { status: 503 }
-  );
 }

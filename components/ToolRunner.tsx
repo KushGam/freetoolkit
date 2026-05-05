@@ -2296,6 +2296,7 @@ type AiResumeOutput = {
   resume: string;
   coverLetter: string;
   keywords: string;
+  improvements: string;
 };
 
 const AI_USAGE_KEY = "freetoolkit_ai_student_usage";
@@ -2344,31 +2345,41 @@ function AiResumeCoverLetterGenerator() {
   const [copied, setCopied] = useState("");
   const [usageCount, setUsageCount] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [extracting, setExtracting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     setUsageCount(readAiUsage().count);
   }, []);
 
-  function loadResume(files: File[]) {
+  async function loadResume(files: File[]) {
     const next = files[0] ?? null;
     setResumeFile(next);
     setResult(null);
     setError("");
     if (!next) return;
-    if (!next.name.toLowerCase().endsWith(".txt") && next.type !== "text/plain") {
-      setError("Please upload a .txt resume for this MVP. PDF and DOCX parsing is planned.");
+    const name = next.name.toLowerCase();
+    const isSupported = name.endsWith(".txt") || name.endsWith(".pdf") || name.endsWith(".docx");
+    if (!isSupported) {
+      setError("Please upload a PDF, Word DOCX, or TXT resume file.");
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setResumeText(String(event.target?.result ?? "").trim());
+
+    setExtracting(true);
+    try {
+      const formData = new FormData();
+      formData.append("action", "extract");
+      formData.append("resumeFile", next);
+      const response = await fetch("/api/student-tools/ai-generate", { method: "POST", body: formData });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to extract resume text.");
+      setResumeText(String(data.resumeText ?? "").trim());
       setError("");
-    };
-    reader.onerror = () => {
-      setError("Unable to read this text file. Try saving your resume as a plain .txt file.");
-    };
-    reader.readAsText(next);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to extract resume text.");
+    } finally {
+      setExtracting(false);
+    }
   }
 
   async function copyText(label: string, content: string) {
@@ -2410,7 +2421,8 @@ function AiResumeCoverLetterGenerator() {
       const nextResult = {
         resume: String(data.resume ?? "").trim(),
         coverLetter: String(data.coverLetter ?? "").trim(),
-        keywords: String(data.keywords ?? "").trim()
+        keywords: String(data.keywords ?? "").trim(),
+        improvements: String(data.improvements ?? "").trim()
       };
       setResult(nextResult);
       setActiveOutput(outputType === "Cover Letter" ? "coverLetter" : "resume");
@@ -2435,13 +2447,15 @@ function AiResumeCoverLetterGenerator() {
     setActiveOutput("resume");
     setResult(null);
     setCopied("");
+    setExtracting(false);
     setError("");
   }
 
   const outputLabels: Record<keyof AiResumeOutput, string> = {
     resume: "Resume",
     coverLetter: "Cover Letter",
-    keywords: "Keywords"
+    keywords: "Keywords",
+    improvements: "Improvements"
   };
   const currentOutput = result?.[activeOutput] ?? "";
   const resumeLength = resumeText.trim().length;
@@ -2450,8 +2464,20 @@ function AiResumeCoverLetterGenerator() {
     <div>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
         <div className="grid gap-5">
+          <div>
+            <p className="mb-2 text-sm font-bold text-slate-700">Upload your resume (PDF, Word, or TXT)</p>
+            <FileUploadDropzone label="Upload your resume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" onFiles={loadResume} />
+            <FileInfo file={resumeFile} />
+            {extracting ? <p className="mt-3 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Extracting resume text...</p> : null}
+          </div>
+          {resumeText ? (
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Extracted preview</p>
+              <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">{resumeText.slice(0, 500)}{resumeText.length > 500 ? "..." : ""}</p>
+            </div>
+          ) : null}
           <label className="text-sm font-bold text-slate-700">
-            Paste your resume
+            Or paste your resume
             <Textarea
               className="mt-2 min-h-72"
               value={resumeText}
@@ -2464,7 +2490,7 @@ function AiResumeCoverLetterGenerator() {
             />
           </label>
           <div className="flex flex-col gap-2 text-xs font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-            <p>You can copy your resume from a Word or PDF file and paste it here. Uploading a .txt file is optional.</p>
+            <p>You can upload a PDF, Word, or TXT file above, or paste resume text manually and edit it before generating.</p>
             <p className="font-black text-slate-600">{resumeLength.toLocaleString()} characters</p>
           </div>
           {resumeLength > 0 && resumeLength < 250 ? (
@@ -2472,12 +2498,6 @@ function AiResumeCoverLetterGenerator() {
               Please provide more details in your resume for better results.
             </p>
           ) : null}
-          <div>
-            <p className="mb-2 text-sm font-bold text-slate-700">Or upload a .txt file (optional)</p>
-            <FileUploadDropzone label="Upload a .txt file" accept=".txt,text/plain" onFiles={loadResume} />
-            <FileInfo file={resumeFile} />
-            <p className="mt-2 text-xs font-semibold text-slate-500">TODO: Add PDF and DOCX parsing in a future version.</p>
-          </div>
           <label className="text-sm font-bold text-slate-700">
             Job description
             <Textarea className="mt-2 min-h-56" value={jobDescription} onChange={(event) => setJobDescription(event.target.value)} placeholder="Paste job description here..." />
@@ -2493,7 +2513,7 @@ function AiResumeCoverLetterGenerator() {
             I confirm the generated content should only use my real experience.
           </label>
           <div className="flex flex-wrap gap-3">
-            <Button onClick={generate} disabled={busy || !confirmed || !resumeText.trim() || !jobDescription.trim()}>
+            <Button onClick={generate} disabled={busy || extracting || !confirmed || !resumeText.trim() || !jobDescription.trim()}>
               {busy ? "Generating..." : "Generate"}
             </Button>
             <SecondaryButton onClick={reset}>Reset</SecondaryButton>
@@ -2502,12 +2522,12 @@ function AiResumeCoverLetterGenerator() {
             This tool improves your resume using AI based on your input. Always review before using.
           </p>
           <p className="text-xs font-semibold text-slate-500">Daily free usage: {usageCount}/{AI_CLIENT_LIMIT} requests used in this browser.</p>
-          {busy ? <p className="rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Generating your tailored resume...</p> : null}
+          {busy ? <p className="rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Analyzing your resume and generating tailored content...</p> : null}
           <ErrorMessage message={error} />
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="grid grid-cols-3 gap-2 rounded-2xl bg-slate-100 p-1">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 sm:grid-cols-4">
             {(Object.keys(outputLabels) as Array<keyof AiResumeOutput>).map((key) => (
               <button key={key} className={`rounded-xl px-3 py-3 text-xs font-black sm:text-sm ${activeOutput === key ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActiveOutput(key)}>
                 {outputLabels[key]}
@@ -2521,7 +2541,7 @@ function AiResumeCoverLetterGenerator() {
               <div className="flex min-h-[24rem] items-center justify-center text-center">
                 <div>
                   <p className="text-lg font-black text-slate-900">Your AI output will appear here</p>
-                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Paste your resume or import a TXT file, add a job description, and generate a draft that you can review, copy, or download.</p>
+                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Upload or paste your resume, add a job description, and generate polished content that you can review, copy, or download.</p>
                 </div>
               </div>
             )}

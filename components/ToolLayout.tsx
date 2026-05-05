@@ -6,6 +6,18 @@ import { Card } from "@/components/ui";
 import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
 import { ToolRunner } from "@/components/ToolRunner";
 
+function workspaceCopy(tool: Tool) {
+  if (tool.slug === "image-color-picker") return "Upload an image, then click anywhere on the preview to pick a color.";
+  if (tool.slug === "duplicate-line-remover") return "Paste your list below, choose case sensitivity, and remove duplicate lines instantly.";
+  if (tool.category === "PDF Tools") return "Upload your PDF and choose the pages or action you want to apply.";
+  if (tool.category === "Image Tools") return "Upload an image, adjust the settings, and preview the result before downloading.";
+  if (tool.category === "Text Tools") return "Paste your text, choose the cleanup or formatting option, and copy the polished result.";
+  if (tool.category === "Calculator Tools") return "Enter your values and get a clear result instantly in your browser.";
+  if (tool.category === "Developer Tools") return "Paste or enter your data, choose an action, and copy the output when it looks right.";
+  if (tool.category === "Security Tools") return "Choose your password options and generate a strong value locally in your browser.";
+  return "Enter your details below and review the result before copying, downloading, or resetting.";
+}
+
 export function ToolLayout({ tool }: { tool: Tool }) {
   const categoryShort =
     tool.category === "Image Tools"
@@ -46,8 +58,8 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
         <div className="mx-auto max-w-4xl">
           <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-xs font-black uppercase tracking-wide text-brand-700 shadow-sm">{tool.category}</p>
-          <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-black leading-[1.05] tracking-normal text-slate-950 sm:text-5xl lg:text-6xl">{tool.title}</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{tool.intro}</p>
+          <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">{tool.title}</h1>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{tool.intro}</p>
           <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-3">
             {["Free to use", "No signup", categoryShort].map((item) => (
               <div key={item} className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm font-black text-slate-700 shadow-sm backdrop-blur">
@@ -63,25 +75,25 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         </div>
       </section>
       <AdSlot size="leaderboard" />
-      <Card className="mx-auto mt-8 max-w-4xl p-5 sm:p-7">
+      <Card className="mx-auto mt-8 max-w-5xl p-5 sm:p-7">
         <div className="mb-6 border-b border-slate-100 pb-5">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Tool workspace</p>
-          <h2 className="mt-2 text-2xl font-black text-slate-950">{tool.title}</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-500">Upload, enter details, or paste content below. Results appear here when ready.</p>
+          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">{tool.title}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-500">{workspaceCopy(tool)}</p>
         </div>
         <ToolRunner slug={tool.slug} />
       </Card>
       <AdSlot size="responsive" />
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <Card>
-          <h2 className="text-2xl font-black text-slate-950">How to use {tool.title}</h2>
-          <ol className="mt-4 grid list-decimal gap-3 pl-5 text-sm leading-6 text-slate-600">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-slate-950">How to use {tool.title}</h2>
+          <ol className="mt-4 grid list-decimal gap-3 pl-5 text-sm leading-relaxed text-slate-600">
             {tool.howToUse.map((step) => <li key={step}>{step}</li>)}
           </ol>
         </Card>
         <Card>
-          <h2 className="text-2xl font-black text-slate-950">Why use this tool?</h2>
-          <ul className="mt-4 grid gap-3 text-sm leading-6 text-slate-600">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-slate-950">Why use this tool?</h2>
+          <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-slate-600">
             {tool.features.map((feature) => <li key={feature}>• {feature}</li>)}
           </ul>
         </Card>

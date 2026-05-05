@@ -424,6 +424,37 @@ export const tools: Tool[] = [...coreTools, ...newTools];
 
 export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"];
 
+export type TopLevelCategory = "Everyday" | "Student" | "AI Tools" | "Developer";
+
+export const topLevelCategories: TopLevelCategory[] = ["Everyday", "Student", "AI Tools", "Developer"];
+
+export const topLevelCategoryRoutes: Record<TopLevelCategory, string> = {
+  Everyday: "/everyday",
+  Student: "/student",
+  "AI Tools": "/ai-tools",
+  Developer: "/developer"
+};
+
+export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
+  Everyday: "Free everyday tools for images, PDFs, text, calculators, and quick browser-based tasks.",
+  Student: "Free student tools for grades, GPA, attendance, study time, word count, and career preparation.",
+  "AI Tools": "Free AI-powered tools for resumes, cover letters, writing support, and productivity.",
+  Developer: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities."
+};
+
+export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: string; href: string }>> = {
+  Everyday: [
+    { label: "Image Tools", href: "/image-tools" },
+    { label: "PDF Tools", href: "/pdf-tools" },
+    { label: "Text Tools", href: "/text-tools" },
+    { label: "Calculator Tools", href: "/calculator-tools" },
+    { label: "Security Tools", href: "/security-tools" }
+  ],
+  Student: [{ label: "Student Tools", href: "/student-tools" }],
+  "AI Tools": [{ label: "Student Tools", href: "/student-tools" }],
+  Developer: [{ label: "Developer Tools", href: "/developer-tools" }]
+};
+
 export const categoryRoutes: Record<ToolCategory, string> = {
   "Image Tools": "/image-tools",
   "PDF Tools": "/pdf-tools",
@@ -444,6 +475,17 @@ export function toolHref(tool: Tool) {
 
 export function getToolsByCategory(category: ToolCategory) {
   return tools.filter((tool) => tool.category === category);
+}
+
+export function getTopLevelCategory(tool: Tool): TopLevelCategory {
+  if (tool.slug === "ai-resume-cover-letter") return "AI Tools";
+  if (tool.category === "Student Tools") return "Student";
+  if (tool.category === "Developer Tools" && tool.slug !== "qr-code-generator") return "Developer";
+  return "Everyday";
+}
+
+export function getToolsByTopLevelCategory(category: TopLevelCategory) {
+  return tools.filter((tool) => getTopLevelCategory(tool) === category);
 }
 
 export function getRelatedTools(tool: Tool) {

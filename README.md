@@ -25,12 +25,10 @@ npm run lint
 Create `.env.local` for server-only API keys:
 
 ```bash
-GEMINI_API_KEY=your_gemini_api_key
-# Optional:
-GEMINI_MODEL=gemini-2.5-flash
+ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
-The AI Resume & Cover Letter Generator calls Gemini only from the server route at `app/api/student-tools/ai-generate/route.ts`; the API key is never exposed to the frontend.
+The AI Resume & Cover Letter Generator calls Claude only from the server route at `app/api/student-tools/ai-generate/route.ts`; the API key is never exposed to the frontend.
 
 ## Vercel Deployment
 
