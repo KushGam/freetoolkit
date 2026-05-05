@@ -13,6 +13,27 @@ const popularSlugs = [
   "gpa-calculator"
 ];
 
+const heroTools = [
+  {
+    title: "Image Compressor",
+    copy: "Reduce image size in seconds",
+    icon: "IMG",
+    href: "/image-compressor"
+  },
+  {
+    title: "Merge PDF",
+    copy: "Combine documents privately",
+    icon: "PDF",
+    href: "/merge-pdf"
+  },
+  {
+    title: "GPA Calculator",
+    copy: "Plan academic results",
+    icon: "GPA",
+    href: "/gpa-calculator"
+  }
+];
+
 const categoryDetails: Record<TopLevelCategory, { href: string; icon: string; description: string }> = {
   Everyday: {
     href: topLevelCategoryRoutes.Everyday,
@@ -93,23 +114,35 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-          <div className="relative mx-auto hidden w-full max-w-md lg:block" aria-hidden="true">
-            <div className="absolute -left-8 top-10 h-56 w-56 rounded-full bg-brand-100/70 blur-3xl" />
-            <div className="relative rounded-[2rem] border border-slate-200 bg-white/90 p-5 shadow-[0_30px_80px_rgba(15,23,42,0.12)] backdrop-blur">
-              {[
-                ["Image Compressor", "Reduce image size in seconds", "IMG"],
-                ["Merge PDF", "Combine documents privately", "PDF"],
-                ["GPA Calculator", "Plan academic results", "GPA"]
-              ].map(([title, copy, icon]) => (
-                <div key={title} className="mb-3 flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4 last:mb-0">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-xs font-black text-brand-700 ring-1 ring-brand-100">{icon}</span>
-                  <span>
-                    <span className="block text-sm font-bold text-slate-950">{title}</span>
-                    <span className="block text-sm text-slate-500">{copy}</span>
-                  </span>
-                  <span className="ml-auto text-lg font-black text-brand-500">→</span>
-                </div>
-              ))}
+          <div className="relative mx-auto hidden w-full max-w-md lg:block">
+            <div className="absolute -left-8 top-10 h-56 w-56 rounded-full bg-brand-100/70 blur-3xl" aria-hidden="true" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-5 shadow-[0_30px_80px_rgba(15,23,42,0.12)] backdrop-blur">
+              <div className="mb-4 flex items-center justify-between gap-4 px-1">
+                <p className="text-xs font-black uppercase tracking-wide text-brand-600">Start fast</p>
+                <Link href="/all-tools" className="text-xs font-black text-slate-500 transition hover:text-brand-700">
+                  All tools →
+                </Link>
+              </div>
+              <div className="grid gap-3">
+                {heroTools.map((tool) => (
+                  <Link
+                    key={tool.href}
+                    href={tool.href}
+                    className="group flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-4 focus:ring-brand-100"
+                  >
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-xs font-black text-brand-700 ring-1 ring-brand-100 transition group-hover:bg-brand-600 group-hover:text-white">
+                      {tool.icon}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-sm font-bold text-slate-950 transition group-hover:text-brand-700">{tool.title}</span>
+                      <span className="block text-sm text-slate-500">{tool.copy}</span>
+                    </span>
+                    <span className="ml-auto text-lg font-black text-brand-500 transition group-hover:translate-x-1" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </Container>
