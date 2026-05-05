@@ -3,7 +3,13 @@ import { NextResponse } from "next/server";
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
-const MODEL = "gemini-1.5-flash";
+// ✅ Use fallback models (important)
+const MODELS = [
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-1.5-flash-latest"
+];
+
 const DAILY_LIMIT = 20;
 const usage = new Map<string, { date: string; count: number }>();
 
@@ -83,15 +89,23 @@ function friendlyError(status: number) {
 
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
+
   if (!apiKey) {
-    return NextResponse.json({ error: "AI API key is missing. Please configure GEMINI_API_KEY." }, { status: 401 });
+    return NextResponse.json(
+      { error: "AI API key is missing. Please configure GEMINI_API_KEY." },
+      { status: 401 }
+    );
   }
 
   let payload: AiPayload;
+
   try {
     payload = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request. Please send JSON." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request. Please send JSON." },
+      { status: 400 }
+    );
   }
 
   const toolType = typeof payload.toolType === "string" ? payload.toolType.trim() : "";
@@ -99,66 +113,93 @@ export async function POST(request: Request) {
   const options = payload.options ?? {};
 
   if (!toolType || input.length < 10) {
-    return NextResponse.json({ error: "Please enter enough text before generating." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please enter enough text before generating." },
+      { status: 400 }
+    );
   }
 
   const ip = getIp(request);
   const record = getUsage(ip);
+
   if (record.count >= DAILY_LIMIT) {
-    return NextResponse.json({ error: "Daily AI usage limit reached. Please try again later." }, { status: 429 });
+    return NextResponse.json(
+      { error: "Daily AI usage limit reached. Please try again later." },
+      { status: 429 }
+    );
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`;
+  let output = "";
+  let lastError: number | null = null;
 
-  try {
-    const geminiResponse = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: promptFor(toolType, input.slice(0, 6000), options) }]
+  // ✅ MODEL FALLBACK LOOP
+  for (const model of MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+    try {
+      const geminiResponse = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text: promptFor(toolType, input.slice(0, 6000), options)
+                }
+              ]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.35,
+            maxOutputTokens: 900
           }
-        ],
-        generationConfig: {
-          temperature: 0.35,
-          maxOutputTokens: 900
-        }
-      })
-    });
-
-    if (!geminiResponse.ok) {
-      const errorText = await geminiResponse.text();
-      console.error("Gemini AI tool error", {
-        status: geminiResponse.status,
-        model: MODEL,
-        message: errorText.slice(0, 500)
+        })
       });
-      return NextResponse.json({ error: friendlyError(geminiResponse.status) }, { status: geminiResponse.status });
+
+      if (!geminiResponse.ok) {
+        const errorText = await geminiResponse.text();
+
+        console.error("Gemini model failed", {
+          model,
+          status: geminiResponse.status,
+          message: errorText.slice(0, 300)
+        });
+
+        lastError = geminiResponse.status;
+        continue;
+      }
+
+      const data = await geminiResponse.json();
+
+      output =
+        data?.candidates?.[0]?.content?.parts
+          ?.map((part: { text?: string }) => part.text ?? "")
+          .join("")
+          .trim() ?? "";
+
+      if (output) {
+        console.log("Gemini success with model:", model);
+        break;
+      }
+    } catch (error) {
+      console.error("Gemini fetch error", { model, error });
+      lastError = 500;
     }
-
-    const data = await geminiResponse.json();
-    const output =
-      data?.candidates?.[0]?.content?.parts
-        ?.map((part: { text?: string }) => part.text ?? "")
-        .join("")
-        .trim() ?? "";
-
-    if (!output) {
-      return NextResponse.json({ error: "The AI returned an empty result. Please try again with more detail." }, { status: 502 });
-    }
-
-    record.count += 1;
-    usage.set(ip, record);
-
-    return NextResponse.json({ output });
-  } catch (error) {
-    console.error("Gemini AI tool error", {
-      status: 500,
-      model: MODEL,
-      message: error instanceof Error ? error.message : "Unknown error"
-    });
-    return NextResponse.json({ error: "AI service is temporarily unavailable. Please try again shortly." }, { status: 503 });
   }
+
+  // ❌ If all models fail
+  if (!output) {
+    return NextResponse.json(
+      { error: friendlyError(lastError || 500) },
+      { status: lastError || 500 }
+    );
+  }
+
+  // ✅ Increment usage only on success
+  record.count += 1;
+  usage.set(ip, record);
+
+  return NextResponse.json({ output });
 }
