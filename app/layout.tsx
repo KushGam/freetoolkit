@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -9,19 +10,21 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap"
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.freetoolkitapp.com"),
   title: "FreeToolKit — Free Online Image, PDF, Text & Student Tools",
-  description: "Use free online tools to compress images, convert files, edit PDFs, calculate GPA, clean text, and more. Fast, browser-based, no signup required.",
+  description:
+    "Use free online tools to compress images, convert files, edit PDFs, calculate GPA, clean text, and more. Fast, browser-based, no signup required.",
   alternates: {
-    canonical: "https://www.freetoolkitapp.com"
+    canonical: "https://www.freetoolkitapp.com",
   },
   openGraph: {
     title: "FreeToolKit — Free Online Tools",
-    description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
+    description:
+      "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
     url: "https://www.freetoolkitapp.com",
     siteName: "FreeToolKit",
     type: "website",
@@ -30,22 +33,41 @@ export const metadata: Metadata = {
         url: "https://www.freetoolkitapp.com/og-image.png?v=2",
         width: 1200,
         height: 630,
-        alt: "FreeToolKit — Free Online Tools"
-      }
-    ]
+        alt: "FreeToolKit — Free Online Tools",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "FreeToolKit — Free Online Tools",
-    description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
-    images: ["https://www.freetoolkitapp.com/og-image.png?v=2"]
-  }
+    description:
+      "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
+    images: ["https://www.freetoolkitapp.com/og-image.png?v=2"],
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={inter.variable}>
       <body>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-LT7YSXB2PP"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-LT7YSXB2PP');
+          `}
+        </Script>
+
         <Header />
         {children}
         <Footer />
