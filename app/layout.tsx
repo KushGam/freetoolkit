@@ -5,11 +5,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.freetoolkitapp.com"),
-  title: {
-    default: "FreeToolKit — Free Online Tools",
-    template: "%s | FreeToolKit"
-  },
-  description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities. No signup required.",
+  title: "FreeToolKit — Free Online Image, PDF, Text & Student Tools",
+  description: "Use free online tools to compress images, convert files, edit PDFs, calculate GPA, clean text, and more. Fast, browser-based, no signup required.",
   alternates: {
     canonical: "https://www.freetoolkitapp.com"
   },
@@ -21,7 +18,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://www.freetoolkitapp.com/og-image.png",
+        url: "https://www.freetoolkitapp.com/og-image.png?v=2",
         width: 1200,
         height: 630,
         alt: "FreeToolKit — Free Online Tools"
@@ -32,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "FreeToolKit — Free Online Tools",
     description: "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
-    images: ["https://www.freetoolkitapp.com/og-image.png"]
+    images: ["https://www.freetoolkitapp.com/og-image.png?v=2"]
   }
 };
 
