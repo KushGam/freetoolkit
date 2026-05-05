@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploadDropzone } from "@/components/FileUploadDropzone";
+import { GeminiAiTool } from "@/components/tools/GeminiAiTool";
 import { ShiftHoursCalculator } from "@/components/tools/ShiftHoursCalculator";
 import { Button, Input, SecondaryButton, Select, Textarea } from "@/components/ui";
 import { formatBytes } from "@/lib/utils";
@@ -2667,7 +2668,15 @@ export function ToolRunner({ slug }: { slug: string }) {
     "image-dpi-checker": <ImageMetadataTool dpiOnly />,
     "image-grayscale": <AdvancedImageConverter mode="grayscale" />,
     "add-text-to-pdf": <AddTextToPdf />,
-    "ai-resume-cover-letter": <AiResumeCoverLetterGenerator />
+    "ai-resume-cover-letter": <AiResumeCoverLetterGenerator />,
+    "ai-text-summarizer": <GeminiAiTool slug="ai-text-summarizer" />,
+    "paraphrasing-tool": <GeminiAiTool slug="paraphrasing-tool" />,
+    "keyword-extractor": <GeminiAiTool slug="keyword-extractor" />,
+    "grammar-fixer": <GeminiAiTool slug="grammar-fixer" />,
+    "title-generator": <GeminiAiTool slug="title-generator" />,
+    "bio-generator": <GeminiAiTool slug="bio-generator" />,
+    "faq-generator": <GeminiAiTool slug="faq-generator" />,
+    "text-to-bullet-points": <GeminiAiTool slug="text-to-bullet-points" />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;

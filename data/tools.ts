@@ -1,6 +1,6 @@
 import { newTools } from "./new-tools";
 
-export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools";
+export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools";
 
 export type Tool = {
   slug: string;
@@ -422,7 +422,7 @@ const coreTools: Tool[] = [
 
 export const tools: Tool[] = [...coreTools, ...newTools];
 
-export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"];
+export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"];
 
 export type TopLevelCategory = "Everyday" | "Student" | "AI Tools" | "Developer";
 
@@ -451,7 +451,7 @@ export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: s
     { label: "Security Tools", href: "/security-tools" }
   ],
   Student: [{ label: "Student Tools", href: "/student-tools" }],
-  "AI Tools": [{ label: "Student Tools", href: "/student-tools" }],
+  "AI Tools": [{ label: "AI Tools", href: "/ai-tools" }, { label: "Student Tools", href: "/student-tools" }],
   Developer: [{ label: "Developer Tools", href: "/developer-tools" }]
 };
 
@@ -459,6 +459,7 @@ export const categoryRoutes: Record<ToolCategory, string> = {
   "Image Tools": "/image-tools",
   "PDF Tools": "/pdf-tools",
   "Student Tools": "/student-tools",
+  "AI Tools": "/ai-tools",
   "Text Tools": "/text-tools",
   "Developer Tools": "/developer-tools",
   "Calculator Tools": "/calculator-tools",
@@ -479,6 +480,7 @@ export function getToolsByCategory(category: ToolCategory) {
 
 export function getTopLevelCategory(tool: Tool): TopLevelCategory {
   if (tool.slug === "ai-resume-cover-letter") return "AI Tools";
+  if (tool.category === "AI Tools") return "AI Tools";
   if (tool.category === "Student Tools") return "Student";
   if (tool.category === "Developer Tools" && tool.slug !== "qr-code-generator") return "Developer";
   return "Everyday";
@@ -490,7 +492,11 @@ export function getToolsByTopLevelCategory(category: TopLevelCategory) {
 
 export function getRelatedTools(tool: Tool) {
   if (tool.slug === "ai-resume-cover-letter") {
-    const preferred = ["gpa-calculator", "study-timer", "word-counter"];
+    const preferred = ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "word-counter"];
+    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item)).slice(0, 4);
+  }
+  if (tool.category === "AI Tools") {
+    const preferred = ["ai-text-summarizer", "paraphrasing-tool", "keyword-extractor", "grammar-fixer", "title-generator", "bio-generator", "faq-generator", "text-to-bullet-points", "ai-resume-cover-letter"].filter((slug) => slug !== tool.slug);
     return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
   }
   return tools.filter((item) => item.category === tool.category && item.slug !== tool.slug).slice(0, 4);

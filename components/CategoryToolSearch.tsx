@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ToolCard } from "@/components/ui";
+import { EmptyState, Input, ToolCard } from "@/components/ui";
 import { toolHref, type Tool } from "@/data/tools";
 
 export function CategoryToolSearch({ tools }: { tools: Tool[] }) {
@@ -15,9 +15,9 @@ export function CategoryToolSearch({ tools }: { tools: Tool[] }) {
   return (
     <div className="mt-8">
       <label className="sr-only" htmlFor="category-tool-search">Search this category</label>
-      <input
+      <Input
         id="category-tool-search"
-        className="min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-5 py-3 text-base font-semibold text-slate-900 shadow-[0_18px_45px_rgba(15,23,42,0.06)] outline-none placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+        className="min-h-14 rounded-2xl text-base"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search tools..."
@@ -27,6 +27,7 @@ export function CategoryToolSearch({ tools }: { tools: Tool[] }) {
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />)}
       </div>
+      {!filtered.length ? <div className="mt-6"><EmptyState title="No tools found in this category" description="Try a shorter keyword or browse the cards above after clearing search." /></div> : null}
     </div>
   );
 }

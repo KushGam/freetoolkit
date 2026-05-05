@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { HomeToolSearch } from "@/components/HomeToolSearch";
-import { ToolCard } from "@/components/ui";
+import { Badge, Card, CategoryCard, Container, ToolCard } from "@/components/ui";
 import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategoryRoutes, type TopLevelCategory } from "@/data/tools";
 
 const popularSlugs = [
@@ -63,19 +63,19 @@ export default function HomePage() {
   return (
     <main className="overflow-hidden">
       <section className="relative border-b border-slate-200/70 bg-[radial-gradient(circle_at_18%_8%,#dbeafe,transparent_30%),radial-gradient(circle_at_82%_18%,#e0e7ff,transparent_26%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-20">
+        <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-20">
           <div className="max-w-4xl text-center lg:text-left">
-            <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-[11px] font-black uppercase tracking-wide text-brand-700 shadow-sm sm:text-xs lg:mx-0">
+            <Badge className="mx-auto border-brand-100 text-[11px] font-black uppercase tracking-wide text-brand-700 sm:text-xs lg:mx-0">
               Fast, free, no-login online tools
-            </p>
-            <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.02] tracking-tight text-slate-950 sm:text-5xl lg:mx-0 lg:text-6xl xl:text-[4.6rem]">
+            </Badge>
+            <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.02] tracking-tight text-slate-950 sm:text-5xl lg:mx-0 lg:text-6xl">
               Simple, Free Online Tools — All in One Place
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
               Compress images, edit PDFs, format text, calculate values, and use everyday browser-based tools — fast, free, and no signup required.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:justify-start">
-              <Link href="/all-tools" className="rounded-2xl bg-brand-600 px-6 py-3 text-center text-sm font-bold text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:bg-brand-700">
+              <Link href="/all-tools" className="rounded-2xl bg-gradient-to-b from-brand-500 to-brand-700 px-6 py-3 text-center text-sm font-bold text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:from-brand-600 hover:to-brand-700">
                 Browse All Tools
               </Link>
               <Link href="/image-compressor" className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
@@ -112,10 +112,10 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 py-10">
+      <Container className="max-w-6xl py-10">
         <AdSlot type="leaderboard" priority />
 
         <section className="mt-12">
@@ -143,23 +143,7 @@ export default function HomePage() {
               const details = categoryDetails[category];
               const categoryTools = getToolsByTopLevelCategory(category).slice(0, 5);
               return (
-                <Link key={category} href={details.href} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-[0_24px_55px_rgba(37,99,235,0.12)]">
-                  <div className="flex items-start justify-between gap-4">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-xs font-black text-brand-700 ring-1 ring-brand-100">
-                      {details.icon}
-                    </span>
-                    <span className="text-xl font-black text-slate-300 transition group-hover:translate-x-1 group-hover:text-brand-600">→</span>
-                  </div>
-                  <h3 className="mt-5 font-display text-2xl font-bold tracking-tight text-slate-950">{category}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{details.description}</p>
-                  <div className="mt-5 grid gap-2">
-                    {categoryTools.map((tool) => (
-                      <span key={tool.slug} className="rounded-xl bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700">
-                        {tool.title}
-                      </span>
-                    ))}
-                  </div>
-                </Link>
+                <CategoryCard key={category} title={category} description={details.description} href={details.href} icon={details.icon} tools={categoryTools.map((tool) => tool.title)} />
               );
             })}
           </div>
@@ -170,11 +154,11 @@ export default function HomePage() {
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Why FreeToolKit?</h2>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {whyCards.map((card, index) => (
-              <div key={card.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <Card key={card.title} className="p-5">
                 <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-xs font-black text-brand-700">0{index + 1}</span>
                 <h3 className="mt-4 text-lg font-bold tracking-tight text-slate-950">{card.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{card.copy}</p>
-              </div>
+              </Card>
             ))}
           </div>
         </section>
@@ -205,7 +189,7 @@ export default function HomePage() {
             <Link href="/gpa-calculator" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-black text-slate-800 shadow-sm hover:bg-brand-50">Calculate GPA</Link>
           </div>
         </section>
-      </div>
+      </Container>
     </main>
   );
 }

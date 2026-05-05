@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { FAQ } from "@/components/FAQ";
 import { RelatedTools } from "@/components/RelatedTools";
-import { Card } from "@/components/ui";
+import { Card, Container, PageHeader } from "@/components/ui";
 import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
 import { ToolRunner } from "@/components/ToolRunner";
 
@@ -13,6 +13,7 @@ function workspaceCopy(tool: Tool) {
   if (tool.category === "Image Tools") return "Upload an image, adjust the settings, and preview the result before downloading.";
   if (tool.category === "Text Tools") return "Paste your text, choose the cleanup or formatting option, and copy the polished result.";
   if (tool.category === "Calculator Tools") return "Enter your values and get a clear result instantly in your browser.";
+  if (tool.category === "AI Tools") return "Paste your text, choose the available option, generate the AI output, and review it before copying.";
   if (tool.category === "Developer Tools") return "Paste or enter your data, choose an action, and copy the output when it looks right.";
   if (tool.category === "Security Tools") return "Choose your password options and generate a strong value locally in your browser.";
   return "Enter your details below and review the result before copying, downloading, or resetting.";
@@ -26,6 +27,8 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         ? "Private PDF workspace"
         : tool.category === "Student Tools"
           ? "Study and grade helper"
+          : tool.category === "AI Tools"
+            ? "AI writing helper"
           : tool.category === "Developer Tools"
             ? "Developer utility"
             : tool.category === "Security Tools"
@@ -41,10 +44,13 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         ? "PDF tools can save time when you need to organize documents quickly, but it is still worth reviewing the downloaded file before sharing it. Check page order, page ranges, rotation, and file size so the final document matches the requirements of your form, assignment, client, or archive."
         : tool.category === "Student Tools"
           ? "Student tools are intended for planning and productivity rather than official academic reporting. They help you estimate outcomes, organize writing, and manage focus sessions, but your school or instructor may use a different grading policy, word-count rule, or submission requirement."
+          : tool.category === "AI Tools"
+            ? "AI tools can speed up writing, summarizing, and brainstorming, but every generated result should be reviewed before it is used. The page sends requests through a server route so API keys stay out of the browser, while the interface remains simple and mobile friendly."
           : "These browser tools are designed for quick everyday work without accounts, payment flows, or complicated setup. Review the output before using it in final documents, code, messages, or published content.";
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+    <main>
+      <Container className="max-w-6xl py-8 sm:py-10">
       <nav className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-500">
         <Link href="/" className="hover:text-brand-700">Home</Link>
         <span>/</span>
@@ -54,28 +60,20 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         <span>/</span>
         <span className="text-slate-800">{tool.title}</span>
       </nav>
-      <section className="relative mt-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_50%_0%,#dbeafe,transparent_44%),radial-gradient(circle_at_90%_15%,#e0e7ff,transparent_28%),linear-gradient(180deg,#ffffff,#f8fafc)] px-5 py-10 text-center shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:px-8 sm:py-12 lg:px-14 lg:py-14">
-        <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
-        <div className="mx-auto max-w-4xl">
-          <p className="mx-auto w-fit rounded-full border border-brand-100 bg-white/85 px-4 py-2 text-xs font-black uppercase tracking-wide text-brand-700 shadow-sm">{tool.category}</p>
-          <h1 className="mx-auto mt-5 max-w-4xl break-words font-display text-4xl font-bold leading-[1.05] tracking-tight text-slate-950 [overflow-wrap:anywhere] sm:text-5xl lg:text-6xl">{tool.title}</h1>
-          <p className="mx-auto mt-5 max-w-3xl break-words text-base leading-relaxed text-slate-600 [overflow-wrap:anywhere] sm:text-lg">{tool.intro}</p>
-          <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-3">
-            {["Free to use", "No signup", categoryShort].map((item) => (
-              <div key={item} className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm font-black text-slate-700 shadow-sm backdrop-blur">
-                {item}
-              </div>
-            ))}
-          </div>
-          {(tool.category === "Image Tools" || tool.category === "PDF Tools") ? (
-            <p className="mx-auto mt-5 max-w-3xl rounded-2xl border border-brand-100 bg-white/80 px-4 py-3 text-sm font-bold leading-6 text-brand-700 shadow-sm">
-              Privacy note: files are processed in the browser where possible and are not uploaded to a server by this tool.
-            </p>
-          ) : null}
-        </div>
-      </section>
+      <PageHeader
+        className="mt-8 text-center"
+        eyebrow={tool.category}
+        title={tool.title}
+        description={<p className="break-words [overflow-wrap:anywhere]">{tool.intro}</p>}
+        badges={["Free to use", "No signup", categoryShort]}
+      />
+      {(tool.category === "Image Tools" || tool.category === "PDF Tools") ? (
+        <p className="mx-auto mt-5 max-w-3xl rounded-2xl border border-brand-100 bg-white/80 px-4 py-3 text-center text-sm font-bold leading-6 text-brand-700 shadow-sm">
+          Privacy note: files are processed in the browser where possible and are not uploaded to a server by this tool.
+        </p>
+      ) : null}
       <AdSlot size="leaderboard" priority />
-      <Card className="mx-auto mt-8 max-w-5xl overflow-hidden p-5 sm:p-7">
+      <Card className="tool-workspace mx-auto mt-8 max-w-5xl overflow-hidden p-5 sm:p-7">
         <div className="mb-6 border-b border-slate-100 pb-5">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Tool workspace</p>
           <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">{tool.title}</h2>
@@ -112,6 +110,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
       <FAQ items={tool.faq} />
       <RelatedTools tools={getRelatedTools(tool)} />
       <AdSlot size="responsive" />
+      </Container>
     </main>
   );
 }
