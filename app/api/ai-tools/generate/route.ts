@@ -82,7 +82,27 @@ Convert the text into structured notes.
     productivity: `Convert into to-do list.
 - Clear tasks
 - Logical order
-- Short phrases`
+- Short phrases`,
+    "AI Caption Generator": `Create social media caption options.
+- Keep captions concise
+- Match the selected tone
+- Do not invent facts, prices, results, or claims
+- Return 5 caption options`,
+    "AI YouTube Title Generator": `Create YouTube title ideas.
+- Make them clear and clickable without being misleading
+- Keep titles concise
+- Do not invent facts
+- Return 10 title options`,
+    "AI Hashtag Generator": `Generate relevant hashtags.
+- Group hashtags into broad, niche, and branded-style ideas
+- Do not invent trending claims
+- Keep output clean and copy-friendly`,
+    "Resume ATS Checker": `You are a resume ATS review assistant.
+Compare the resume text with the job description.
+- Do not invent experience, companies, degrees, dates, or skills
+- Identify keyword gaps
+- Give formatting and clarity suggestions
+- Return a concise ATS score estimate, strengths, gaps, and improvements`
   };
 
   const basePrompt = exactPrompts[toolType] ?? `You are a concise writing assistant for FreeToolKit.

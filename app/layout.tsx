@@ -15,33 +15,59 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.freetoolkitapp.com"),
-  title: "FreeToolKit — Free Online Image, PDF, Text & Student Tools",
+
+  title: "FreeToolKit — Free AI & Everyday Productivity Tools",
+
   description:
-    "Use free online tools to compress images, convert files, edit PDFs, calculate GPA, clean text, and more. Fast, browser-based, no signup required.",
+    "Use free AI and everyday productivity tools for PDFs, images, resumes, writing, calculators, student work, and developer utilities. Fast, browser-based, and no signup required.",
+
+  keywords: [
+    "free AI tools",
+    "online tools",
+    "PDF tools",
+    "image tools",
+    "resume tools",
+    "AI productivity tools",
+    "student tools",
+    "developer tools",
+    "browser-based tools",
+    "free utilities",
+  ],
+
   alternates: {
     canonical: "https://www.freetoolkitapp.com",
   },
+
   openGraph: {
-    title: "FreeToolKit — Free Online Tools",
+    title: "FreeToolKit — Free AI & Everyday Productivity Tools",
+
     description:
-      "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
+      "Free browser-based AI and productivity tools for PDFs, images, resumes, calculators, students, and developers.",
+
     url: "https://www.freetoolkitapp.com",
+
     siteName: "FreeToolKit",
+
     type: "website",
+
     images: [
       {
         url: "https://www.freetoolkitapp.com/og-image.png?v=2",
         width: 1200,
         height: 630,
-        alt: "FreeToolKit — Free Online Tools",
+        alt: "FreeToolKit — Free AI & Everyday Productivity Tools",
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "FreeToolKit — Free Online Tools",
+
+    title: "FreeToolKit — Free AI & Everyday Productivity Tools",
+
     description:
-      "Free browser-based tools for images, PDFs, text, calculators, student tools, and developer utilities.",
+      "Free browser-based tools for AI writing, PDFs, images, resumes, calculators, students, and developers.",
+
     images: ["https://www.freetoolkitapp.com/og-image.png?v=2"],
   },
 };

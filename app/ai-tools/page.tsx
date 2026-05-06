@@ -3,11 +3,11 @@ import { TopLevelCategoryPage } from "@/components/top-level-category-page";
 
 export const metadata: Metadata = {
   title: "AI Tools | FreeToolKit",
-  description: "Free AI-powered tools for resumes, cover letters, writing support, and productivity. No signup required.",
+  description: "Free AI tools for resumes, ATS checks, captions, hashtags, summaries, emails, study notes, and productivity. No signup required.",
   alternates: { canonical: "https://www.freetoolkitapp.com/ai-tools" },
   openGraph: {
     title: "AI Tools | FreeToolKit",
-    description: "Free AI-powered tools for resumes, cover letters, writing support, and productivity."
+    description: "Free AI tools for writing, resumes, captions, hashtags, summaries, and productivity."
   }
 };
 

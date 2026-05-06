@@ -11,7 +11,7 @@ export function Footer() {
             <span>Free<span className="text-brand-600">ToolKit</span></span>
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600">
-            FreeToolKit is a calm, no-login collection of browser-based tools for images, PDFs, text, calculators, students, and daily productivity.
+            FreeToolKit is a calm, no-login productivity platform for AI tools, PDFs, images, calculators, students, developers, and daily browser-based work.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             {["No signup", "Free", "Browser-based"].map((item) => (
@@ -40,6 +40,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} FreeToolKit. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">
             <Link href="/about" className="hover:text-brand-700">About</Link>
+            <Link href="/blog" className="hover:text-brand-700">Blog</Link>
             <Link href="/contact" className="hover:text-brand-700">Contact</Link>
             <Link href="/privacy" className="hover:text-brand-700">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-brand-700">Terms</Link>

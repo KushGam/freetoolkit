@@ -9,10 +9,11 @@ import {
 } from "@/data/tools";
 
 const categoryBadges: Record<TopLevelCategory, string[]> = {
-  Everyday: ["Images", "PDFs", "Text", "Calculators"],
+  Everyday: ["Text", "Calculators", "QR", "Security"],
+  "AI Tools": ["Writing", "Resume", "Captions", "Productivity"],
   Student: ["Grades", "GPA", "Attendance", "Study"],
-  "AI Tools": ["Resume", "Cover letter", "Career", "Productivity"],
-  Developer: ["JSON", "URLs", "UUIDs", "Base64"]
+  Developer: ["JSON", "URLs", "UUIDs", "Base64"],
+  "PDF & Image": ["PDF", "Images", "Converters", "Browser-based"]
 };
 
 export function TopLevelCategoryPage({ category }: { category: TopLevelCategory }) {
@@ -22,7 +23,7 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
   return (
     <main>
       <Container className="max-w-6xl py-10 sm:py-12">
-      <PageHeader eyebrow="FreeToolKit category" title={category} description={topLevelCategoryIntros[category]} badges={categoryBadges[category]} />
+      <PageHeader eyebrow="FreeToolKit productivity category" title={category} description={topLevelCategoryIntros[category]} badges={categoryBadges[category]} />
 
       <Card className="mt-8 p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -48,7 +49,7 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
           This category collects related FreeToolKit utilities into one cleaner browsing experience. Every card links to an existing tool page, so existing URLs and tool functionality continue working exactly as before.
         </p>
         <p>
-          FreeToolKit is designed for fast, no-signup workflows on mobile and desktop. Use the search box above to filter this category, or open <Link href="/all-tools">All Tools</Link> to browse the full directory.
+          FreeToolKit is designed for fast, no-signup workflows on mobile and desktop. Use the search box above to filter this category, or open <Link href="/all-tools">All Tools</Link> to browse the full directory of free AI and everyday productivity tools.
         </p>
       </section>
       </Container>

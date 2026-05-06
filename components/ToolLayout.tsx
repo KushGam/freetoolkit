@@ -28,7 +28,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         : tool.category === "Student Tools"
           ? "Study and grade helper"
           : tool.category === "AI Tools"
-            ? "AI writing helper"
+            ? "AI productivity workspace"
           : tool.category === "Developer Tools"
             ? "Developer utility"
             : tool.category === "Security Tools"
@@ -45,7 +45,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         : tool.category === "Student Tools"
           ? "Student tools are intended for planning and productivity rather than official academic reporting. They help you estimate outcomes, organize writing, and manage focus sessions, but your school or instructor may use a different grading policy, word-count rule, or submission requirement."
           : tool.category === "AI Tools"
-            ? "AI tools can speed up writing, summarizing, and brainstorming, but every generated result should be reviewed before it is used. The page sends requests through a server route so API keys stay out of the browser, while the interface remains simple and mobile friendly."
+            ? "AI tools can speed up writing, summarizing, resumes, captions, hashtags, and planning, but every generated result should be reviewed before it is used. The page sends requests through a server route so API keys stay out of the browser, while the interface remains simple and mobile friendly."
           : "These browser tools are designed for quick everyday work without accounts, payment flows, or complicated setup. Review the output before using it in final documents, code, messages, or published content.";
 
   return (

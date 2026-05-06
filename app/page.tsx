@@ -5,12 +5,21 @@ import { Badge, Card, CategoryCard, Container, ToolCard } from "@/components/ui"
 import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategoryRoutes, type TopLevelCategory } from "@/data/tools";
 
 const popularSlugs = [
+  "ai-resume-cover-letter",
+  "image-to-pdf",
+  "ai-image-to-word",
+  "ai-text-summarizer",
+  "qr-code-generator",
+  "pdf-to-word"
+];
+
+const secondaryPopularSlugs = [
   "image-compressor",
   "merge-pdf",
-  "word-counter",
+  "pdf-to-jpg",
   "qr-code-generator",
-  "json-formatter",
-  "gpa-calculator"
+  "discount-calculator",
+  "bmi-calculator"
 ];
 
 const heroTools = [
@@ -38,48 +47,62 @@ const categoryDetails: Record<TopLevelCategory, { href: string; icon: string; de
   Everyday: {
     href: topLevelCategoryRoutes.Everyday,
     icon: "DAY",
-    description: "Image, PDF, text, calculator, QR, password, and daily browser tools in one place."
-  },
-  Student: {
-    href: topLevelCategoryRoutes.Student,
-    icon: "EDU",
-    description: "GPA, grades, attendance, word count, study planning, and student calculators."
+    description: "Fast calculators, text cleanup, QR codes, passwords, and daily browser productivity tools."
   },
   "AI Tools": {
     href: topLevelCategoryRoutes["AI Tools"],
     icon: "AI",
-    description: "AI-powered resume and cover letter support built for students and graduates."
+    description: "AI writing, summarizing, resume, captions, hashtags, and productivity assistants."
+  },
+  Student: {
+    href: topLevelCategoryRoutes.Student,
+    icon: "EDU",
+    description: "GPA, grades, attendance, study notes, writing checks, and student calculators."
   },
   Developer: {
     href: topLevelCategoryRoutes.Developer,
     icon: "DEV",
     description: "JSON, URL encoding, UUID, Base64, and quick web utilities for developers."
+  },
+  "PDF & Image": {
+    href: topLevelCategoryRoutes["PDF & Image"],
+    icon: "DOC",
+    description: "Convert, compress, merge, edit, unlock, and prepare PDFs and images in your browser."
   }
 };
 
-const trustBadges = ["Free to use", "No signup required", "Works in your browser", "Mobile friendly", "Fast and secure"];
+const trustBadges = ["No signup", "Browser-based", "Free", "Fast"];
 
 const whyCards = [
   {
+    title: "Fast",
+    copy: "Open the page, complete the task, and keep moving. The interface is designed for quick repeat workflows."
+  },
+  {
+    title: "Private",
+    copy: "File tools run in your browser where possible, and AI requests go through protected server routes."
+  },
+  {
     title: "No signup",
-    copy: "Open a tool and start immediately. FreeToolKit avoids accounts, paywalls, and unnecessary setup."
+    copy: "No account wall, no unnecessary dashboard, and no payment step for everyday productivity tasks."
   },
   {
     title: "Browser-based",
-    copy: "Image, PDF, and student utilities are designed to run in your browser where possible."
-  },
-  {
-    title: "Privacy-friendly",
-    copy: "File tools keep processing in the browser where supported, so common tasks avoid unnecessary uploads."
-  },
-  {
-    title: "Built for everyday tasks",
-    copy: "Use it for assignments, office documents, content workflows, applications, and daily productivity."
+    copy: "Many image, PDF, calculator, text, and developer tools work directly on your device."
   }
 ];
 
+const homeFaqs = [
+  ["Is FreeToolKit free to use?", "Yes. FreeToolKit provides free AI and everyday productivity tools with no signup required."],
+  ["Are my files uploaded?", "File tools are designed to process in your browser where supported. AI tools send only the text or image needed for that request through a server route."],
+  ["What tools are most popular?", "High-value tools include AI Resume Generator, Image to PDF, AI Image to Word, PDF to Word, QR Code Generator, and Text Summarizer."],
+  ["Does FreeToolKit work on mobile?", "Yes. The layout, controls, and tool cards are built for phones, tablets, and desktops."],
+  ["Can I use these tools for work or study?", "Yes. The site is useful for documents, applications, assignments, content workflows, calculations, and developer tasks."]
+];
+
 export default function HomePage() {
-  const popularTools = popularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
+  const trendingTools = popularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
+  const popularTools = secondaryPopularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
 
   return (
     <main className="overflow-hidden">
@@ -87,20 +110,20 @@ export default function HomePage() {
         <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-20">
           <div className="max-w-4xl text-center lg:text-left">
             <Badge className="mx-auto border-brand-100 text-[11px] font-black uppercase tracking-wide text-brand-700 sm:text-xs lg:mx-0">
-              Fast, free, no-login online tools
+              Free AI & everyday productivity tools
             </Badge>
             <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.02] tracking-tight text-slate-950 sm:text-5xl lg:mx-0 lg:text-6xl">
-              Simple, Free Online Tools — All in One Place
+              Free AI & Everyday Productivity Tools
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
-              Compress images, edit PDFs, format text, calculate values, and use everyday browser-based tools — fast, free, and no signup required.
+              Use fast browser-based tools for AI writing, resumes, PDFs, images, calculators, study workflows, and developer tasks. No signup, no clutter, just useful productivity tools.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:justify-start">
               <Link href="/all-tools" className="rounded-2xl bg-gradient-to-b from-brand-500 to-brand-700 px-6 py-3 text-center text-sm font-bold text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:from-brand-600 hover:to-brand-700">
                 Browse All Tools
               </Link>
-              <Link href="/image-compressor" className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
-                Try Image Compressor
+              <Link href="/ai-tools" className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+                Explore AI Tools
               </Link>
             </div>
             <div className="mx-auto text-left">
@@ -152,15 +175,15 @@ export default function HomePage() {
         <section>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Most used</p>
-              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Popular Tools</h2>
+              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Trending now</p>
+              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">High-value productivity tools</h2>
             </div>
             <Link href="/all-tools" className="text-sm font-black text-brand-700 hover:text-brand-900">
               View all tools →
             </Link>
           </div>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {popularTools.map((tool) => (
+            {trendingTools.map((tool) => (
               <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
             ))}
           </div>
@@ -169,16 +192,33 @@ export default function HomePage() {
         <AdSlot type="responsive" />
 
         <section className="mt-16">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Tool library</p>
+          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Platform categories</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Browse by Category</h2>
-          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {(["Everyday", "Student", "AI Tools", "Developer"] as TopLevelCategory[]).map((category) => {
+          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {(["Everyday", "AI Tools", "Student", "Developer", "PDF & Image"] as TopLevelCategory[]).map((category) => {
               const details = categoryDetails[category];
-              const categoryTools = getToolsByTopLevelCategory(category).slice(0, 5);
+              const categoryTools = getToolsByTopLevelCategory(category).slice(0, 3);
               return (
                 <CategoryCard key={category} title={category} description={details.description} href={details.href} icon={details.icon} tools={categoryTools.map((tool) => tool.title)} />
               );
             })}
+          </div>
+        </section>
+
+        <section className="mt-16">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Popular tools</p>
+              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Quick tools people use every day</h2>
+            </div>
+            <Link href="/everyday" className="text-sm font-black text-brand-700 hover:text-brand-900">
+              Browse everyday →
+            </Link>
+          </div>
+          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {popularTools.map((tool) => (
+              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
+            ))}
           </div>
         </section>
 
@@ -197,16 +237,33 @@ export default function HomePage() {
         </section>
 
         <section className="prose-lite mt-16 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.06)] sm:p-8">
-          <h2>Free Online Tools for Everyday Work and Study</h2>
+          <h2>Free AI and Everyday Productivity Tools</h2>
           <p>
-            FreeToolKit helps you complete common file, image, PDF, and student tasks without downloading extra software or creating an account. The website is built for quick daily jobs: compressing an image before upload, merging PDFs for a submission, calculating GPA before grades are finalized, checking word count, or starting a focused study session. Every tool is designed to be simple enough for beginners and practical enough for office workers, creators, students, and professionals.
+            FreeToolKit is built as a modern productivity platform for people who need quick answers without installing extra software or creating an account. The site brings together free AI tools, PDF utilities, image converters, student calculators, writing helpers, and developer tools in one clean browser-based workspace. Instead of treating tools as a cluttered directory, FreeToolKit organizes them around real workflows: prepare a resume, convert an image, clean text, create a PDF, summarize notes, calculate a result, or format developer data.
           </p>
           <p>
-            Many online tasks should not require a complicated dashboard. FreeToolKit keeps the experience clean and browser-based where possible, so you can open a page, use the tool, and download or copy your result. The <Link href="/everyday" className="font-bold text-brand-700 hover:text-brand-900">Everyday</Link> section includes image, PDF, text, calculator, QR, and password utilities. The <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">Student</Link> section includes GPA calculators, grade planning, attendance, a study timer, and a word counter.
+            The <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI Tools</Link> section helps with summaries, captions, hashtags, email drafts, study notes, ATS checks, and resume support. The <Link href="/pdf-image" className="font-bold text-brand-700 hover:text-brand-900">PDF & Image</Link> section focuses on practical file workflows such as Image to PDF, PDF to Word, PDF to JPG, Merge PDF, Image Compressor, and AI Image to Word. The <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">Student</Link> section keeps grade planning, attendance, study timers, and writing checks easy to reach, while the <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">Developer</Link> section covers JSON, Base64, URL encoding, and UUID generation.
           </p>
           <p>
-            The site is also built with mobile users in mind. Pages use readable spacing, large controls, clear instructions, and lightweight layouts so the tools feel fast on phones, tablets, and desktops. Since there is no login required, FreeToolKit works well for quick one-time tasks and repeat productivity workflows. Sections for <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI Tools</Link> and <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">Developer</Link> make it easier to find resume support, JSON formatting, URL encoding, UUID generation, and Base64 utilities. Whether you are preparing school files, cleaning up documents for work, optimizing images for a website, or drafting content with a word limit, the goal is the same: useful free tools that are easy to trust and easy to use.
+            Every page is designed for fast mobile and desktop use. Inputs are large, cards are easy to scan, outputs are clear, and related tools keep the next step nearby. File tools are browser-based where possible, while AI tools use server routes so API keys are never exposed in the frontend. That balance helps FreeToolKit feel fast, trustworthy, and practical for everyday tasks, schoolwork, content creation, job applications, office documents, and lightweight technical workflows.
           </p>
+          <h2>A cleaner alternative to scattered utility sites</h2>
+          <p>
+            Many online utility pages feel crowded, outdated, or confusing. FreeToolKit aims for a calmer SaaS-style experience: clear navigation, modern typography, concise helper text, and tool cards that explain exactly what each page does. You can search across all tools, browse focused categories, or start from trending workflows like AI Resume Generator, PDF to Word, AI Image to Word, Text Summarizer, QR Code Generator, and Image to PDF. The goal is simple: free online productivity tools that feel premium, work quickly, and remain easy to trust.
+          </p>
+        </section>
+
+        <section className="mt-16">
+          <p className="text-sm font-black uppercase tracking-wide text-brand-600">FAQ</p>
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Questions about FreeToolKit</h2>
+          <div className="mt-7 grid gap-4 md:grid-cols-2">
+            {homeFaqs.map(([question, answer]) => (
+              <Card key={question} className="p-6">
+                <h3 className="text-base font-bold tracking-tight text-slate-950">{question}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{answer}</p>
+              </Card>
+            ))}
+          </div>
         </section>
 
         <section className="mt-16 rounded-[2rem] border border-brand-100 bg-[radial-gradient(circle_at_top_left,#dbeafe,transparent_36%),linear-gradient(135deg,#ffffff,#f8fafc)] p-6 text-center shadow-[0_24px_70px_rgba(37,99,235,0.10)] sm:p-10">

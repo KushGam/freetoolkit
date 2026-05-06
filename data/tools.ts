@@ -424,35 +424,39 @@ export const tools: Tool[] = [...coreTools, ...newTools];
 
 export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"];
 
-export type TopLevelCategory = "Everyday" | "Student" | "AI Tools" | "Developer";
+export type TopLevelCategory = "Everyday" | "AI Tools" | "Student" | "Developer" | "PDF & Image";
 
-export const topLevelCategories: TopLevelCategory[] = ["Everyday", "Student", "AI Tools", "Developer"];
+export const topLevelCategories: TopLevelCategory[] = ["Everyday", "AI Tools", "Student", "Developer", "PDF & Image"];
 
 export const topLevelCategoryRoutes: Record<TopLevelCategory, string> = {
   Everyday: "/everyday",
-  Student: "/student",
   "AI Tools": "/ai-tools",
-  Developer: "/developer"
+  Student: "/student",
+  Developer: "/developer",
+  "PDF & Image": "/pdf-image"
 };
 
 export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
-  Everyday: "Free everyday tools for images, PDFs, text, calculators, and quick browser-based tasks.",
+  Everyday: "Free everyday productivity tools for quick browser-based tasks, calculators, text cleanup, QR codes, and daily workflows.",
+  "AI Tools": "Free AI tools for writing, resumes, captions, study notes, content, and productivity workflows.",
   Student: "Free student tools for grades, GPA, attendance, study time, word count, and career preparation.",
-  "AI Tools": "Free AI-powered tools for resumes, cover letters, writing support, and productivity.",
-  Developer: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities."
+  Developer: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities.",
+  "PDF & Image": "Free PDF and image tools for converting, compressing, editing, extracting, and preparing files in your browser."
 };
 
 export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: string; href: string }>> = {
   Everyday: [
-    { label: "Image Tools", href: "/image-tools" },
-    { label: "PDF Tools", href: "/pdf-tools" },
     { label: "Text Tools", href: "/text-tools" },
     { label: "Calculator Tools", href: "/calculator-tools" },
     { label: "Security Tools", href: "/security-tools" }
   ],
-  Student: [{ label: "Student Tools", href: "/student-tools" }],
   "AI Tools": [{ label: "AI Tools", href: "/ai-tools" }, { label: "Student Tools", href: "/student-tools" }],
-  Developer: [{ label: "Developer Tools", href: "/developer-tools" }]
+  Student: [{ label: "Student Tools", href: "/student-tools" }],
+  Developer: [{ label: "Developer Tools", href: "/developer-tools" }],
+  "PDF & Image": [
+    { label: "PDF Tools", href: "/pdf-tools" },
+    { label: "Image Tools", href: "/image-tools" }
+  ]
 };
 
 export const categoryRoutes: Record<ToolCategory, string> = {
@@ -488,12 +492,17 @@ export function getTopLevelCategory(tool: Tool): TopLevelCategory {
   if (tool.category === "AI Tools") return "AI Tools";
   if (tool.category === "Student Tools") return "Student";
   if (tool.category === "Developer Tools" && tool.slug !== "qr-code-generator") return "Developer";
+  if (tool.category === "PDF Tools" || tool.category === "Image Tools") return "PDF & Image";
   return "Everyday";
 }
 
 export function getToolsByTopLevelCategory(category: TopLevelCategory) {
   const base = tools.filter((tool) => getTopLevelCategory(tool) === category);
   if (category === "Everyday") {
+    const extra = getTool("ai-image-to-word");
+    return extra && !base.some((tool) => tool.slug === extra.slug) ? [...base, extra] : base;
+  }
+  if (category === "PDF & Image") {
     const extra = getTool("ai-image-to-word");
     return extra && !base.some((tool) => tool.slug === extra.slug) ? [...base, extra] : base;
   }

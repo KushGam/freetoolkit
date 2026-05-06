@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploadDropzone } from "@/components/FileUploadDropzone";
 import { GeminiAiTool } from "@/components/tools/GeminiAiTool";
 import { ShiftHoursCalculator } from "@/components/tools/ShiftHoursCalculator";
-import { Button, Input, SecondaryButton, Select, Textarea } from "@/components/ui";
+import { Button, Input, ResultCard, SecondaryButton, Select, Textarea } from "@/components/ui";
 import { formatBytes } from "@/lib/utils";
 
 type Output = { url: string; name: string; size: number; type?: string };
@@ -1409,6 +1409,184 @@ function PdfToWord() {
           Word to PDF
         </a>
       </div>
+    </div>
+  );
+}
+
+function PdfToJpg() {
+  const [file, setFile] = useState<File | null>(null);
+  const [ranges, setRanges] = useState("");
+  const [outputs, setOutputs] = useState<Output[]>([]);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => () => {
+    outputs.forEach((output) => URL.revokeObjectURL(output.url));
+  }, [outputs]);
+
+  function load(files: File[]) {
+    outputs.forEach((output) => URL.revokeObjectURL(output.url));
+    setFile(files[0] ?? null);
+    setOutputs([]);
+    setError("");
+  }
+
+  async function convert() {
+    if (!file) {
+      setError("Please upload a PDF first.");
+      return;
+    }
+    setBusy(true);
+    setError("");
+    outputs.forEach((output) => URL.revokeObjectURL(output.url));
+    setOutputs([]);
+    try {
+      if (!window.DOMMatrix) throw new Error("PDF rendering is not supported in this browser.");
+      const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+      pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.legacy.min.js";
+      const loadingTask = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) });
+      const pdf = await loadingTask.promise;
+      const selectedPages = ranges.trim() ? parseRanges(ranges, pdf.numPages).map((page) => page + 1) : Array.from({ length: pdf.numPages }, (_, index) => index + 1);
+      const nextOutputs: Output[] = [];
+
+      for (const pageNumber of selectedPages.slice(0, 20)) {
+        const page = await pdf.getPage(pageNumber);
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("Canvas is not supported in this browser.");
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvas, canvasContext: ctx, viewport }).promise;
+        const blob = await canvasToBlob(canvas, "image/jpeg", 0.9);
+        const baseName = (file.name || "pdf-page").replace(/\.[^.]+$/, "");
+        nextOutputs.push(downloadBlob(blob, `${baseName}-page-${pageNumber}.jpg`));
+      }
+
+      setOutputs(nextOutputs);
+      if (selectedPages.length > 20) setError("Converted the first 20 selected pages to keep the browser responsive.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to convert this PDF to JPG.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="grid gap-6">
+      <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={load} />
+      <FileInfo file={file} />
+      <label className="text-sm font-bold text-slate-700">
+        Pages or ranges
+        <Input className="mt-2" value={ranges} onChange={(event) => setRanges(event.target.value)} placeholder="Leave empty for all pages, or use 1-3,5" />
+      </label>
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <Button type="button" onClick={convert} disabled={!file || busy}>{busy ? "Converting..." : "Convert to JPG"}</Button>
+        <SecondaryButton type="button" onClick={() => { load([]); setRanges(""); }}>Reset</SecondaryButton>
+      </div>
+      <ErrorMessage message={error} />
+      {outputs.length ? (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {outputs.map((output) => (
+            <a key={output.url} className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-black text-emerald-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-100" href={output.url} download={output.name}>
+              Download {output.name} · {formatBytes(output.size)}
+            </a>
+          ))}
+        </div>
+      ) : null}
+      <p className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold leading-6 text-slate-600">JPG files are image exports. Text will not remain editable, and very large PDFs may take longer on mobile devices.</p>
+    </div>
+  );
+}
+
+function DiscountCalculator() {
+  const [price, setPrice] = useState(100);
+  const [discount, setDiscount] = useState(20);
+  const [tax, setTax] = useState(0);
+  const savings = Math.max(0, price * (discount / 100));
+  const salePrice = Math.max(0, price - savings);
+  const taxAmount = salePrice * (Math.max(0, tax) / 100);
+  const total = salePrice + taxAmount;
+
+  return (
+    <div className="grid gap-6">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">Original price <Input className="mt-2" type="number" min={0} value={price} onChange={(event) => setPrice(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Discount % <Input className="mt-2" type="number" min={0} max={100} value={discount} onChange={(event) => setDiscount(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Tax % optional <Input className="mt-2" type="number" min={0} value={tax} onChange={(event) => setTax(Number(event.target.value))} /></label>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <ResultCard title="You save"><p className="text-3xl font-black text-slate-950">${savings.toFixed(2)}</p></ResultCard>
+        <ResultCard title="Sale price"><p className="text-3xl font-black text-slate-950">${salePrice.toFixed(2)}</p></ResultCard>
+        <ResultCard title="Estimated total"><p className="text-3xl font-black text-slate-950">${total.toFixed(2)}</p></ResultCard>
+      </div>
+      <SecondaryButton onClick={() => { setPrice(100); setDiscount(20); setTax(0); }}>Reset</SecondaryButton>
+    </div>
+  );
+}
+
+function BmiCalculator() {
+  const [unit, setUnit] = useState<"metric" | "imperial">("metric");
+  const [height, setHeight] = useState(170);
+  const [weight, setWeight] = useState(70);
+  const bmi = unit === "metric"
+    ? weight / Math.pow(height / 100, 2)
+    : (weight / Math.pow(height, 2)) * 703;
+  const category = bmi < 18.5 ? "Underweight" : bmi < 25 ? "Normal range" : bmi < 30 ? "Overweight" : "Obesity range";
+
+  return (
+    <div className="grid gap-6">
+      <label className="text-sm font-bold text-slate-700">Units <Select className="mt-2" value={unit} onChange={(event) => setUnit(event.target.value as "metric" | "imperial")}><option value="metric">Metric (cm, kg)</option><option value="imperial">Imperial (in, lb)</option></Select></label>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">Height ({unit === "metric" ? "cm" : "in"}) <Input className="mt-2" type="number" min={1} value={height} onChange={(event) => setHeight(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-slate-700">Weight ({unit === "metric" ? "kg" : "lb"}) <Input className="mt-2" type="number" min={1} value={weight} onChange={(event) => setWeight(Number(event.target.value))} /></label>
+      </div>
+      <ResultCard title="BMI result">
+        <p className="text-4xl font-black text-slate-950">{Number.isFinite(bmi) ? bmi.toFixed(1) : "0.0"}</p>
+        <p className="mt-2 text-sm font-bold text-slate-600">{category}</p>
+      </ResultCard>
+      <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-6 text-amber-900">BMI is a general screening estimate, not medical advice. It does not measure muscle, body composition, age, pregnancy, or individual health risk.</p>
+    </div>
+  );
+}
+
+function PdfUnlockTool() {
+  const [file, setFile] = useState<File | null>(null);
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  async function unlock() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    setOutput(null);
+    try {
+      const { PDFDocument } = await import("pdf-lib");
+      const pdf = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+      const bytes = await pdf.save({ useObjectStreams: false });
+      setOutput(downloadBlob(bytesToPdfBlob(bytes), `${file.name.replace(/\.[^.]+$/, "") || "unlocked"}.pdf`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "This PDF could not be unlocked in the browser.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="grid gap-6">
+      <FileUploadDropzone label="Upload a PDF you own or have permission to edit" accept="application/pdf" onFiles={(files) => { setFile(files[0] ?? null); setOutput(null); setError(""); }} />
+      <FileInfo file={file} />
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <Button type="button" onClick={unlock} disabled={!file || busy}>{busy ? "Trying unlock..." : "Try Unlock PDF"}</Button>
+        <SecondaryButton type="button" onClick={() => { setFile(null); setOutput(null); setError(""); }}>Reset</SecondaryButton>
+      </div>
+      <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-6 text-amber-900">Only use this on PDFs you own or have permission to modify. Strong encryption or password-required files may not work.</p>
+      <ErrorMessage message={error} />
+      <Download output={output} />
     </div>
   );
 }
@@ -3252,6 +3430,8 @@ export function ToolRunner({ slug }: { slug: string }) {
     "case-converter": <CaseConverter />,
     "word-to-pdf": <WordToPdf />,
     "pdf-to-word": <PdfToWord />,
+    "pdf-to-jpg": <PdfToJpg />,
+    "pdf-unlock": <PdfUnlockTool />,
     "url-encoder-decoder": <UrlEncoderDecoder />,
     "json-formatter": <JsonFormatter />,
     "password-generator": <PasswordGenerator />,
@@ -3260,6 +3440,8 @@ export function ToolRunner({ slug }: { slug: string }) {
     "age-calculator": <AgeCalculator />,
     "unit-converter": <UnitConverter />,
     "percentage-calculator": <PercentageCalculator />,
+    "discount-calculator": <DiscountCalculator />,
+    "bmi-calculator": <BmiCalculator />,
     "loan-emi-calculator": <LoanEmiCalculator />,
     "time-zone-converter": <TimeZoneConverter />,
     "text-formatter": <TextFormatter />,
@@ -3297,7 +3479,11 @@ export function ToolRunner({ slug }: { slug: string }) {
     "ai-email-writer": <GeminiAiTool slug="ai-email-writer" />,
     "chat-reply-generator": <GeminiAiTool slug="chat-reply-generator" />,
     "content-rewriter": <GeminiAiTool slug="content-rewriter" />,
-    "productivity-assistant": <GeminiAiTool slug="productivity-assistant" />
+    "productivity-assistant": <GeminiAiTool slug="productivity-assistant" />,
+    "ai-caption-generator": <GeminiAiTool slug="ai-caption-generator" />,
+    "ai-youtube-title-generator": <GeminiAiTool slug="ai-youtube-title-generator" />,
+    "ai-hashtag-generator": <GeminiAiTool slug="ai-hashtag-generator" />,
+    "resume-ats-checker": <GeminiAiTool slug="resume-ats-checker" />
   };
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;

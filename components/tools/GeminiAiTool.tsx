@@ -13,6 +13,8 @@ type ToolConfig = {
   options?: string[];
   optionLabel?: string;
   bio?: boolean;
+  examplePrompts?: string[];
+  emptyState?: string;
 };
 
 const configs: Record<string, ToolConfig> = {
@@ -121,7 +123,44 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste messy notes, a plan, meeting notes, or tasks to organize...",
     minLength: 50,
     optionLabel: "Task style",
-    options: ["To-do list", "Priority order", "Action plan"]
+    options: ["To-do list", "Priority order", "Action plan"],
+    examplePrompts: ["Turn my meeting notes into a prioritized action plan.", "Organize this messy list into tasks for today."]
+  },
+  "ai-caption-generator": {
+    title: "AI Caption Generator",
+    toolType: "AI Caption Generator",
+    placeholder: "Describe your post, product, photo, offer, or announcement...",
+    minLength: 15,
+    optionLabel: "Caption tone",
+    options: ["Professional", "Friendly", "Playful", "Short and punchy"],
+    examplePrompts: ["Launch post for a free PDF tool that works in the browser.", "Caption for a student productivity app feature."]
+  },
+  "ai-youtube-title-generator": {
+    title: "AI YouTube Title Generator",
+    toolType: "AI YouTube Title Generator",
+    placeholder: "Paste your video topic, hook, script summary, or audience...",
+    minLength: 15,
+    optionLabel: "Title style",
+    options: ["Clickable but honest", "Tutorial", "Shorts", "Professional"],
+    examplePrompts: ["Video about compressing images before uploading to websites.", "Beginner tutorial for calculating GPA."]
+  },
+  "ai-hashtag-generator": {
+    title: "AI Hashtag Generator",
+    toolType: "AI Hashtag Generator",
+    placeholder: "Enter a topic, caption, niche, product, or campaign idea...",
+    minLength: 10,
+    optionLabel: "Hashtag style",
+    options: ["Balanced", "Niche", "Broad reach", "Professional"],
+    examplePrompts: ["Free browser-based PDF tools for students and office workers.", "AI writing tools for creators."]
+  },
+  "resume-ats-checker": {
+    title: "Resume ATS Checker",
+    toolType: "Resume ATS Checker",
+    placeholder: "Paste your resume text and the job description. Label them as RESUME and JOB DESCRIPTION for best results...",
+    minLength: 120,
+    optionLabel: "Review focus",
+    options: ["ATS fit", "Keyword gaps", "Formatting advice", "Concise action plan"],
+    examplePrompts: ["RESUME: ... JOB DESCRIPTION: ...", "Check this resume against a junior marketing role and list missing keywords."]
   }
 };
 
@@ -223,6 +262,11 @@ export function GeminiAiTool({ slug }: { slug: string }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.85fr)]">
       <div className="space-y-5">
+        <div className="rounded-2xl border border-brand-100 bg-brand-50/70 p-4 text-sm leading-6 text-brand-800">
+          <p className="font-black">AI workspace</p>
+          <p className="mt-1 font-semibold">Paste useful context, choose a mode, and review the output before using it. API keys stay server-side.</p>
+        </div>
+
         {config.bio ? (
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-bold text-slate-700">
@@ -248,6 +292,24 @@ export function GeminiAiTool({ slug }: { slug: string }) {
               {config.options.map((item) => <option key={item}>{item}</option>)}
             </Select>
           </label>
+        ) : null}
+
+        {config.examplePrompts?.length ? (
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p className="text-xs font-black uppercase tracking-wide text-slate-500">Example prompts</p>
+            <div className="mt-3 grid gap-2">
+              {config.examplePrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => setInput(prompt)}
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm font-semibold leading-6 text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
         ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -285,8 +347,8 @@ export function GeminiAiTool({ slug }: { slug: string }) {
             Regenerate
           </SecondaryButton>
         ) : null}
-        <div className="mt-5 whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
-          {loading ? "Generating your AI output..." : output || "Your AI output will appear here."}
+        <div className="mt-5 min-h-72 whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
+          {loading ? "Generating a clean, structured result..." : output || config.emptyState || "Your AI output will appear here. Add context on the left and click Generate."}
         </div>
       </Card>
     </div>
