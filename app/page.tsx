@@ -1,8 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { HomeToolSearch } from "@/components/HomeToolSearch";
 import { Badge, Card, CategoryCard, Container, ToolCard } from "@/components/ui";
+import { blogHref, blogPosts } from "@/data/blog";
 import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategoryRoutes, type TopLevelCategory } from "@/data/tools";
+import { canonicalUrl, siteUrl } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Free AI & Everyday Productivity Tools",
+  description: "Use 76 free browser-based tools for AI writing, PDFs, images, resumes, calculators, student work, text cleanup, security, and developer utilities.",
+  keywords: ["free online tools", "AI tools", "PDF tools", "image tools", "student tools", "productivity tools", "developer tools"],
+  alternates: { canonical: canonicalUrl("/") },
+  openGraph: {
+    title: "FreeToolKit — Free AI & Everyday Productivity Tools",
+    description: "Fast free tools for AI writing, PDFs, images, resumes, calculators, students, developers, and everyday browser tasks.",
+    url: siteUrl,
+    siteName: "FreeToolKit",
+    type: "website"
+  }
+};
 
 const popularSlugs = [
   "ai-resume-cover-letter",
@@ -103,6 +120,7 @@ const homeFaqs = [
 export default function HomePage() {
   const trendingTools = popularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
   const popularTools = secondaryPopularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
+  const latestPosts = blogPosts.slice(0, 3);
 
   return (
     <main className="overflow-hidden">
@@ -251,6 +269,30 @@ export default function HomePage() {
           <p>
             Many online utility pages feel crowded, outdated, or confusing. FreeToolKit aims for a calmer SaaS-style experience: clear navigation, modern typography, concise helper text, and tool cards that explain exactly what each page does. You can search across all tools, browse focused categories, or start from trending workflows like AI Resume Generator, PDF to Word, AI Image to Word, Text Summarizer, QR Code Generator, and Image to PDF. The goal is simple: free online productivity tools that feel premium, work quickly, and remain easy to trust.
           </p>
+        </section>
+
+        <section className="mt-16">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Latest guides</p>
+              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Learn the fastest tool workflows</h2>
+            </div>
+            <Link href="/blog" className="text-sm font-black text-brand-700 hover:text-brand-900">
+              Read the blog →
+            </Link>
+          </div>
+          <div className="mt-7 grid gap-4 md:grid-cols-3">
+            {latestPosts.map((post) => (
+              <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-brand-100">
+                <Card className="flex h-full flex-col p-6 group-hover:-translate-y-1 group-hover:border-brand-200">
+                  <p className="text-xs font-black uppercase tracking-wide text-brand-600">{post.category}</p>
+                  <h3 className="mt-3 text-lg font-bold tracking-tight text-slate-950 group-hover:text-brand-700">{post.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{post.description}</p>
+                  <p className="mt-4 text-xs font-bold text-slate-500">{post.readingTime}</p>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section className="mt-16">

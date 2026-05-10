@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Free Image Tools",
-  description: "Compress, resize, and convert images online for free with browser-based image tools.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/image-tools" },
-  openGraph: { title: "Free Image Tools | FreeToolKit", description: "Free tools for image compression, resizing, PNG, JPG, and WebP conversion." }
+  title: categorySeo["Image Tools"].title,
+  description: categorySeo["Image Tools"].description,
+  keywords: categorySeo["Image Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/image-tools` },
+  openGraph: { title: categorySeo["Image Tools"].title, description: categorySeo["Image Tools"].description, url: `${siteUrl}/image-tools`, type: "website" }
 };
 
 export default function ImageToolsPage() {

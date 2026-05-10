@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
 import { AllToolsSearch } from "@/components/AllToolsSearch";
 import { Container, PageHeader } from "@/components/ui";
+import { canonicalUrl } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "All Free AI & Productivity Tools",
-  description: "Search every FreeToolKit AI, everyday, student, developer, PDF, and image tool in one clean productivity platform.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/all-tools" },
-  openGraph: {
-    title: "All Free AI & Productivity Tools | FreeToolKit",
-    description: "Find free browser-based tools for AI workflows, everyday tasks, PDFs, images, students, and developers."
-  }
-};
+export function generateMetadata({ searchParams }: { searchParams?: { q?: string } }): Metadata {
+  const hasQuery = Boolean(searchParams?.q?.trim());
+  return {
+    title: "All Free AI & Productivity Tools",
+    description: "Search every FreeToolKit AI, everyday, student, developer, PDF, and image tool in one clean productivity platform.",
+    alternates: { canonical: canonicalUrl("/all-tools") },
+    robots: hasQuery ? { index: false, follow: true } : { index: true, follow: true },
+    openGraph: {
+      title: "All Free AI & Productivity Tools | FreeToolKit",
+      description: "Find free browser-based tools for AI workflows, everyday tasks, PDFs, images, students, and developers.",
+      url: canonicalUrl("/all-tools"),
+      type: "website"
+    }
+  };
+}
 
 export default function AllToolsPage({ searchParams }: { searchParams?: { q?: string } }) {
   return (

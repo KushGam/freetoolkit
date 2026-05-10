@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Free PDF Tools",
-  description: "Merge, split, rotate, extract, and optimize PDFs online for free with browser-based PDF tools.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/pdf-tools" },
-  openGraph: { title: "Free PDF Tools | FreeToolKit", description: "Free PDF tools for merging, splitting, rotating, extracting pages, and lightweight optimization." }
+  title: categorySeo["PDF Tools"].title,
+  description: categorySeo["PDF Tools"].description,
+  keywords: categorySeo["PDF Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/pdf-tools` },
+  openGraph: { title: categorySeo["PDF Tools"].title, description: categorySeo["PDF Tools"].description, url: `${siteUrl}/pdf-tools`, type: "website" }
 };
 
 export default function PdfToolsPage() {

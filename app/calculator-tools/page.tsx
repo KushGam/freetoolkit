@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Calculator Tools Online Free | FreeToolKit",
-  description: "Use free calculator tools for age, units, percentages, loan EMI, and time zones. Fast browser calculators with no signup required.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/calculator-tools" }
+  title: categorySeo["Calculator Tools"].title,
+  description: categorySeo["Calculator Tools"].description,
+  keywords: categorySeo["Calculator Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/calculator-tools` },
+  openGraph: { title: categorySeo["Calculator Tools"].title, description: categorySeo["Calculator Tools"].description, url: `${siteUrl}/calculator-tools`, type: "website" }
 };
 
 export default function CalculatorToolsPage() {

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Free Student Tools",
-  description: "Calculate GPA and CGPA, count words, calculate grade percentages, and use a Pomodoro study timer.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/student-tools" },
-  openGraph: { title: "Free Student Tools | FreeToolKit", description: "Free student tools for GPA, CGPA, grades, study timing, and word counting." }
+  title: categorySeo["Student Tools"].title,
+  description: categorySeo["Student Tools"].description,
+  keywords: categorySeo["Student Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/student-tools` },
+  openGraph: { title: categorySeo["Student Tools"].title, description: categorySeo["Student Tools"].description, url: `${siteUrl}/student-tools`, type: "website" }
 };
 
 export default function StudentToolsPage() {

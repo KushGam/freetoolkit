@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { TopLevelCategoryPage } from "@/components/top-level-category-page";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "PDF & Image Tools | FreeToolKit",
+  title: "Free PDF & Image Tools Online",
   description: "Free PDF and image productivity tools for converting, compressing, editing, extracting, and preparing files online with no signup.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/pdf-image" },
+  keywords: ["PDF tools", "image tools", "compress PDF", "image compressor", "file converter"],
+  alternates: { canonical: `${siteUrl}/pdf-image` },
   openGraph: {
-    title: "PDF & Image Tools | FreeToolKit",
-    description: "Free browser-based PDF and image tools for everyday productivity workflows."
+    title: "Free PDF & Image Tools Online",
+    description: "Free browser-based PDF and image tools for everyday productivity workflows.",
+    url: `${siteUrl}/pdf-image`,
+    type: "website"
   }
 };
 

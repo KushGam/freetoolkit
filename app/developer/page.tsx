@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import { TopLevelCategoryPage } from "@/components/top-level-category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Developer Tools | FreeToolKit",
-  description: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/developer" },
+  title: categorySeo["Developer Tools"].title,
+  description: categorySeo["Developer Tools"].description,
+  keywords: categorySeo["Developer Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/developer` },
   openGraph: {
-    title: "Developer Tools | FreeToolKit",
-    description: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities."
+    title: categorySeo["Developer Tools"].title,
+    description: categorySeo["Developer Tools"].description,
+    url: `${siteUrl}/developer`,
+    type: "website"
   }
 };
 

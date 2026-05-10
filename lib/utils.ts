@@ -17,3 +17,8 @@ export function slugToTitle(slug: string) {
 }
 
 export const siteUrl = "https://www.freetoolkitapp.com";
+
+export function canonicalUrl(path = "/") {
+  const normalizedPath = path === "/" ? "" : `/${path.replace(/^\/+|\/+$/g, "")}`;
+  return `${siteUrl}${normalizedPath}`;
+}

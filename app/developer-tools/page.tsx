@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Developer Tools Online Free | FreeToolKit",
-  description: "Use free developer tools for JSON formatting, URL encoding, UUID generation, Base64 conversion, and QR codes with no signup.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/developer-tools" }
+  title: categorySeo["Developer Tools"].title,
+  description: categorySeo["Developer Tools"].description,
+  keywords: categorySeo["Developer Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/developer-tools` },
+  openGraph: { title: categorySeo["Developer Tools"].title, description: categorySeo["Developer Tools"].description, url: `${siteUrl}/developer-tools`, type: "website" }
 };
 
 export default function DeveloperToolsPage() {

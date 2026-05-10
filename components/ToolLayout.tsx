@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { FAQ } from "@/components/FAQ";
+import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { RelatedTools } from "@/components/RelatedTools";
 import { Card, Container, PageHeader } from "@/components/ui";
+import { getBlogPostsForTool } from "@/data/blog";
 import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
 import { ToolRunner } from "@/components/ToolRunner";
 
@@ -20,6 +22,7 @@ function workspaceCopy(tool: Tool) {
 }
 
 export function ToolLayout({ tool }: { tool: Tool }) {
+  const relatedBlogPosts = getBlogPostsForTool(tool.slug);
   const categoryShort =
     tool.category === "Image Tools"
       ? "Browser image workflow"
@@ -107,6 +110,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         </p>
       </section>
       <FAQ items={tool.faq} />
+      <RelatedBlogPosts posts={relatedBlogPosts} title={`Guides for ${tool.title}`} />
       <RelatedTools tools={getRelatedTools(tool)} />
       <AdSlot size="responsive" />
       </Container>

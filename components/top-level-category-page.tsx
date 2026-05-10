@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { CategoryToolSearch } from "@/components/CategoryToolSearch";
+import { FAQ } from "@/components/FAQ";
 import { Card, Container, PageHeader } from "@/components/ui";
+import { topLevelCategorySeo } from "@/data/seo";
 import {
   getToolsByTopLevelCategory,
   topLevelCategoryIntros,
@@ -19,9 +21,20 @@ const categoryBadges: Record<TopLevelCategory, string[]> = {
 export function TopLevelCategoryPage({ category }: { category: TopLevelCategory }) {
   const categoryTools = getToolsByTopLevelCategory(category);
   const oldLinks = topLevelCategoryOldLinks[category];
+  const seo = topLevelCategorySeo[category];
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: seo.faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer }
+    }))
+  };
 
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Container className="max-w-6xl py-10 sm:py-12">
       <PageHeader eyebrow="FreeToolKit productivity category" title={category} description={topLevelCategoryIntros[category]} badges={categoryBadges[category]} />
 
@@ -45,13 +58,12 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
 
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2>About {category.toLowerCase()} tools</h2>
-        <p>
-          This category collects related FreeToolKit utilities into one cleaner browsing experience. Every card links to an existing tool page, so existing URLs and tool functionality continue working exactly as before.
-        </p>
+        {seo.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         <p>
           FreeToolKit is designed for fast, no-signup workflows on mobile and desktop. Use the search box above to filter this category, or open <Link href="/all-tools">All Tools</Link> to browse the full directory of free AI and everyday productivity tools.
         </p>
       </section>
+      <FAQ items={seo.faqs} />
       </Container>
     </main>
   );

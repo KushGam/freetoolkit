@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import { TopLevelCategoryPage } from "@/components/top-level-category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Student Tools | FreeToolKit",
-  description: "Free student tools for grades, GPA, attendance, study time, word count, and career preparation.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/student" },
+  title: "Free Student Tools for Grades, Study, Writing, and Career Prep",
+  description: categorySeo["Student Tools"].description,
+  keywords: categorySeo["Student Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/student` },
   openGraph: {
-    title: "Student Tools | FreeToolKit",
-    description: "Free student tools for grades, GPA, attendance, study time, word count, and career preparation."
+    title: "Free Student Tools for Grades, Study, Writing, and Career Prep",
+    description: categorySeo["Student Tools"].description,
+    url: `${siteUrl}/student`,
+    type: "website"
   }
 };
 

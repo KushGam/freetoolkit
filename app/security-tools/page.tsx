@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/category-page";
+import { categorySeo } from "@/data/seo";
+import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Security Tools Online Free | FreeToolKit",
-  description: "Use free browser-based security tools like a strong password generator with no signup, no login, and no paid API.",
-  alternates: { canonical: "https://www.freetoolkitapp.com/security-tools" }
+  title: categorySeo["Security Tools"].title,
+  description: categorySeo["Security Tools"].description,
+  keywords: categorySeo["Security Tools"].keywords,
+  alternates: { canonical: `${siteUrl}/security-tools` },
+  openGraph: { title: categorySeo["Security Tools"].title, description: categorySeo["Security Tools"].description, url: `${siteUrl}/security-tools`, type: "website" }
 };
 
 export default function SecurityToolsPage() {

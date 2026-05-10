@@ -9,7 +9,41 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
-  swcMinify: true
+  swcMinify: true,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        has: [{ type: "host", value: "freetoolkitapp.com" }],
+        destination: "https://www.freetoolkitapp.com",
+        permanent: true
+      },
+      {
+        source: "/:path+",
+        has: [{ type: "host", value: "freetoolkitapp.com" }],
+        destination: "https://www.freetoolkitapp.com/:path+",
+        permanent: true
+      }
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" }
+        ]
+      },
+      {
+        source: "/:path*\\.(ico|png|jpg|jpeg|gif|webp|svg|js|css|woff|woff2)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+        ]
+      }
+    ];
+  }
 };
 
 export default withBundleAnalyzer(nextConfig);
