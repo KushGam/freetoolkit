@@ -27,7 +27,7 @@ export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string })
           className="min-h-14 rounded-2xl text-base"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search AI, everyday, PDF, image, student, or developer tools..."
+          placeholder="Search AI, everyday, PDF, image, gaming, student, or developer tools..."
         />
       </div>
       <div className="mt-4 flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white/85 p-2 shadow-sm">

@@ -101,6 +101,43 @@ export const expandedTools: Tool[] = [
   makeTool({ slug: "pdf-reader-online", title: "PDF Reader Online", category: "PDF Tools", description: "Open and inspect PDF file details in a browser-friendly workflow.", action: "review PDF file details and prepare documents for reading or sharing", audience: "students, readers, office workers, and researchers" }),
   makeTool({ slug: "compare-pdf-files", title: "Compare PDF Files", category: "PDF Tools", description: "Prepare side-by-side PDF comparison workflows and document review notes.", action: "compare two PDF versions and organize review notes", audience: "editors, students, legal assistants, and document reviewers", limitation: "Deep visual PDF comparison can require specialized rendering. This page focuses on a lightweight review workflow." }),
 
+  makeTool({
+    slug: "palworld-breeding-calculator",
+    title: "Palworld Breeding Calculator",
+    category: "Gaming Tools",
+    description: "Check Pal offspring from two parent selections and run reverse breeding lookups in your browser.",
+    action: "plan Palworld breeding pairs quickly with direct and reverse lookup",
+    audience: "Palworld players, grinders, and co-op teams",
+    limitation: "Breeding combinations in games can change with updates; always verify important pair decisions in your current game version."
+  }),
+  makeTool({
+    slug: "valorant-sensitivity-converter",
+    title: "Valorant Sensitivity Converter",
+    category: "Gaming Tools",
+    description: "Convert mouse sensitivity from popular FPS games into Valorant-friendly values.",
+    action: "transfer sensitivity settings between games with simple formulas",
+    audience: "FPS players, aim trainers, and competitive gamers",
+    limitation: "Sensitivity conversion gives a practical baseline. Fine-tune in-game based on your DPI, FOV preference, and playstyle."
+  }),
+  makeTool({
+    slug: "minecraft-crafting-calculator",
+    title: "Minecraft Crafting Calculator",
+    category: "Gaming Tools",
+    description: "Calculate recipe materials and totals for common Minecraft crafting targets.",
+    action: "estimate required Minecraft materials before gathering or trading",
+    audience: "Minecraft survival players, builders, and server communities",
+    limitation: "Recipes vary by edition and server rules. Verify custom recipe behavior on modded servers."
+  }),
+  makeTool({
+    slug: "pokemon-type-calculator",
+    title: "Pokemon Type Calculator",
+    category: "Gaming Tools",
+    description: "Check Pokemon attack and defense type effectiveness with quick matchup outputs.",
+    action: "review type multipliers for better team planning and move choices",
+    audience: "Pokemon players, battlers, and tournament learners",
+    limitation: "This calculator focuses on type effectiveness only and does not include abilities, weather, items, or move-specific exceptions."
+  }),
+
   makeTool({ slug: "ai-humanizer", title: "AI Humanizer", category: "AI Tools", description: "Rewrite AI-sounding text into clearer, more natural language for review.", action: "make stiff drafts sound more natural while preserving meaning", audience: "writers, students, marketers, and professionals" }),
   makeTool({ slug: "ai-homework-helper", title: "AI Homework Helper", category: "AI Tools", description: "Get study-friendly explanations and steps for homework questions.", action: "break homework prompts into understandable study guidance", audience: "students, tutors, and parents", limitation: "Use this as study help, not as a replacement for learning or your school's academic honesty rules." }),
   makeTool({ slug: "ai-essay-writer", title: "AI Essay Writer", category: "AI Tools", description: "Draft essay outlines, thesis ideas, and structured writing plans.", action: "plan essays with outlines, arguments, and revision notes", audience: "students, applicants, and writers", limitation: "Always follow your institution's rules and write in your own voice." }),

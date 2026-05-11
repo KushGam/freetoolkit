@@ -23,7 +23,8 @@ const blogCategoryRouteMap: Record<string, string> = {
   "Student Guides": categoryRoutes["Student Tools"],
   "Productivity Guides": "/everyday",
   "Text Guides": categoryRoutes["Text Tools"],
-  "Security Guides": categoryRoutes["Security Tools"]
+  "Security Guides": categoryRoutes["Security Tools"],
+  "Gaming Guides": categoryRoutes["Gaming Tools"]
 };
 
 export function generateStaticParams() {

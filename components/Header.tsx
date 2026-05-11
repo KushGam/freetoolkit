@@ -28,7 +28,8 @@ const categoryGroups = [
     title: "Creative",
     links: [
       { href: "/image-tools", label: "Image Tools", icon: "IM" },
-      { href: "/social-media-tools", label: "Social Media Tools", icon: "SO" }
+      { href: "/social-media-tools", label: "Social Media Tools", icon: "SO" },
+      { href: "/gaming-tools", label: "Gaming Tools", icon: "GM" }
     ]
   },
   {

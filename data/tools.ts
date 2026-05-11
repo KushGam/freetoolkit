@@ -2,7 +2,7 @@ import { newTools } from "./new-tools";
 import { expandedTools } from "./expanded-tools";
 import { getRelatedToolSlugs } from "./tool-relations";
 
-export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools" | "SEO Tools" | "Social Media Tools";
+export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools" | "SEO Tools" | "Social Media Tools" | "Gaming Tools";
 
 export type Tool = {
   slug: string;
@@ -424,7 +424,7 @@ const coreTools: Tool[] = [
 
 export const tools: Tool[] = [...coreTools, ...newTools, ...expandedTools];
 
-export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools", "SEO Tools", "Social Media Tools"];
+export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools", "SEO Tools", "Social Media Tools", "Gaming Tools"];
 
 export type TopLevelCategory = "Everyday" | "AI Tools" | "Student" | "Developer" | "PDF & Image" | "SEO Tools" | "Social Media Tools";
 
@@ -464,7 +464,10 @@ export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: s
     { label: "Image Tools", href: "/image-tools" }
   ],
   "SEO Tools": [{ label: "SEO Tools", href: "/seo-tools" }],
-  "Social Media Tools": [{ label: "Social Media Tools", href: "/social-media-tools" }]
+  "Social Media Tools": [
+    { label: "Social Media Tools", href: "/social-media-tools" },
+    { label: "Gaming Tools", href: "/gaming-tools" }
+  ]
 };
 
 export const categoryRoutes: Record<ToolCategory, string> = {
@@ -477,7 +480,8 @@ export const categoryRoutes: Record<ToolCategory, string> = {
   "Calculator Tools": "/calculator-tools",
   "Security Tools": "/security-tools",
   "SEO Tools": "/seo-tools",
-  "Social Media Tools": "/social-media-tools"
+  "Social Media Tools": "/social-media-tools",
+  "Gaming Tools": "/gaming-tools"
 };
 
 export function getTool(slug: string) {
@@ -504,6 +508,7 @@ export function getTopLevelCategory(tool: Tool): TopLevelCategory {
   if (tool.category === "Developer Tools" && tool.slug !== "qr-code-generator") return "Developer";
   if (tool.category === "SEO Tools") return "SEO Tools";
   if (tool.category === "Social Media Tools") return "Social Media Tools";
+  if (tool.category === "Gaming Tools") return "Social Media Tools";
   if (tool.category === "PDF Tools" || tool.category === "Image Tools") return "PDF & Image";
   return "Everyday";
 }

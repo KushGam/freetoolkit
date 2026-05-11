@@ -6,7 +6,7 @@ import { canonicalUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "FreeToolKit Blog | Free Tool Guides for PDFs, Images, AI, and Daily Work",
-  description: "Read practical FreeToolKit guides for PDF workflows, image optimization, student tools, writing utilities, online security, and everyday productivity.",
+  description: "Read practical FreeToolKit guides for PDF workflows, image optimization, student tools, writing utilities, gaming helpers, online security, and everyday productivity.",
   keywords: ["FreeToolKit blog", "online tool guides", "PDF guides", "image tool guides", "student tools", "productivity tools"],
   alternates: { canonical: canonicalUrl("/blog") },
   openGraph: {
@@ -27,7 +27,7 @@ export default function BlogPage() {
         <PageHeader
           eyebrow="FreeToolKit guides"
           title="Practical guides for free online tools"
-          description="Learn how to handle common PDF, image, writing, study, security, and productivity tasks with simple browser-based workflows."
+          description="Learn how to handle common PDF, image, writing, study, gaming, security, and productivity tasks with simple browser-based workflows."
           badges={categories}
         />
 

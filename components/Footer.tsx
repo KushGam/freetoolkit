@@ -46,6 +46,7 @@ export function Footer() {
             <Link href="/terms" className="hover:text-brand-700">Terms</Link>
             <span className="text-slate-400">Built by Kushal Gautam</span>
           </div>
+          <p className="text-xs text-slate-400">Game names, trademarks, logos, and related content belong to their respective owners.</p>
         </div>
       </div>
     </footer>

@@ -164,6 +164,21 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
       { question: "Can these tools post to my social accounts?", answer: "No. They help prepare copy and formatting, but they do not connect to or post on your accounts." },
       { question: "Should I review generated captions or bios?", answer: "Yes. Always check generated social copy for accuracy, tone, and fit before publishing." }
     ]
+  },
+  "Gaming Tools": {
+    title: "Free Gaming Tools Online | Breeding, Sensitivity, Crafting, Type Calculators",
+    description: "Use free browser-based gaming tools for Palworld breeding results, Valorant sensitivity conversion, Minecraft crafting materials, and Pokemon type effectiveness.",
+    keywords: ["gaming tools", "Palworld breeding calculator", "Valorant sensitivity converter", "Minecraft crafting calculator", "Pokemon type calculator"],
+    intro: "Free gaming tools for repeat-use calculations and lookups across popular games. Built for quick browser use on desktop and mobile without signup.",
+    body: [
+      "Gaming tools are most useful when they solve small decisions fast: sensitivity conversion before a match, breeding checks before resource grinding, type effectiveness during team planning, or crafting breakdowns before farming.",
+      "This category stays focused on practical utility workflows. Tools run in the browser with lightweight datasets, clear controls, and fast outputs so players can check values quickly and get back to gameplay."
+    ],
+    faqs: [
+      { question: "Do these gaming tools need login?", answer: "No. Gaming tools work in your browser with no signup required." },
+      { question: "Are the results AI-generated?", answer: "No. These tools use browser-side formulas and local datasets for speed and consistency." },
+      { question: "Can I use gaming tools on mobile?", answer: "Yes. The controls and outputs are built to work on mobile and desktop layouts." }
+    ]
   }
 };
 

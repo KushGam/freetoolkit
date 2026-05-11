@@ -9,7 +9,7 @@ import { canonicalUrl, siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Free AI & Everyday Productivity Tools",
-  description: "Use 138 free browser-based tools for AI writing, PDFs, images, resumes, SEO, social media, calculators, student work, text cleanup, security, and developer utilities.",
+  description: "Use free browser-based tools for AI writing, PDFs, images, resumes, SEO, social media, gaming utilities, calculators, student work, text cleanup, security, and developer workflows.",
   keywords: ["free online tools", "AI tools", "PDF tools", "image tools", "student tools", "productivity tools", "developer tools"],
   alternates: { canonical: canonicalUrl("/") },
   openGraph: {
@@ -94,7 +94,7 @@ const categoryDetails: Record<TopLevelCategory, { href: string; icon: string; de
   "Social Media Tools": {
     href: topLevelCategoryRoutes["Social Media Tools"],
     icon: "SOC",
-    description: "Prepare captions, hashtags, bios, tags, counters, and formatted social post copy."
+    description: "Prepare captions, hashtags, bios, tags, counters, and lightweight gaming helper workflows."
   }
 };
 
@@ -270,7 +270,7 @@ export default function HomePage() {
             FreeToolKit is built as a modern productivity platform for people who need quick answers without installing extra software or creating an account. The site brings together free AI tools, PDF utilities, image converters, student calculators, writing helpers, and developer tools in one clean browser-based workspace. Instead of treating tools as a cluttered directory, FreeToolKit organizes them around real workflows: prepare a resume, convert an image, clean text, create a PDF, summarize notes, calculate a result, or format developer data.
           </p>
           <p>
-            The <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI Tools</Link> section helps with summaries, captions, hashtags, email drafts, study notes, ATS checks, and resume support. The <Link href="/pdf-image" className="font-bold text-brand-700 hover:text-brand-900">PDF & Image</Link> section focuses on practical file workflows such as Image to PDF, PDF to Word, PDF to JPG, Merge PDF, Image Compressor, and AI Image to Word. The <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">Student</Link> section keeps grade planning, attendance, study timers, and writing checks easy to reach, while the <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">Developer</Link> section covers JSON, Base64, URL encoding, and UUID generation.
+            The <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI Tools</Link> section helps with summaries, captions, hashtags, email drafts, study notes, ATS checks, and resume support. The <Link href="/pdf-image" className="font-bold text-brand-700 hover:text-brand-900">PDF & Image</Link> section focuses on practical file workflows such as Image to PDF, PDF to Word, PDF to JPG, Merge PDF, Image Compressor, and AI Image to Word. The <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">Student</Link> section keeps grade planning, attendance, study timers, and writing checks easy to reach, while the <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">Developer</Link> section covers JSON, Base64, URL encoding, and UUID generation. Creative workflows also include focused <Link href="/gaming-tools" className="font-bold text-brand-700 hover:text-brand-900">Gaming Tools</Link> such as breeding, sensitivity, crafting, and matchup calculators.
           </p>
           <p>
             Every page is designed for fast mobile and desktop use. Inputs are large, cards are easy to scan, outputs are clear, and related tools keep the next step nearby. File tools are browser-based where possible, while AI tools use a protected generation flow with clear review steps. That balance helps FreeToolKit feel fast, trustworthy, and practical for everyday tasks, schoolwork, content creation, job applications, office documents, and lightweight technical workflows.

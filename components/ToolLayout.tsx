@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { FAQ } from "@/components/FAQ";
+import { GamingDisclaimer } from "@/components/GamingDisclaimer";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { RelatedTools } from "@/components/RelatedTools";
 import { Card, Container, PageHeader } from "@/components/ui";
@@ -77,6 +78,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           Privacy note: files are processed in the browser where possible and are not uploaded to a server by this tool.
         </p>
       ) : null}
+      {tool.category === "Gaming Tools" ? <div className="mx-auto mt-5 max-w-3xl"><GamingDisclaimer compact /></div> : null}
       <Card className="tool-workspace mx-auto mt-8 max-w-5xl overflow-hidden p-5 sm:p-7">
         <div className="mb-6 border-b border-slate-100 pb-5">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Tool workspace</p>

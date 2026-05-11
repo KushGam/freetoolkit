@@ -10,7 +10,8 @@ export type ContentClusterId =
   | "developer-utilities"
   | "security-basics"
   | "seo-publishing"
-  | "social-media-publishing";
+  | "social-media-publishing"
+  | "gaming-utilities";
 
 export type ContentCluster = {
   id: ContentClusterId;
@@ -123,6 +124,16 @@ export const contentClusters: ContentCluster[] = [
     topLevelCategories: ["AI Tools", "Everyday"],
     toolSlugs: ["hashtag-counter", "instagram-caption-formatter", "tiktok-caption-generator", "youtube-tags-extractor", "twitter-character-counter", "social-bio-generator", "ai-caption-generator", "ai-youtube-title-generator", "ai-hashtag-generator"],
     blogSlugs: ["best-free-online-tools-for-daily-work", "word-counter-guide"]
+  },
+  {
+    id: "gaming-utilities",
+    name: "Gaming utilities",
+    description: "Practical browser helpers for breeding outcomes, sensitivity conversion, crafting requirements, and type matchup checks.",
+    priority: 11,
+    categories: ["Gaming Tools"],
+    topLevelCategories: ["Social Media Tools", "Everyday"],
+    toolSlugs: ["palworld-breeding-calculator", "valorant-sensitivity-converter", "minecraft-crafting-calculator", "pokemon-type-calculator"],
+    blogSlugs: ["palworld-breeding-guide", "valorant-sensitivity-guide"]
   }
 ];
 
@@ -139,6 +150,11 @@ export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
   "cgpa-calculator": ["how-to-calculate-gpa", "best-free-student-tools"],
   "word-counter": ["word-counter-guide", "best-free-student-tools"],
   "password-generator": ["password-generator-guide", "best-free-online-tools-for-daily-work"]
+  ,
+  "palworld-breeding-calculator": ["palworld-breeding-guide", "valorant-sensitivity-guide"],
+  "valorant-sensitivity-converter": ["valorant-sensitivity-guide", "palworld-breeding-guide"],
+  "minecraft-crafting-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
+  "pokemon-type-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"]
 };
 
 export const relatedToolsByTool: Partial<Record<string, string[]>> = {
@@ -156,7 +172,11 @@ export const relatedToolsByTool: Partial<Record<string, string[]>> = {
   "heic-to-jpg": ["image-converter", "png-to-jpg", "webp-converter", "image-compressor"],
   "meta-tag-generator": ["open-graph-generator", "serp-preview", "schema-markup-generator", "sitemap-generator"],
   "open-graph-generator": ["meta-tag-generator", "serp-preview", "schema-markup-generator", "slug-generator"],
-  "hashtag-counter": ["instagram-caption-formatter", "twitter-character-counter", "youtube-tags-extractor", "ai-hashtag-generator"]
+  "hashtag-counter": ["instagram-caption-formatter", "twitter-character-counter", "youtube-tags-extractor", "ai-hashtag-generator"],
+  "palworld-breeding-calculator": ["pokemon-type-calculator", "minecraft-crafting-calculator", "valorant-sensitivity-converter"],
+  "valorant-sensitivity-converter": ["palworld-breeding-calculator", "minecraft-crafting-calculator", "pokemon-type-calculator"],
+  "minecraft-crafting-calculator": ["palworld-breeding-calculator", "pokemon-type-calculator", "valorant-sensitivity-converter"],
+  "pokemon-type-calculator": ["palworld-breeding-calculator", "minecraft-crafting-calculator", "valorant-sensitivity-converter"]
 };
 
 export function getClustersForTool(toolSlug: string) {

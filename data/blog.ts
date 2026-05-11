@@ -1,7 +1,7 @@
 import { getTool, toolHref, type Tool } from "@/data/tools";
 import { getBlogSlugsForTool, getRelatedBlogSlugsForBlog } from "@/data/tool-relations";
 
-export type BlogCategory = "PDF Guides" | "Image Guides" | "Student Guides" | "Productivity Guides" | "Text Guides" | "Security Guides";
+export type BlogCategory = "PDF Guides" | "Image Guides" | "Student Guides" | "Productivity Guides" | "Text Guides" | "Security Guides" | "Gaming Guides";
 
 export type BlogSection = {
   heading: string;
@@ -422,6 +422,72 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           "A password generator creates a random password, but it does not check whether a website stores passwords securely or whether your device is safe. Good account security also includes two-factor authentication where available.",
           "Use Password Generator for credentials, UUID Generator for identifiers, and Base64 Encoder / Decoder for encoding text. These tools serve different purposes and should not be treated as interchangeable security features."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "palworld-breeding-guide",
+    title: "Palworld Breeding Guide: Plan Parent Pairs Faster",
+    description: "Use a practical workflow for Palworld breeding pair checks, reverse lookups, and faster planning before farming resources.",
+    category: "Gaming Guides",
+    publishedAt: "2026-05-11",
+    readingTime: "4 min read",
+    relatedTools: ["palworld-breeding-calculator", "minecraft-crafting-calculator", "pokemon-type-calculator"],
+    keywords: ["Palworld breeding calculator", "Palworld breeding guide", "Pal offspring lookup", "gaming tools"],
+    content: [
+      {
+        heading: "Use pair checks before farming",
+        paragraphs: [
+          "Breeding can consume a lot of time and resources when parent combinations are guessed manually. A calculator lets you test parent pairs first and avoid low-value trial runs.",
+          "Start by selecting two pals, confirm the offspring result, then compare alternatives before committing your base resources."
+        ]
+      },
+      {
+        heading: "Reverse lookup helps when you know the target pal",
+        paragraphs: [
+          "If you already know the offspring you want, reverse lookup is usually the fastest path. It narrows pair options quickly and keeps your farming route focused.",
+          "Use reverse lookup as a shortlist, then decide based on your current pal availability, map progress, and breeding priorities."
+        ]
+      },
+      {
+        heading: "Combine with material planning",
+        paragraphs: [
+          "Breeding plans often connect to crafting and base setup tasks. Pair checks are more useful when you also estimate material requirements and timing.",
+          "Use related tools to plan gather routes, reduce wasted crafting loops, and keep progression smoother in repeat sessions."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "valorant-sensitivity-guide",
+    title: "Valorant Sensitivity Guide: Convert Settings Between Games",
+    description: "Learn how to convert FPS sensitivity into Valorant values and then fine-tune for consistency and control.",
+    category: "Gaming Guides",
+    publishedAt: "2026-05-11",
+    readingTime: "4 min read",
+    relatedTools: ["valorant-sensitivity-converter", "palworld-breeding-calculator", "pokemon-type-calculator"],
+    keywords: ["Valorant sensitivity converter", "FPS sensitivity conversion", "Valorant aim settings", "gaming tools"],
+    content: [
+      {
+        heading: "Conversion is a baseline, not the final setting",
+        paragraphs: [
+          "Sensitivity conversion gives a strong starting point when you move between FPS titles. It helps preserve muscle-memory feel instead of restarting from random values.",
+          "After conversion, test in practice mode and make small adjustments based on flick control and tracking comfort."
+        ]
+      },
+      {
+        heading: "Keep DPI and hardware context in mind",
+        paragraphs: [
+          "Converted values assume your DPI and hardware setup stay consistent. If DPI, mousepad space, or posture changes, your final comfortable setting can shift.",
+          "Keep setup conditions stable while testing so you can isolate sensitivity quality instead of changing multiple variables at once."
+        ]
+      },
+      {
+        heading: "Use a repeatable adjustment method",
+        paragraphs: [
+          "Adjust in small increments, run short drills, and keep notes for each change. This avoids overcorrecting after one good or bad round.",
+          "A repeatable process helps you lock a reliable sensitivity faster and reduces aim inconsistency across sessions."
         ]
       }
     ]

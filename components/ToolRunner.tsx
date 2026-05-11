@@ -1987,6 +1987,284 @@ function TimeZoneConverter() {
   );
 }
 
+const palworldPals = [
+  "Lamball",
+  "Cattiva",
+  "Chikipi",
+  "Foxparks",
+  "Pengullet",
+  "Lifmunk",
+  "Tanzee",
+  "Daedream",
+  "Eikthyrdeer",
+  "Nitewing",
+  "Vanwyrm",
+  "Anubis"
+];
+
+// Gaming tools intentionally use simplified labels and local datasets.
+// Avoid importing copyrighted logos/assets; keep visuals generic and UI-native.
+const palworldBreedingMap: Record<string, string> = {
+  "Cattiva|Lamball": "Chikipi",
+  "Foxparks|Lamball": "Lifmunk",
+  "Daedream|Foxparks": "Tanzee",
+  "Pengullet|Tanzee": "Eikthyrdeer",
+  "Nitewing|Pengullet": "Vanwyrm",
+  "Anubis|Lifmunk": "Anubis",
+  "Anubis|Foxparks": "Anubis",
+  "Anubis|Pengullet": "Anubis",
+  "Tanzee|Vanwyrm": "Nitewing",
+  "Daedream|Nitewing": "Vanwyrm"
+};
+
+function palPairKey(a: string, b: string) {
+  return [a, b].sort().join("|");
+}
+
+function PalworldBreedingCalculator() {
+  const [query, setQuery] = useState("");
+  const [parentA, setParentA] = useState(palworldPals[0]);
+  const [parentB, setParentB] = useState(palworldPals[1]);
+  const [target, setTarget] = useState("");
+
+  const filteredPals = useMemo(() => {
+    const needle = query.toLowerCase().trim();
+    return !needle ? palworldPals : palworldPals.filter((pal) => pal.toLowerCase().includes(needle));
+  }, [query]);
+
+  const offspring = palworldBreedingMap[palPairKey(parentA, parentB)] ?? "No direct mapping found for this pair.";
+  const reverseMatches = useMemo(() => {
+    const needle = target.trim();
+    if (!needle) return [];
+    return Object.entries(palworldBreedingMap)
+      .filter(([, result]) => result.toLowerCase() === needle.toLowerCase())
+      .map(([pair, result]) => ({ pair: pair.split("|"), result }));
+  }, [target]);
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <label className="block text-sm font-bold text-slate-700">
+          Search pals
+          <Input className="mt-2" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type a pal name..." />
+        </label>
+        <p className="mt-2 text-xs font-semibold text-slate-500">{filteredPals.length} pals matched</p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">
+          Parent A
+          <Select className="mt-2" value={parentA} onChange={(event) => setParentA(event.target.value)}>
+            {filteredPals.map((pal) => <option key={pal} value={pal}>{pal}</option>)}
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          Parent B
+          <Select className="mt-2" value={parentB} onChange={(event) => setParentB(event.target.value)}>
+            {filteredPals.map((pal) => <option key={pal} value={pal}>{pal}</option>)}
+          </Select>
+        </label>
+      </div>
+      <ResultCard title="Offspring result">
+        <p className="text-sm font-semibold text-slate-700">{parentA} + {parentB}</p>
+        <p className="mt-2 text-lg font-black text-slate-950">{offspring}</p>
+      </ResultCard>
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <label className="text-sm font-bold text-slate-700">
+          Reverse breeding lookup
+          <Input className="mt-2" value={target} onChange={(event) => setTarget(event.target.value)} placeholder="Enter target offspring (e.g. Anubis)" />
+        </label>
+        <div className="mt-3 space-y-2">
+          {!target.trim() ? <p className="text-sm text-slate-500">Enter an offspring name to find possible parent pairs.</p> : null}
+          {target.trim() && !reverseMatches.length ? <p className="text-sm text-slate-500">No mapped parent pairs found for this target.</p> : null}
+          {reverseMatches.map((match, index) => (
+            <p key={`${match.result}-${index}`} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+              {match.pair[0]} + {match.pair[1]} → {match.result}
+            </p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const sensitivityToValorant: Record<string, number> = {
+  Valorant: 1,
+  "CS2 / CSGO": 0.31496,
+  "Apex Legends": 0.30287,
+  "Overwatch 2": 0.3,
+  "Rainbow Six Siege": 0.129,
+  Fortnite: 0.123
+};
+
+function ValorantSensitivityConverter() {
+  const games = Object.keys(sensitivityToValorant);
+  const [fromGame, setFromGame] = useState("CS2 / CSGO");
+  const [toGame, setToGame] = useState("Valorant");
+  const [inputSens, setInputSens] = useState("2.0");
+  const [output, setOutput] = useState<number | null>(null);
+  const [error, setError] = useState("");
+
+  function convert() {
+    setError("");
+    const value = Number(inputSens);
+    if (!Number.isFinite(value) || value <= 0) {
+      setOutput(null);
+      setError("Enter a valid sensitivity greater than 0.");
+      return;
+    }
+    const fromFactor = sensitivityToValorant[fromGame];
+    const toFactor = sensitivityToValorant[toGame];
+    const valorantEquivalent = value * fromFactor;
+    const converted = valorantEquivalent / toFactor;
+    setOutput(Number(converted.toFixed(6)));
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">
+          From game
+          <Select className="mt-2" value={fromGame} onChange={(event) => setFromGame(event.target.value)}>
+            {games.map((game) => <option key={game}>{game}</option>)}
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          To game
+          <Select className="mt-2" value={toGame} onChange={(event) => setToGame(event.target.value)}>
+            {games.map((game) => <option key={game}>{game}</option>)}
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          Sensitivity
+          <Input className="mt-2" value={inputSens} onChange={(event) => setInputSens(event.target.value)} placeholder="2.0" />
+        </label>
+      </div>
+      <div className="flex gap-3">
+        <Button onClick={convert}>Convert sensitivity</Button>
+      </div>
+      <ErrorMessage message={error} />
+      {output !== null ? <ResultBox label="Converted sensitivity" value={`${output}`} /> : null}
+    </div>
+  );
+}
+
+const minecraftRecipes: Record<string, Record<string, number>> = {
+  "Diamond Sword": { Stick: 1, Diamond: 2 },
+  "Iron Pickaxe": { Stick: 2, "Iron Ingot": 3 },
+  "Torch x4": { Stick: 1, Coal: 1 },
+  "Chest": { "Oak Planks": 8 },
+  "Golden Apple": { Apple: 1, "Gold Ingot": 8 },
+  "Powered Rail x6": { Stick: 1, "Gold Ingot": 6, Redstone: 1 }
+};
+
+function MinecraftCraftingCalculator() {
+  const recipes = Object.keys(minecraftRecipes);
+  const [item, setItem] = useState(recipes[0]);
+  const [count, setCount] = useState(1);
+
+  const materials = useMemo(() => {
+    const recipe = minecraftRecipes[item] ?? {};
+    return Object.entries(recipe).map(([name, qty]) => ({ name, qty: qty * count }));
+  }, [item, count]);
+
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">
+          Craft item
+          <Select className="mt-2" value={item} onChange={(event) => setItem(event.target.value)}>
+            {recipes.map((name) => <option key={name}>{name}</option>)}
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          Quantity
+          <Input className="mt-2" type="number" min={1} max={999} value={count} onChange={(event) => setCount(Math.max(1, Number(event.target.value) || 1))} />
+        </label>
+      </div>
+      <ResultCard title="Required materials">
+        <div className="space-y-2">
+          {materials.map((material) => (
+            <p key={material.name} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+              {material.name}: {material.qty}
+            </p>
+          ))}
+        </div>
+      </ResultCard>
+    </div>
+  );
+}
+
+type PokemonType =
+  | "Normal" | "Fire" | "Water" | "Electric" | "Grass" | "Ice" | "Fighting" | "Poison" | "Ground"
+  | "Flying" | "Psychic" | "Bug" | "Rock" | "Ghost" | "Dragon" | "Dark" | "Steel" | "Fairy";
+
+const pokemonTypes: PokemonType[] = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
+const pokemonChart: Record<PokemonType, Partial<Record<PokemonType, number>>> = {
+  Normal: { Rock: 0.5, Ghost: 0, Steel: 0.5 },
+  Fire: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 2, Bug: 2, Rock: 0.5, Dragon: 0.5, Steel: 2 },
+  Water: { Fire: 2, Water: 0.5, Grass: 0.5, Ground: 2, Rock: 2, Dragon: 0.5 },
+  Electric: { Water: 2, Electric: 0.5, Grass: 0.5, Ground: 0, Flying: 2, Dragon: 0.5 },
+  Grass: { Fire: 0.5, Water: 2, Grass: 0.5, Poison: 0.5, Ground: 2, Flying: 0.5, Bug: 0.5, Rock: 2, Dragon: 0.5, Steel: 0.5 },
+  Ice: { Fire: 0.5, Water: 0.5, Grass: 2, Ground: 2, Flying: 2, Dragon: 2, Steel: 0.5 },
+  Fighting: { Normal: 2, Ice: 2, Poison: 0.5, Flying: 0.5, Psychic: 0.5, Bug: 0.5, Rock: 2, Ghost: 0, Dark: 2, Steel: 2, Fairy: 0.5 },
+  Poison: { Grass: 2, Poison: 0.5, Ground: 0.5, Rock: 0.5, Ghost: 0.5, Steel: 0, Fairy: 2 },
+  Ground: { Fire: 2, Electric: 2, Grass: 0.5, Poison: 2, Flying: 0, Bug: 0.5, Rock: 2, Steel: 2 },
+  Flying: { Electric: 0.5, Grass: 2, Fighting: 2, Bug: 2, Rock: 0.5, Steel: 0.5 },
+  Psychic: { Fighting: 2, Poison: 2, Psychic: 0.5, Dark: 0, Steel: 0.5 },
+  Bug: { Fire: 0.5, Grass: 2, Fighting: 0.5, Poison: 0.5, Flying: 0.5, Psychic: 2, Ghost: 0.5, Dark: 2, Steel: 0.5, Fairy: 0.5 },
+  Rock: { Fire: 2, Ice: 2, Fighting: 0.5, Ground: 0.5, Flying: 2, Bug: 2, Steel: 0.5 },
+  Ghost: { Normal: 0, Psychic: 2, Ghost: 2, Dark: 0.5 },
+  Dragon: { Dragon: 2, Steel: 0.5, Fairy: 0 },
+  Dark: { Fighting: 0.5, Psychic: 2, Ghost: 2, Dark: 0.5, Fairy: 0.5 },
+  Steel: { Fire: 0.5, Water: 0.5, Electric: 0.5, Ice: 2, Rock: 2, Steel: 0.5, Fairy: 2 },
+  Fairy: { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Dark: 2, Steel: 0.5 }
+};
+
+function PokemonTypeCalculator() {
+  const [attack, setAttack] = useState<PokemonType>("Fire");
+  const [defPrimary, setDefPrimary] = useState<PokemonType>("Grass");
+  const [defSecondary, setDefSecondary] = useState<"None" | PokemonType>("None");
+
+  const multiplier = useMemo(() => {
+    const againstPrimary = pokemonChart[attack][defPrimary] ?? 1;
+    const againstSecondary = defSecondary === "None" ? 1 : pokemonChart[attack][defSecondary] ?? 1;
+    return againstPrimary * againstSecondary;
+  }, [attack, defPrimary, defSecondary]);
+
+  const label = multiplier === 0 ? "No effect" : multiplier >= 4 ? "Extremely effective" : multiplier > 1 ? "Super effective" : multiplier < 1 ? "Not very effective" : "Neutral";
+
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="text-sm font-bold text-slate-700">
+          Attack type
+          <Select className="mt-2" value={attack} onChange={(event) => setAttack(event.target.value as PokemonType)}>
+            {pokemonTypes.map((type) => <option key={type}>{type}</option>)}
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          Defender primary
+          <Select className="mt-2" value={defPrimary} onChange={(event) => setDefPrimary(event.target.value as PokemonType)}>
+            {pokemonTypes.map((type) => <option key={type}>{type}</option>)}
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          Defender secondary
+          <Select className="mt-2" value={defSecondary} onChange={(event) => setDefSecondary(event.target.value as "None" | PokemonType)}>
+            <option value="None">None</option>
+            {pokemonTypes.map((type) => <option key={type}>{type}</option>)}
+          </Select>
+        </label>
+      </div>
+      <ResultCard title="Type effectiveness">
+        <p className="text-sm font-semibold text-slate-700">{attack} vs {defPrimary}{defSecondary !== "None" ? ` / ${defSecondary}` : ""}</p>
+        <p className="mt-2 text-2xl font-black text-slate-950">{multiplier}x</p>
+        <p className="mt-1 text-sm font-semibold text-slate-600">{label}</p>
+      </ResultCard>
+    </div>
+  );
+}
+
 function stylize(value: string, offsetUpper: number, offsetLower: number) {
   return Array.from(value, (char) => {
     const code = char.charCodeAt(0);
@@ -4452,6 +4730,10 @@ export function ToolRunner({ slug }: { slug: string }) {
     "bmi-calculator": <BmiCalculator />,
     "loan-emi-calculator": <LoanEmiCalculator />,
     "time-zone-converter": <TimeZoneConverter />,
+    "palworld-breeding-calculator": <PalworldBreedingCalculator />,
+    "valorant-sensitivity-converter": <ValorantSensitivityConverter />,
+    "minecraft-crafting-calculator": <MinecraftCraftingCalculator />,
+    "pokemon-type-calculator": <PokemonTypeCalculator />,
     "text-formatter": <TextFormatter />,
     "duplicate-line-remover": <DuplicateLineRemover />,
     "random-text-generator": <RandomTextGenerator />,

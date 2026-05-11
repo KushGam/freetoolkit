@@ -62,6 +62,14 @@ export default function TermsPage() {
             If a third-party service is unavailable, a related FreeToolKit feature may be temporarily unavailable or may return an error. We may update providers, models, limits, or workflows over time to keep the platform reliable.
           </p>
 
+          <h2>Gaming Tools and Trademarks</h2>
+          <p>
+            FreeToolKit is an independent tools platform and is not affiliated with, endorsed by, or sponsored by game developers or publishers.
+          </p>
+          <p>
+            Game names, trademarks, logos, and related content belong to their respective owners.
+          </p>
+
           <h2>Acceptable Use</h2>
           <p>
             You agree to use FreeToolKit lawfully and responsibly. Do not use the site to create spam, harassment, deceptive content, malware, illegal material, or content that violates the rights of another person.
