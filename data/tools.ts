@@ -426,16 +426,18 @@ export const tools: Tool[] = [...coreTools, ...newTools, ...expandedTools];
 
 export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools", "SEO Tools", "Social Media Tools"];
 
-export type TopLevelCategory = "Everyday" | "AI Tools" | "Student" | "Developer" | "PDF & Image";
+export type TopLevelCategory = "Everyday" | "AI Tools" | "Student" | "Developer" | "PDF & Image" | "SEO Tools" | "Social Media Tools";
 
-export const topLevelCategories: TopLevelCategory[] = ["Everyday", "AI Tools", "Student", "Developer", "PDF & Image"];
+export const topLevelCategories: TopLevelCategory[] = ["Everyday", "AI Tools", "Student", "Developer", "PDF & Image", "SEO Tools", "Social Media Tools"];
 
 export const topLevelCategoryRoutes: Record<TopLevelCategory, string> = {
   Everyday: "/everyday",
   "AI Tools": "/ai-tools",
   Student: "/student",
   Developer: "/developer",
-  "PDF & Image": "/pdf-image"
+  "PDF & Image": "/pdf-image",
+  "SEO Tools": "/seo-tools",
+  "Social Media Tools": "/social-media-tools"
 };
 
 export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
@@ -443,7 +445,9 @@ export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
   "AI Tools": "Free AI tools for writing, resumes, captions, study notes, content, and productivity workflows.",
   Student: "Free student tools for grades, GPA, attendance, study time, word count, and career preparation.",
   Developer: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities.",
-  "PDF & Image": "Free PDF and image tools for converting, compressing, editing, extracting, and preparing files in your browser."
+  "PDF & Image": "Free PDF and image tools for converting, compressing, editing, extracting, and preparing files in your browser.",
+  "SEO Tools": "Free SEO tools for metadata, SERP previews, robots.txt, sitemaps, slugs, keyword checks, and schema markup.",
+  "Social Media Tools": "Free social media tools for captions, hashtags, bios, tags, character counts, and post formatting."
 };
 
 export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: string; href: string }>> = {
@@ -458,7 +462,9 @@ export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: s
   "PDF & Image": [
     { label: "PDF Tools", href: "/pdf-tools" },
     { label: "Image Tools", href: "/image-tools" }
-  ]
+  ],
+  "SEO Tools": [{ label: "SEO Tools", href: "/seo-tools" }],
+  "Social Media Tools": [{ label: "Social Media Tools", href: "/social-media-tools" }]
 };
 
 export const categoryRoutes: Record<ToolCategory, string> = {
@@ -496,6 +502,8 @@ export function getTopLevelCategory(tool: Tool): TopLevelCategory {
   if (tool.category === "AI Tools") return "AI Tools";
   if (tool.category === "Student Tools") return "Student";
   if (tool.category === "Developer Tools" && tool.slug !== "qr-code-generator") return "Developer";
+  if (tool.category === "SEO Tools") return "SEO Tools";
+  if (tool.category === "Social Media Tools") return "Social Media Tools";
   if (tool.category === "PDF Tools" || tool.category === "Image Tools") return "PDF & Image";
   return "Everyday";
 }

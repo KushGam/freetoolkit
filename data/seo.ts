@@ -196,5 +196,13 @@ export const topLevelCategorySeo: Record<TopLevelCategory, Pick<CategorySeo, "bo
       "Use related tools to move step by step: resize an image before converting, extract PDF pages before merging, or compress the final file before upload."
     ],
     faqs: [...categorySeo["PDF Tools"].faqs.slice(0, 2), ...categorySeo["Image Tools"].faqs.slice(0, 2)]
+  },
+  "SEO Tools": {
+    body: categorySeo["SEO Tools"].body,
+    faqs: categorySeo["SEO Tools"].faqs
+  },
+  "Social Media Tools": {
+    body: categorySeo["Social Media Tools"].body,
+    faqs: categorySeo["Social Media Tools"].faqs
   }
 };

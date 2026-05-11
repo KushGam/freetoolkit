@@ -4,12 +4,12 @@ import { AdSlot } from "@/components/AdSlot";
 import { HomeToolSearch } from "@/components/HomeToolSearch";
 import { Badge, Card, CategoryCard, Container, ToolCard } from "@/components/ui";
 import { blogHref, blogPosts } from "@/data/blog";
-import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategoryRoutes, type TopLevelCategory } from "@/data/tools";
+import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategories, topLevelCategoryRoutes, type TopLevelCategory } from "@/data/tools";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Free AI & Everyday Productivity Tools",
-  description: "Use 76 free browser-based tools for AI writing, PDFs, images, resumes, calculators, student work, text cleanup, security, and developer utilities.",
+  description: "Use 138 free browser-based tools for AI writing, PDFs, images, resumes, SEO, social media, calculators, student work, text cleanup, security, and developer utilities.",
   keywords: ["free online tools", "AI tools", "PDF tools", "image tools", "student tools", "productivity tools", "developer tools"],
   alternates: { canonical: canonicalUrl("/") },
   openGraph: {
@@ -85,6 +85,16 @@ const categoryDetails: Record<TopLevelCategory, { href: string; icon: string; de
     href: topLevelCategoryRoutes["PDF & Image"],
     icon: "DOC",
     description: "Convert, compress, merge, edit, unlock, and prepare PDFs and images in your browser."
+  },
+  "SEO Tools": {
+    href: topLevelCategoryRoutes["SEO Tools"],
+    icon: "SEO",
+    description: "Create meta tags, SERP previews, robots.txt, sitemaps, slugs, and schema markup."
+  },
+  "Social Media Tools": {
+    href: topLevelCategoryRoutes["Social Media Tools"],
+    icon: "SOC",
+    description: "Prepare captions, hashtags, bios, tags, counters, and formatted social post copy."
   }
 };
 
@@ -212,8 +222,8 @@ export default function HomePage() {
         <section className="mt-16">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Platform categories</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Browse by Category</h2>
-          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {(["Everyday", "AI Tools", "Student", "Developer", "PDF & Image"] as TopLevelCategory[]).map((category) => {
+          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {topLevelCategories.map((category) => {
               const details = categoryDetails[category];
               const categoryTools = getToolsByTopLevelCategory(category).slice(0, 3);
               return (

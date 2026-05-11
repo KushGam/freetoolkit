@@ -4,8 +4,8 @@ import { getToolsByTopLevelCategory, toolHref, topLevelCategories, topLevelCateg
 export function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-6 lg:px-8">
-        <div className="md:col-span-2">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+        <div className="sm:col-span-2">
           <Link href="/" className="flex items-center gap-3 text-xl font-bold tracking-tight text-slate-950">
             <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 text-sm font-black text-white shadow-[0_14px_28px_rgba(37,99,235,0.18)]">FT</span>
             <span>Free<span className="text-brand-600">ToolKit</span></span>

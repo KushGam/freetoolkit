@@ -20,7 +20,9 @@ const categoryBadges: Record<TopLevelCategory, string[]> = {
   "AI Tools": ["Writing", "Resume", "Captions", "Productivity"],
   Student: ["Grades", "GPA", "Attendance", "Study"],
   Developer: ["JSON", "URLs", "UUIDs", "Base64"],
-  "PDF & Image": ["PDF", "Images", "Converters", "Browser-based"]
+  "PDF & Image": ["PDF", "Images", "Converters", "Browser-based"],
+  "SEO Tools": ["Meta", "SERP", "Schema", "Crawling"],
+  "Social Media Tools": ["Captions", "Hashtags", "Bios", "Counters"]
 };
 
 export function TopLevelCategoryPage({ category }: { category: TopLevelCategory }) {
