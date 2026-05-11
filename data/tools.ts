@@ -1,4 +1,5 @@
 import { newTools } from "./new-tools";
+import { getRelatedToolSlugs } from "./tool-relations";
 
 export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools";
 
@@ -510,6 +511,9 @@ export function getToolsByTopLevelCategory(category: TopLevelCategory) {
 }
 
 export function getRelatedTools(tool: Tool) {
+  const clustered = getRelatedToolSlugs(tool.slug, 4).map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  if (clustered.length) return clustered;
+
   if (tool.slug === "ai-image-to-word") {
     const preferred = ["image-to-pdf", "word-to-pdf", "pdf-to-word", "ai-text-summarizer", "image-to-base64"];
     return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));

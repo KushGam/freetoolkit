@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FAQ } from "@/components/FAQ";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { Badge, Container, PageHeader, ToolCard } from "@/components/ui";
-import { blogHref, blogPosts, getBlogPost, getBlogRelatedToolLinks, getRelatedBlogPosts } from "@/data/blog";
+import { blogHref, blogPosts, getBlogFaqs, getBlogPost, getBlogRelatedToolLinks, getRelatedBlogPosts } from "@/data/blog";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
 
 type BlogPostPageProps = {
@@ -47,6 +48,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   const relatedTools = getBlogRelatedToolLinks(post);
   const relatedPosts = getRelatedBlogPosts(post);
+  const faqs = getBlogFaqs(post);
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -74,11 +76,21 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl(blogHref(post)) }
     ]
   };
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer }
+    }))
+  };
 
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Container className="max-w-5xl py-10">
         <Link href="/blog" className="text-sm font-black text-brand-700 transition hover:text-brand-900">
           ← Back to blog
@@ -122,6 +134,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
 
         <RelatedBlogPosts posts={relatedPosts} />
+        <FAQ items={faqs} />
 
         {relatedTools.length ? (
           <section className="mt-14 border-t border-slate-200 pt-10">

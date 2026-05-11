@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { CategoryToolSearch } from "@/components/CategoryToolSearch";
 import { FAQ } from "@/components/FAQ";
-import { Card, Container, PageHeader } from "@/components/ui";
+import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
+import { Card, Container, PageHeader, ToolCard } from "@/components/ui";
+import { getBlogPostsBySlugs } from "@/data/blog";
 import { topLevelCategorySeo } from "@/data/seo";
+import { getBlogSlugsForCategory, getClustersForCategory } from "@/data/tool-relations";
 import {
+  getTool,
   getToolsByTopLevelCategory,
   topLevelCategoryIntros,
   topLevelCategoryOldLinks,
+  toolHref,
   type TopLevelCategory
 } from "@/data/tools";
 
@@ -22,6 +27,12 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
   const categoryTools = getToolsByTopLevelCategory(category);
   const oldLinks = topLevelCategoryOldLinks[category];
   const seo = topLevelCategorySeo[category];
+  const featuredGuides = getBlogPostsBySlugs(getBlogSlugsForCategory(category, 4));
+  const featuredTools = getClustersForCategory(category)
+    .flatMap((cluster) => cluster.toolSlugs)
+    .map((slug) => getTool(slug))
+    .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
+    .slice(0, 6);
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -54,7 +65,20 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
         </div>
       </Card>
 
+      {featuredTools.length ? (
+        <section className="mt-10">
+          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Featured tools</p>
+          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">Start with the core {category.toLowerCase()} workflows</h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredTools.map((tool) => (
+              <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       <CategoryToolSearch tools={categoryTools} />
+      <RelatedBlogPosts posts={featuredGuides} title={`Featured ${category.toLowerCase()} guides`} />
 
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2>About {category.toLowerCase()} tools</h2>

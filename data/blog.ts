@@ -1,4 +1,5 @@
 import { getTool, toolHref, type Tool } from "@/data/tools";
+import { getBlogSlugsForTool, getRelatedBlogSlugsForBlog } from "@/data/tool-relations";
 
 export type BlogCategory = "PDF Guides" | "Image Guides" | "Student Guides" | "Productivity Guides" | "Text Guides" | "Security Guides";
 
@@ -17,6 +18,11 @@ export type BlogPost = {
   relatedTools: string[];
   keywords: string[];
   content: BlogSection[];
+};
+
+export type BlogFaq = {
+  question: string;
+  answer: string;
 };
 
 export const blogPosts: BlogPost[] = [
@@ -430,6 +436,30 @@ export function getBlogPost(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
 }
 
+export function getBlogPostsBySlugs(slugs: string[]) {
+  return slugs.map((slug) => getBlogPost(slug)).filter((post): post is BlogPost => Boolean(post));
+}
+
+export function getBlogFaqs(post: BlogPost): BlogFaq[] {
+  const primaryTool = getBlogRelatedTools(post)[0];
+  return [
+    {
+      question: `Which FreeToolKit tool should I use after reading this guide?`,
+      answer: primaryTool
+        ? `Start with ${primaryTool.title}. It is the closest tool for the workflow covered in "${post.title}".`
+        : "Start with the related tools listed on this guide and choose the one that matches your file, text, or calculation task."
+    },
+    {
+      question: "Does this guide replace checking the final result?",
+      answer: "No. Use the guide to choose a workflow, then review the output before submitting, publishing, emailing, or relying on the result."
+    },
+    {
+      question: "Why does this page link to related tools and guides?",
+      answer: "The links connect the guide to the practical tools and nearby topics, so you can move through the full workflow without searching again."
+    }
+  ];
+}
+
 export function getBlogRelatedTools(post: BlogPost): Tool[] {
   return post.relatedTools.map((slug) => getTool(slug)).filter((tool): tool is Tool => Boolean(tool));
 }
@@ -442,6 +472,11 @@ export function getBlogRelatedToolLinks(post: BlogPost) {
 }
 
 export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
+  const clusterSlugs = getRelatedBlogSlugsForBlog(post.slug, limit);
+  if (clusterSlugs.length) {
+    return clusterSlugs.map((slug) => getBlogPost(slug)).filter((item): item is BlogPost => Boolean(item)).slice(0, limit);
+  }
+
   const relatedToolSlugs = new Set(post.relatedTools);
   return blogPosts
     .filter((item) => item.slug !== post.slug)
@@ -456,5 +491,17 @@ export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
 }
 
 export function getBlogPostsForTool(toolSlug: string, limit = 3) {
-  return blogPosts.filter((post) => post.relatedTools.includes(toolSlug)).slice(0, limit);
+  const clusterSlugs = getBlogSlugsForTool(toolSlug, limit);
+  const clusterPosts = clusterSlugs.map((slug) => getBlogPost(slug)).filter((item): item is BlogPost => Boolean(item));
+  const directPosts = blogPosts.filter((post) => post.relatedTools.includes(toolSlug));
+  return uniquePosts([...directPosts, ...clusterPosts]).slice(0, limit);
+}
+
+function uniquePosts(posts: BlogPost[]) {
+  const seen = new Set<string>();
+  return posts.filter((post) => {
+    if (seen.has(post.slug)) return false;
+    seen.add(post.slug);
+    return true;
+  });
 }
