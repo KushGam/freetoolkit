@@ -91,14 +91,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-gradient-to-b from-white/95 to-[#fafafa]/95 shadow-[0_10px_28px_rgba(17,24,39,0.08)] backdrop-blur-2xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="group flex shrink-0 items-center gap-3 text-xl font-bold tracking-tight text-slate-900">
+        <Link href="/" className="group flex shrink-0 items-center gap-3 text-xl font-display font-bold tracking-tight text-slate-900">
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-sm font-black text-white shadow-[0_16px_30px_rgba(127,29,29,0.26)] ring-1 ring-white/70 transition-transform duration-300 group-hover:scale-105">FT</span>
           <span>Free<span className="text-brand-600">ToolKit</span></span>
         </Link>
 
         <nav
           aria-label="Main navigation"
-          className="hidden shrink-0 items-center gap-1 rounded-full border border-slate-200/90 bg-white/95 p-1.5 text-sm font-semibold text-slate-600 shadow-[0_10px_24px_rgba(17,24,39,0.08)] ring-1 ring-white/70 lg:flex"
+          className="hidden shrink-0 items-center gap-1 rounded-full border border-slate-200/90 bg-white/95 p-1.5 text-sm font-medium text-slate-600 shadow-[0_10px_24px_rgba(17,24,39,0.08)] ring-1 ring-white/70 lg:flex"
           onMouseLeave={() => setActiveDesktopGroup(null)}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
@@ -170,7 +170,7 @@ export function Header() {
                   activeDesktopGroup === group.title ? "pointer-events-auto visible translate-y-0 opacity-100" : "pointer-events-none invisible -translate-y-1 opacity-0"
                 )}
               >
-                <p className="px-2 pb-2 text-[11px] font-black uppercase tracking-wide text-slate-500">{group.title}</p>
+                <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">{group.title}</p>
                 <div className="grid gap-1">
                   {group.links.map((link) => (
                     <Link
@@ -248,7 +248,7 @@ export function Header() {
                       )}
                       onClick={() => setOpen(false)}
                     >
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-black text-slate-500">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-semibold text-slate-500">
                         {link.icon}
                       </span>
                       {link.label}

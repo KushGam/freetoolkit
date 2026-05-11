@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ConsentLoader } from "@/components/ConsentLoader";
@@ -12,6 +12,13 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["600", "700", "800"],
+  display: "swap"
 });
 
 export const metadata: Metadata = {
@@ -118,7 +125,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
         <Script
@@ -138,7 +145,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <AdSlot priority />
+        <AdSlot />
         <ConsentLoader />
       </body>
     </html>

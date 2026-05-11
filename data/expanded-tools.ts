@@ -8,6 +8,8 @@ type ExpandedToolInput = {
   action: string;
   audience: string;
   limitation?: string;
+  howToUse?: string[];
+  features?: string[];
 };
 
 const browserNote = "Runs in your browser where possible with no signup, no account dashboard, and no paid API required.";
@@ -23,14 +25,14 @@ function makeTool(input: ExpandedToolInput): Tool {
     intro: `Use ${input.title} online free to ${input.action}. This lightweight FreeToolKit page is designed for ${input.audience}, with clear controls, mobile-friendly layout, and no signup.`,
     metaTitle: `${input.title} Online Free`,
     metaDescription: `${input.description} Free browser-based tool with no signup, clean output, helpful FAQs, and related productivity tools.`,
-    howToUse: [
+    howToUse: input.howToUse ?? [
       "Open the tool and read the input requirements.",
       "Paste text, enter details, or upload a supported file.",
       "Choose any available options for the output you need.",
       "Generate or preview the result in your browser.",
       "Copy, download, or review the output before using it."
     ],
-    features: [
+    features: input.features ?? [
       "Free to use with no signup required",
       "Built for fast browser-based workflows",
       "Mobile-friendly layout and readable output",
@@ -63,7 +65,29 @@ export const expandedTools: Tool[] = [
   makeTool({ slug: "passport-photo-maker", title: "Passport Photo Maker", category: "Image Tools", description: "Crop and prepare a simple passport-style photo layout from an uploaded image.", action: "prepare passport-style photo crops and previews", audience: "students, travelers, job applicants, and office users", limitation: "Always check the official photo rules for your country, visa, school, or application before submitting." }),
   makeTool({ slug: "blur-image", title: "Blur Image Tool", category: "Image Tools", description: "Blur an uploaded image in your browser and download a softened copy.", action: "blur photos, screenshots, or backgrounds before sharing", audience: "creators, teachers, marketers, and privacy-conscious users" }),
   makeTool({ slug: "favicon-generator", title: "Favicon Generator", category: "Image Tools", description: "Create simple favicon-ready image outputs for websites and projects.", action: "prepare small website icon files from an image or initials", audience: "website owners, developers, students, and makers" }),
-  makeTool({ slug: "photo-collage-maker", title: "Photo Collage Maker", category: "Image Tools", description: "Combine multiple images into a simple collage layout in your browser.", action: "create quick image collages for posts, school, or previews", audience: "students, creators, small businesses, and social media teams" }),
+  makeTool({
+    slug: "photo-collage-maker",
+    title: "Photo Collage Maker",
+    category: "Image Tools",
+    description: "Plan a photo collage layout and export a simple text checklist before editing images in your preferred design app.",
+    action: "plan collage ideas for posts, school, and preview workflows",
+    audience: "students, creators, small businesses, and social media teams",
+    limitation: "This page currently creates a collage plan, not a final merged image. Use your preferred editor to assemble the final collage.",
+    howToUse: [
+      "Open the tool and write your collage idea.",
+      "Describe the number of photos, layout style, and preferred order.",
+      "Add notes such as captions, spacing, and final usage (post, school, preview).",
+      "Click Create collage plan to generate a structured checklist.",
+      "Copy or download the plan and build the final collage in your preferred editor."
+    ],
+    features: [
+      "Free collage planning tool with no signup required",
+      "Generates a practical collage checklist in seconds",
+      "Mobile-friendly interface for quick planning",
+      "Useful for students, creators, and social teams",
+      "No image upload required for this planning workflow"
+    ]
+  }),
   makeTool({ slug: "youtube-thumbnail-downloader", title: "YouTube Thumbnail Downloader", category: "Image Tools", description: "Extract public YouTube thumbnail image URLs from a video link.", action: "find thumbnail image links from public YouTube video URLs", audience: "creators, researchers, marketers, and editors", limitation: "Only download or reuse thumbnails when you have the rights or permission to do so." }),
   makeTool({ slug: "image-upscaler", title: "Image Upscaler", category: "Image Tools", description: "Preview image upscaling dimensions and prepare browser-resized copies.", action: "resize images upward for drafts and previews", audience: "creators, students, sellers, and content teams", limitation: "True AI upscaling requires model processing. Browser resizing can enlarge dimensions but cannot invent real detail." }),
 

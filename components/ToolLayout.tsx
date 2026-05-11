@@ -10,6 +10,7 @@ import { LazyToolRunner } from "@/components/LazyToolRunner";
 
 function workspaceCopy(tool: Tool) {
   if (tool.slug === "image-color-picker") return "Upload an image, then click anywhere on the preview to pick a color.";
+  if (tool.slug === "photo-collage-maker") return "Add your collage idea and layout notes, then generate a shareable collage plan.";
   if (tool.slug === "duplicate-line-remover") return "Paste your list below, choose case sensitivity, and remove duplicate lines instantly.";
   if (tool.category === "PDF Tools") return "Upload your PDF and choose the pages or action you want to apply.";
   if (tool.category === "Image Tools") return "Upload an image, adjust the settings, and preview the result before downloading.";
@@ -70,7 +71,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
         description={<p className="break-words [overflow-wrap:anywhere]">{tool.intro}</p>}
         badges={["Free to use", "No signup", categoryShort]}
       />
-      {(tool.category === "Image Tools" || tool.category === "PDF Tools") ? (
+      {(tool.category === "Image Tools" || tool.category === "PDF Tools") && tool.slug !== "photo-collage-maker" ? (
         <p className="mx-auto mt-5 max-w-3xl rounded-2xl border border-brand-100 bg-white/80 px-4 py-3 text-center text-sm font-bold leading-6 text-brand-700 shadow-sm">
           Privacy note: files are processed in the browser where possible and are not uploaded to a server by this tool.
         </p>

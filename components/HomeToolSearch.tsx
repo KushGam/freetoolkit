@@ -1,17 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import { tools, toolHref } from "@/data/tools";
-
 export function HomeToolSearch() {
-  const [query, setQuery] = useState("");
-  const matches = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    if (!needle) return [];
-    return tools.filter((tool) => `${tool.title} ${tool.category} ${tool.description}`.toLowerCase().includes(needle)).slice(0, 4);
-  }, [query]);
-
   return (
     <div className="relative z-10 mx-auto mt-7 w-full max-w-3xl">
       <label className="sr-only" htmlFor="home-tool-search">Search tools</label>
@@ -22,8 +9,6 @@ export function HomeToolSearch() {
             id="home-tool-search"
             name="q"
             type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
             placeholder="Search tools..."
             autoComplete="off"
             className="min-h-12 min-w-0 flex-1 bg-transparent text-base font-semibold text-slate-900 outline-none placeholder:text-slate-400"
@@ -33,25 +18,6 @@ export function HomeToolSearch() {
           Search
         </button>
       </form>
-      {query.trim() ? (
-        <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-2 text-left shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
-          {matches.length ? (
-            <div className="grid gap-1">
-              {matches.map((tool) => (
-                <Link key={tool.slug} href={toolHref(tool)} className="group flex items-center justify-between gap-4 rounded-xl px-3 py-2.5 hover:bg-brand-50">
-                  <span>
-                    <span className="block text-sm font-black text-slate-950 group-hover:text-brand-700">{tool.title}</span>
-                    <span className="block text-xs font-semibold text-slate-500">{tool.category}</span>
-                  </span>
-                  <span className="text-sm font-black text-slate-300 group-hover:text-brand-700">→</span>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="px-3 py-2 text-sm font-semibold text-slate-500">No matching tools yet. Try “PDF”, “image”, “GPA”, or “word”.</p>
-          )}
-        </div>
-      ) : null}
     </div>
   );
 }

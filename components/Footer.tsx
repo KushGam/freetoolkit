@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="border-t border-slate-200/80 bg-[radial-gradient(circle_at_top_left,#fef2f2,transparent_34%),linear-gradient(180deg,#ffffff,#fafafa)] backdrop-blur">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
         <div className="sm:col-span-2">
-          <Link href="/" className="group flex items-center gap-3 text-xl font-bold tracking-tight text-slate-950">
+          <Link href="/" className="group flex items-center gap-3 text-xl font-display font-bold tracking-tight text-slate-950">
             <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-sm font-black text-white shadow-[0_16px_30px_rgba(127,29,29,0.22)] transition-transform duration-200 group-hover:scale-105">FT</span>
             <span>Free<span className="text-brand-600">ToolKit</span></span>
           </Link>
@@ -15,13 +15,13 @@ export function Footer() {
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             {["No signup", "Free", "Browser-based"].map((item) => (
-              <span key={item} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-black text-slate-600 shadow-sm">{item}</span>
+              <span key={item} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm">{item}</span>
             ))}
           </div>
         </div>
         {topLevelCategories.map((category) => (
           <div key={category}>
-            <h3 className="text-sm font-bold text-slate-950">{category}</h3>
+            <h3 className="text-sm font-display font-semibold text-slate-950">{category}</h3>
             <div className="mt-4 grid gap-2.5 text-sm text-slate-600">
               <Link href={topLevelCategoryRoutes[category]} className="font-bold text-slate-700 hover:text-brand-700">
                 Browse {category}
