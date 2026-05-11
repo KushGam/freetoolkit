@@ -137,13 +137,13 @@ export default function HomePage() {
       <section className="relative border-b border-slate-200/70 bg-[radial-gradient(circle_at_18%_8%,#fef2f2,transparent_30%),radial-gradient(circle_at_82%_18%,#ffffff,transparent_26%),linear-gradient(180deg,#ffffff_0%,#fafafa_100%)]">
         <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-20">
           <div className="max-w-4xl text-center lg:text-left">
-            <Badge className="mx-auto border-brand-100 text-[11px] font-black uppercase tracking-wide text-brand-700 sm:text-xs lg:mx-0">
+            <Badge className="mx-auto border-brand-100 text-[11px] font-semibold uppercase tracking-wide text-brand-700 sm:text-xs lg:mx-0">
               Free AI & everyday productivity tools
             </Badge>
-            <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.02] tracking-tight text-slate-950 sm:text-5xl lg:mx-0 lg:text-6xl">
+            <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.04] tracking-tight text-slate-950 sm:text-5xl lg:mx-0 lg:text-6xl">
               Free AI & Everyday Productivity Tools
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg lg:mx-0">
               Use fast browser-based tools for AI writing, resumes, PDFs, images, calculators, study workflows, and developer tasks. No signup, no clutter, just useful productivity tools.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:justify-start">
@@ -159,7 +159,7 @@ export default function HomePage() {
             </div>
             <div className="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-2.5 lg:mx-0 lg:justify-start">
               {trustBadges.map((badge) => (
-                <span key={badge} className="rounded-full border border-slate-200 bg-white/85 px-3.5 py-2 text-[11px] font-black text-slate-700 shadow-sm sm:text-xs">
+                <span key={badge} className="rounded-full border border-slate-200 bg-white/85 px-3.5 py-2 text-[11px] font-semibold text-slate-700 shadow-sm sm:text-xs">
                   {badge}
                 </span>
               ))}
@@ -169,8 +169,8 @@ export default function HomePage() {
             <div className="absolute -left-8 top-10 h-56 w-56 rounded-full bg-brand-100/70 blur-3xl" aria-hidden="true" />
             <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-5 shadow-[0_30px_80px_rgba(17,24,39,0.12)] backdrop-blur">
               <div className="mb-4 flex items-center justify-between gap-4 px-1">
-                <p className="text-xs font-black uppercase tracking-wide text-brand-600">Start fast</p>
-                <Link href="/all-tools" className="text-xs font-black text-slate-500 transition hover:text-brand-700">
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">Start fast</p>
+                <Link href="/all-tools" className="text-xs font-semibold text-slate-500 transition hover:text-brand-700">
                   All tools →
                 </Link>
               </div>
@@ -181,11 +181,11 @@ export default function HomePage() {
                     href={tool.href}
                     className="group flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-4 focus:ring-brand-100"
                   >
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-xs font-black text-brand-700 ring-1 ring-brand-100 transition group-hover:bg-brand-600 group-hover:text-white">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-xs font-semibold text-brand-700 ring-1 ring-brand-100 transition group-hover:bg-brand-600 group-hover:text-white">
                       {tool.icon}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-sm font-bold text-slate-950 transition group-hover:text-brand-700">{tool.title}</span>
+                      <span className="block text-sm font-semibold text-slate-950 transition group-hover:text-brand-700">{tool.title}</span>
                       <span className="block text-sm text-slate-500">{tool.copy}</span>
                     </span>
                     <span className="ml-auto text-lg font-black text-brand-500 transition group-hover:translate-x-1" aria-hidden="true">
@@ -203,10 +203,10 @@ export default function HomePage() {
         <section>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Trending now</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Trending now</p>
               <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">High-value productivity tools</h2>
             </div>
-            <Link href="/all-tools" className="text-sm font-black text-brand-700 hover:text-brand-900">
+            <Link href="/all-tools" className="text-sm font-semibold text-brand-700 hover:text-brand-900">
               View all tools →
             </Link>
           </div>
@@ -220,7 +220,7 @@ export default function HomePage() {
         <AdSlot type="responsive" />
 
         <section className="mt-16">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Platform categories</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Platform categories</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Browse by Category</h2>
           <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {topLevelCategories.map((category) => {
@@ -236,10 +236,10 @@ export default function HomePage() {
         <section className="mt-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Popular tools</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Popular tools</p>
               <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Quick tools people use every day</h2>
             </div>
-            <Link href="/everyday" className="text-sm font-black text-brand-700 hover:text-brand-900">
+            <Link href="/everyday" className="text-sm font-semibold text-brand-700 hover:text-brand-900">
               Browse everyday →
             </Link>
           </div>
@@ -251,14 +251,14 @@ export default function HomePage() {
         </section>
 
         <section className="mt-16">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Trust basics</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Trust basics</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Why FreeToolKit?</h2>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {whyCards.map((card, index) => (
               <Card key={card.title} className="p-5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-xs font-black text-brand-700">0{index + 1}</span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-xs font-semibold text-brand-700">0{index + 1}</span>
                 <h3 className="mt-4 text-lg font-bold tracking-tight text-slate-950">{card.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{card.copy}</p>
+                <p className="mt-2 text-sm leading-7 text-slate-600">{card.copy}</p>
               </Card>
             ))}
           </div>
@@ -284,10 +284,10 @@ export default function HomePage() {
         <section className="mt-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-black uppercase tracking-wide text-brand-600">Latest guides</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Latest guides</p>
               <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Learn the fastest tool workflows</h2>
             </div>
-            <Link href="/blog" className="text-sm font-black text-brand-700 hover:text-brand-900">
+            <Link href="/blog" className="text-sm font-semibold text-brand-700 hover:text-brand-900">
               Read the blog →
             </Link>
           </div>
@@ -295,7 +295,7 @@ export default function HomePage() {
             {latestPosts.map((post) => (
               <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-brand-100">
                 <Card className="flex h-full flex-col p-6 group-hover:-translate-y-1 group-hover:border-brand-200">
-                  <p className="text-xs font-black uppercase tracking-wide text-brand-600">{post.category}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">{post.category}</p>
                   <h3 className="mt-3 text-lg font-bold tracking-tight text-slate-950 group-hover:text-brand-700">{post.title}</h3>
                   <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{post.description}</p>
                   <p className="mt-4 text-xs font-bold text-slate-500">{post.readingTime}</p>
@@ -306,7 +306,7 @@ export default function HomePage() {
         </section>
 
         <section className="mt-16">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">FAQ</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">FAQ</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Questions about FreeToolKit</h2>
           <div className="mt-7 grid gap-4 md:grid-cols-2">
             {homeFaqs.map(([question, answer]) => (
@@ -324,9 +324,9 @@ export default function HomePage() {
             Pick a popular tool and finish your next image, PDF, or student task in a few clicks.
           </p>
           <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/image-compressor" className="rounded-2xl bg-brand-600 px-6 py-3.5 text-sm font-black text-white shadow-sm hover:bg-brand-700">Compress an Image</Link>
-            <Link href="/merge-pdf" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-black text-slate-800 shadow-sm hover:bg-brand-50">Merge PDF</Link>
-            <Link href="/gpa-calculator" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-black text-slate-800 shadow-sm hover:bg-brand-50">Calculate GPA</Link>
+            <Link href="/image-compressor" className="rounded-2xl bg-brand-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Compress an Image</Link>
+            <Link href="/merge-pdf" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-800 shadow-sm hover:bg-brand-50">Merge PDF</Link>
+            <Link href="/gpa-calculator" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-800 shadow-sm hover:bg-brand-50">Calculate GPA</Link>
           </div>
         </section>
       </Container>

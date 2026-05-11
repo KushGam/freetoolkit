@@ -181,7 +181,7 @@ export function Header() {
                         isActivePath(link.href) && "bg-brand-50 text-brand-700 shadow-[inset_0_0_0_1px_rgba(127,29,29,0.2)]"
                       )}
                     >
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-black text-slate-500 transition group-hover/link:border-brand-200 group-hover/link:bg-white group-hover/link:text-brand-700">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-semibold text-slate-500 transition group-hover/link:border-brand-200 group-hover/link:bg-white group-hover/link:text-brand-700">
                         {link.icon}
                       </span>
                       <span className="truncate">{link.label}</span>
@@ -236,7 +236,7 @@ export function Header() {
           <div className="grid gap-3 sm:grid-cols-2">
             {categoryGroups.map((group) => (
               <section key={group.title} className="rounded-2xl border border-slate-100 bg-white p-3 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-                <p className="px-1 text-[11px] font-black uppercase tracking-wide text-slate-500">{group.title}</p>
+                <p className="px-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">{group.title}</p>
                 <div className="mt-2 grid gap-1">
                   {group.links.map((link) => (
                     <Link
