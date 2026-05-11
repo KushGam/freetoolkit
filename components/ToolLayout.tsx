@@ -54,7 +54,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
   return (
     <main>
       <Container className="max-w-6xl py-8 sm:py-10">
-      <nav className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-500">
+      <nav className="flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-white/75 px-4 py-2 text-sm font-bold text-slate-500 shadow-sm backdrop-blur">
         <Link href="/" className="hover:text-brand-700">Home</Link>
         <span>/</span>
         <Link href={categoryRoutes[tool.category]} className="hover:text-brand-700">
@@ -98,7 +98,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           </ul>
         </Card>
       </section>
-      <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-[0_12px_28px_rgba(15,23,42,0.08)]">
         <h2>About this free {tool.title.toLowerCase()}</h2>
         {tool.seo.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         <p>
@@ -111,7 +111,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
       </section>
       <FAQ items={tool.faq} />
       <RelatedBlogPosts posts={relatedBlogPosts} title={`Guides for ${tool.title}`} />
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.08)]">
         <p className="text-xs font-black uppercase tracking-wide text-brand-600">Browse hierarchy</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href={categoryRoutes[tool.category]} className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">

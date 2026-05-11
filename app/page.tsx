@@ -134,7 +134,7 @@ export default function HomePage() {
 
   return (
     <main className="overflow-hidden">
-      <section className="relative border-b border-slate-200/70 bg-[radial-gradient(circle_at_18%_8%,#dbeafe,transparent_30%),radial-gradient(circle_at_82%_18%,#e0e7ff,transparent_26%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]">
+      <section className="relative border-b border-slate-200/70 bg-[radial-gradient(circle_at_18%_8%,#fef2f2,transparent_30%),radial-gradient(circle_at_82%_18%,#ffffff,transparent_26%),linear-gradient(180deg,#ffffff_0%,#fafafa_100%)]">
         <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-20">
           <div className="max-w-4xl text-center lg:text-left">
             <Badge className="mx-auto border-brand-100 text-[11px] font-black uppercase tracking-wide text-brand-700 sm:text-xs lg:mx-0">
@@ -147,7 +147,7 @@ export default function HomePage() {
               Use fast browser-based tools for AI writing, resumes, PDFs, images, calculators, study workflows, and developer tasks. No signup, no clutter, just useful productivity tools.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:justify-start">
-              <Link href="/all-tools" className="rounded-2xl bg-gradient-to-b from-brand-500 to-brand-700 px-6 py-3 text-center text-sm font-bold text-white shadow-[0_16px_35px_rgba(37,99,235,0.24)] transition hover:-translate-y-0.5 hover:from-brand-600 hover:to-brand-700">
+              <Link href="/all-tools" className="rounded-2xl bg-gradient-to-b from-brand-500 to-brand-700 px-6 py-3 text-center text-sm font-bold text-white shadow-[0_16px_35px_rgba(127,29,29,0.24)] transition hover:-translate-y-0.5 hover:from-brand-600 hover:to-brand-700">
                 Browse All Tools
               </Link>
               <Link href="/ai-tools" className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
@@ -167,7 +167,7 @@ export default function HomePage() {
           </div>
           <div className="relative mx-auto hidden w-full max-w-md lg:block">
             <div className="absolute -left-8 top-10 h-56 w-56 rounded-full bg-brand-100/70 blur-3xl" aria-hidden="true" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-5 shadow-[0_30px_80px_rgba(15,23,42,0.12)] backdrop-blur">
+            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-5 shadow-[0_30px_80px_rgba(17,24,39,0.12)] backdrop-blur">
               <div className="mb-4 flex items-center justify-between gap-4 px-1">
                 <p className="text-xs font-black uppercase tracking-wide text-brand-600">Start fast</p>
                 <Link href="/all-tools" className="text-xs font-black text-slate-500 transition hover:text-brand-700">
@@ -318,7 +318,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mt-16 rounded-[2rem] border border-brand-100 bg-[radial-gradient(circle_at_top_left,#dbeafe,transparent_36%),linear-gradient(135deg,#ffffff,#f8fafc)] p-6 text-center shadow-[0_24px_70px_rgba(37,99,235,0.10)] sm:p-10">
+        <section className="mt-16 rounded-[2rem] border border-brand-100 bg-[radial-gradient(circle_at_top_left,#fef2f2,transparent_36%),linear-gradient(135deg,#ffffff,#fafafa)] p-6 text-center shadow-[0_24px_70px_rgba(127,29,29,0.1)] sm:p-10">
           <h2 className="font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Start with a free tool now</h2>
           <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
             Pick a popular tool and finish your next image, PDF, or student task in a few clicks.

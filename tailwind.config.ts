@@ -14,11 +14,11 @@ const config: Config = {
       },
       colors: {
         brand: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          500: "#2563eb",
-          600: "#1d4ed8",
-          700: "#1e40af"
+          50: "#fef2f2",
+          100: "#fee2e2",
+          500: "#7f1d1d",
+          600: "#991b1b",
+          700: "#7a1414"
         }
       },
       boxShadow: {

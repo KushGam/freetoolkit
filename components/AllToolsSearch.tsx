@@ -19,7 +19,7 @@ export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string })
 
   return (
     <div>
-      <div className="rounded-2xl border border-slate-200 bg-white/90 p-3 shadow-sm backdrop-blur">
+      <div className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white/95 to-slate-50/90 p-3 shadow-[0_10px_25px_rgba(15,23,42,0.08)] backdrop-blur">
         <label className="sr-only" htmlFor="all-tools-search">Search all tools</label>
         <Input
           id="all-tools-search"
@@ -30,13 +30,13 @@ export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string })
           placeholder="Search AI, everyday, PDF, image, student, or developer tools..."
         />
       </div>
-      <div className="mt-4 flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white/80 p-2 shadow-sm">
+      <div className="mt-4 flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white/85 p-2 shadow-sm">
         {(["All", ...topLevelCategories] as Array<TopLevelCategory | "All">).map((item) => (
           <button
             key={item}
             type="button"
             onClick={() => setCategory(item)}
-            className={`rounded-full border px-4 py-2 text-sm font-bold transition ${category === item ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-600 hover:border-brand-200 hover:text-brand-700"}`}
+            className={`rounded-full border px-4 py-2 text-sm font-bold transition-all duration-200 ${category === item ? "border-brand-200 bg-brand-50 text-brand-700 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.14)]" : "border-slate-200 bg-white text-slate-600 hover:border-brand-200 hover:text-brand-700"}`}
           >
             {item}
           </button>
