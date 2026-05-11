@@ -5,24 +5,42 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const primaryLinks = [
-  { href: "/everyday", label: "Everyday" },
-  { href: "/ai-tools", label: "AI Tools" },
-  { href: "/pdf-image", label: "PDF & Image" },
-  { href: "/all-tools", label: "All Tools" }
+  { href: "/", label: "Home" }
 ];
 
-const categoryLinks = [
-  { href: "/student", label: "Student" },
-  { href: "/developer", label: "Developer" },
-  { href: "/seo-tools", label: "SEO Tools" },
-  { href: "/social-media-tools", label: "Social Media Tools" },
-  { href: "/image-tools", label: "Image Tools" },
-  { href: "/pdf-tools", label: "PDF Tools" },
-  { href: "/text-tools", label: "Text Tools" },
-  { href: "/calculator-tools", label: "Calculator Tools" }
+const categoryGroups = [
+  {
+    title: "Productivity",
+    links: [
+      { href: "/student-tools", label: "Student Tools", icon: "ST" },
+      { href: "/calculator-tools", label: "Calculator Tools", icon: "CA" },
+      { href: "/text-tools", label: "Text Tools", icon: "TX" }
+    ]
+  },
+  {
+    title: "Creative",
+    links: [
+      { href: "/image-tools", label: "Image Tools", icon: "IM" },
+      { href: "/social-media-tools", label: "Social Media Tools", icon: "SO" }
+    ]
+  },
+  {
+    title: "Technical",
+    links: [
+      { href: "/developer-tools", label: "Developer Tools", icon: "DV" },
+      { href: "/seo-tools", label: "SEO Tools", icon: "SE" },
+      { href: "/security-tools", label: "Security Tools", icon: "SC" }
+    ]
+  },
+  {
+    title: "Document",
+    links: [{ href: "/pdf-tools", label: "PDF Tools", icon: "PF" }]
+  },
+  {
+    title: "AI",
+    links: [{ href: "/ai-tools", label: "AI Tools", icon: "AI" }]
+  }
 ];
-
-const mobileLinks = [...primaryLinks.slice(0, 3), ...categoryLinks, primaryLinks[3]];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -35,25 +53,33 @@ export function Header() {
           <span>Free<span className="text-brand-600">ToolKit</span></span>
         </Link>
 
-        <nav className="hidden shrink-0 items-center gap-1 rounded-full border border-slate-200 bg-white/85 p-1 text-sm font-semibold text-slate-600 shadow-sm lg:flex">
+        <nav aria-label="Main navigation" className="hidden shrink-0 items-center gap-1 rounded-full border border-slate-200 bg-white/85 p-1 text-sm font-semibold text-slate-600 shadow-sm lg:flex">
           {primaryLinks.map((link) => (
             <Link key={link.href} href={link.href} className="rounded-full px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
               {link.label}
             </Link>
           ))}
-          <details className="group relative">
-            <summary className="flex cursor-pointer list-none items-center gap-1 rounded-full px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
-              Categories
-              <span aria-hidden="true" className="text-xs transition group-open:rotate-180">v</span>
-            </summary>
-            <div className="absolute right-0 top-full mt-2 grid w-64 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/[0.08]">
-              {categoryLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="rounded-xl px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-brand-50 hover:text-brand-700">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </details>
+          {categoryGroups.map((group) => (
+            <details key={group.title} className="group relative">
+              <summary className="flex cursor-pointer list-none items-center gap-1 rounded-full px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
+                {group.title}
+                <span aria-hidden="true" className="text-xs transition group-open:rotate-180">v</span>
+              </summary>
+              <div className="absolute left-1/2 top-full mt-3 w-64 -translate-x-1/2 rounded-3xl border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-900/[0.12]">
+                <p className="px-2 pb-2 text-[11px] font-black uppercase tracking-wide text-slate-400">{group.title}</p>
+                <div className="grid gap-1">
+                  {group.links.map((link) => (
+                    <Link key={link.href} href={link.href} className="group/link flex min-w-0 items-center gap-3 rounded-2xl px-2.5 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-brand-50 hover:text-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-100">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-black text-slate-500 transition group-hover/link:border-brand-200 group-hover/link:bg-white group-hover/link:text-brand-700">
+                        {link.icon}
+                      </span>
+                      <span className="truncate">{link.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
         </nav>
 
         <button
@@ -67,12 +93,31 @@ export function Header() {
       </div>
 
       <div className={cn("border-t border-slate-100 bg-white/95 px-4 py-3 shadow-lg shadow-slate-900/[0.04] lg:hidden", !open && "hidden")}>
-        <nav className="mx-auto grid max-w-7xl gap-2 text-sm font-semibold text-slate-700">
-          {mobileLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="rounded-2xl border border-slate-100 bg-white px-4 py-4 text-base shadow-sm transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" onClick={() => setOpen(false)}>
-              {link.label}
-            </Link>
-          ))}
+        <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-3 text-sm font-semibold text-slate-700">
+          <div className="grid gap-2">
+            {primaryLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-2xl border border-slate-100 bg-white px-4 py-4 text-base shadow-sm transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" onClick={() => setOpen(false)}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {categoryGroups.map((group) => (
+              <section key={group.title} className="rounded-2xl border border-slate-100 bg-white p-3 shadow-sm">
+                <p className="px-1 text-[11px] font-black uppercase tracking-wide text-slate-400">{group.title}</p>
+                <div className="mt-2 grid gap-1">
+                  {group.links.map((link) => (
+                    <Link key={link.href} href={link.href} className="flex items-center gap-3 rounded-xl px-2 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-brand-50 hover:text-brand-700" onClick={() => setOpen(false)}>
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-black text-slate-500">
+                        {link.icon}
+                      </span>
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
         </nav>
       </div>
     </header>
