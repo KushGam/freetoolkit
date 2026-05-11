@@ -49,7 +49,7 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
         <h2>About these {category.toLowerCase()}</h2>
         {(seo?.body ?? [
           "These free tools are built for everyday work on phones, tablets, and desktops. Each page includes useful instructions, privacy-friendly copy, and related internal links so you can move between tasks quickly.",
-          "FreeToolKit does not require accounts or paid API keys. Image and PDF tools use browser-side processing where possible, while student tools calculate results instantly on the page."
+          "FreeToolKit does not require accounts, subscriptions, or complicated setup. Image and PDF tools use browser-side processing where possible, while student tools calculate results instantly on the page."
         ]).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       </section>
       {seo?.faqs?.length ? <FAQ items={seo.faqs} /> : null}

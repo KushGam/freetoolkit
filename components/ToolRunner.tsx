@@ -3113,6 +3113,7 @@ function parseAiResumeOutput(output: string): AiResumeOutput {
 
 const AI_USAGE_KEY = "freetoolkit_ai_student_usage";
 const AI_CLIENT_LIMIT = 3;
+const AI_RESUME_UNAVAILABLE_MESSAGE = "AI resume generation is temporarily unavailable. Please try again later.";
 
 function localDateKey() {
   return new Date().toISOString().slice(0, 10);
@@ -3141,6 +3142,285 @@ function downloadTextFile(name: string, content: string) {
   link.download = name;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+const aiExpansionSlugs = new Set([
+  "ai-humanizer",
+  "ai-homework-helper",
+  "ai-essay-writer",
+  "ai-prompt-generator",
+  "ai-interview-answer-generator",
+  "ai-linkedin-summary-generator",
+  "ai-business-name-generator",
+  "ai-notes-cleaner"
+]);
+
+const fileWorkflowSlugs = new Set([
+  "heic-to-jpg",
+  "background-remover",
+  "passport-photo-maker",
+  "image-upscaler",
+  "pdf-to-excel",
+  "excel-to-pdf",
+  "ocr-pdf",
+  "pdf-watermark",
+  "pdf-password-protector",
+  "pdf-metadata-editor",
+  "pdf-reader-online",
+  "compare-pdf-files",
+  "file-checksum"
+]);
+
+const utilityLabels: Record<string, { label: string; placeholder: string; button: string }> = {
+  "svg-to-png": { label: "SVG markup or upload notes", placeholder: "<svg viewBox=\"0 0 100 100\">...</svg>", button: "Prepare PNG preview" },
+  "png-to-webp": { label: "Upload or describe PNG file", placeholder: "Upload a PNG file above or note the conversion requirement.", button: "Prepare conversion notes" },
+  "webp-to-png": { label: "Upload or describe WebP file", placeholder: "Upload a WebP file above or note the conversion requirement.", button: "Prepare conversion notes" },
+  "blur-image": { label: "Upload or describe image", placeholder: "Upload an image and choose blur strength.", button: "Prepare blur workflow" },
+  "favicon-generator": { label: "Site name or initials", placeholder: "FT or FreeToolKit", button: "Generate favicon plan" },
+  "photo-collage-maker": { label: "Collage notes", placeholder: "Describe the images and layout you want.", button: "Create collage plan" },
+  "youtube-thumbnail-downloader": { label: "YouTube video URL", placeholder: "https://www.youtube.com/watch?v=VIDEO_ID", button: "Get thumbnail links" },
+  "apa-citation-generator": { label: "Source details", placeholder: "Author, year, title, website/book/journal, URL, accessed date...", button: "Generate citation draft" },
+  "mla-citation-generator": { label: "Source details", placeholder: "Author, title, container, publisher, date, URL...", button: "Generate citation draft" },
+  "harvard-reference-generator": { label: "Source details", placeholder: "Author, year, title, publisher/site, URL...", button: "Generate reference draft" },
+  "pomodoro-timer": { label: "Session plan", placeholder: "25 minute focus, 5 minute break, 4 rounds", button: "Create timer plan" },
+  "flashcard-generator": { label: "Notes or terms", placeholder: "Paste notes or key terms, one per line.", button: "Generate flashcards" },
+  "assignment-planner": { label: "Assignment details", placeholder: "Topic, due date, requirements, milestones...", button: "Create plan" },
+  "study-schedule-generator": { label: "Subjects and available time", placeholder: "Math exam Friday, English essay Monday, 2 hours per day...", button: "Create schedule" },
+  "scientific-calculator": { label: "Expression", placeholder: "sqrt(144) + sin(30) or 2^8", button: "Calculate" },
+  "regex-tester": { label: "Pattern and sample text", placeholder: "Pattern: \\b\\w+@\\w+\\.com\\b\nText: email me at test@example.com", button: "Test regex" },
+  "jwt-decoder": { label: "JWT token", placeholder: "eyJhbGciOi...", button: "Decode JWT" },
+  "sql-formatter": { label: "SQL", placeholder: "select * from users where active = true order by created_at desc", button: "Format SQL" },
+  "html-formatter": { label: "HTML", placeholder: "<main><h1>Hello</h1><p>Text</p></main>", button: "Format HTML" },
+  "css-formatter": { label: "CSS", placeholder: "body{color:#111;background:#fff}.card{padding:1rem}", button: "Format CSS" },
+  "markdown-previewer": { label: "Markdown", placeholder: "# Heading\n\n- Item one\n- Item two", button: "Preview Markdown" },
+  "json-validator": { label: "JSON", placeholder: "{\"name\":\"FreeToolKit\"}", button: "Validate JSON" },
+  "curl-to-fetch": { label: "cURL command", placeholder: "curl -X POST https://api.example.com -H 'Content-Type: application/json' -d '{\"ok\":true}'", button: "Convert to fetch" },
+  "password-strength-checker": { label: "Password", placeholder: "Type a password to check locally", button: "Check strength" },
+  "sha256-generator": { label: "Text", placeholder: "Text to hash", button: "Generate SHA-256" },
+  "md5-generator": { label: "Text", placeholder: "Text to hash", button: "Generate MD5-style checksum" },
+  "random-token-generator": { label: "Token length", placeholder: "32", button: "Generate token" },
+  "meta-tag-generator": { label: "Page details", placeholder: "Title: ...\nDescription: ...\nURL: https://example.com/page", button: "Generate meta tags" },
+  "open-graph-generator": { label: "Social preview details", placeholder: "Title: ...\nDescription: ...\nURL: ...\nImage: ...", button: "Generate Open Graph tags" },
+  "robots-txt-generator": { label: "Site URL", placeholder: "https://example.com", button: "Generate robots.txt" },
+  "sitemap-generator": { label: "URLs", placeholder: "https://example.com/\nhttps://example.com/about", button: "Generate sitemap" },
+  "serp-preview": { label: "Title, URL, and description", placeholder: "Title: ...\nURL: https://example.com/page\nDescription: ...", button: "Preview SERP" },
+  "keyword-density-checker": { label: "Page text", placeholder: "Paste page copy to check repeated terms...", button: "Check density" },
+  "slug-generator": { label: "Title or phrase", placeholder: "Best Free Online PDF Tools", button: "Generate slug" },
+  "schema-markup-generator": { label: "Page details", placeholder: "Type: Article\nTitle: ...\nDescription: ...\nURL: ...", button: "Generate JSON-LD" },
+  "hashtag-counter": { label: "Hashtags", placeholder: "#seo #tools #productivity", button: "Count hashtags" },
+  "instagram-caption-formatter": { label: "Caption", placeholder: "Paste caption text with line breaks...", button: "Format caption" },
+  "tiktok-caption-generator": { label: "Video topic", placeholder: "A quick video about compressing PDFs online", button: "Generate captions" },
+  "youtube-tags-extractor": { label: "YouTube text", placeholder: "Paste title, description, tags, or hashtags...", button: "Extract tags" },
+  "twitter-character-counter": { label: "Post text", placeholder: "Write your post here...", button: "Count characters" },
+  "social-bio-generator": { label: "Profile details", placeholder: "Role, niche, audience, personality...", button: "Generate bios" }
+};
+
+function LightweightUtilityTool({ slug }: { slug: string }) {
+  const config = utilityLabels[slug] ?? { label: "Input", placeholder: "Enter text or details...", button: "Generate" };
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  async function generate() {
+    setCopied(false);
+    setOutput(await runUtility(slug, input));
+  }
+
+  async function copy() {
+    if (!output) return;
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+  }
+
+  return (
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="space-y-4">
+        <label className="block text-sm font-bold text-slate-700">
+          {config.label}
+          <Textarea className="mt-2 min-h-72" value={input} onChange={(event) => setInput(event.target.value)} placeholder={config.placeholder} />
+        </label>
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={generate}>{config.button}</Button>
+          <SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton>
+        </div>
+      </div>
+      <ResultCard title="Output">
+        {output ? <pre className="min-h-72 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800 [overflow-wrap:anywhere]">{output}</pre> : <p className="min-h-72 text-sm leading-7 text-slate-500">Your result will appear here.</p>}
+        <div className="mt-4 flex flex-wrap gap-3">
+          <SecondaryButton onClick={copy} disabled={!output}>{copied ? "Copied" : "Copy"}</SecondaryButton>
+          <SecondaryButton onClick={() => downloadTextFile(`${slug}.txt`, output)} disabled={!output}>Download TXT</SecondaryButton>
+        </div>
+      </ResultCard>
+    </div>
+  );
+}
+
+function FileWorkflowTool({ slug }: { slug: string }) {
+  const [files, setFiles] = useState<File[]>([]);
+  const [note, setNote] = useState("");
+  const fileSummary = files.map((file) => `${file.name} (${formatBytes(file.size)})`).join("\n");
+  const isChecksum = slug === "file-checksum";
+
+  async function run() {
+    if (isChecksum && files[0]) {
+      const hash = await crypto.subtle.digest("SHA-256", await files[0].arrayBuffer());
+      setNote(`SHA-256\n${hex(hash)}\n\nFile\n${files[0].name}\n${formatBytes(files[0].size)}`);
+      return;
+    }
+    setNote(`Selected file workflow\n${fileSummary || "No file selected"}\n\nThis browser-first tool prepares the workflow and shows file details. Advanced conversion quality depends on browser support and may require a dedicated processor for complex files.`);
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload file" accept="*/*" multiple onFiles={(selected) => setFiles(selected)} />
+      <FileInfo file={files[0] ?? null} />
+      {files.length > 1 ? <p className="mt-3 text-sm font-bold text-slate-600">{files.length} files selected.</p> : null}
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={run}>{isChecksum ? "Generate checksum" : "Review workflow"}</Button>
+        <SecondaryButton onClick={() => { setFiles([]); setNote(""); }}>Reset</SecondaryButton>
+      </div>
+      {note ? <ResultCard title="Browser workflow note" className="mt-5"><pre className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-700">{note}</pre></ResultCard> : null}
+    </div>
+  );
+}
+
+async function runUtility(slug: string, input: string) {
+  const value = input.trim();
+  if (!value) return "Enter some input first.";
+  if (slug === "slug-generator") return value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  if (slug === "sha256-generator") return hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)));
+  if (slug === "md5-generator") return `MD5 is weak and not available in Web Crypto.\n\nUse this SHA-256 value instead for safer checks:\n${hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)))}`;
+  if (slug === "random-token-generator") {
+    const length = Math.min(256, Math.max(8, Number(value) || 32));
+    const bytes = crypto.getRandomValues(new Uint8Array(Math.ceil(length / 2)));
+    return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("").slice(0, length);
+  }
+  if (slug === "password-strength-checker") {
+    const checks = [value.length >= 12, /[a-z]/.test(value), /[A-Z]/.test(value), /\d/.test(value), /[^A-Za-z0-9]/.test(value)];
+    const score = checks.filter(Boolean).length;
+    return `Score: ${score}/5\nLength: ${value.length}\nLowercase: ${checks[1] ? "yes" : "no"}\nUppercase: ${checks[2] ? "yes" : "no"}\nNumbers: ${checks[3] ? "yes" : "no"}\nSymbols: ${checks[4] ? "yes" : "no"}\n\nUse a long unique password and store it in a trusted password manager.`;
+  }
+  if (slug === "jwt-decoder") return decodeJwt(value);
+  if (slug === "json-validator") {
+    try { return `Valid JSON\n\n${JSON.stringify(JSON.parse(value), null, 2)}`; } catch (error) { return `Invalid JSON\n${error instanceof Error ? error.message : "Parse failed"}`; }
+  }
+  if (slug === "keyword-density-checker") return keywordDensity(value);
+  if (slug === "hashtag-counter") {
+    const tags = value.match(/#[A-Za-z0-9_]+/g) ?? [];
+    return `Hashtags: ${tags.length}\n\n${Array.from(new Set(tags)).join("\n")}`;
+  }
+  if (slug === "twitter-character-counter") return `Characters: ${value.length}\nRemaining from 280: ${280 - value.length}\nWords: ${value.split(/\s+/).filter(Boolean).length}`;
+  if (slug === "youtube-thumbnail-downloader") return youtubeThumbnails(value);
+  if (slug === "robots-txt-generator") return `User-agent: *\nAllow: /\n\nSitemap: ${value.replace(/\/$/, "")}/sitemap.xml`;
+  if (slug === "sitemap-generator") return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${value.split(/\s+/).filter(Boolean).map((url) => `  <url><loc>${escapeHtml(url)}</loc></url>`).join("\n")}\n</urlset>`;
+  if (slug === "meta-tag-generator") return metaTags(value);
+  if (slug === "open-graph-generator") return openGraphTags(value);
+  if (slug === "schema-markup-generator") return schemaMarkup(value);
+  if (slug === "curl-to-fetch") return curlToFetch(value);
+  if (slug === "regex-tester") return testRegex(value);
+  if (slug === "sql-formatter") return value.replace(/\b(select|from|where|and|or|order by|group by|limit|join|left join|right join|inner join)\b/gi, "\n$1").trim();
+  if (slug === "html-formatter" || slug === "css-formatter") return value.replace(/></g, ">\n<").replace(/[{};]/g, (match) => `${match}\n`).replace(/\n{2,}/g, "\n").trim();
+  if (slug === "markdown-previewer") return value.replace(/^# (.*)$/gm, "<h1>$1</h1>").replace(/^## (.*)$/gm, "<h2>$1</h2>").replace(/^- (.*)$/gm, "<li>$1</li>");
+  if (slug.includes("citation") || slug.includes("reference")) return citationDraft(slug, value);
+  if (slug.includes("caption") || slug.includes("bio")) return socialDraft(slug, value);
+  if (slug.includes("schedule") || slug.includes("planner") || slug === "flashcard-generator" || slug === "pomodoro-timer") return studyDraft(slug, value);
+  if (slug === "scientific-calculator") return calculateExpression(value);
+  return `Prepared output for ${slug}\n\n${value}`;
+}
+
+function hex(buffer: ArrayBuffer) {
+  return Array.from(new Uint8Array(buffer), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function decodeJwt(token: string) {
+  const parts = token.split(".");
+  if (parts.length < 2) return "This does not look like a JWT.";
+  const decode = (part: string) => JSON.stringify(JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/"))), null, 2);
+  try { return `Header\n${decode(parts[0])}\n\nPayload\n${decode(parts[1])}\n\nSignature is not verified by this tool.`; } catch { return "Unable to decode token payload."; }
+}
+
+function keywordDensity(text: string) {
+  const words = text.toLowerCase().match(/[a-z0-9]{3,}/g) ?? [];
+  const counts = new Map<string, number>();
+  words.forEach((word) => counts.set(word, (counts.get(word) ?? 0) + 1));
+  return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([word, count]) => `${word}: ${count} (${((count / words.length) * 100).toFixed(2)}%)`).join("\n");
+}
+
+function youtubeThumbnails(url: string) {
+  const id = url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{6,})/)?.[1];
+  if (!id) return "Could not find a YouTube video ID.";
+  return ["maxresdefault", "hqdefault", "mqdefault", "sddefault"].map((name) => `https://img.youtube.com/vi/${id}/${name}.jpg`).join("\n");
+}
+
+function field(input: string, name: string) {
+  return input.match(new RegExp(`${name}:\\s*(.+)`, "i"))?.[1]?.trim() ?? "";
+}
+
+function metaTags(input: string) {
+  const title = field(input, "title") || "Page title";
+  const description = field(input, "description") || "Page description";
+  const url = field(input, "url") || "https://example.com/page";
+  return `<title>${escapeHtml(title)}</title>\n<meta name="description" content="${escapeHtml(description)}" />\n<link rel="canonical" href="${escapeHtml(url)}" />\n<meta name="robots" content="index, follow" />`;
+}
+
+function openGraphTags(input: string) {
+  const title = field(input, "title") || "Page title";
+  const description = field(input, "description") || "Page description";
+  const url = field(input, "url") || "https://example.com/page";
+  const image = field(input, "image") || "https://example.com/og-image.jpg";
+  return `<meta property="og:title" content="${escapeHtml(title)}" />\n<meta property="og:description" content="${escapeHtml(description)}" />\n<meta property="og:url" content="${escapeHtml(url)}" />\n<meta property="og:image" content="${escapeHtml(image)}" />\n<meta name="twitter:card" content="summary_large_image" />`;
+}
+
+function schemaMarkup(input: string) {
+  return JSON.stringify({ "@context": "https://schema.org", "@type": field(input, "type") || "WebPage", name: field(input, "title") || "Page title", description: field(input, "description") || "Page description", url: field(input, "url") || "https://example.com/page" }, null, 2);
+}
+
+function curlToFetch(input: string) {
+  const url = input.match(/https?:\/\/[^\s'"]+/)?.[0] ?? "https://example.com";
+  const method = input.match(/-X\s+([A-Z]+)/)?.[1] ?? (input.includes("-d ") ? "POST" : "GET");
+  return `fetch("${url}", {\n  method: "${method}",\n  headers: {\n    "Content-Type": "application/json"\n  }\n});`;
+}
+
+function testRegex(input: string) {
+  const pattern = field(input, "pattern") || input.split("\n")[0];
+  const text = field(input, "text") || input.split("\n").slice(1).join("\n");
+  try {
+    const matches = Array.from(text.matchAll(new RegExp(pattern, "g"))).map((match) => match[0]);
+    return `Matches: ${matches.length}\n\n${matches.join("\n") || "No matches found."}`;
+  } catch (error) {
+    return `Invalid regex\n${error instanceof Error ? error.message : "Regex failed"}`;
+  }
+}
+
+function citationDraft(slug: string, input: string) {
+  const style = slug.includes("apa") ? "APA" : slug.includes("mla") ? "MLA" : "Harvard";
+  return `${style} citation draft\n${input}\n\nReview punctuation, italics, capitalization, and source type against your required style guide.`;
+}
+
+function socialDraft(slug: string, input: string) {
+  if (slug === "instagram-caption-formatter") return input.replace(/\n{3,}/g, "\n\n").trim();
+  if (slug === "tiktok-caption-generator") return [`Quick tip: ${input}`, `Try this before your next post: ${input}`, `Save this if you care about ${input}`].join("\n");
+  return [`${input}\nBuilding useful things and sharing the process.`, `${input}\nSimple, practical, and always learning.`, `${input}\nHelping people work faster with better tools.`].join("\n\n");
+}
+
+function studyDraft(slug: string, input: string) {
+  if (slug === "flashcard-generator") return input.split("\n").filter(Boolean).map((line, index) => `Q${index + 1}: What should I remember about ${line}?\nA${index + 1}: ${line}`).join("\n\n");
+  return `Study plan draft\n\n1. Review requirements\n2. Break the work into milestones\n3. Schedule focused blocks\n4. Review and revise\n\nInput:\n${input}`;
+}
+
+function calculateExpression(input: string) {
+  const safe = input.replace(/\^/g, "**").replace(/\bsqrt\(/g, "Math.sqrt(").replace(/\bsin\(/g, "Math.sin(").replace(/\bcos\(/g, "Math.cos(").replace(/\btan\(/g, "Math.tan(");
+  if (!/^[0-9+\-*/().\sMathsqrtincotaPIE*]+$/.test(safe)) return "Unsupported expression. Use numbers, +, -, *, /, parentheses, sqrt(), sin(), cos(), or tan().";
+  try {
+    // eslint-disable-next-line no-new-func
+    return String(Function(`"use strict"; return (${safe})`)());
+  } catch {
+    return "Could not calculate that expression.";
+  }
+}
+
+function escapeHtml(text: string) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 function AiResumeCoverLetterGenerator() {
@@ -3249,6 +3529,10 @@ function AiResumeCoverLetterGenerator() {
       }
 
       streamedText += decoder.decode();
+      if (streamedText.trim() === AI_RESUME_UNAVAILABLE_MESSAGE) {
+        setResult(null);
+        throw new Error(AI_RESUME_UNAVAILABLE_MESSAGE);
+      }
       if (!streamedText.trim()) throw new Error("AI returned an empty response. Please try again.");
       const nextResult = parseAiResumeOutput(streamedText);
       setResult(nextResult);
@@ -3256,7 +3540,16 @@ function AiResumeCoverLetterGenerator() {
       writeAiUsage(usage.count + 1);
       setUsageCount(usage.count + 1);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to generate right now.");
+      const message = err instanceof Error ? err.message : "";
+      if (message === AI_RESUME_UNAVAILABLE_MESSAGE) {
+        setError(AI_RESUME_UNAVAILABLE_MESSAGE);
+      } else if (message.includes("Daily AI usage limit")) {
+        setError("Daily AI usage limit reached. Please try again later.");
+      } else if (message.includes("Resume text") || message.includes("Job description")) {
+        setError(message);
+      } else {
+        setError(AI_RESUME_UNAVAILABLE_MESSAGE);
+      }
     } finally {
       setBusy(false);
     }
@@ -3407,6 +3700,10 @@ function AiResumeCoverLetterGenerator() {
 }
 
 export function ToolRunner({ slug }: { slug: string }) {
+  if (aiExpansionSlugs.has(slug)) return <GeminiAiTool slug={slug} />;
+  if (fileWorkflowSlugs.has(slug)) return <FileWorkflowTool slug={slug} />;
+  if (utilityLabels[slug]) return <LightweightUtilityTool slug={slug} />;
+
   const map: Record<string, React.ReactNode> = {
     "image-compressor": <ImageCompressor />,
     "png-to-jpg": <ImageConverter mode="png-to-jpg" />,

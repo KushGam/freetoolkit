@@ -161,6 +161,70 @@ const configs: Record<string, ToolConfig> = {
     optionLabel: "Review focus",
     options: ["ATS fit", "Keyword gaps", "Formatting advice", "Concise action plan"],
     examplePrompts: ["RESUME: ... JOB DESCRIPTION: ...", "Check this resume against a junior marketing role and list missing keywords."]
+  },
+  "ai-humanizer": {
+    title: "AI Humanizer",
+    toolType: "AI Humanizer",
+    placeholder: "Paste text that sounds stiff, robotic, or overly formal...",
+    minLength: 40,
+    optionLabel: "Rewrite style",
+    options: ["Natural", "Professional", "Simple", "Warm"]
+  },
+  "ai-homework-helper": {
+    title: "AI Homework Helper",
+    toolType: "AI Homework Helper",
+    placeholder: "Paste the homework question and what you have tried so far...",
+    minLength: 30,
+    optionLabel: "Help style",
+    options: ["Explain steps", "Give hints", "Check my answer", "Study notes"]
+  },
+  "ai-essay-writer": {
+    title: "AI Essay Writer",
+    toolType: "AI Essay Writer",
+    placeholder: "Enter essay topic, requirements, thesis idea, word count, and sources if any...",
+    minLength: 40,
+    optionLabel: "Output type",
+    options: ["Outline", "Thesis ideas", "Draft introduction", "Revision plan"]
+  },
+  "ai-prompt-generator": {
+    title: "AI Prompt Generator",
+    toolType: "AI Prompt Generator",
+    placeholder: "Describe what you want an AI assistant to help you do...",
+    minLength: 20,
+    optionLabel: "Prompt type",
+    options: ["Writing", "Coding", "Research", "Image generation", "Productivity"]
+  },
+  "ai-interview-answer-generator": {
+    title: "AI Interview Answer Generator",
+    toolType: "AI Interview Answer Generator",
+    placeholder: "Paste the interview question, role, and your real experience...",
+    minLength: 50,
+    optionLabel: "Answer style",
+    options: ["STAR format", "Concise", "Entry-level", "Leadership"]
+  },
+  "ai-linkedin-summary-generator": {
+    title: "AI LinkedIn Summary Generator",
+    toolType: "AI LinkedIn Summary Generator",
+    placeholder: "Enter your role, skills, achievements, industry, and career goal...",
+    minLength: 40,
+    optionLabel: "Tone",
+    options: ["Professional", "Friendly", "Founder", "Job seeker"]
+  },
+  "ai-business-name-generator": {
+    title: "AI Business Name Generator",
+    toolType: "AI Business Name Generator",
+    placeholder: "Describe your business idea, audience, niche, and preferred tone...",
+    minLength: 20,
+    optionLabel: "Name style",
+    options: ["Modern", "Simple", "Premium", "Playful"]
+  },
+  "ai-notes-cleaner": {
+    title: "AI Notes Cleaner",
+    toolType: "AI Notes Cleaner",
+    placeholder: "Paste messy notes, meeting notes, lecture notes, or bullet points...",
+    minLength: 50,
+    optionLabel: "Output style",
+    options: ["Clean notes", "Action items", "Study summary", "Meeting recap"]
   }
 };
 
@@ -264,7 +328,7 @@ export function GeminiAiTool({ slug }: { slug: string }) {
       <div className="space-y-5">
         <div className="rounded-2xl border border-brand-100 bg-brand-50/70 p-4 text-sm leading-6 text-brand-800">
           <p className="font-black">AI workspace</p>
-          <p className="mt-1 font-semibold">Paste useful context, choose a mode, and review the output before using it. API keys stay server-side.</p>
+          <p className="mt-1 font-semibold">Paste useful context, choose a mode, and review the output before using it. Your settings stay simple and the generation runs securely.</p>
         </div>
 
         {config.bio ? (

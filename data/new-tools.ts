@@ -615,11 +615,11 @@ export const newTools: Tool[] = [
     intro: "Use this AI Image to Word Converter online free to convert JPG, PNG, or WebP images into editable DOCX text. Upload an image, let AI extract readable text and structure, edit the Markdown preview, and download a Word document with no signup.",
     metaTitle: "AI Image to Word Converter Online Free | FreeToolKit",
     metaDescription: "Convert images to editable Word documents online using AI. Upload JPG or PNG, extract text and structure, then download as DOCX.",
-    howToUse: ["Upload a JPG, PNG, or WebP image.", "Review the preview, file name, and file size.", "Click Extract with AI to send the image through the secure server route.", "Edit the extracted structured text or Markdown if needed.", "Click Download Word Document to generate and save a DOCX file."],
-    features: ["Gemini Vision text extraction", "JPG, PNG, and WebP upload", "Editable structured Markdown preview", "Client-side DOCX generation", "Daily browser and IP rate limits"],
+    howToUse: ["Upload a JPG, PNG, or WebP image.", "Review the preview, file name, and file size.", "Click Extract with AI to process the image securely.", "Edit the extracted structured text or Markdown if needed.", "Click Download Word Document to generate and save a DOCX file."],
+    features: ["AI text extraction", "JPG, PNG, and WebP upload", "Editable structured Markdown preview", "Client-side DOCX generation", "Daily browser and IP rate limits"],
     faq: [
-      { question: "Can I convert an image to Word with AI?", answer: "Yes. Upload a supported image and the tool uses Gemini Vision through a server route to extract structured text for a DOCX file." },
-      { question: "Is the Gemini API key exposed?", answer: "No. The browser sends the image to a server API route, and the API key is only used on the server." },
+      { question: "Can I convert an image to Word with AI?", answer: "Yes. Upload a supported image and the tool extracts structured text for a DOCX file." },
+      { question: "Is the AI image conversion secure?", answer: "The image is processed through a protected conversion request and is not stored by FreeToolKit." },
       { question: "Does it preserve exact layout?", answer: "No. The tool tries to preserve headings, paragraphs, lists, and simple tables, but formatting may vary." },
       { question: "Can it read handwriting or scanned documents?", answer: "It may read clear handwriting or scans, but complex layouts, handwriting, and low-quality scans may not be perfectly preserved." },
       { question: "Are uploaded images stored?", answer: "No. The image is processed only for the conversion request and is not stored by FreeToolKit." }
@@ -834,7 +834,7 @@ export const newTools: Tool[] = [
       { question: "Is this AI study notes generator free?", answer: "Yes. It is a free AI tool online with no signup and daily usage limits." },
       { question: "Does it add new information?", answer: "No. The prompt tells the AI not to add new information beyond the pasted text." },
       { question: "Can I use it for lectures?", answer: "Yes. Paste lecture notes or transcripts and review the structured output." },
-      { question: "Is the Gemini key exposed?", answer: "No. Requests go through a server API route, so the key is not sent to the browser." },
+      { question: "Is signup required?", answer: "No. It works with no signup and daily usage limits." },
       { question: "Can I regenerate notes?", answer: "Yes. Use the Regenerate button after the first output." }
     ],
     primary: "AI study notes generator",
@@ -889,7 +889,7 @@ export const newTools: Tool[] = [
       { question: "Is this AI email writer free?", answer: "Yes. It is online free with no signup and daily AI usage limits." },
       { question: "Does it include a subject line?", answer: "Yes. The prompt asks for a subject and clear email structure." },
       { question: "Can I use it for work emails?", answer: "Yes, but review names, facts, tone, and details before sending." },
-      { question: "Is my API key exposed?", answer: "No. Gemini calls are handled server-side." },
+      { question: "Is signup required?", answer: "No. It works with no signup and daily usage limits." },
       { question: "Can I regenerate the email?", answer: "Yes. After generating, use Regenerate for another version." }
     ],
     primary: "AI email writer",
@@ -938,13 +938,13 @@ export const newTools: Tool[] = [
     metaTitle: "AI Content Rewriter Online Free | FreeToolKit",
     metaDescription: "Rewrite content online with a free AI tool. Improve clarity while keeping the same meaning fast with no signup.",
     howToUse: ["Paste at least 50 characters of content.", "Choose a rewrite mode.", "Click Generate.", "Compare the rewritten output with the original.", "Copy, reset, or regenerate."],
-    features: ["Keeps meaning the same", "Improves clarity", "No added content prompt", "Multiple rewrite modes", "Server-side AI key protection"],
+    features: ["Keeps meaning the same", "Improves clarity", "No added content prompt", "Multiple rewrite modes", "Protected AI generation flow"],
     faq: [
       { question: "Is this content rewriter free?", answer: "Yes. It is online free with no signup and daily free limits." },
       { question: "Does it add new content?", answer: "No. The prompt tells the AI not to add content." },
       { question: "Can it make content clearer?", answer: "Yes. The tool focuses on clarity while keeping the meaning." },
       { question: "Is it different from paraphrasing?", answer: "It is similar, but this tool is focused on clear content rewriting with stricter no-added-content rules." },
-      { question: "Is the request browser-based?", answer: "The UI is browser-based, while the AI generation happens on the server." }
+      { question: "Is the request simple to use?", answer: "Yes. Paste text, choose a mode, generate a rewrite, and review the result before using it." }
     ],
     primary: "AI content rewriter",
     audience: "writers, students, creators, marketers, professionals, bloggers, and anyone improving existing text",
@@ -971,7 +971,7 @@ export const newTools: Tool[] = [
       { question: "Is this a free AI tool?", answer: "Yes. It works online with no signup and daily free usage limits." },
       { question: "Can I use meeting notes?", answer: "Yes. Paste meeting notes and review the generated action items." },
       { question: "Does it create long plans?", answer: "No. The prompt asks for short phrases and clear tasks." },
-      { question: "Is it safe for private data?", answer: "Avoid pasting sensitive information. The Gemini API key stays server-side, but AI requests still leave your browser for generation." }
+      { question: "Is it safe for private data?", answer: "Avoid pasting sensitive information. AI requests are processed for generation, so review what you include before submitting." }
     ],
     primary: "AI productivity assistant",
     audience: "students, managers, freelancers, founders, office workers, and anyone organizing tasks",
@@ -992,17 +992,17 @@ export const newTools: Tool[] = [
     metaTitle: "AI Text Summarizer Online Free | FreeToolKit",
     metaDescription: "Summarize text online free with an AI tool. Create short, bullet point, or detailed summaries fast in your browser with no signup.",
     howToUse: ["Paste the text you want to summarize.", "Choose Short, Bullet points, or Detailed.", "Click Generate.", "Review the AI summary in the output card.", "Copy the result or reset the tool."],
-    features: ["Short summaries", "Bullet point summaries", "Detailed summaries", "Server-side Gemini processing", "No signup with daily free limits"],
+    features: ["Short summaries", "Bullet point summaries", "Detailed summaries", "Protected AI processing", "No signup with daily free limits"],
     faq: [
       { question: "Is this AI text summarizer online free?", answer: "Yes. You can summarize text online free with no signup and a daily browser limit." },
-      { question: "Does it work in your browser?", answer: "The page works in your browser, while the AI request is securely handled by a server route so the API key is not exposed." },
+      { question: "Does it work in your browser?", answer: "The page works in your browser, and the summary is generated through a protected request." },
       { question: "Can it summarize study notes?", answer: "Yes. Paste your notes and choose bullet points or detailed mode for study-friendly output." },
       { question: "Will it add facts?", answer: "The prompt asks the AI not to invent facts, but you should still review the result." },
       { question: "Is it fast?", answer: "It is designed for quick summaries using a lightweight AI model." }
     ],
     primary: "AI text summarizer",
     audience: "students, writers, office workers, researchers, creators, and anyone reviewing long text",
-    does: "It sends pasted text to a server-side AI route and returns a clean summary in the selected style.",
+    does: "It uses the pasted text to generate a clean summary in the selected style.",
     when: "you have long notes, pasted articles, emails, reports, or draft content and need the main points quickly",
     workflow: "paste text, choose a summary style, generate the result, review it, copy it, or reset the workspace",
     benefit: "A fast summary helps you understand the main idea before reading, editing, studying, or sharing the full text.",
@@ -1019,12 +1019,12 @@ export const newTools: Tool[] = [
     metaTitle: "Paraphrasing Tool Online Free | FreeToolKit",
     metaDescription: "Paraphrase text online free with an AI tool. Rewrite text in simple, formal, shorter, or professional style with no signup.",
     howToUse: ["Paste the text you want to rewrite.", "Choose the paraphrasing style.", "Click Generate.", "Review the rewritten text.", "Copy the result or reset the workspace."],
-    features: ["Simple rewrite mode", "Formal rewrite mode", "Shorter rewrite mode", "Professional rewrite mode", "Server-side AI processing"],
+    features: ["Simple rewrite mode", "Formal rewrite mode", "Shorter rewrite mode", "Professional rewrite mode", "Protected AI processing"],
     faq: [
       { question: "Is this paraphrasing tool free?", answer: "Yes. It is online free with no signup and daily free AI limits." },
       { question: "Does it keep the same meaning?", answer: "The AI is instructed to keep the meaning, but you should review the output before using it." },
       { question: "Can I make text more professional?", answer: "Yes. Choose More professional for a cleaner workplace-style rewrite." },
-      { question: "Is my API key exposed?", answer: "No. Gemini calls happen through a server API route, not the frontend." },
+      { question: "Is signup required?", answer: "No. It works with no signup and daily usage limits." },
       { question: "Can students use it?", answer: "Yes, but students should follow their school rules and avoid misrepresenting AI-written text." }
     ],
     primary: "paraphrasing tool",
@@ -1049,7 +1049,7 @@ export const newTools: Tool[] = [
     features: ["Main keyword extraction", "Secondary keyword extraction", "Short topic summary", "Useful for SEO and study notes", "No signup required"],
     faq: [
       { question: "What does this keyword extractor do?", answer: "It identifies important keywords and summarizes the topic of pasted text." },
-      { question: "Is it an AI tool?", answer: "Yes. The keyword extraction is powered by a server-side AI request." },
+      { question: "Is it an AI tool?", answer: "Yes. The tool uses AI to identify important terms and summarize the topic." },
       { question: "Can I use it for SEO?", answer: "Yes, it can help brainstorm keywords, but you should still use research tools for final SEO decisions." },
       { question: "Can I use it for study?", answer: "Yes. It is helpful for finding key terms in notes or readings." },
       { question: "Does it require signup?", answer: "No. It works with no signup and a daily free browser limit." }
@@ -1079,7 +1079,7 @@ export const newTools: Tool[] = [
       { question: "Can it fix punctuation?", answer: "Yes. The tool asks the AI to fix punctuation along with grammar and spelling." },
       { question: "Will it change my meaning?", answer: "It is instructed to keep your meaning, but always review the corrected text." },
       { question: "Can I use it for emails?", answer: "Yes. It is useful for emails, assignments, bios, posts, and short professional drafts." },
-      { question: "Is the API key safe?", answer: "Yes. The Gemini API key is only used on the server route." }
+      { question: "Is the tool secure?", answer: "The tool uses a protected generation flow and does not require signup." }
     ],
     primary: "grammar fixer",
     audience: "students, job seekers, writers, creators, office workers, and people writing in English",
@@ -1133,7 +1133,7 @@ export const newTools: Tool[] = [
       { question: "Can I use it for LinkedIn?", answer: "Yes. Use the professional bio as a starting point and edit it for your profile." },
       { question: "Will it invent experience?", answer: "The AI is instructed not to invent facts. Only enter details you want used." },
       { question: "Is it free?", answer: "Yes. It is online free with no signup and daily AI limits." },
-      { question: "Where is the AI request handled?", answer: "The request goes through a server API route so the Gemini key is not exposed in the browser." }
+      { question: "Is signup required?", answer: "No. It works online with no signup and daily usage limits." }
     ],
     primary: "bio generator",
     audience: "students, creators, freelancers, job seekers, founders, professionals, and social media users",
@@ -1154,7 +1154,7 @@ export const newTools: Tool[] = [
     metaTitle: "FAQ Generator Online Free | FreeToolKit",
     metaDescription: "Generate FAQs online free with an AI tool. Create 5 to 10 questions and answers from a topic or pasted text fast.",
     howToUse: ["Paste a topic, text, product, or service description.", "Click Generate.", "Review the FAQ questions and answers.", "Edit any details that need accuracy.", "Copy the final FAQ content."],
-    features: ["Creates 5 to 10 FAQs", "Answers included", "Useful for pages and study notes", "Fast server-side AI generation", "No signup required"],
+    features: ["Creates 5 to 10 FAQs", "Answers included", "Useful for pages and study notes", "Fast AI generation", "No signup required"],
     faq: [
       { question: "How many FAQs does it generate?", answer: "The tool is designed to generate 5 to 10 FAQs with answers." },
       { question: "Can I use it for website content?", answer: "Yes. It can help draft FAQ sections, but verify claims before publishing." },
@@ -1214,17 +1214,17 @@ export const newTools: Tool[] = [
     faq: [
       { question: "Is this AI resume builder free online?", answer: "Yes. It is designed as a free online student tool with no signup, with daily limits to keep the service available." },
       { question: "Can it invent experience for me?", answer: "No. The prompt tells the AI not to invent companies, degrees, skills, or experience. You should still review every line before using it." },
-      { question: "Where is the Anthropic API key used?", answer: "The key is only read by the server API route. It is not sent to the browser or stored in frontend code." },
+      { question: "How is the resume draft generated?", answer: "The tool uses a protected AI generation flow and returns the result in the browser for review." },
       { question: "Do I have to upload my resume?", answer: "No. You can paste resume text manually into the editable textarea. TXT upload is optional." },
       { question: "Can I upload PDF or DOCX resumes?", answer: "PDF and DOCX upload are disabled for now. Copy the text from your PDF, Word document, or LinkedIn profile and paste it into the resume textarea." },
       { question: "Is this a replacement for career advice?", answer: "No. It creates a helpful draft, but you should edit it, verify accuracy, and follow your school or employer's application requirements." }
     ],
     primary: "AI resume generator free",
     audience: "students, graduates, entry-level applicants, career centers, and job seekers preparing tailored applications",
-    does: "It sends pasted resume text, the job description, and selected options to a server-side Claude call that returns a tailored resume draft, cover letter draft, ATS keywords, and improvements.",
+    does: "It uses pasted resume text, the job description, and selected options to return a tailored resume draft, cover letter draft, ATS keywords, and improvements.",
     when: "you need a clearer student resume, entry-level cover letter, or ATS-friendly draft based on a real job posting",
     workflow: "paste your resume or upload a TXT file, paste the job description, set the role and tone, confirm the accuracy rule, generate the result, and review before downloading",
-    benefit: "A production-ready AI resume workflow saves time because students can start from real pasted resume content without exposing API keys or relying on fragile server-side file parsing.",
+    benefit: "A production-ready AI resume workflow saves time because students can start from real pasted resume content without relying on fragile file parsing.",
     caution: "AI output can be wrong or overconfident, so never submit generated content without checking that every claim is true and personally accurate.",
     related: "Use GPA Calculator for academic planning, Study Timer for interview preparation, or Word Counter to check application length."
   }),
@@ -1529,7 +1529,7 @@ export const newTools: Tool[] = [
     metaTitle: "AI Caption Generator Online Free | FreeToolKit",
     metaDescription: "Generate captions online free with AI. Create fast social media, product, and photo captions with no signup.",
     howToUse: ["Describe the post, product, photo, or announcement.", "Choose a tone.", "Click Generate.", "Review the caption options.", "Copy or regenerate the result."],
-    features: ["Caption ideas", "Tone options", "Copy button", "Regenerate button", "Server-side AI route keeps API keys private"],
+    features: ["Caption ideas", "Tone options", "Copy button", "Regenerate button", "Protected AI generation flow"],
     faq: [
       { question: "Can AI write social captions?", answer: "Yes. Describe the content and the tool generates concise caption options." },
       { question: "Does it post to social media?", answer: "No. It only creates text for you to copy." },
@@ -1556,7 +1556,7 @@ export const newTools: Tool[] = [
     metaTitle: "AI YouTube Title Generator Online Free | FreeToolKit",
     metaDescription: "Generate YouTube titles online free with AI. Create fast title ideas from a topic or video summary with no signup.",
     howToUse: ["Paste your video topic or summary.", "Choose a title style.", "Click Generate.", "Review the title ideas.", "Copy your favorite title."],
-    features: ["YouTube title ideas", "Style options", "Concise output", "Copy and regenerate actions", "AI key stays server-side"],
+    features: ["YouTube title ideas", "Style options", "Concise output", "Copy and regenerate actions", "Protected AI generation flow"],
     faq: [
       { question: "Can this generate YouTube titles?", answer: "Yes. Enter a video idea or summary and it generates title options." },
       { question: "Will it guarantee views?", answer: "No. Titles help packaging, but performance depends on content, audience, thumbnail, and retention." },
@@ -1609,7 +1609,7 @@ export const newTools: Tool[] = [
     metaTitle: "Resume ATS Checker Online Free | FreeToolKit",
     metaDescription: "Check your resume for ATS fit online free. Compare resume text with a job description and get AI improvement suggestions.",
     howToUse: ["Paste your resume text.", "Paste the job description or role summary.", "Click Generate.", "Review ATS fit suggestions.", "Update your resume manually before applying."],
-    features: ["Resume and job description comparison", "Keyword gap suggestions", "Formatting advice", "AI-generated improvements", "No API key exposed"],
+    features: ["Resume and job description comparison", "Keyword gap suggestions", "Formatting advice", "AI-generated improvements", "Review-focused workflow"],
     faq: [
       { question: "What is an ATS checker?", answer: "It reviews whether resume wording and structure may align with applicant tracking system scanning." },
       { question: "Does this guarantee an interview?", answer: "No. It gives suggestions, but hiring decisions depend on many factors." },

@@ -14,6 +14,7 @@ type GenerateBody = {
 const MODEL = "claude-haiku-4-5-20251001";
 const SERVER_LIMIT = 10;
 const usage = new Map<string, UsageBucket>();
+const RESUME_UNAVAILABLE_MESSAGE = "AI resume generation is temporarily unavailable. Please try again later.";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -73,11 +74,10 @@ function getAnthropicMessage(error: unknown) {
 }
 
 function publicErrorForStatus(status?: number) {
-  if (status === 401 || status === 403) return { status, message: "AI API key is invalid or missing." };
-  if (status === 404) return { status, message: "AI model is unavailable. Please check the model name." };
+  if (status === 401 || status === 403 || status === 404) return { status: 503, message: RESUME_UNAVAILABLE_MESSAGE };
   if (status === 429) return { status, message: "Daily AI usage limit reached. Please try again later." };
-  if (status && status >= 500) return { status, message: "AI service is temporarily unavailable. Please try again shortly." };
-  return { status: 503, message: "AI service is temporarily unavailable. Please try again shortly." };
+  if (status && status >= 500) return { status, message: RESUME_UNAVAILABLE_MESSAGE };
+  return { status: 503, message: RESUME_UNAVAILABLE_MESSAGE };
 }
 
 export async function POST(request: Request) {
@@ -113,7 +113,11 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: "AI API key is missing. Please configure ANTHROPIC_API_KEY." }, { status: 401 });
+    console.error("Anthropic resume generation is not configured", {
+      model: MODEL,
+      reason: "missing_api_key"
+    });
+    return NextResponse.json({ error: RESUME_UNAVAILABLE_MESSAGE }, { status: 503 });
   }
 
   const prompt = `You are a professional resume and cover letter assistant.
@@ -191,7 +195,12 @@ OUTPUT EXACTLY IN THIS STRUCTURE:
               model: MODEL,
               message: getAnthropicMessage(error)
             });
-            controller.error(error);
+            if (!receivedText) {
+              controller.enqueue(encoder.encode(RESUME_UNAVAILABLE_MESSAGE));
+              controller.close();
+              return;
+            }
+            controller.close();
           }
         }
       }),

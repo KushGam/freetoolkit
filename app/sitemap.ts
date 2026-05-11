@@ -4,7 +4,7 @@ import { tools, toolHref } from "@/data/tools";
 import { canonicalUrl } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "everyday", "student", "ai-tools", "developer", "all-tools", "image-tools", "pdf-tools", "student-tools", "text-tools", "developer-tools", "calculator-tools", "security-tools", "about", "contact", "privacy", "terms"];
+  const staticRoutes = ["", "everyday", "student", "ai-tools", "developer", "all-tools", "image-tools", "pdf-tools", "student-tools", "text-tools", "developer-tools", "calculator-tools", "security-tools", "seo-tools", "social-media-tools", "about", "contact", "privacy", "terms"];
   return [
     ...staticRoutes.map((route) => ({
       url: canonicalUrl(route),

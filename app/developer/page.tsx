@@ -4,12 +4,12 @@ import { categorySeo } from "@/data/seo";
 import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: categorySeo["Developer Tools"].title,
+  title: "Free Developer Productivity Tools Online",
   description: categorySeo["Developer Tools"].description,
   keywords: categorySeo["Developer Tools"].keywords,
   alternates: { canonical: `${siteUrl}/developer` },
   openGraph: {
-    title: categorySeo["Developer Tools"].title,
+    title: "Free Developer Productivity Tools Online",
     description: categorySeo["Developer Tools"].description,
     url: `${siteUrl}/developer`,
     type: "website"

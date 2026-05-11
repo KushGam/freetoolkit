@@ -1,7 +1,8 @@
 import { newTools } from "./new-tools";
+import { expandedTools } from "./expanded-tools";
 import { getRelatedToolSlugs } from "./tool-relations";
 
-export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools";
+export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools" | "SEO Tools" | "Social Media Tools";
 
 export type Tool = {
   slug: string;
@@ -421,9 +422,9 @@ const coreTools: Tool[] = [
   }
 ];
 
-export const tools: Tool[] = [...coreTools, ...newTools];
+export const tools: Tool[] = [...coreTools, ...newTools, ...expandedTools];
 
-export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools"];
+export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools", "SEO Tools", "Social Media Tools"];
 
 export type TopLevelCategory = "Everyday" | "AI Tools" | "Student" | "Developer" | "PDF & Image";
 
@@ -468,7 +469,9 @@ export const categoryRoutes: Record<ToolCategory, string> = {
   "Text Tools": "/text-tools",
   "Developer Tools": "/developer-tools",
   "Calculator Tools": "/calculator-tools",
-  "Security Tools": "/security-tools"
+  "Security Tools": "/security-tools",
+  "SEO Tools": "/seo-tools",
+  "Social Media Tools": "/social-media-tools"
 };
 
 export function getTool(slug: string) {

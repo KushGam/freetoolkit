@@ -67,7 +67,7 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
     intro: "Free AI tools for writing support, summarizing, resumes, captions, hashtags, study notes, and daily productivity.",
     body: [
       "AI tools are best used as assistants for drafting, brainstorming, rewriting, and organizing. Review every generated result before using it in a final message, assignment, resume, or public post.",
-      "FreeToolKit AI pages use protected server routes for generation, keeping API keys out of the browser while preserving a simple, mobile-friendly interface."
+      "FreeToolKit AI pages use a protected generation flow while preserving a simple, mobile-friendly interface."
     ],
     faqs: [
       { question: "Should I review AI output?", answer: "Yes. Always check facts, tone, formatting, and personal details before using generated content." },
@@ -133,6 +133,36 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
       { question: "Is the password generator free?", answer: "Yes. It is free and does not require signup." },
       { question: "Where should I store generated passwords?", answer: "Use a trusted password manager instead of plain text notes or screenshots." },
       { question: "Should I reuse generated passwords?", answer: "No. Use a unique password for each important account." }
+    ]
+  },
+  "SEO Tools": {
+    title: "Free SEO Tools Online | Meta Tags, Robots, Sitemap, SERP Preview",
+    description: "Use free SEO tools for meta tags, Open Graph, robots.txt, sitemaps, SERP previews, keyword density, slugs, and schema markup.",
+    keywords: ["SEO tools", "meta tag generator", "SERP preview", "robots.txt generator", "schema markup"],
+    intro: "Free SEO tools for creating metadata, previewing search snippets, generating crawl files, checking keyword use, and preparing structured data.",
+    body: [
+      "SEO work is easier when small technical tasks are quick to complete. This category helps with metadata, social previews, robots rules, sitemap drafts, URL slugs, keyword checks, and schema starter markup.",
+      "These tools are meant to support practical publishing workflows. Always review generated metadata and schema against your actual page content before deploying it to a website."
+    ],
+    faqs: [
+      { question: "Are these SEO tools free?", answer: "Yes. The SEO tools are free to use and do not require signup." },
+      { question: "Can generated SEO tags be used directly?", answer: "They can be a good starting point, but you should review titles, descriptions, canonical URLs, and schema before publishing." },
+      { question: "Do these tools guarantee rankings?", answer: "No. They help with technical and content preparation, but rankings depend on quality, relevance, authority, and many search factors." }
+    ]
+  },
+  "Social Media Tools": {
+    title: "Free Social Media Tools Online | Captions, Hashtags, Bios, Counters",
+    description: "Use free social media tools for captions, hashtags, bios, character counts, tag cleanup, and post formatting.",
+    keywords: ["social media tools", "caption formatter", "hashtag counter", "Twitter character counter", "bio generator"],
+    intro: "Free social media tools for preparing captions, hashtags, bios, tags, and short post copy before publishing.",
+    body: [
+      "Social media workflows often need small cleanup steps: count characters, format captions, extract tags, write a concise bio, or check whether a hashtag list is too long.",
+      "Use these tools as publishing helpers. Review tone, accuracy, and platform rules before posting, especially for brand accounts or client work."
+    ],
+    faqs: [
+      { question: "Are social media tools free?", answer: "Yes. They are free browser-based tools with no signup required." },
+      { question: "Can these tools post to my social accounts?", answer: "No. They help prepare copy and formatting, but they do not connect to or post on your accounts." },
+      { question: "Should I review generated captions or bios?", answer: "Yes. Always check generated social copy for accuracy, tone, and fit before publishing." }
     ]
   }
 };

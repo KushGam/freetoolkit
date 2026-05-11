@@ -97,7 +97,7 @@ const whyCards = [
   },
   {
     title: "Private",
-    copy: "File tools run in your browser where possible, and AI requests go through protected server routes."
+    copy: "File tools run in your browser where possible, and AI tools use a protected generation flow."
   },
   {
     title: "No signup",
@@ -111,7 +111,7 @@ const whyCards = [
 
 const homeFaqs = [
   ["Is FreeToolKit free to use?", "Yes. FreeToolKit provides free AI and everyday productivity tools with no signup required."],
-  ["Are my files uploaded?", "File tools are designed to process in your browser where supported. AI tools send only the text or image needed for that request through a server route."],
+  ["Are my files uploaded?", "File tools are designed to process in your browser where supported. AI tools use only the text or image needed to generate the requested result."],
   ["What tools are most popular?", "High-value tools include AI Resume Generator, Image to PDF, AI Image to Word, PDF to Word, QR Code Generator, and Text Summarizer."],
   ["Does FreeToolKit work on mobile?", "Yes. The layout, controls, and tool cards are built for phones, tablets, and desktops."],
   ["Can I use these tools for work or study?", "Yes. The site is useful for documents, applications, assignments, content workflows, calculations, and developer tasks."]
@@ -263,7 +263,7 @@ export default function HomePage() {
             The <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI Tools</Link> section helps with summaries, captions, hashtags, email drafts, study notes, ATS checks, and resume support. The <Link href="/pdf-image" className="font-bold text-brand-700 hover:text-brand-900">PDF & Image</Link> section focuses on practical file workflows such as Image to PDF, PDF to Word, PDF to JPG, Merge PDF, Image Compressor, and AI Image to Word. The <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">Student</Link> section keeps grade planning, attendance, study timers, and writing checks easy to reach, while the <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">Developer</Link> section covers JSON, Base64, URL encoding, and UUID generation.
           </p>
           <p>
-            Every page is designed for fast mobile and desktop use. Inputs are large, cards are easy to scan, outputs are clear, and related tools keep the next step nearby. File tools are browser-based where possible, while AI tools use server routes so API keys are never exposed in the frontend. That balance helps FreeToolKit feel fast, trustworthy, and practical for everyday tasks, schoolwork, content creation, job applications, office documents, and lightweight technical workflows.
+            Every page is designed for fast mobile and desktop use. Inputs are large, cards are easy to scan, outputs are clear, and related tools keep the next step nearby. File tools are browser-based where possible, while AI tools use a protected generation flow with clear review steps. That balance helps FreeToolKit feel fast, trustworthy, and practical for everyday tasks, schoolwork, content creation, job applications, office documents, and lightweight technical workflows.
           </p>
           <h2>A cleaner alternative to scattered utility sites</h2>
           <p>

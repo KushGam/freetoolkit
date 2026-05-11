@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Container, PageHeader } from "@/components/ui";
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  description: "The requested FreeToolKit page could not be found.",
+  robots: { index: false, follow: true }
+};
 
 export default function NotFound() {
   return (

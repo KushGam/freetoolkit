@@ -140,7 +140,9 @@ const toolIcons: Record<string, string> = {
   "Calculator Tools": "CAL",
   "Text Tools": "TXT",
   "Developer Tools": "DEV",
-  "Security Tools": "SEC"
+  "Security Tools": "SEC",
+  "SEO Tools": "SEO",
+  "Social Media Tools": "SOC"
 };
 
 export function ToolCard({
