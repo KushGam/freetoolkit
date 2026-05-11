@@ -3881,48 +3881,67 @@ function InvoiceGeneratorTool() {
   }
 
   return (
-    <div>
-      <label className="block text-sm font-bold text-slate-700">
-        Invoice request (AI)
-        <Textarea
-          className="mt-2 min-h-24"
-          value={prompt}
-          onChange={(event) => setPrompt(event.target.value)}
-          placeholder="Example: Create an invoice for logo design and social media templates for Acme Co. Include 3 line items."
-        />
-      </label>
-      <div className="mt-3 flex flex-wrap gap-3">
-        <Button onClick={() => void generateWithAi()} disabled={busy || prompt.trim().length < 15}>
-          {busy ? "Generating draft..." : "Generate invoice with AI"}
-        </Button>
+    <div className="space-y-5">
+      <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-brand-50 to-white p-4 shadow-sm">
+        <p className="text-xs font-black uppercase tracking-wide text-brand-700">AI invoice brief</p>
+        <p className="mt-1 text-sm font-semibold leading-6 text-slate-600">Describe services, pricing style, and client context. AI drafts the invoice structure and you can export PDF instantly.</p>
+        <label className="mt-3 block text-sm font-bold text-slate-700">
+          Request
+          <Textarea
+            className="mt-2 min-h-24"
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
+            placeholder="Example: Create an invoice for logo design and social media templates for Acme Co. Include 3 line items."
+          />
+        </label>
+        <div className="mt-3 flex flex-wrap gap-3">
+          <Button onClick={() => void generateWithAi()} disabled={busy || prompt.trim().length < 15}>
+            {busy ? "Generating draft..." : "Generate with AI"}
+          </Button>
+        </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">From <Input className="mt-2" value={fromName} onChange={(event) => setFromName(event.target.value)} /></label>
-        <label className="text-sm font-bold text-slate-700">Bill To <Input className="mt-2" value={toName} onChange={(event) => setToName(event.target.value)} placeholder="Client name" /></label>
-        <label className="text-sm font-bold text-slate-700">Invoice Number <Input className="mt-2" value={invoiceNumber} onChange={(event) => setInvoiceNumber(event.target.value)} /></label>
-        <label className="text-sm font-bold text-slate-700">Date <Input className="mt-2" type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p className="text-xs font-black uppercase tracking-wide text-slate-500">Invoice details</p>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <label className="text-sm font-bold text-slate-700">From <Input className="mt-2" value={fromName} onChange={(event) => setFromName(event.target.value)} /></label>
+          <label className="text-sm font-bold text-slate-700">Bill To <Input className="mt-2" value={toName} onChange={(event) => setToName(event.target.value)} placeholder="Client name" /></label>
+          <label className="text-sm font-bold text-slate-700">Invoice Number <Input className="mt-2" value={invoiceNumber} onChange={(event) => setInvoiceNumber(event.target.value)} /></label>
+          <label className="text-sm font-bold text-slate-700">Date <Input className="mt-2" type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
+        </div>
       </div>
-      <label className="mt-4 block text-sm font-bold text-slate-700">
-        Line items (one per line: item,quantity,price)
-        <Textarea className="mt-2 min-h-40" value={itemsRaw} onChange={(event) => setItemsRaw(event.target.value)} />
-      </label>
-      <label className="mt-4 block text-sm font-bold text-slate-700">
-        Notes
-        <Textarea className="mt-2 min-h-24" value={notes} onChange={(event) => setNotes(event.target.value)} />
-      </label>
-      <ResultCard title="Invoice preview" className="mt-5">
-        <p className="text-sm font-semibold text-slate-700">From: {fromName}</p>
-        <p className="text-sm font-semibold text-slate-700">To: {toName || "Client"}</p>
-        <p className="text-sm font-semibold text-slate-700">Invoice: {invoiceNumber} | Date: {date}</p>
-        <div className="mt-3 space-y-2">
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <label className="block rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-700 shadow-sm">
+          Line items (one per line: item,quantity,price)
+          <Textarea className="mt-2 min-h-40" value={itemsRaw} onChange={(event) => setItemsRaw(event.target.value)} />
+        </label>
+        <label className="block rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-700 shadow-sm">
+          Notes
+          <Textarea className="mt-2 min-h-40" value={notes} onChange={(event) => setNotes(event.target.value)} />
+        </label>
+      </div>
+
+      <ResultCard title="AI Invoice Preview" className="border-slate-200 bg-gradient-to-b from-white to-slate-50">
+        <div className="grid gap-1 text-sm font-semibold text-slate-700 sm:grid-cols-2">
+          <p>From: {fromName}</p>
+          <p>To: {toName || "Client"}</p>
+          <p>Invoice: {invoiceNumber}</p>
+          <p>Date: {date}</p>
+        </div>
+        <div className="mt-4 rounded-xl border border-slate-200 bg-white">
           {parsedItems.map((item, index) => (
-            <p key={`${item.name}-${index}`} className="text-sm text-slate-700">{item.name} - {item.qty} x {item.price.toFixed(2)} = {(item.qty * item.price).toFixed(2)}</p>
+            <div key={`${item.name}-${index}`} className="flex items-center justify-between gap-3 border-b border-slate-100 px-3 py-2 text-sm text-slate-700 last:border-b-0">
+              <span className="truncate">{item.name}</span>
+              <span className="whitespace-nowrap">{item.qty} x {item.price.toFixed(2)} = {(item.qty * item.price).toFixed(2)}</span>
+            </div>
           ))}
         </div>
-        <p className="mt-3 text-sm font-black text-slate-900">Subtotal: {subtotal.toFixed(2)}</p>
+        <p className="mt-4 text-sm font-black text-slate-900">Subtotal: {subtotal.toFixed(2)}</p>
       </ResultCard>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <Button onClick={() => void downloadPdfInvoice()}>Download PDF invoice</Button>
+
+      <div className="flex flex-wrap gap-3">
+        <Button onClick={() => void downloadPdfInvoice()}>Download PDF Invoice</Button>
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
       <ErrorMessage message={error} />
