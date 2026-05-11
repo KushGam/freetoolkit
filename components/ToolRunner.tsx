@@ -1905,17 +1905,52 @@ function getTimeZoneOptions() {
 }
 
 function zoneOffset(date: Date, timeZone: string) {
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).formatToParts(date);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  }).formatToParts(date);
   const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return Date.UTC(Number(map.year), Number(map.month) - 1, Number(map.day), Number(map.hour), Number(map.minute), Number(map.second)) - date.getTime();
+  const year = Number(map.year);
+  const month = Number(map.month);
+  const day = Number(map.day);
+  const minute = Number(map.minute);
+  const second = Number(map.second);
+  let hour = Number(map.hour);
+
+  if (![year, month, day, hour, minute, second].every(Number.isFinite)) {
+    return 0;
+  }
+
+  // Some engines can emit hour "24" for midnight; normalize to next day 00:xx.
+  if (hour === 24) {
+    const nextDay = new Date(Date.UTC(year, month - 1, day, 0, minute, second));
+    return nextDay.getTime() - date.getTime();
+  }
+
+  return Date.UTC(year, month - 1, day, hour, minute, second) - date.getTime();
 }
 
 function dateTimeInZone(value: string, timeZone: string) {
   const [datePart, timePart = "00:00"] = value.split("T");
   const [year, month, day] = datePart.split("-").map(Number);
   const [hour, minute] = timePart.split(":").map(Number);
-  const guess = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
-  return new Date(guess.getTime() - zoneOffset(guess, timeZone));
+
+  if (![year, month, day, hour, minute].every(Number.isFinite)) {
+    return new Date(NaN);
+  }
+
+  // Convert "wall time in source zone" -> absolute instant.
+  // Two-pass approach handles DST boundaries more reliably.
+  const utcGuess = Date.UTC(year, month - 1, day, hour, minute, 0);
+  const first = new Date(utcGuess - zoneOffset(new Date(utcGuess), timeZone));
+  const refined = new Date(utcGuess - zoneOffset(first, timeZone));
+  return refined;
 }
 
 function TimeZoneConverter() {
@@ -1926,8 +1961,15 @@ function TimeZoneConverter() {
   const [to, setTo] = useState("Europe/London");
   const [value, setValue] = useState(localValue);
   const [result, setResult] = useState<{ source: string; target: string } | null>(null);
+  const [error, setError] = useState("");
   function convert() {
+    setError("");
     const date = dateTimeInZone(value, from);
+    if (Number.isNaN(date.getTime())) {
+      setResult(null);
+      setError("Please enter a valid date and time.");
+      return;
+    }
     const fmt = (zone: string) => new Intl.DateTimeFormat("en-AU", { timeZone: zone, dateStyle: "full", timeStyle: "short" }).format(date);
     setResult({ source: fmt(from), target: fmt(to) });
   }
@@ -1938,7 +1980,8 @@ function TimeZoneConverter() {
         <label className="text-sm font-bold text-slate-700">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
         <label className="text-sm font-bold text-slate-700">Date and time <Input className="mt-2" type="datetime-local" value={value} onChange={(event) => setValue(event.target.value)} /></label>
       </div>
-      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={convert}>Convert time</Button><SecondaryButton onClick={() => setResult(null)}>Reset result</SecondaryButton></div>
+      <div className="mt-4 flex flex-wrap gap-3"><Button onClick={convert}>Convert time</Button><SecondaryButton onClick={() => { setResult(null); setError(""); }}>Reset result</SecondaryButton></div>
+      <ErrorMessage message={error} />
       {result ? <div className="mt-5 grid gap-3 sm:grid-cols-2"><ResultBox label="Source time" value={result.source} /><ResultBox label="Converted time" value={result.target} /></div> : null}
     </div>
   );
