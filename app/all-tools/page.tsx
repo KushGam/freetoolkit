@@ -11,7 +11,7 @@ export function generateMetadata({ searchParams }: { searchParams?: { q?: string
     alternates: { canonical: canonicalUrl("/all-tools") },
     robots: hasQuery ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
-      title: "All Free AI & Productivity Tools | FreeToolKit",
+      title: "All Free AI & Productivity Tools",
       description: "Find free browser-based tools for AI workflows, everyday tasks, PDFs, images, students, developers, SEO, and social media.",
       url: canonicalUrl("/all-tools"),
       type: "website"

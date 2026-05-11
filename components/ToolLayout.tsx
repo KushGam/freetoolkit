@@ -6,7 +6,7 @@ import { RelatedTools } from "@/components/RelatedTools";
 import { Card, Container, PageHeader } from "@/components/ui";
 import { getBlogPostsForTool } from "@/data/blog";
 import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
-import { ToolRunner } from "@/components/ToolRunner";
+import { LazyToolRunner } from "@/components/LazyToolRunner";
 
 function workspaceCopy(tool: Tool) {
   if (tool.slug === "image-color-picker") return "Upload an image, then click anywhere on the preview to pick a color.";
@@ -81,7 +81,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">{tool.title}</h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-500">{workspaceCopy(tool)}</p>
         </div>
-        <ToolRunner slug={tool.slug} />
+        <LazyToolRunner slug={tool.slug} />
       </Card>
       <AdSlot size="responsive" />
       <section className="mt-12 grid gap-6 md:grid-cols-2">
@@ -111,6 +111,20 @@ export function ToolLayout({ tool }: { tool: Tool }) {
       </section>
       <FAQ items={tool.faq} />
       <RelatedBlogPosts posts={relatedBlogPosts} title={`Guides for ${tool.title}`} />
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <p className="text-xs font-black uppercase tracking-wide text-brand-600">Browse hierarchy</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Link href={categoryRoutes[tool.category]} className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            {tool.category}
+          </Link>
+          <Link href="/all-tools" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            All tools
+          </Link>
+          <Link href="/blog" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            Related guides
+          </Link>
+        </div>
+      </section>
       <RelatedTools tools={getRelatedTools(tool)} />
       <AdSlot size="responsive" />
       </Container>

@@ -21,7 +21,7 @@ function makeTool(input: ExpandedToolInput): Tool {
     badge: "New",
     description: input.description,
     intro: `Use ${input.title} online free to ${input.action}. This lightweight FreeToolKit page is designed for ${input.audience}, with clear controls, mobile-friendly layout, and no signup.`,
-    metaTitle: `${input.title} Online Free | FreeToolKit`,
+    metaTitle: `${input.title} Online Free`,
     metaDescription: `${input.description} Free browser-based tool with no signup, clean output, helpful FAQs, and related productivity tools.`,
     howToUse: [
       "Open the tool and read the input requirements.",

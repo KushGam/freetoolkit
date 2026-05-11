@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CategoryToolSearch } from "@/components/CategoryToolSearch";
 import { FAQ } from "@/components/FAQ";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
@@ -5,7 +6,8 @@ import { Container, PageHeader, ToolCard } from "@/components/ui";
 import { getBlogPostsBySlugs } from "@/data/blog";
 import { categorySeo } from "@/data/seo";
 import { getBlogSlugsForCategory, getClustersForCategory } from "@/data/tool-relations";
-import { getTool, getToolsByCategory, toolHref, type ToolCategory } from "@/data/tools";
+import { categoryRoutes, getTool, getToolsByCategory, getTopLevelCategory, topLevelCategoryRoutes, toolHref, type ToolCategory } from "@/data/tools";
+import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema";
 
 export function CategoryPage({ category, intro }: { category: ToolCategory; intro: string }) {
   const categoryTools = getToolsByCategory(category);
@@ -16,19 +18,16 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
     .map((slug) => getTool(slug))
     .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
     .slice(0, 6);
-  const faqSchema = seo?.faqs?.length
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: seo.faqs.map((item) => ({
-          "@type": "Question",
-          name: item.question,
-          acceptedAnswer: { "@type": "Answer", text: item.answer }
-        }))
-      }
-    : null;
+  const faqSchema = seo?.faqs?.length ? buildFaqSchema(seo.faqs) : null;
+  const topLevelRoute = categoryTools[0] ? topLevelCategoryRoutes[getTopLevelCategory(categoryTools[0])] : "/all-tools";
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", href: "/" },
+    { name: category, href: topLevelRoute },
+    { name: category, href: categoryRoutes[category] }
+  ]);
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {faqSchema ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} /> : null}
       <Container className="max-w-6xl py-10 sm:py-12">
       <PageHeader eyebrow="Free browser tools" title={category} description={seo?.intro ?? intro} badges={["No signup", "Fast", "Mobile friendly"]} />
@@ -45,6 +44,24 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
       ) : null}
       <CategoryToolSearch tools={categoryTools} />
       <RelatedBlogPosts posts={featuredGuides} title={`Featured ${category.toLowerCase()} guides`} />
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <p className="text-xs font-black uppercase tracking-wide text-brand-600">Broader section</p>
+        <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-slate-950">Explore the full workflow path</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          This category is part of a broader hub for related tasks. Use the links below to move between hubs, tools, and practical guides without losing context.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link href={topLevelRoute} className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            Broader hub
+          </Link>
+          <Link href="/all-tools" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            All tools
+          </Link>
+          <Link href="/blog" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            Related guides
+          </Link>
+        </div>
+      </section>
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2>About these {category.toLowerCase()}</h2>
         {(seo?.body ?? [

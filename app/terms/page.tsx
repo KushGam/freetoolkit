@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Card, Container, PageHeader } from "@/components/ui";
+import { withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Terms of Use | FreeToolKit",
+  title: withoutBrandSuffix("Terms of Use | FreeToolKit"),
   description: "Read the FreeToolKit terms for AI tools, file conversion tools, SEO tools, social media tools, calculators, and browser-based utilities.",
   alternates: { canonical: canonicalUrl("/terms") },
   openGraph: {
-    title: "Terms of Use | FreeToolKit",
+    title: withoutBrandSuffix("Terms of Use | FreeToolKit"),
     description: "Terms for using FreeToolKit's free AI, file, SEO, social media, student, calculator, and browser-based productivity tools.",
     url: canonicalUrl("/terms"),
     type: "website"

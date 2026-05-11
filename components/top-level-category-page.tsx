@@ -11,9 +11,11 @@ import {
   getToolsByTopLevelCategory,
   topLevelCategoryIntros,
   topLevelCategoryOldLinks,
+  topLevelCategoryRoutes,
   toolHref,
   type TopLevelCategory
 } from "@/data/tools";
+import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema";
 
 const categoryBadges: Record<TopLevelCategory, string[]> = {
   Everyday: ["Text", "Calculators", "QR", "Security"],
@@ -35,18 +37,15 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
     .map((slug) => getTool(slug))
     .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
     .slice(0, 6);
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: seo.faqs.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: { "@type": "Answer", text: item.answer }
-    }))
-  };
+  const faqSchema = buildFaqSchema(seo.faqs);
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", href: "/" },
+    { name: category, href: topLevelCategoryRoutes[category] }
+  ]);
 
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Container className="max-w-6xl py-10 sm:py-12">
       <PageHeader eyebrow="FreeToolKit productivity category" title={category} description={topLevelCategoryIntros[category]} badges={categoryBadges[category]} />

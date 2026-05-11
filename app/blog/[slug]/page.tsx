@@ -5,7 +5,9 @@ import { FAQ } from "@/components/FAQ";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { Badge, Container, PageHeader, ToolCard } from "@/components/ui";
 import { blogHref, blogPosts, getBlogFaqs, getBlogPost, getBlogRelatedToolLinks, getRelatedBlogPosts } from "@/data/blog";
-import { canonicalUrl, siteUrl } from "@/lib/utils";
+import { categoryRoutes } from "@/data/tools";
+import { buildBlogPostingSchema, buildBreadcrumbSchema, buildFaqSchema, withoutBrandSuffix } from "@/lib/schema";
+import { canonicalUrl } from "@/lib/utils";
 
 type BlogPostPageProps = {
   params: { slug: string };
@@ -14,6 +16,15 @@ type BlogPostPageProps = {
 function formatDate(date: string) {
   return new Intl.DateTimeFormat("en", { month: "long", day: "numeric", year: "numeric" }).format(new Date(`${date}T00:00:00Z`));
 }
+
+const blogCategoryRouteMap: Record<string, string> = {
+  "PDF Guides": categoryRoutes["PDF Tools"],
+  "Image Guides": categoryRoutes["Image Tools"],
+  "Student Guides": categoryRoutes["Student Tools"],
+  "Productivity Guides": "/everyday",
+  "Text Guides": categoryRoutes["Text Tools"],
+  "Security Guides": categoryRoutes["Security Tools"]
+};
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -26,7 +37,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   const canonical = canonicalUrl(blogHref(post));
 
   return {
-    title: `${post.title} | FreeToolKit Blog`,
+    title: withoutBrandSuffix(`${post.title} | FreeToolKit Blog`),
     description: post.description,
     keywords: post.keywords,
     alternates: { canonical },
@@ -49,41 +60,42 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const relatedTools = getBlogRelatedToolLinks(post);
   const relatedPosts = getRelatedBlogPosts(post);
   const faqs = getBlogFaqs(post);
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
+  const articleSchema = buildBlogPostingSchema({
+    title: post.title,
     description: post.description,
-    datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
-    author: {
-      "@type": "Organization",
-      name: "FreeToolKit"
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "FreeToolKit"
-    },
-    mainEntityOfPage: canonicalUrl(blogHref(post)),
-    keywords: post.keywords.join(", ")
-  };
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-      { "@type": "ListItem", position: 2, name: "Blog", item: canonicalUrl("/blog") },
-      { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl(blogHref(post)) }
-    ]
-  };
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: { "@type": "Answer", text: item.answer }
-    }))
+    href: blogHref(post),
+    publishedAt: post.publishedAt,
+    keywords: post.keywords,
+    section: post.category
+  });
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", href: "/" },
+    { name: "Blog", href: "/blog" },
+    { name: post.title, href: blogHref(post) }
+  ]);
+  const faqSchema = buildFaqSchema(faqs);
+  const contextLinks = [
+    ...relatedTools.slice(0, 4).map((tool) => ({ label: tool.title, href: tool.href })),
+    { label: post.category, href: blogCategoryRouteMap[post.category] ?? "/all-tools" },
+    ...relatedPosts.slice(0, 2).map((related) => ({ label: related.title, href: blogHref(related) }))
+  ];
+
+  const linkifyParagraph = (paragraph: string) => {
+    const lowerParagraph = paragraph.toLowerCase();
+    const match = contextLinks.find((item) => lowerParagraph.includes(item.label.toLowerCase()));
+    if (!match) return paragraph;
+
+    const startIndex = lowerParagraph.indexOf(match.label.toLowerCase());
+    const endIndex = startIndex + match.label.length;
+    return (
+      <>
+        {paragraph.slice(0, startIndex)}
+        <Link href={match.href} className="font-semibold text-brand-700 transition hover:text-brand-900">
+          {paragraph.slice(startIndex, endIndex)}
+        </Link>
+        {paragraph.slice(endIndex)}
+      </>
+    );
   };
 
   return (
@@ -124,7 +136,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="mt-4 space-y-5">
                   {section.paragraphs.map((paragraph) => (
                     <p key={paragraph} className="text-base leading-8 text-slate-700">
-                      {paragraph}
+                      {linkifyParagraph(paragraph)}
                     </p>
                   ))}
                 </div>
@@ -154,6 +166,20 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </section>
         ) : null}
+        <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-xs font-black uppercase tracking-wide text-brand-600">Continue the workflow</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href={blogCategoryRouteMap[post.category] ?? "/all-tools"} className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+              Explore category tools
+            </Link>
+            <Link href="/all-tools" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+              Browse all tools
+            </Link>
+            <Link href="/blog" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+              More guides
+            </Link>
+          </div>
+        </section>
       </Container>
     </main>
   );
