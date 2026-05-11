@@ -103,6 +103,14 @@ Compare the resume text with the job description.
 - Identify keyword gaps
 - Give formatting and clarity suggestions
 - Return a concise ATS score estimate, strengths, gaps, and improvements`
+    ,
+    "Transcript Summarizer": `You are a transcript summarization assistant.
+Summarize the provided transcript clearly.
+- Keep facts grounded in the input only
+- Do not invent speakers, claims, or outcomes
+- Provide sections: Summary, Key Points, Action Items (if present)
+- If action items are not present, say "No explicit action items found."
+- Keep output concise and readable`
   };
 
   const basePrompt = exactPrompts[toolType] ?? `You are a concise writing assistant for FreeToolKit.

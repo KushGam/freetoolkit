@@ -225,6 +225,19 @@ const configs: Record<string, ToolConfig> = {
     minLength: 50,
     optionLabel: "Output style",
     options: ["Clean notes", "Action items", "Study summary", "Meeting recap"]
+  },
+  "transcript-summarizer": {
+    title: "Transcript Summarizer",
+    toolType: "Transcript Summarizer",
+    placeholder: "Paste a YouTube transcript or meeting notes...",
+    minLength: 80,
+    optionLabel: "Summary style",
+    options: ["Bullet summary", "Detailed summary", "Action items"],
+    examplePrompts: [
+      "Summarize this meeting transcript and list action items with owners if present.",
+      "Summarize this YouTube transcript into key takeaways for quick revision."
+    ],
+    emptyState: "Your Gemini transcript summary will appear here."
   }
 };
 

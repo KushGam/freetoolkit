@@ -3152,17 +3152,15 @@ const aiExpansionSlugs = new Set([
   "ai-interview-answer-generator",
   "ai-linkedin-summary-generator",
   "ai-business-name-generator",
-  "ai-notes-cleaner"
+  "ai-notes-cleaner",
+  "transcript-summarizer"
 ]);
 
 const fileWorkflowSlugs = new Set([
   "heic-to-jpg",
   "background-remover",
   "passport-photo-maker",
-  "image-upscaler",
-  "pdf-to-excel",
   "excel-to-pdf",
-  "ocr-pdf",
   "pdf-watermark",
   "pdf-password-protector",
   "pdf-metadata-editor",
@@ -3280,6 +3278,654 @@ function FileWorkflowTool({ slug }: { slug: string }) {
         <SecondaryButton onClick={() => { setFiles([]); setNote(""); }}>Reset</SecondaryButton>
       </div>
       {note ? <ResultCard title="Browser workflow note" className="mt-5"><pre className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-700">{note}</pre></ResultCard> : null}
+    </div>
+  );
+}
+
+function sanitizeBaseName(filename: string) {
+  return filename.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9-_]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || "output";
+}
+
+async function loadPdfJs() {
+  return import("pdfjs-dist/legacy/build/pdf.mjs");
+}
+
+function OcrPdfTool() {
+  const [file, setFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [output, setOutput] = useState("");
+  const [pagesDone, setPagesDone] = useState(0);
+  const MAX_PAGES = 5;
+
+  async function runOcr() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    setOutput("");
+    setPagesDone(0);
+    try {
+      const pdfjs = await loadPdfJs();
+      const { createWorker } = await import("tesseract.js");
+      const worker = await createWorker("eng");
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const task = pdfjs.getDocument({ data: bytes, disableWorker: true } as unknown as Parameters<typeof pdfjs.getDocument>[0]);
+      const pdf = await task.promise;
+      const pages = Math.min(pdf.numPages, MAX_PAGES);
+      const chunks: string[] = [];
+
+      for (let pageNumber = 1; pageNumber <= pages; pageNumber += 1) {
+        const page = await pdf.getPage(pageNumber);
+        const viewport = page.getViewport({ scale: 1.6 });
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("Canvas context is unavailable.");
+        await page.render({ canvasContext: ctx, viewport, canvas }).promise;
+        const recognized = await worker.recognize(canvas);
+        chunks.push(`Page ${pageNumber}\n${recognized.data.text.trim()}`);
+        setPagesDone(pageNumber);
+      }
+
+      await worker.terminate();
+      setOutput(chunks.join("\n\n---\n\n"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "OCR failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    setBusy(false);
+    setError("");
+    setOutput("");
+    setPagesDone(0);
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload PDF for OCR" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
+      <FileInfo file={file} />
+      <p className="mt-3 text-sm leading-7 text-slate-600">
+        Extract text from scanned PDFs. This browser OCR run processes up to {MAX_PAGES} pages per file for faster results.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={runOcr} disabled={!file || busy}>{busy ? `Running OCR... ${pagesDone}/${MAX_PAGES}` : "Extract text"}</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+      <ErrorMessage message={error} />
+      <ResultCard title="Extracted text" className="mt-5">
+        {output ? (
+          <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">{output}</pre>
+        ) : (
+          <p className="text-sm leading-7 text-slate-500">Your OCR result will appear here.</p>
+        )}
+        <div className="mt-4 flex flex-wrap gap-3">
+          <SecondaryButton onClick={() => void navigator.clipboard.writeText(output)} disabled={!output}>Copy</SecondaryButton>
+          <SecondaryButton onClick={() => downloadTextFile(`${file ? sanitizeBaseName(file.name) : "ocr-result"}.txt`, output)} disabled={!output}>Download TXT</SecondaryButton>
+        </div>
+      </ResultCard>
+    </div>
+  );
+}
+
+function PdfToExcelTool() {
+  const [file, setFile] = useState<File | null>(null);
+  const [rows, setRows] = useState<string[][]>([]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  async function extractRows() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    setRows([]);
+    try {
+      const pdfjs = await loadPdfJs();
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const task = pdfjs.getDocument({ data: bytes, disableWorker: true } as unknown as Parameters<typeof pdfjs.getDocument>[0]);
+      const pdf = await task.promise;
+      const allRows: string[][] = [];
+      const maxPages = Math.min(pdf.numPages, 8);
+
+      for (let pageNumber = 1; pageNumber <= maxPages; pageNumber += 1) {
+        const page = await pdf.getPage(pageNumber);
+        const text = await page.getTextContent();
+        const lines = text.items
+          .map((item: unknown) => (item as { str?: string }).str ?? "")
+          .join(" ")
+          .split(/\s{2,}|\n/)
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        for (const line of lines) {
+          const cells = line.split(/\s{2,}|\t|,| \| /).map((cell) => cell.trim()).filter(Boolean);
+          if (cells.length > 0) allRows.push(cells);
+        }
+      }
+
+      if (!allRows.length) {
+        throw new Error("No structured rows found. Try a clearer table PDF or OCR first.");
+      }
+
+      setRows(allRows);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Table extraction failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function downloadExcel() {
+    if (!rows.length || !file) return;
+    const XLSX = await import("xlsx");
+    const worksheet = XLSX.utils.aoa_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Extracted");
+    XLSX.writeFile(workbook, `${sanitizeBaseName(file.name)}.xlsx`);
+  }
+
+  function downloadCsv() {
+    if (!rows.length || !file) return;
+    const csv = rows.map((row) => row.map((cell) => `"${cell.replace(/"/g, "\"\"")}"`).join(",")).join("\n");
+    downloadTextFile(`${sanitizeBaseName(file.name)}.csv`, csv);
+  }
+
+  function reset() {
+    setFile(null);
+    setRows([]);
+    setBusy(false);
+    setError("");
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload PDF with tables" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
+      <FileInfo file={file} />
+      <p className="mt-3 text-sm leading-7 text-slate-600">
+        Extract likely table rows from text-based PDFs. For scanned documents, run OCR PDF first for better extraction.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={extractRows} disabled={!file || busy}>{busy ? "Extracting..." : "Extract table rows"}</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+      <ErrorMessage message={error} />
+      <ResultCard title="Preview rows" className="mt-5">
+        {rows.length ? (
+          <div className="max-h-[26rem] overflow-auto rounded-xl border border-slate-200 bg-white">
+            <table className="w-full text-left text-sm">
+              <tbody>
+                {rows.slice(0, 80).map((row, index) => (
+                  <tr key={`${index}-${row.join("|")}`} className="border-b border-slate-100">
+                    {row.map((cell, cellIndex) => (
+                      <td key={`${index}-${cellIndex}`} className="px-3 py-2 align-top text-slate-700">{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-sm leading-7 text-slate-500">Extracted rows will appear here.</p>
+        )}
+        <div className="mt-4 flex flex-wrap gap-3">
+          <SecondaryButton onClick={downloadExcel} disabled={!rows.length}>Download XLSX</SecondaryButton>
+          <SecondaryButton onClick={downloadCsv} disabled={!rows.length}>Download CSV</SecondaryButton>
+        </div>
+      </ResultCard>
+    </div>
+  );
+}
+
+function ImageUpscalerTool() {
+  const [file, setFile] = useState<File | null>(null);
+  const [scale, setScale] = useState<2 | 4>(2);
+  const [smoothing, setSmoothing] = useState<"high" | "medium" | "low">("high");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  async function upscale() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const image = await fileToImage(file);
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth * scale;
+      canvas.height = image.naturalHeight * scale;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas context unavailable.");
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = smoothing;
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const blob = await canvasToBlob(canvas, "image/png", 0.95);
+      if (preview) URL.revokeObjectURL(preview);
+      const previewUrl = URL.createObjectURL(blob);
+      setPreview(previewUrl);
+      setOutput(downloadBlob(blob, `${sanitizeBaseName(file.name)}-${scale}x-upscaled.png`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upscaling failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    setScale(2);
+    setSmoothing("high");
+    setOutput(null);
+    setPreview(null);
+    setError("");
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload image to upscale" accept="image/jpeg,image/png,image/webp" onFiles={(files) => setFile(files[0] ?? null)} />
+      <FileInfo file={file} />
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">
+          Scale factor
+          <Select className="mt-2" value={scale} onChange={(event) => setScale(Number(event.target.value) as 2 | 4)}>
+            <option value={2}>2x</option>
+            <option value={4}>4x</option>
+          </Select>
+        </label>
+        <label className="text-sm font-bold text-slate-700">
+          Smoothing quality
+          <Select className="mt-2" value={smoothing} onChange={(event) => setSmoothing(event.target.value as "high" | "medium" | "low")}>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </Select>
+        </label>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={upscale} disabled={!file || busy}>{busy ? "Upscaling..." : "Upscale image"}</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+      <p className="mt-3 text-sm leading-7 text-slate-600">
+        This browser upscaler enlarges image dimensions for previews and drafts. For advanced AI enhancement, a model-based service is typically required.
+      </p>
+      {preview ? <img className="mt-5 max-h-96 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Upscaled preview" /> : null}
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
+function EditPdfTool() {
+  const [file, setFile] = useState<File | null>(null);
+  const [mode, setMode] = useState<"rotate" | "delete" | "reorder">("rotate");
+  const [rotateBy, setRotateBy] = useState<90 | 180 | 270>(90);
+  const [deletePages, setDeletePages] = useState("");
+  const [reorderPages, setReorderPages] = useState("");
+  const [output, setOutput] = useState<Output | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useObjectUrlCleanup(output);
+
+  async function processPdf() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const { PDFDocument, degrees } = await import("pdf-lib");
+      const source = await loadPdfDocument(PDFDocument, file);
+      if (mode === "rotate") {
+        const pages = source.getPages();
+        for (const page of pages) {
+          page.setRotation(degrees(rotateBy));
+        }
+        const bytes = await source.save();
+        const blob = bytesToPdfBlob(bytes);
+        setOutput(downloadBlob(blob, `${sanitizeBaseName(file.name)}-rotated.pdf`));
+        return;
+      }
+
+      if (mode === "delete") {
+        const total = source.getPageCount();
+        const toDelete = new Set(parseRanges(deletePages, total));
+        if (!toDelete.size) throw new Error("Enter page numbers to delete, e.g. 2,4-5");
+        const keepIndices = Array.from({ length: total }, (_, index) => index).filter((index) => !toDelete.has(index));
+        if (!keepIndices.length) throw new Error("Cannot delete all pages.");
+        const resultDoc = await PDFDocument.create();
+        const copied = await resultDoc.copyPages(source, keepIndices);
+        copied.forEach((page) => resultDoc.addPage(page));
+        const bytes = await resultDoc.save();
+        const blob = bytesToPdfBlob(bytes);
+        setOutput(downloadBlob(blob, `${sanitizeBaseName(file.name)}-edited.pdf`));
+        return;
+      }
+
+      const total = source.getPageCount();
+      const order = reorderPages
+        .split(",")
+        .map((value) => Number(value.trim()))
+        .filter((value) => Number.isInteger(value) && value >= 1 && value <= total)
+        .map((value) => value - 1);
+      if (!order.length || order.length !== total || new Set(order).size !== total) {
+        throw new Error(`Enter exactly ${total} unique page numbers, e.g. 2,1,3.`);
+      }
+      const resultDoc = await PDFDocument.create();
+      const copied = await resultDoc.copyPages(source, order);
+      copied.forEach((page) => resultDoc.addPage(page));
+      const bytes = await resultDoc.save();
+      const blob = bytesToPdfBlob(bytes);
+      setOutput(downloadBlob(blob, `${sanitizeBaseName(file.name)}-reordered.pdf`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Editing PDF failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function reset() {
+    setFile(null);
+    setMode("rotate");
+    setRotateBy(90);
+    setDeletePages("");
+    setReorderPages("");
+    setError("");
+    setOutput(null);
+  }
+
+  return (
+    <div>
+      <FileUploadDropzone label="Upload PDF to edit" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
+      <FileInfo file={file} />
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">
+          Action
+          <Select className="mt-2" value={mode} onChange={(event) => setMode(event.target.value as "rotate" | "delete" | "reorder")}>
+            <option value="rotate">Rotate all pages</option>
+            <option value="delete">Delete selected pages</option>
+            <option value="reorder">Reorder pages</option>
+          </Select>
+        </label>
+        {mode === "rotate" ? (
+          <label className="text-sm font-bold text-slate-700">
+            Rotation
+            <Select className="mt-2" value={rotateBy} onChange={(event) => setRotateBy(Number(event.target.value) as 90 | 180 | 270)}>
+              <option value={90}>90 degrees</option>
+              <option value={180}>180 degrees</option>
+              <option value={270}>270 degrees</option>
+            </Select>
+          </label>
+        ) : null}
+      </div>
+      {mode === "delete" ? (
+        <label className="mt-4 block text-sm font-bold text-slate-700">
+          Pages to delete
+          <Input className="mt-2" value={deletePages} onChange={(event) => setDeletePages(event.target.value)} placeholder="2,4-5" />
+        </label>
+      ) : null}
+      {mode === "reorder" ? (
+        <label className="mt-4 block text-sm font-bold text-slate-700">
+          New page order
+          <Input className="mt-2" value={reorderPages} onChange={(event) => setReorderPages(event.target.value)} placeholder="2,1,3,4" />
+        </label>
+      ) : null}
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={processPdf} disabled={!file || busy}>{busy ? "Processing..." : "Apply edits"}</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+      <ErrorMessage message={error} />
+      <Download output={output} />
+    </div>
+  );
+}
+
+function summarizeTranscript(input: string) {
+  const cleaned = input
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const bullets = cleaned.slice(0, 80);
+  const topPoints = bullets.slice(0, 6);
+  const actionItems = bullets.filter((line) => /\b(todo|action|next step|follow up|deadline|owner)\b/i.test(line)).slice(0, 6);
+  const decisions = bullets.filter((line) => /\b(decide|decision|approved|agreed|final)\b/i.test(line)).slice(0, 5);
+
+  const summaryLines = [
+    "## Summary",
+    topPoints.length ? topPoints.map((point) => `- ${point}`).join("\n") : "- No strong summary points detected.",
+    "",
+    "## Key Decisions",
+    decisions.length ? decisions.map((point) => `- ${point}`).join("\n") : "- No explicit decisions detected.",
+    "",
+    "## Action Items",
+    actionItems.length ? actionItems.map((point) => `- ${point}`).join("\n") : "- No explicit action items detected.",
+    "",
+    "## Notes",
+    `- Input lines processed: ${cleaned.length}`,
+    "- Review and edit this summary before sharing."
+  ];
+
+  return summaryLines.join("\n");
+}
+
+function TranscriptSummarizerTool() {
+  const [sourceType, setSourceType] = useState<"meeting" | "youtube">("meeting");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [transcript, setTranscript] = useState("");
+  const [output, setOutput] = useState("");
+
+  function buildSummary() {
+    const fromTranscript = transcript.trim();
+    if (fromTranscript.length < 30) {
+      setOutput("Please paste a longer transcript or meeting notes to summarize.");
+      return;
+    }
+    const header = sourceType === "youtube" && youtubeUrl.trim() ? `Source: ${youtubeUrl.trim()}\n\n` : "";
+    setOutput(`${header}${summarizeTranscript(fromTranscript)}`);
+  }
+
+  function reset() {
+    setSourceType("meeting");
+    setYoutubeUrl("");
+    setTranscript("");
+    setOutput("");
+  }
+
+  return (
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="space-y-4">
+        <label className="block text-sm font-bold text-slate-700">
+          Transcript type
+          <Select className="mt-2" value={sourceType} onChange={(event) => setSourceType(event.target.value as "meeting" | "youtube")}>
+            <option value="meeting">Meeting notes / transcript</option>
+            <option value="youtube">YouTube transcript</option>
+          </Select>
+        </label>
+        {sourceType === "youtube" ? (
+          <label className="block text-sm font-bold text-slate-700">
+            YouTube URL (optional reference)
+            <Input className="mt-2" value={youtubeUrl} onChange={(event) => setYoutubeUrl(event.target.value)} placeholder="https://www.youtube.com/watch?v=..." />
+          </label>
+        ) : null}
+        <label className="block text-sm font-bold text-slate-700">
+          Paste transcript or notes
+          <Textarea className="mt-2 min-h-72" value={transcript} onChange={(event) => setTranscript(event.target.value)} placeholder="Paste meeting notes or transcript text..." />
+        </label>
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={buildSummary}>Summarize</Button>
+          <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+        </div>
+      </div>
+      <ResultCard title="Summary output">
+        {output ? <pre className="min-h-72 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800 [overflow-wrap:anywhere]">{output}</pre> : <p className="min-h-72 text-sm leading-7 text-slate-500">Your summary will appear here.</p>}
+        <div className="mt-4 flex flex-wrap gap-3">
+          <SecondaryButton onClick={() => void navigator.clipboard.writeText(output)} disabled={!output}>Copy</SecondaryButton>
+          <SecondaryButton onClick={() => downloadTextFile("transcript-summary.txt", output)} disabled={!output}>Download TXT</SecondaryButton>
+        </div>
+      </ResultCard>
+    </div>
+  );
+}
+
+function InvoiceGeneratorTool() {
+  const [prompt, setPrompt] = useState("");
+  const [fromName, setFromName] = useState("FreeToolKit Services");
+  const [toName, setToName] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState(`INV-${Date.now().toString().slice(-6)}`);
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [itemsRaw, setItemsRaw] = useState("Design work,2,80\nContent writing,1,120");
+  const [notes, setNotes] = useState("Thank you for your business.");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const parsedItems = useMemo(() => {
+    return itemsRaw
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const [name, qtyRaw, priceRaw] = line.split(",").map((part) => part.trim());
+        const qty = Number(qtyRaw);
+        const price = Number(priceRaw);
+        return { name: name || "Item", qty: Number.isFinite(qty) ? qty : 0, price: Number.isFinite(price) ? price : 0 };
+      });
+  }, [itemsRaw]);
+
+  const subtotal = parsedItems.reduce((sum, item) => sum + item.qty * item.price, 0);
+
+  async function generateWithAi() {
+    if (prompt.trim().length < 15 || busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch("/api/ai-tools/invoice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, fromName, toName })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data?.error || "AI invoice generation failed.");
+      const draft = data?.draft as {
+        fromName?: string;
+        toName?: string;
+        invoiceNumber?: string;
+        notes?: string;
+        items?: Array<{ name?: string; qty?: number; price?: number }>;
+      };
+      setFromName(draft.fromName || fromName);
+      setToName(draft.toName || toName);
+      setInvoiceNumber(draft.invoiceNumber || invoiceNumber);
+      setNotes(draft.notes || notes);
+      if (Array.isArray(draft.items) && draft.items.length) {
+        setItemsRaw(draft.items.map((item) => `${item.name || "Service"},${Number(item.qty ?? 1)},${Number(item.price ?? 0)}`).join("\n"));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "AI invoice generation failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function downloadPdfInvoice() {
+    try {
+      setError("");
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF();
+      doc.setFontSize(20);
+      doc.text("INVOICE", 14, 20);
+      doc.setFontSize(11);
+      doc.text(`Invoice #: ${invoiceNumber}`, 14, 30);
+      doc.text(`Date: ${date}`, 14, 37);
+      doc.text(`From: ${fromName}`, 14, 47);
+      doc.text(`Bill To: ${toName || "Client"}`, 14, 54);
+      doc.line(14, 60, 196, 60);
+      let y = 68;
+      doc.text("Item", 14, y);
+      doc.text("Qty", 120, y);
+      doc.text("Price", 145, y);
+      doc.text("Total", 172, y);
+      y += 6;
+      doc.line(14, y, 196, y);
+      y += 8;
+      for (const item of parsedItems) {
+        const total = item.qty * item.price;
+        doc.text(item.name.slice(0, 50), 14, y);
+        doc.text(String(item.qty), 120, y);
+        doc.text(item.price.toFixed(2), 145, y);
+        doc.text(total.toFixed(2), 172, y);
+        y += 8;
+        if (y > 265) break;
+      }
+      doc.line(14, y, 196, y);
+      y += 10;
+      doc.text(`Subtotal: ${subtotal.toFixed(2)}`, 145, y);
+      y += 12;
+      doc.text(`Notes: ${notes.slice(0, 120)}`, 14, y);
+      doc.save(`${invoiceNumber || "invoice"}.pdf`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate invoice PDF.");
+    }
+  }
+
+  function reset() {
+    setPrompt("");
+    setFromName("FreeToolKit Services");
+    setToName("");
+    setInvoiceNumber(`INV-${Date.now().toString().slice(-6)}`);
+    setDate(new Date().toISOString().slice(0, 10));
+    setItemsRaw("Design work,2,80\nContent writing,1,120");
+    setNotes("Thank you for your business.");
+    setError("");
+  }
+
+  return (
+    <div>
+      <label className="block text-sm font-bold text-slate-700">
+        Invoice request (AI)
+        <Textarea
+          className="mt-2 min-h-24"
+          value={prompt}
+          onChange={(event) => setPrompt(event.target.value)}
+          placeholder="Example: Create an invoice for logo design and social media templates for Acme Co. Include 3 line items."
+        />
+      </label>
+      <div className="mt-3 flex flex-wrap gap-3">
+        <Button onClick={() => void generateWithAi()} disabled={busy || prompt.trim().length < 15}>
+          {busy ? "Generating draft..." : "Generate invoice with AI"}
+        </Button>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="text-sm font-bold text-slate-700">From <Input className="mt-2" value={fromName} onChange={(event) => setFromName(event.target.value)} /></label>
+        <label className="text-sm font-bold text-slate-700">Bill To <Input className="mt-2" value={toName} onChange={(event) => setToName(event.target.value)} placeholder="Client name" /></label>
+        <label className="text-sm font-bold text-slate-700">Invoice Number <Input className="mt-2" value={invoiceNumber} onChange={(event) => setInvoiceNumber(event.target.value)} /></label>
+        <label className="text-sm font-bold text-slate-700">Date <Input className="mt-2" type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
+      </div>
+      <label className="mt-4 block text-sm font-bold text-slate-700">
+        Line items (one per line: item,quantity,price)
+        <Textarea className="mt-2 min-h-40" value={itemsRaw} onChange={(event) => setItemsRaw(event.target.value)} />
+      </label>
+      <label className="mt-4 block text-sm font-bold text-slate-700">
+        Notes
+        <Textarea className="mt-2 min-h-24" value={notes} onChange={(event) => setNotes(event.target.value)} />
+      </label>
+      <ResultCard title="Invoice preview" className="mt-5">
+        <p className="text-sm font-semibold text-slate-700">From: {fromName}</p>
+        <p className="text-sm font-semibold text-slate-700">To: {toName || "Client"}</p>
+        <p className="text-sm font-semibold text-slate-700">Invoice: {invoiceNumber} | Date: {date}</p>
+        <div className="mt-3 space-y-2">
+          {parsedItems.map((item, index) => (
+            <p key={`${item.name}-${index}`} className="text-sm text-slate-700">{item.name} - {item.qty} x {item.price.toFixed(2)} = {(item.qty * item.price).toFixed(2)}</p>
+          ))}
+        </div>
+        <p className="mt-3 text-sm font-black text-slate-900">Subtotal: {subtotal.toFixed(2)}</p>
+      </ResultCard>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button onClick={() => void downloadPdfInvoice()}>Download PDF invoice</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+      <ErrorMessage message={error} />
     </div>
   );
 }
@@ -3728,6 +4374,9 @@ export function ToolRunner({ slug }: { slug: string }) {
     "word-to-pdf": <WordToPdf />,
     "pdf-to-word": <PdfToWord />,
     "pdf-to-jpg": <PdfToJpg />,
+    "ocr-pdf": <OcrPdfTool />,
+    "pdf-to-excel": <PdfToExcelTool />,
+    "edit-pdf": <EditPdfTool />,
     "pdf-unlock": <PdfUnlockTool />,
     "url-encoder-decoder": <UrlEncoderDecoder />,
     "json-formatter": <JsonFormatter />,
@@ -3761,6 +4410,8 @@ export function ToolRunner({ slug }: { slug: string }) {
     "image-color-picker": <ImageColorPicker />,
     "image-dpi-checker": <ImageMetadataTool dpiOnly />,
     "image-grayscale": <AdvancedImageConverter mode="grayscale" />,
+    "image-upscaler": <ImageUpscalerTool />,
+    "invoice-generator": <InvoiceGeneratorTool />,
     "add-text-to-pdf": <AddTextToPdf />,
     "ai-resume-cover-letter": <AiResumeCoverLetterGenerator />,
     "ai-text-summarizer": <GeminiAiTool slug="ai-text-summarizer" />,
@@ -3785,3 +4436,5 @@ export function ToolRunner({ slug }: { slug: string }) {
 
   return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;
 }
+
+export default ToolRunner;

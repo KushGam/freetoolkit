@@ -11,6 +11,7 @@ import { LazyToolRunner } from "@/components/LazyToolRunner";
 function workspaceCopy(tool: Tool) {
   if (tool.slug === "image-color-picker") return "Upload an image, then click anywhere on the preview to pick a color.";
   if (tool.slug === "photo-collage-maker") return "Add your collage idea and layout notes, then generate a shareable collage plan.";
+  if (tool.slug === "invoice-generator") return "Describe your invoice needs, generate a draft with AI, review fields, and download the final PDF invoice.";
   if (tool.slug === "duplicate-line-remover") return "Paste your list below, choose case sensitivity, and remove duplicate lines instantly.";
   if (tool.category === "PDF Tools") return "Upload your PDF and choose the pages or action you want to apply.";
   if (tool.category === "Image Tools") return "Upload an image, adjust the settings, and preview the result before downloading.";
