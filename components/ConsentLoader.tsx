@@ -20,7 +20,7 @@ function loadFundingChoices() {
 function onLcp(callback: () => void) {
   if (typeof window === "undefined") return () => {};
 
-  let timeoutId = window.setTimeout(callback, 3500);
+  let timeoutId = window.setTimeout(callback, 12000);
 
   if (!("PerformanceObserver" in window)) {
     return () => window.clearTimeout(timeoutId);
@@ -31,7 +31,7 @@ function onLcp(callback: () => void) {
       const entries = entryList.getEntries();
       if (entries.length === 0) return;
       window.clearTimeout(timeoutId);
-      window.setTimeout(callback, 0);
+      window.setTimeout(callback, 4000);
       observer.disconnect();
     });
 

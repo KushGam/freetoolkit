@@ -71,13 +71,27 @@ export function AdSense({
       return;
     }
 
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(load, { timeout: 4000 });
-      return () => window.cancelIdleCallback(id);
-    }
+    let timeoutId = window.setTimeout(load, 12000);
+    const onFirstInteraction = () => {
+      window.clearTimeout(timeoutId);
+      if (typeof window.requestIdleCallback === "function") {
+        const idleId = window.requestIdleCallback(load, { timeout: 4000 });
+        return () => window.cancelIdleCallback(idleId);
+      }
+      load();
+      return undefined;
+    };
 
-    const id = window.setTimeout(load, 3000);
-    return () => window.clearTimeout(id);
+    const pointerHandler = () => onFirstInteraction();
+    const keyHandler = () => onFirstInteraction();
+    window.addEventListener("pointerdown", pointerHandler, { once: true, passive: true });
+    window.addEventListener("keydown", keyHandler, { once: true });
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("pointerdown", pointerHandler);
+      window.removeEventListener("keydown", keyHandler);
+    };
   }, [adSlot, priority, scriptOnly]);
 
   if (scriptOnly) return null;

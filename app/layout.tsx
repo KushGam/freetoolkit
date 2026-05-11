@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ConsentLoader } from "@/components/ConsentLoader";
 import { AdSlot } from "@/components/AdSlot";
+import { DeferredAnalytics } from "@/components/DeferredAnalytics";
 import { siteUrl } from "@/lib/utils";
 import "./globals.css";
 
@@ -121,24 +121,11 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-LT7YSXB2PP"
-          strategy="lazyOnload"
-        />
-
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-LT7YSXB2PP');
-          `}
-        </Script>
-
         <Header />
         {children}
         <Footer />
         <AdSlot />
+        <DeferredAnalytics />
         <ConsentLoader />
       </body>
     </html>
