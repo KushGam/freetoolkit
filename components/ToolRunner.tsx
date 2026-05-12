@@ -1987,32 +1987,55 @@ function TimeZoneConverter() {
   );
 }
 
-const palworldPals = [
-  "Lamball",
-  "Cattiva",
-  "Chikipi",
-  "Foxparks",
-  "Pengullet",
-  "Lifmunk",
-  "Tanzee",
-  "Daedream",
-  "Eikthyrdeer",
-  "Nitewing",
-  "Vanwyrm",
-  "Anubis"
+type PalworldPal = { name: string; power: number };
+
+const palworldPals: PalworldPal[] = [
+  { name: "Chikipi", power: 1500 },
+  { name: "Lamball", power: 1470 },
+  { name: "Cattiva", power: 1460 },
+  { name: "Mau", power: 1450 },
+  { name: "Pengullet", power: 1410 },
+  { name: "Foxparks", power: 1400 },
+  { name: "Vixy", power: 1380 },
+  { name: "Lifmunk", power: 1350 },
+  { name: "Tocotoco", power: 1340 },
+  { name: "Sparkit", power: 1330 },
+  { name: "Flopie", power: 1320 },
+  { name: "Eikthyrdeer", power: 1280 },
+  { name: "Tanzee", power: 1270 },
+  { name: "Daedream", power: 1230 },
+  { name: "Celaray", power: 1220 },
+  { name: "Rooby", power: 1210 },
+  { name: "Mossanda", power: 1170 },
+  { name: "Nitewing", power: 1150 },
+  { name: "Pyrin", power: 1080 },
+  { name: "Ribunny", power: 1070 },
+  { name: "Vanwyrm", power: 1060 },
+  { name: "Kitsun", power: 1040 },
+  { name: "Penking", power: 1000 },
+  { name: "Reindrix", power: 990 },
+  { name: "Warsect", power: 980 },
+  { name: "Elphidran", power: 960 },
+  { name: "Azurobe", power: 950 },
+  { name: "Relaxaurus", power: 940 },
+  { name: "Dinossom", power: 930 },
+  { name: "Blazehowl", power: 920 },
+  { name: "Grizzbolt", power: 900 },
+  { name: "Orserk", power: 890 },
+  { name: "Jormuntide", power: 860 },
+  { name: "Frostallion", power: 120 },
+  { name: "Jetragon", power: 90 },
+  { name: "Necromus", power: 80 },
+  { name: "Paladius", power: 70 },
+  { name: "Anubis", power: 570 }
 ];
 
 // Gaming tools intentionally use simplified labels and local datasets.
 // Avoid importing copyrighted logos/assets; keep visuals generic and UI-native.
-const palworldBreedingMap: Record<string, string> = {
-  "Cattiva|Lamball": "Chikipi",
-  "Foxparks|Lamball": "Lifmunk",
-  "Daedream|Foxparks": "Tanzee",
-  "Pengullet|Tanzee": "Eikthyrdeer",
-  "Nitewing|Pengullet": "Vanwyrm",
-  "Anubis|Lifmunk": "Anubis",
-  "Anubis|Foxparks": "Anubis",
-  "Anubis|Pengullet": "Anubis",
+const palworldSpecialBreeding: Record<string, string> = {
+  "Kitsun|Jormuntide": "Anubis",
+  "Mossanda|Pyrin": "Anubis",
+  "Relaxaurus|Celaray": "Anubis",
   "Tanzee|Vanwyrm": "Nitewing",
   "Daedream|Nitewing": "Vanwyrm"
 };
@@ -2021,24 +2044,55 @@ function palPairKey(a: string, b: string) {
   return [a, b].sort().join("|");
 }
 
+function closestPalByPower(targetPower: number) {
+  return palworldPals
+    .slice()
+    .sort((a, b) => {
+      const diff = Math.abs(a.power - targetPower) - Math.abs(b.power - targetPower);
+      if (diff !== 0) return diff;
+      return a.name.localeCompare(b.name);
+    })[0];
+}
+
+function breedPalworld(parentA: string, parentB: string) {
+  if (parentA === parentB) return parentA;
+  const special = palworldSpecialBreeding[palPairKey(parentA, parentB)];
+  if (special) return special;
+  const palA = palworldPals.find((pal) => pal.name === parentA);
+  const palB = palworldPals.find((pal) => pal.name === parentB);
+  if (!palA || !palB) return "No result found";
+  const targetPower = Math.floor((palA.power + palB.power + 1) / 2);
+  return closestPalByPower(targetPower)?.name ?? "No result found";
+}
+
 function PalworldBreedingCalculator() {
   const [query, setQuery] = useState("");
-  const [parentA, setParentA] = useState(palworldPals[0]);
-  const [parentB, setParentB] = useState(palworldPals[1]);
+  const [parentA, setParentA] = useState(palworldPals[0]?.name ?? "");
+  const [parentB, setParentB] = useState(palworldPals[1]?.name ?? "");
   const [target, setTarget] = useState("");
 
   const filteredPals = useMemo(() => {
     const needle = query.toLowerCase().trim();
-    return !needle ? palworldPals : palworldPals.filter((pal) => pal.toLowerCase().includes(needle));
+    return !needle ? palworldPals : palworldPals.filter((pal) => pal.name.toLowerCase().includes(needle));
   }, [query]);
 
-  const offspring = palworldBreedingMap[palPairKey(parentA, parentB)] ?? "No direct mapping found for this pair.";
+  const offspring = breedPalworld(parentA, parentB);
   const reverseMatches = useMemo(() => {
     const needle = target.trim();
     if (!needle) return [];
-    return Object.entries(palworldBreedingMap)
-      .filter(([, result]) => result.toLowerCase() === needle.toLowerCase())
-      .map(([pair, result]) => ({ pair: pair.split("|"), result }));
+    const matches: Array<{ pair: string[]; result: string }> = [];
+    for (let i = 0; i < palworldPals.length; i += 1) {
+      for (let j = i; j < palworldPals.length; j += 1) {
+        const a = palworldPals[i]?.name ?? "";
+        const b = palworldPals[j]?.name ?? "";
+        const result = breedPalworld(a, b);
+        if (result.toLowerCase() === needle.toLowerCase()) {
+          matches.push({ pair: [a, b], result });
+          if (matches.length >= 18) return matches;
+        }
+      }
+    }
+    return matches;
   }, [target]);
 
   return (
@@ -2054,13 +2108,13 @@ function PalworldBreedingCalculator() {
         <label className="text-sm font-bold text-slate-700">
           Parent A
           <Select className="mt-2" value={parentA} onChange={(event) => setParentA(event.target.value)}>
-            {filteredPals.map((pal) => <option key={pal} value={pal}>{pal}</option>)}
+            {filteredPals.map((pal) => <option key={pal.name} value={pal.name}>{pal.name}</option>)}
           </Select>
         </label>
         <label className="text-sm font-bold text-slate-700">
           Parent B
           <Select className="mt-2" value={parentB} onChange={(event) => setParentB(event.target.value)}>
-            {filteredPals.map((pal) => <option key={pal} value={pal}>{pal}</option>)}
+            {filteredPals.map((pal) => <option key={pal.name} value={pal.name}>{pal.name}</option>)}
           </Select>
         </label>
       </div>
