@@ -1,4 +1,15 @@
 import type { Tool, ToolCategory } from "./tools";
+import {
+  aiBusinessNameRich,
+  aiEssayWriterRich,
+  aiHomeworkHelperRich,
+  aiHumanizerRich,
+  aiInterviewAnswerRich,
+  aiLinkedInSummaryRich,
+  aiNotesCleanerRich,
+  aiPromptGeneratorRich,
+  transcriptSummarizerRich
+} from "./ai-expanded-tool-content";
 
 type ExpandedToolInput = {
   slug: string;
@@ -10,12 +21,45 @@ type ExpandedToolInput = {
   limitation?: string;
   howToUse?: string[];
   features?: string[];
+  faq?: Tool["faq"];
+  seo?: string[];
+  useCases?: string[];
+  tips?: string[];
 };
 
 const browserNote = "Runs in your browser where possible with no signup, no account dashboard, and no paid API required.";
 
 function makeTool(input: ExpandedToolInput): Tool {
   const limitation = input.limitation ?? "Review the result before using it in a final document, website, application, or message.";
+  const defaultHowToUse = [
+    "Open the tool and read the input requirements.",
+    "Paste text, enter details, or upload a supported file.",
+    "Choose any available options for the output you need.",
+    "Generate or preview the result in your browser.",
+    "Copy, download, or review the output before using it."
+  ];
+  const defaultFeatures = [
+    "Free to use with no signup required",
+    "Built for fast browser-based workflows",
+    "Mobile-friendly layout and readable output",
+    "Helpful for repeat work, publishing, study, and productivity",
+    browserNote
+  ];
+  const defaultFaq: Tool["faq"] = [
+    { question: `Is ${input.title} free?`, answer: `Yes. ${input.title} is free to use on FreeToolKit and does not require signup.` },
+    { question: "Does this tool need a backend upload?", answer: "The tool is designed to run in your browser where possible. Some advanced file formats depend on browser support and may show limitations clearly." },
+    { question: "Can I use the result professionally?", answer: "Yes, but review the output first, especially for documents, SEO metadata, citations, security values, or social posts." },
+    { question: "Does it work on mobile?", answer: "Yes. The page is built for phones, tablets, and desktop browsers." },
+    { question: "What should I do if my file or input is complex?", answer: limitation }
+  ];
+  const defaultSeo = [
+    `${input.title} helps ${input.audience} ${input.action} without opening heavy desktop software or signing up for another account. The page is focused on a single practical job, so the workflow stays quick: enter your content, generate or preview the output, and review the result before copying or downloading it.`,
+    `This tool fits into the larger FreeToolKit workflow for documents, images, AI writing, SEO, social media, development, student tasks, and security checks. Related tools are linked on the page so you can move from one step to the next without searching again. That makes it useful for everyday work as well as repeat publishing or study routines.`,
+    `The interface is intentionally lightweight. It avoids unnecessary dashboards, account walls, and paid API requirements for normal use. Where browser support is limited, the page explains what is possible and what may require dedicated software or a server-side workflow.`,
+    `${limitation} For best results, keep a copy of your original file or text, compare the output with your requirement, and use related FreeToolKit tools when the task needs another step.`,
+    `FreeToolKit is building this category for long-term, evergreen workflows. ${input.title} is part of that broader toolkit, designed to be crawlable, useful, fast, and easy to understand for people arriving from search or internal links.`
+  ];
+
   return {
     slug: input.slug,
     title: input.title,
@@ -25,34 +69,12 @@ function makeTool(input: ExpandedToolInput): Tool {
     intro: `Use ${input.title} online free to ${input.action}. This lightweight FreeToolKit page is designed for ${input.audience}, with clear controls, mobile-friendly layout, and no signup.`,
     metaTitle: `${input.title} Online Free`,
     metaDescription: `${input.description} Free browser-based tool with no signup, clean output, helpful FAQs, and related productivity tools.`,
-    howToUse: input.howToUse ?? [
-      "Open the tool and read the input requirements.",
-      "Paste text, enter details, or upload a supported file.",
-      "Choose any available options for the output you need.",
-      "Generate or preview the result in your browser.",
-      "Copy, download, or review the output before using it."
-    ],
-    features: input.features ?? [
-      "Free to use with no signup required",
-      "Built for fast browser-based workflows",
-      "Mobile-friendly layout and readable output",
-      "Helpful for repeat work, publishing, study, and productivity",
-      browserNote
-    ],
-    faq: [
-      { question: `Is ${input.title} free?`, answer: `Yes. ${input.title} is free to use on FreeToolKit and does not require signup.` },
-      { question: "Does this tool need a backend upload?", answer: "The tool is designed to run in your browser where possible. Some advanced file formats depend on browser support and may show limitations clearly." },
-      { question: "Can I use the result professionally?", answer: "Yes, but review the output first, especially for documents, SEO metadata, citations, security values, or social posts." },
-      { question: "Does it work on mobile?", answer: "Yes. The page is built for phones, tablets, and desktop browsers." },
-      { question: "What should I do if my file or input is complex?", answer: limitation }
-    ],
-    seo: [
-      `${input.title} helps ${input.audience} ${input.action} without opening heavy desktop software or signing up for another account. The page is focused on a single practical job, so the workflow stays quick: enter your content, generate or preview the output, and review the result before copying or downloading it.`,
-      `This tool fits into the larger FreeToolKit workflow for documents, images, AI writing, SEO, social media, development, student tasks, and security checks. Related tools are linked on the page so you can move from one step to the next without searching again. That makes it useful for everyday work as well as repeat publishing or study routines.`,
-      `The interface is intentionally lightweight. It avoids unnecessary dashboards, account walls, and paid API requirements for normal use. Where browser support is limited, the page explains what is possible and what may require dedicated software or a server-side workflow.`,
-      `${limitation} For best results, keep a copy of your original file or text, compare the output with your requirement, and use related FreeToolKit tools when the task needs another step.`,
-      `FreeToolKit is building this category for long-term, evergreen workflows. ${input.title} is part of that broader toolkit, designed to be crawlable, useful, fast, and easy to understand for people arriving from search or internal links.`
-    ]
+    howToUse: input.howToUse ?? defaultHowToUse,
+    features: input.features ?? defaultFeatures,
+    faq: input.faq ?? defaultFaq,
+    seo: input.seo ?? defaultSeo,
+    useCases: input.useCases,
+    tips: input.tips
   };
 }
 
@@ -138,15 +160,90 @@ export const expandedTools: Tool[] = [
     limitation: "This calculator focuses on type effectiveness only and does not include abilities, weather, items, or move-specific exceptions."
   }),
 
-  makeTool({ slug: "ai-humanizer", title: "AI Humanizer", category: "AI Tools", description: "Rewrite AI-sounding text into clearer, more natural language for review.", action: "make stiff drafts sound more natural while preserving meaning", audience: "writers, students, marketers, and professionals" }),
-  makeTool({ slug: "ai-homework-helper", title: "AI Homework Helper", category: "AI Tools", description: "Get study-friendly explanations and steps for homework questions.", action: "break homework prompts into understandable study guidance", audience: "students, tutors, and parents", limitation: "Use this as study help, not as a replacement for learning or your school's academic honesty rules." }),
-  makeTool({ slug: "ai-essay-writer", title: "AI Essay Writer", category: "AI Tools", description: "Draft essay outlines, thesis ideas, and structured writing plans.", action: "plan essays with outlines, arguments, and revision notes", audience: "students, applicants, and writers", limitation: "Always follow your institution's rules and write in your own voice." }),
-  makeTool({ slug: "ai-prompt-generator", title: "AI Prompt Generator", category: "AI Tools", description: "Create clear prompts for writing, coding, research, images, and productivity tasks.", action: "turn rough goals into better AI prompts", audience: "creators, students, developers, and teams" }),
-  makeTool({ slug: "ai-interview-answer-generator", title: "AI Interview Answer Generator", category: "AI Tools", description: "Generate structured interview answer drafts from your real experience.", action: "prepare interview answer outlines and STAR-style responses", audience: "job seekers, students, and career changers" }),
-  makeTool({ slug: "ai-linkedin-summary-generator", title: "AI LinkedIn Summary Generator", category: "AI Tools", description: "Draft a professional LinkedIn About section from your background and goals.", action: "create LinkedIn summary drafts for review", audience: "job seekers, freelancers, founders, and professionals" }),
-  makeTool({ slug: "ai-business-name-generator", title: "AI Business Name Generator", category: "AI Tools", description: "Generate business name ideas from niche, audience, and tone.", action: "brainstorm business names and positioning ideas", audience: "founders, creators, freelancers, and small businesses" }),
-  makeTool({ slug: "ai-notes-cleaner", title: "AI Notes Cleaner", category: "AI Tools", description: "Clean messy notes into organized summaries, action items, and sections.", action: "turn rough notes into readable organized output", audience: "students, professionals, teams, and meeting organizers" }),
-  makeTool({ slug: "transcript-summarizer", title: "Transcript Summarizer", category: "AI Tools", description: "Summarize pasted meeting notes or YouTube transcripts into key points and actions.", action: "turn long transcript text into concise summaries and follow-up items", audience: "students, creators, researchers, and remote teams", limitation: "The summarizer currently works from pasted transcript text and does not auto-fetch YouTube captions from private or restricted videos." }),
+  makeTool({
+    slug: "ai-humanizer",
+    title: "AI Humanizer",
+    category: "AI Tools",
+    description: "Rewrite AI-sounding text into clearer, more natural language for review.",
+    action: "make stiff drafts sound more natural while preserving meaning",
+    audience: "writers, students, marketers, and professionals",
+    ...aiHumanizerRich
+  }),
+  makeTool({
+    slug: "ai-homework-helper",
+    title: "AI Homework Helper",
+    category: "AI Tools",
+    description: "Get study-friendly explanations and steps for homework questions.",
+    action: "break homework prompts into understandable study guidance",
+    audience: "students, tutors, and parents",
+    limitation: "Use this as study help, not as a replacement for learning or your school's academic honesty rules.",
+    ...aiHomeworkHelperRich
+  }),
+  makeTool({
+    slug: "ai-essay-writer",
+    title: "AI Essay Writer",
+    category: "AI Tools",
+    description: "Draft essay outlines, thesis ideas, and structured writing plans.",
+    action: "plan essays with outlines, arguments, and revision notes",
+    audience: "students, applicants, and writers",
+    limitation: "Always follow your institution's rules and write in your own voice.",
+    ...aiEssayWriterRich
+  }),
+  makeTool({
+    slug: "ai-prompt-generator",
+    title: "AI Prompt Generator",
+    category: "AI Tools",
+    description: "Create clear prompts for writing, coding, research, images, and productivity tasks.",
+    action: "turn rough goals into better AI prompts",
+    audience: "creators, students, developers, and teams",
+    ...aiPromptGeneratorRich
+  }),
+  makeTool({
+    slug: "ai-interview-answer-generator",
+    title: "AI Interview Answer Generator",
+    category: "AI Tools",
+    description: "Generate structured interview answer drafts from your real experience.",
+    action: "prepare interview answer outlines and STAR-style responses",
+    audience: "job seekers, students, and career changers",
+    ...aiInterviewAnswerRich
+  }),
+  makeTool({
+    slug: "ai-linkedin-summary-generator",
+    title: "AI LinkedIn Summary Generator",
+    category: "AI Tools",
+    description: "Draft a professional LinkedIn About section from your background and goals.",
+    action: "create LinkedIn summary drafts for review",
+    audience: "job seekers, freelancers, founders, and professionals",
+    ...aiLinkedInSummaryRich
+  }),
+  makeTool({
+    slug: "ai-business-name-generator",
+    title: "AI Business Name Generator",
+    category: "AI Tools",
+    description: "Generate business name ideas from niche, audience, and tone.",
+    action: "brainstorm business names and positioning ideas",
+    audience: "founders, creators, freelancers, and small businesses",
+    ...aiBusinessNameRich
+  }),
+  makeTool({
+    slug: "ai-notes-cleaner",
+    title: "AI Notes Cleaner",
+    category: "AI Tools",
+    description: "Clean messy notes into organized summaries, action items, and sections.",
+    action: "turn rough notes into readable organized output",
+    audience: "students, professionals, teams, and meeting organizers",
+    ...aiNotesCleanerRich
+  }),
+  makeTool({
+    slug: "transcript-summarizer",
+    title: "Transcript Summarizer",
+    category: "AI Tools",
+    description: "Summarize pasted meeting notes or YouTube transcripts into key points and actions.",
+    action: "turn long transcript text into concise summaries and follow-up items",
+    audience: "students, creators, researchers, and remote teams",
+    limitation: "The summarizer currently works from pasted transcript text and does not auto-fetch YouTube captions from private or restricted videos.",
+    ...transcriptSummarizerRich
+  }),
   makeTool({ slug: "invoice-generator", title: "AI Invoice Generator", category: "AI Tools", description: "Generate an invoice draft with AI and export it as a PDF in your browser.", action: "draft invoice line items quickly with AI and export PDF invoices", audience: "freelancers, small businesses, creators, and service providers", limitation: "Always review AI-generated pricing and legal details before sending the final invoice." }),
 
   makeTool({ slug: "apa-citation-generator", title: "APA Citation Generator", category: "Student Tools", description: "Create simple APA-style citation drafts from source details.", action: "format source details into APA-style citation drafts", audience: "students, teachers, and researchers", limitation: "Citation rules can vary by source type and edition. Check important references against official guidance." }),

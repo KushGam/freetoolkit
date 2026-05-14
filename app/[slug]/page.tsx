@@ -4,6 +4,7 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { categoryRoutes, getTool, tools, toolHref } from "@/data/tools";
 import { buildBreadcrumbSchema, buildFaqSchema, buildToolSoftwareSchema, withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
+import { isToolIndexedForSearch } from "@/data/indexing-policy";
 
 export function generateStaticParams() {
   return tools.filter((tool) => !tool.href).map((tool) => ({ slug: tool.slug }));
@@ -14,16 +15,23 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!tool) return {};
   const canonical = canonicalUrl(toolHref(tool));
   const cleanTitle = withoutBrandSuffix(tool.metaTitle);
+  const indexed = isToolIndexedForSearch(tool.slug);
   return {
     title: cleanTitle,
     description: tool.metaDescription,
     alternates: { canonical },
+    robots: indexed ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       title: cleanTitle,
       description: tool.metaDescription,
       url: canonical,
       siteName: "FreeToolKit",
       type: "website"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: cleanTitle,
+      description: tool.metaDescription
     }
   };
 }

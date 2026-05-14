@@ -1,29 +1,10 @@
 import { getTool, toolHref, type Tool } from "@/data/tools";
+import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { getBlogSlugsForTool, getRelatedBlogSlugsForBlog } from "@/data/tool-relations";
+import { additionalBlogPosts } from "@/data/blog-additional-posts";
+import type { BlogCategory, BlogFaq, BlogPost, BlogSection } from "@/data/blog-types";
 
-export type BlogCategory = "PDF Guides" | "Image Guides" | "Student Guides" | "Productivity Guides" | "Text Guides" | "Security Guides" | "Gaming Guides";
-
-export type BlogSection = {
-  heading: string;
-  paragraphs: string[];
-};
-
-export type BlogPost = {
-  slug: string;
-  title: string;
-  description: string;
-  category: BlogCategory;
-  publishedAt: string;
-  readingTime: string;
-  relatedTools: string[];
-  keywords: string[];
-  content: BlogSection[];
-};
-
-export type BlogFaq = {
-  question: string;
-  answer: string;
-};
+export type { BlogCategory, BlogFaq, BlogPost, BlogSection } from "@/data/blog-types";
 
 export const blogPosts: BlogPost[] = [
   {
@@ -491,7 +472,8 @@ export const blogPosts: BlogPost[] = [
         ]
       }
     ]
-  }
+  },
+  ...additionalBlogPosts
 ];
 
 export function blogHref(post: Pick<BlogPost, "slug">) {
@@ -527,7 +509,9 @@ export function getBlogFaqs(post: BlogPost): BlogFaq[] {
 }
 
 export function getBlogRelatedTools(post: BlogPost): Tool[] {
-  return post.relatedTools.map((slug) => getTool(slug)).filter((tool): tool is Tool => Boolean(tool));
+  return post.relatedTools
+    .map((slug) => getTool(slug))
+    .filter((tool): tool is Tool => tool !== undefined && isToolIndexedForSearch(tool.slug));
 }
 
 export function getBlogRelatedToolLinks(post: BlogPost) {

@@ -4,7 +4,7 @@ import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Free Everyday Productivity Tools Online",
-  description: "Free everyday productivity tools for calculators, text cleanup, QR codes, passwords, time zones, and quick browser-based tasks. No signup required.",
+  description: "Free everyday productivity tools for calculators, text cleanup, QR codes, passwords, and quick browser-based tasks. No signup required.",
   keywords: ["everyday tools", "productivity tools", "calculator tools", "text tools", "QR code generator"],
   alternates: { canonical: `${siteUrl}/everyday` },
   openGraph: {

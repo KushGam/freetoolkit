@@ -1,4 +1,5 @@
 import type { ToolCategory, TopLevelCategory } from "@/data/tools";
+import { INDEXED_TOOL_SLUGS, isToolIndexedForSearch } from "./indexing-policy";
 
 export type ContentClusterId =
   | "pdf-document-workflows"
@@ -33,7 +34,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["PDF Tools"],
     topLevelCategories: ["PDF & Image"],
     toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "extract-pdf-pages", "rotate-pdf", "pdf-to-word", "word-to-pdf", "image-to-pdf", "add-text-to-pdf", "pdf-to-jpg", "pdf-unlock", "pdf-to-excel", "excel-to-pdf", "ocr-pdf", "pdf-watermark", "pdf-password-protector", "pdf-metadata-editor", "pdf-reader-online", "compare-pdf-files"],
-    blogSlugs: ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work"]
+    blogSlugs: ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work", "pdf-to-word-conversion-quality"]
   },
   {
     id: "image-optimization",
@@ -93,7 +94,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["Developer Tools"],
     topLevelCategories: ["Developer", "Everyday"],
     toolSlugs: ["json-formatter", "url-encoder-decoder", "uuid-generator", "base64-encoder-decoder", "qr-code-generator", "regex-tester", "jwt-decoder", "sql-formatter", "html-formatter", "css-formatter", "markdown-previewer", "json-validator", "curl-to-fetch"],
-    blogSlugs: ["best-free-online-tools-for-daily-work", "password-generator-guide"]
+    blogSlugs: ["best-free-online-tools-for-daily-work", "password-generator-guide", "browser-tools-vs-desktop-software"]
   },
   {
     id: "security-basics",
@@ -103,7 +104,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["Security Tools"],
     topLevelCategories: ["Everyday"],
     toolSlugs: ["password-generator", "uuid-generator", "base64-encoder-decoder", "password-strength-checker", "sha256-generator", "md5-generator", "random-token-generator", "file-checksum"],
-    blogSlugs: ["password-generator-guide", "best-free-online-tools-for-daily-work"]
+    blogSlugs: ["password-generator-guide", "best-free-online-tools-for-daily-work", "privacy-friendly-online-tools-checklist"]
   },
   {
     id: "seo-publishing",
@@ -146,15 +147,40 @@ export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
   "png-to-jpg": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
   "jpg-to-png": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
   "webp-converter": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
+  "pdf-to-word": ["pdf-to-word-conversion-quality", "how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
   "gpa-calculator": ["how-to-calculate-gpa", "best-free-student-tools"],
   "cgpa-calculator": ["how-to-calculate-gpa", "best-free-student-tools"],
   "word-counter": ["word-counter-guide", "best-free-student-tools"],
-  "password-generator": ["password-generator-guide", "best-free-online-tools-for-daily-work"]
-  ,
+  "password-generator": ["password-generator-guide", "privacy-friendly-online-tools-checklist", "best-free-online-tools-for-daily-work"],
   "palworld-breeding-calculator": ["palworld-breeding-guide", "valorant-sensitivity-guide"],
   "valorant-sensitivity-converter": ["valorant-sensitivity-guide", "palworld-breeding-guide"],
   "minecraft-crafting-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
-  "pokemon-type-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"]
+  "pokemon-type-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
+  "qr-code-generator": ["best-free-online-tools-for-daily-work", "browser-tools-vs-desktop-software", "privacy-friendly-online-tools-checklist"],
+  "age-calculator": ["best-free-online-tools-for-daily-work", "best-free-student-tools"],
+  "percentage-calculator": ["best-free-online-tools-for-daily-work", "best-free-student-tools"],
+  "image-to-pdf": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files", "best-free-online-tools-for-daily-work"],
+  "word-to-pdf": ["how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality", "word-counter-guide"],
+  "heic-to-jpg": ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
+  "svg-to-png": ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
+  "png-to-webp": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality", "how-to-resize-images-online"],
+  "webp-to-png": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality", "best-free-online-tools-for-daily-work"],
+  "background-remover": ["how-to-compress-images-without-losing-quality", "how-to-resize-images-online", "best-free-online-tools-for-daily-work"],
+  "passport-photo-maker": ["how-to-resize-images-online", "how-to-compress-images-without-losing-quality", "best-free-online-tools-for-daily-work"],
+  "blur-image": ["privacy-friendly-online-tools-checklist", "how-to-compress-images-without-losing-quality", "best-free-online-tools-for-daily-work"],
+  "favicon-generator": ["best-free-online-tools-for-daily-work", "word-counter-guide", "how-to-resize-images-online"],
+  "youtube-thumbnail-downloader": ["best-free-online-tools-for-daily-work", "word-counter-guide", "how-to-compress-images-without-losing-quality"],
+  "image-upscaler": ["how-to-resize-images-online", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp"],
+  "photo-collage-maker": ["how-to-compress-images-without-losing-quality", "how-to-resize-images-online", "best-free-online-tools-for-daily-work"],
+  "pdf-to-excel": ["pdf-to-word-conversion-quality", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
+  "edit-pdf": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files", "pdf-to-word-conversion-quality"],
+  "excel-to-pdf": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files", "best-free-online-tools-for-daily-work"],
+  "ocr-pdf": ["pdf-to-word-conversion-quality", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
+  "pdf-watermark": ["how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality", "best-free-online-tools-for-daily-work"],
+  "pdf-metadata-editor": ["pdf-to-word-conversion-quality", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work"],
+  "compare-pdf-files": ["pdf-to-word-conversion-quality", "how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
+  "pdf-reader-online": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files", "best-free-online-tools-for-daily-work"],
+  "pdf-password-protector": ["password-generator-guide", "privacy-friendly-online-tools-checklist", "how-to-merge-pdf-files-online"]
 };
 
 export const relatedToolsByTool: Partial<Record<string, string[]>> = {
@@ -164,19 +190,43 @@ export const relatedToolsByTool: Partial<Record<string, string[]>> = {
   "image-compressor": ["image-resizer", "webp-converter", "png-to-jpg", "image-converter"],
   "image-resizer": ["image-compressor", "image-cropper", "webp-converter", "image-to-pdf"],
   "png-to-jpg": ["jpg-to-png", "webp-converter", "image-compressor", "image-resizer"],
-  "jpg-to-png": ["png-to-jpg", "webp-converter", "image-compressor", "image-to-base64"],
+  "jpg-to-png": ["png-to-jpg", "webp-converter", "image-compressor", "png-to-webp"],
   "webp-converter": ["image-compressor", "image-resizer", "png-to-jpg", "jpg-to-png"],
-  "gpa-calculator": ["cgpa-calculator", "final-grade-calculator", "weighted-grade-calculator", "gpa-to-percentage-converter"],
+  "gpa-calculator": ["cgpa-calculator", "final-grade-calculator", "weighted-grade-calculator", "grade-percentage-calculator"],
   "word-counter": ["case-converter", "remove-extra-spaces", "text-formatter", "grammar-fixer"],
   "password-generator": ["uuid-generator", "base64-encoder-decoder", "json-formatter"],
   "heic-to-jpg": ["image-converter", "png-to-jpg", "webp-converter", "image-compressor"],
-  "meta-tag-generator": ["open-graph-generator", "serp-preview", "schema-markup-generator", "sitemap-generator"],
-  "open-graph-generator": ["meta-tag-generator", "serp-preview", "schema-markup-generator", "slug-generator"],
-  "hashtag-counter": ["instagram-caption-formatter", "twitter-character-counter", "youtube-tags-extractor", "ai-hashtag-generator"],
-  "palworld-breeding-calculator": ["pokemon-type-calculator", "minecraft-crafting-calculator", "valorant-sensitivity-converter"],
-  "valorant-sensitivity-converter": ["palworld-breeding-calculator", "minecraft-crafting-calculator", "pokemon-type-calculator"],
-  "minecraft-crafting-calculator": ["palworld-breeding-calculator", "pokemon-type-calculator", "valorant-sensitivity-converter"],
-  "pokemon-type-calculator": ["palworld-breeding-calculator", "minecraft-crafting-calculator", "valorant-sensitivity-converter"]
+  "meta-tag-generator": ["open-graph-generator", "serp-preview", "sitemap-generator", "robots-txt-generator"],
+  "open-graph-generator": ["meta-tag-generator", "serp-preview", "sitemap-generator", "robots-txt-generator"],
+  "hashtag-counter": ["word-counter", "serp-preview", "case-converter", "text-formatter"],
+  "palworld-breeding-calculator": ["percentage-calculator", "scientific-calculator", "unit-converter", "word-counter"],
+  "valorant-sensitivity-converter": ["palworld-breeding-calculator", "percentage-calculator", "unit-converter", "word-counter"],
+  "minecraft-crafting-calculator": ["palworld-breeding-calculator", "percentage-calculator", "scientific-calculator", "word-counter"],
+  "pokemon-type-calculator": ["palworld-breeding-calculator", "percentage-calculator", "unit-converter", "word-counter"],
+  "qr-code-generator": ["url-encoder-decoder", "uuid-generator", "json-formatter", "base64-encoder-decoder"],
+  "age-calculator": ["unit-converter", "percentage-calculator", "assignment-planner", "bmi-calculator"],
+  "percentage-calculator": ["discount-calculator", "grade-percentage-calculator", "gpa-calculator", "loan-emi-calculator"],
+  "image-to-pdf": ["merge-pdf", "compress-pdf", "image-compressor", "rotate-pdf"],
+  "word-to-pdf": ["word-counter", "merge-pdf", "add-text-to-pdf", "split-pdf"],
+  "svg-to-png": ["png-to-jpg", "webp-converter", "favicon-generator", "image-resizer"],
+  "png-to-webp": ["webp-to-png", "webp-converter", "image-compressor", "image-converter"],
+  "webp-to-png": ["png-to-webp", "png-to-jpg", "image-compressor", "jpg-to-png"],
+  "background-remover": ["passport-photo-maker", "image-watermark", "image-resizer", "image-compressor"],
+  "passport-photo-maker": ["image-resizer", "background-remover", "image-compressor", "image-cropper"],
+  "blur-image": ["background-remover", "image-watermark", "image-compressor", "png-to-jpg"],
+  "favicon-generator": ["svg-to-png", "image-resizer", "png-to-webp", "meta-tag-generator"],
+  "youtube-thumbnail-downloader": ["image-compressor", "image-resizer", "serp-preview", "word-counter"],
+  "image-upscaler": ["image-resizer", "image-compressor", "png-to-jpg", "jpg-to-png"],
+  "photo-collage-maker": ["image-to-pdf", "image-resizer", "image-compressor", "image-cropper"],
+  "pdf-to-excel": ["ocr-pdf", "split-pdf", "excel-to-pdf", "compress-pdf"],
+  "edit-pdf": ["merge-pdf", "split-pdf", "rotate-pdf", "compress-pdf"],
+  "excel-to-pdf": ["word-to-pdf", "merge-pdf", "compress-pdf", "split-pdf"],
+  "ocr-pdf": ["pdf-to-word", "split-pdf", "compress-pdf", "merge-pdf"],
+  "pdf-watermark": ["pdf-password-protector", "edit-pdf", "merge-pdf", "compare-pdf-files"],
+  "pdf-metadata-editor": ["pdf-reader-online", "pdf-watermark", "compress-pdf", "merge-pdf"],
+  "compare-pdf-files": ["edit-pdf", "split-pdf", "merge-pdf", "pdf-reader-online"],
+  "pdf-reader-online": ["edit-pdf", "compare-pdf-files", "rotate-pdf", "split-pdf"],
+  "pdf-password-protector": ["pdf-watermark", "password-generator", "merge-pdf", "compress-pdf"]
 };
 
 export function getClustersForTool(toolSlug: string) {
@@ -196,9 +246,21 @@ export function getBlogSlugsForTool(toolSlug: string, limit = 3) {
 }
 
 export function getRelatedToolSlugs(toolSlug: string, limit = 4) {
-  const explicit = relatedToolsByTool[toolSlug] ?? [];
-  const clustered = getClustersForTool(toolSlug).flatMap((cluster) => cluster.toolSlugs).filter((slug) => slug !== toolSlug);
-  return unique([...explicit, ...clustered]).slice(0, limit);
+  const ok = (s: string) => isToolIndexedForSearch(s);
+  const explicit = (relatedToolsByTool[toolSlug] ?? []).filter(ok);
+  const clustered = getClustersForTool(toolSlug)
+    .sort((a, b) => a.priority - b.priority)
+    .flatMap((cluster) => cluster.toolSlugs)
+    .filter((slug) => slug !== toolSlug && ok(slug));
+  const ordered = unique([...explicit, ...clustered]);
+  if (ordered.length >= limit) return ordered.slice(0, limit);
+  for (const s of INDEXED_TOOL_SLUGS) {
+    if (ordered.length >= limit) break;
+    if (s === toolSlug || ordered.includes(s)) continue;
+    if (!ok(s)) continue;
+    ordered.push(s);
+  }
+  return ordered.slice(0, limit);
 }
 
 export function getBlogSlugsForCategory(category: ToolCategory | TopLevelCategory, limit = 4) {

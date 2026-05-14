@@ -102,6 +102,51 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           </ul>
         </Card>
       </section>
+      {tool.useCases?.length ? (
+        <section className="mt-10 grid gap-6 lg:grid-cols-2">
+          <Card className="p-6">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-slate-950">Common use cases</h2>
+            <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-slate-600">
+              {tool.useCases.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </Card>
+          {tool.tips?.length ? (
+            <Card className="p-6">
+              <h2 className="font-display text-2xl font-bold tracking-tight text-slate-950">Tips for better results</h2>
+              <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-slate-600">
+                {tool.tips.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </Card>
+          ) : null}
+        </section>
+      ) : tool.tips?.length ? (
+        <section className="mt-10">
+          <Card className="p-6">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-slate-950">Tips for better results</h2>
+            <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-slate-600">
+              {tool.tips.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </Card>
+        </section>
+      ) : null}
+      {tool.commonMistakes?.length ? (
+        <section className="mt-10">
+          <Card className="border-amber-100 bg-amber-50/40 p-6">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-slate-950">Common mistakes to avoid</h2>
+            <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-slate-700">
+              {tool.commonMistakes.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </Card>
+        </section>
+      ) : null}
       <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-[0_12px_28px_rgba(15,23,42,0.08)]">
         <h2>About this free {tool.title.toLowerCase()}</h2>
         {tool.seo.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}

@@ -8,6 +8,7 @@ import { getBlogPostsBySlugs } from "@/data/blog";
 import { categorySeo } from "@/data/seo";
 import { getBlogSlugsForCategory, getClustersForCategory } from "@/data/tool-relations";
 import { categoryRoutes, getTool, getToolsByCategory, getTopLevelCategory, topLevelCategoryRoutes, toolHref, type ToolCategory } from "@/data/tools";
+import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema";
 
 export function CategoryPage({ category, intro }: { category: ToolCategory; intro: string }) {
@@ -18,6 +19,7 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
     .flatMap((cluster) => cluster.toolSlugs)
     .map((slug) => getTool(slug))
     .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
+    .filter((tool) => isToolIndexedForSearch(tool.slug))
     .slice(0, 6);
   const faqSchema = seo?.faqs?.length ? buildFaqSchema(seo.faqs) : null;
   const topLevelRoute = categoryTools[0] ? topLevelCategoryRoutes[getTopLevelCategory(categoryTools[0])] : "/all-tools";

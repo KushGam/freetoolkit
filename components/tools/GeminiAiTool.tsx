@@ -24,7 +24,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste the text you want summarized...",
     minLength: 80,
     optionLabel: "Summary style",
-    options: ["Short", "Bullet points", "Detailed"]
+    options: ["Short", "Bullet points", "Detailed"],
+    examplePrompts: [
+      "Summarize this product changelog for non-technical stakeholders in ~120 words.",
+      "Turn this research abstract into bullet points I can drop into a slide deck."
+    ]
   },
   "paraphrasing-tool": {
     title: "Paraphrasing Tool",
@@ -32,19 +36,31 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste the text you want rewritten...",
     minLength: 30,
     optionLabel: "Rewrite style",
-    options: ["Simple", "Formal", "Shorter", "More professional"]
+    options: ["Simple", "Formal", "Shorter", "More professional"],
+    examplePrompts: [
+      "Rewrite this paragraph for a grant application without changing the budget numbers.",
+      "Make this customer email warmer but still under 90 words."
+    ]
   },
   "keyword-extractor": {
     title: "Keyword Extractor",
     toolType: "Keyword Extractor",
     placeholder: "Paste text to extract main keywords, secondary keywords, and a short topic summary...",
-    minLength: 50
+    minLength: 50,
+    examplePrompts: [
+      "Extract SEO keyword clusters from this pasted landing page draft.",
+      "List recurring themes from this user interview transcript."
+    ]
   },
   "grammar-fixer": {
     title: "Grammar Fixer",
     toolType: "Grammar Fixer",
     placeholder: "Paste text with grammar, spelling, punctuation, or clarity issues...",
-    minLength: 20
+    minLength: 20,
+    examplePrompts: [
+      "Fix grammar only—do not change meaning—in this scholarship paragraph.",
+      "Polish this LinkedIn post for tense consistency."
+    ]
   },
   "title-generator": {
     title: "Title Generator",
@@ -52,7 +68,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Enter a topic, idea, keyword, or short description...",
     minLength: 10,
     optionLabel: "Title type",
-    options: ["Blog titles", "YouTube titles", "Assignment titles", "Professional titles"]
+    options: ["Blog titles", "YouTube titles", "Assignment titles", "Professional titles"],
+    examplePrompts: [
+      "Beginner guide to merging PDF files in the browser without installing software.",
+      "Case study: how a small team cut image payload by 40% on their marketing site."
+    ]
   },
   "bio-generator": {
     title: "Bio Generator",
@@ -67,7 +87,11 @@ const configs: Record<string, ToolConfig> = {
     title: "FAQ Generator",
     toolType: "FAQ Generator",
     placeholder: "Enter a topic, product, service, article, or pasted text to turn into FAQs...",
-    minLength: 20
+    minLength: 20,
+    examplePrompts: [
+      "Generate FAQs for a free GPA calculator aimed at undergraduates in the United States.",
+      "Turn this return policy into customer-friendly Q&A pairs."
+    ]
   },
   "text-to-bullet-points": {
     title: "Text to Bullet Points",
@@ -75,7 +99,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste paragraphs to convert into clear bullet points...",
     minLength: 40,
     optionLabel: "Bullet style",
-    options: ["Short bullets", "Detailed bullets", "Study notes format"]
+    options: ["Short bullets", "Detailed bullets", "Study notes format"],
+    examplePrompts: [
+      "Convert this dense paragraph about PDF compression into scannable bullets.",
+      "Study notes format for this history excerpt with dates preserved."
+    ]
   },
   "ai-study-notes": {
     title: "AI Study Notes Generator",
@@ -83,7 +111,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste class notes, textbook text, lecture material, or study content...",
     minLength: 50,
     optionLabel: "Notes style",
-    options: ["Exam revision", "Lecture notes", "Quick review"]
+    options: ["Exam revision", "Lecture notes", "Quick review"],
+    examplePrompts: [
+      "Exam revision notes for osmosis vs diffusion with common exam traps.",
+      "Lecture notes cleanup for SQL joins with example patterns."
+    ]
   },
   "explain-simple": {
     title: "Explain Like I'm 5",
@@ -91,7 +123,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste a difficult paragraph, concept, definition, or topic...",
     minLength: 50,
     optionLabel: "Explanation style",
-    options: ["Very simple", "Student friendly", "Short answer"]
+    options: ["Very simple", "Student friendly", "Short answer"],
+    examplePrompts: [
+      "Explain net present value without formulas—intuition for a high school reader.",
+      "Explain what a canonical URL is for someone publishing their first blog."
+    ]
   },
   "ai-email-writer": {
     title: "AI Email Writer",
@@ -99,7 +135,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Describe who the email is for, what you need to say, and any key details...",
     minLength: 50,
     optionLabel: "Email tone",
-    options: ["Professional", "Friendly", "Formal", "Concise"]
+    options: ["Professional", "Friendly", "Formal", "Concise"],
+    examplePrompts: [
+      "Email to a professor requesting a 24-hour extension on a lab report (already 80% done).",
+      "Follow-up email to a client after a missed deadline, propose a revised timeline."
+    ]
   },
   "chat-reply-generator": {
     title: "AI Chat Reply Generator",
@@ -107,7 +147,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste the message you need to reply to and any context...",
     minLength: 50,
     optionLabel: "Reply tone",
-    options: ["Natural", "Friendly", "Professional", "Polite"]
+    options: ["Natural", "Friendly", "Professional", "Polite"],
+    examplePrompts: [
+      "Slack message asking for specs I already requested twice—reply politely but firm.",
+      "Customer angry about shipping delay—offer empathy and next steps."
+    ]
   },
   "content-rewriter": {
     title: "AI Content Rewriter",
@@ -115,7 +159,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste the content you want rewritten with the same meaning...",
     minLength: 50,
     optionLabel: "Rewrite mode",
-    options: ["Clearer", "More professional", "Shorter", "Smoother"]
+    options: ["Clearer", "More professional", "Shorter", "Smoother"],
+    examplePrompts: [
+      "Rewrite this README intro for developers migrating from webpack to Vite.",
+      "Make this help center article less repetitive without removing warnings."
+    ]
   },
   "productivity-assistant": {
     title: "AI Productivity Assistant",
@@ -168,7 +216,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste text that sounds stiff, robotic, or overly formal...",
     minLength: 40,
     optionLabel: "Rewrite style",
-    options: ["Natural", "Professional", "Simple", "Warm"]
+    options: ["Natural", "Professional", "Simple", "Warm"],
+    examplePrompts: [
+      "Humanize this cover letter paragraph without adding new achievements.",
+      "Soften this support macro so it still sets boundaries."
+    ]
   },
   "ai-homework-helper": {
     title: "AI Homework Helper",
@@ -176,7 +228,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste the homework question and what you have tried so far...",
     minLength: 30,
     optionLabel: "Help style",
-    options: ["Explain steps", "Give hints", "Check my answer", "Study notes"]
+    options: ["Explain steps", "Give hints", "Check my answer", "Study notes"],
+    examplePrompts: [
+      "Calculus: I tried substitution but got stuck isolating u on this integral (paste problem).",
+      "Biology: explain why this pedigree answer is wrong without giving me the final MC letter."
+    ]
   },
   "ai-essay-writer": {
     title: "AI Essay Writer",
@@ -184,7 +240,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Enter essay topic, requirements, thesis idea, word count, and sources if any...",
     minLength: 40,
     optionLabel: "Output type",
-    options: ["Outline", "Thesis ideas", "Draft introduction", "Revision plan"]
+    options: ["Outline", "Thesis ideas", "Draft introduction", "Revision plan"],
+    examplePrompts: [
+      "Argumentative essay 1500 words: should public libraries fund gaming programs? Need outline + thesis options.",
+      "Revision plan after instructor said my literature review lacks synthesis."
+    ]
   },
   "ai-prompt-generator": {
     title: "AI Prompt Generator",
@@ -192,7 +252,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Describe what you want an AI assistant to help you do...",
     minLength: 20,
     optionLabel: "Prompt type",
-    options: ["Writing", "Coding", "Research", "Image generation", "Productivity"]
+    options: ["Writing", "Coding", "Research", "Image generation", "Productivity"],
+    examplePrompts: [
+      "Coding: generate prompts to ask an AI to write Playwright tests for a Next.js checkout flow.",
+      "Research: prompts to compare two PDF policy drafts for clause-level differences."
+    ]
   },
   "ai-interview-answer-generator": {
     title: "AI Interview Answer Generator",
@@ -200,7 +264,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste the interview question, role, and your real experience...",
     minLength: 50,
     optionLabel: "Answer style",
-    options: ["STAR format", "Concise", "Entry-level", "Leadership"]
+    options: ["STAR format", "Concise", "Entry-level", "Leadership"],
+    examplePrompts: [
+      "Behavioral: Tell me about a time you missed a deadline. Role: junior PM. Include real metrics I will verify.",
+      "Technical leadership: how do you prioritize reliability vs feature velocity?"
+    ]
   },
   "ai-linkedin-summary-generator": {
     title: "AI LinkedIn Summary Generator",
@@ -208,7 +276,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Enter your role, skills, achievements, industry, and career goal...",
     minLength: 40,
     optionLabel: "Tone",
-    options: ["Professional", "Friendly", "Founder", "Job seeker"]
+    options: ["Professional", "Friendly", "Founder", "Job seeker"],
+    examplePrompts: [
+      "Senior backend engineer, 7 yrs, fintech, Kubernetes + Postgres, seeking staff role at product-led company.",
+      "Founder bootstrapping a browser-based tools site—summarize mission without hype."
+    ]
   },
   "ai-business-name-generator": {
     title: "AI Business Name Generator",
@@ -216,7 +288,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Describe your business idea, audience, niche, and preferred tone...",
     minLength: 20,
     optionLabel: "Name style",
-    options: ["Modern", "Simple", "Premium", "Playful"]
+    options: ["Modern", "Simple", "Premium", "Playful"],
+    examplePrompts: [
+      "Micro-SaaS for freelancers tracking invoice reminders—modern, trustworthy, not cute.",
+      "Newsletter for parents of high schoolers applying to STEM programs—warm but credible."
+    ]
   },
   "ai-notes-cleaner": {
     title: "AI Notes Cleaner",
@@ -224,7 +300,11 @@ const configs: Record<string, ToolConfig> = {
     placeholder: "Paste messy notes, meeting notes, lecture notes, or bullet points...",
     minLength: 50,
     optionLabel: "Output style",
-    options: ["Clean notes", "Action items", "Study summary", "Meeting recap"]
+    options: ["Clean notes", "Action items", "Study summary", "Meeting recap"],
+    examplePrompts: [
+      "Meeting recap from chaotic bullet dump—preserve dates and dollar amounts exactly.",
+      "Clean lecture notes with headings for definitions vs examples."
+    ]
   },
   "transcript-summarizer": {
     title: "Transcript Summarizer",
@@ -245,8 +325,29 @@ function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function getUsageKey() {
-  return "freetoolkit-ai-tools-usage";
+const USAGE_STORAGE_KEY = "freetoolkit-ai-usage-v2";
+
+type UsageStore = { date: string; bySlug: Record<string, number> };
+
+function readUsage(): UsageStore {
+  if (typeof window === "undefined") return { date: todayKey(), bySlug: {} };
+  try {
+    const raw = window.localStorage.getItem(USAGE_STORAGE_KEY);
+    if (!raw) return { date: todayKey(), bySlug: {} };
+    const parsed = JSON.parse(raw) as UsageStore;
+    if (parsed.date !== todayKey()) return { date: todayKey(), bySlug: {} };
+    return { date: parsed.date, bySlug: parsed.bySlug ?? {} };
+  } catch {
+    return { date: todayKey(), bySlug: {} };
+  }
+}
+
+function writeUsage(store: UsageStore) {
+  window.localStorage.setItem(USAGE_STORAGE_KEY, JSON.stringify(store));
+}
+
+function draftStorageKey(slug: string) {
+  return `freetoolkit-ai-draft:${slug}`;
 }
 
 export function GeminiAiTool({ slug }: { slug: string }) {
@@ -258,20 +359,35 @@ export function GeminiAiTool({ slug }: { slug: string }) {
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [successfulUses, setSuccessfulUses] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
+  const [usesThisSlug, setUsesThisSlug] = useState(0);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(getUsageKey());
-    if (!raw) return;
+    const store = readUsage();
+    setUsesThisSlug(store.bySlug[slug] ?? 0);
     try {
-      const parsed = JSON.parse(raw) as { date?: string; count?: number };
-      setSuccessfulUses(parsed.date === todayKey() ? parsed.count ?? 0 : 0);
+      const raw = window.localStorage.getItem(draftStorageKey(slug));
+      if (raw) {
+        const parsed = JSON.parse(raw) as { input?: string; name?: string; role?: string; option?: string; output?: string };
+        if (typeof parsed.input === "string") setInput(parsed.input);
+        if (typeof parsed.name === "string") setName(parsed.name);
+        if (typeof parsed.role === "string") setRole(parsed.role);
+        if (typeof parsed.option === "string") setOption(parsed.option);
+        if (typeof parsed.output === "string") setOutput(parsed.output);
+      }
     } catch {
-      setSuccessfulUses(0);
+      /* ignore */
     }
-  }, []);
+    setHydrated(true);
+  }, [slug]);
 
-  const remaining = Math.max(0, CLIENT_LIMIT - successfulUses);
+  useEffect(() => {
+    if (!hydrated || typeof window === "undefined") return;
+    const payload = JSON.stringify({ input, name, role, option, output });
+    window.localStorage.setItem(draftStorageKey(slug), payload);
+  }, [hydrated, slug, input, name, role, option, output]);
+
+  const remaining = Math.max(0, CLIENT_LIMIT - usesThisSlug);
   const requestInput = useMemo(() => {
     if (!config.bio) return input.trim();
     return {
@@ -286,9 +402,12 @@ export function GeminiAiTool({ slug }: { slug: string }) {
     ? name.trim().length >= 2 && role.trim().length >= 2 && input.trim().length >= config.minLength
     : input.trim().length >= config.minLength;
 
-  function saveSuccessfulUse(nextCount: number) {
-    setSuccessfulUses(nextCount);
-    window.localStorage.setItem(getUsageKey(), JSON.stringify({ date: todayKey(), count: nextCount }));
+  function saveSuccessfulUseForSlug() {
+    const store = readUsage();
+    const next = (store.bySlug[slug] ?? 0) + 1;
+    const updated: UsageStore = { date: todayKey(), bySlug: { ...store.bySlug, [slug]: next } };
+    writeUsage(updated);
+    setUsesThisSlug(next);
   }
 
   async function generate({ keepOutput = false }: { keepOutput?: boolean } = {}) {
@@ -314,7 +433,7 @@ export function GeminiAiTool({ slug }: { slug: string }) {
       }
 
       setOutput(data.output || "");
-      saveSuccessfulUse(successfulUses + 1);
+      saveSuccessfulUseForSlug();
     } catch (generateError) {
       setError(generateError instanceof Error ? generateError.message : "AI is busy, try again later");
     } finally {
@@ -327,6 +446,26 @@ export function GeminiAiTool({ slug }: { slug: string }) {
     await navigator.clipboard.writeText(output);
   }
 
+  function downloadOutput() {
+    if (!output) return;
+    const blob = new Blob([output], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${slug}-output.txt`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function shareOutput() {
+    if (!output || !navigator.share) return;
+    try {
+      await navigator.share({ title: config.title, text: output });
+    } catch {
+      /* user cancelled */
+    }
+  }
+
   function reset() {
     setInput("");
     setName("");
@@ -334,6 +473,9 @@ export function GeminiAiTool({ slug }: { slug: string }) {
     setOutput("");
     setError("");
     setOption(config.options?.[0] ?? "");
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(draftStorageKey(slug));
+    }
   }
 
   return (
@@ -399,7 +541,7 @@ export function GeminiAiTool({ slug }: { slug: string }) {
         </div>
 
         <p className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-600">
-          {remaining} free AI use{remaining === 1 ? "" : "s"} remaining today in this browser.
+          {remaining} free AI generation{remaining === 1 ? "" : "s"} left today for this tool in this browser ({CLIENT_LIMIT} per tool, resets nightly).
         </p>
         {!hasEnoughInput ? (
           <p className="text-sm font-semibold leading-6 text-slate-500">
@@ -410,22 +552,44 @@ export function GeminiAiTool({ slug }: { slug: string }) {
       </div>
 
       <Card className="min-h-80 bg-gradient-to-b from-white to-slate-50/80">
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-sm font-black uppercase tracking-wide text-brand-600">Output</p>
             <h3 className="mt-1 text-xl font-bold tracking-tight text-slate-950">{config.title}</h3>
           </div>
-          <SecondaryButton type="button" onClick={copyOutput} disabled={!output} className="min-h-10 px-4 py-2">
-            Copy
-          </SecondaryButton>
+          <div className="flex flex-wrap gap-2">
+            <SecondaryButton type="button" onClick={copyOutput} disabled={!output} className="min-h-10 px-4 py-2">
+              Copy
+            </SecondaryButton>
+            <SecondaryButton type="button" onClick={downloadOutput} disabled={!output} className="min-h-10 px-4 py-2">
+              Download .txt
+            </SecondaryButton>
+            {typeof navigator !== "undefined" && typeof navigator.share === "function" ? (
+              <SecondaryButton type="button" onClick={shareOutput} disabled={!output} className="min-h-10 px-4 py-2">
+                Share
+              </SecondaryButton>
+            ) : null}
+          </div>
         </div>
         {output ? (
           <SecondaryButton type="button" onClick={() => generate({ keepOutput: true })} disabled={loading || remaining <= 0} className="mt-4">
             Regenerate
           </SecondaryButton>
         ) : null}
-        <div className="mt-5 min-h-72 whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
-          {loading ? "Generating a clean, structured result..." : output || config.emptyState || "Your AI output will appear here. Add context on the left and click Generate."}
+        <div className="relative mt-5 min-h-72 whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
+          {loading ? (
+            <div className="space-y-3 animate-pulse" aria-hidden="true">
+              <div className="h-3 max-w-[66%] rounded-full bg-slate-200" />
+              <div className="h-3 w-full rounded-full bg-slate-100" />
+              <div className="h-3 max-w-[83%] rounded-full bg-slate-100" />
+              <div className="h-3 w-full rounded-full bg-slate-100" />
+              <div className="h-3 w-1/2 rounded-full bg-slate-200" />
+              <p className="pt-4 text-xs font-bold uppercase tracking-wide text-slate-400">Generating structured output…</p>
+            </div>
+          ) : null}
+          {!loading ? (
+            <span>{output || config.emptyState || "Your AI output will appear here. Add context on the left and click Generate."}</span>
+          ) : null}
         </div>
       </Card>
     </div>

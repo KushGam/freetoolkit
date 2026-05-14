@@ -1,6 +1,10 @@
 import { newTools } from "./new-tools";
 import { expandedTools } from "./expanded-tools";
+import { applyIndexedRichPack } from "./indexed-tool-rich-packs";
+import { applyIndexedSupplement } from "./indexed-tool-supplements";
+import { applyRichToolPack } from "./rich-tool-packs";
 import { getRelatedToolSlugs } from "./tool-relations";
+import { isToolIndexedForSearch } from "./indexing-policy";
 
 export type ToolCategory = "Image Tools" | "PDF Tools" | "Student Tools" | "AI Tools" | "Text Tools" | "Developer Tools" | "Calculator Tools" | "Security Tools" | "SEO Tools" | "Social Media Tools" | "Gaming Tools";
 
@@ -19,6 +23,11 @@ export type Tool = {
   features: string[];
   faq: Array<{ question: string; answer: string }>;
   seo: string[];
+  /** Optional structured sections for richer tool pages (AdSense-friendly depth). */
+  useCases?: string[];
+  tips?: string[];
+  /** Pitfalls readers should avoid; shown when present for deeper pages. */
+  commonMistakes?: string[];
 };
 
 const privacyNote = "Your files are processed in your browser where possible. FreeToolKit does not require sign-up, payment, or a server upload workflow for these tools.";
@@ -422,7 +431,10 @@ const coreTools: Tool[] = [
   }
 ];
 
-export const tools: Tool[] = [...coreTools, ...newTools, ...expandedTools];
+export const tools: Tool[] = [...coreTools, ...newTools, ...expandedTools]
+  .map(applyRichToolPack)
+  .map(applyIndexedRichPack)
+  .map(applyIndexedSupplement);
 
 export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "Student Tools", "AI Tools", "Text Tools", "Developer Tools", "Calculator Tools", "Security Tools", "SEO Tools", "Social Media Tools", "Gaming Tools"];
 
@@ -441,13 +453,20 @@ export const topLevelCategoryRoutes: Record<TopLevelCategory, string> = {
 };
 
 export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
-  Everyday: "Free everyday productivity tools for quick browser-based tasks, calculators, text cleanup, QR codes, and daily workflows.",
-  "AI Tools": "Free AI tools for writing, resumes, captions, study notes, content, and productivity workflows.",
-  Student: "Free student tools for grades, GPA, attendance, study time, word count, and career preparation.",
-  Developer: "Free developer tools for JSON, encoding, UUIDs, URLs, and quick web utilities.",
-  "PDF & Image": "Free PDF and image tools for converting, compressing, editing, extracting, and preparing files in your browser.",
-  "SEO Tools": "Free SEO tools for metadata, SERP previews, robots.txt, sitemaps, slugs, keyword checks, and schema markup.",
-  "Social Media Tools": "Free social media tools for captions, hashtags, bios, tags, character counts, and post formatting."
+  Everyday:
+    "Free everyday productivity tools for quick browser-based tasks: calculators, text cleanup, QR codes, passwords, and unit conversion—no signup, no install.",
+  "AI Tools":
+    "Free AI drafting tools for emails, summaries, study help, resumes, grammar fixes, and interview practice—outputs are drafts you should always review.",
+  Student:
+    "Free student tools for GPA and grade planning, attendance estimates, study timers, word counts, and citations—use them alongside your syllabus and registrar rules.",
+  Developer:
+    "Free developer tools for JSON, encoding, UUIDs, URLs, Base64, regex experiments, and QR payloads—built for fast copy-paste workflows in the browser.",
+  "PDF & Image":
+    "Free PDF and image tools for merging, splitting, compressing, converting, resizing, and watermarking—designed for browser-based workflows when your files and browser allow it.",
+  "SEO Tools":
+    "Free SEO tools for meta tags, Open Graph, robots.txt, sitemaps, and SERP previews—practical generators and checklists, not a promise of rankings.",
+  "Social Media Tools":
+    "Free social and lightweight gaming helpers: format social copy and character-limited posts, then jump to Palworld breeding math and other quick game utilities in the same hub."
 };
 
 export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: string; href: string }>> = {
@@ -486,6 +505,10 @@ export const categoryRoutes: Record<ToolCategory, string> = {
 
 export function getTool(slug: string) {
   return tools.find((tool) => tool.slug === slug);
+}
+
+export function getIndexedTools() {
+  return tools.filter((tool) => isToolIndexedForSearch(tool.slug));
 }
 
 export function toolHref(tool: Tool) {
@@ -527,48 +550,48 @@ export function getToolsByTopLevelCategory(category: TopLevelCategory) {
 }
 
 export function getRelatedTools(tool: Tool) {
-  const clustered = getRelatedToolSlugs(tool.slug, 4).map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+  const clustered = getRelatedToolSlugs(tool.slug, 4)
+    .map((slug) => getTool(slug))
+    .filter((item): item is Tool => Boolean(item));
   if (clustered.length) return clustered;
 
+  const onlyIndexed = (t: Tool | undefined): t is Tool => t !== undefined && isToolIndexedForSearch(t.slug);
+
   if (tool.slug === "ai-image-to-word") {
-    const preferred = ["image-to-pdf", "word-to-pdf", "pdf-to-word", "ai-text-summarizer", "image-to-base64"];
-    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+    const preferred = ["image-to-pdf", "word-to-pdf", "pdf-to-word", "ai-text-summarizer"];
+    return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
   if (tool.slug === "image-to-pdf") {
     const preferred = ["image-compressor", "image-resizer", "merge-pdf", "word-to-pdf"];
-    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+    return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
   if (tool.slug === "image-to-word") {
     const preferred = ["image-to-pdf", "word-to-pdf", "pdf-to-word", "extract-pdf-pages"];
-    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+    return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
   if (tool.slug === "pdf-to-word") {
     const preferred = ["word-to-pdf", "merge-pdf", "split-pdf", "add-text-to-pdf", "extract-pdf-pages"];
-    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+    return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
   if (tool.slug === "ai-resume-cover-letter") {
-    const preferred = ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "word-counter"];
-    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item)).slice(0, 4);
+    const preferred = ["ai-text-summarizer", "grammar-fixer", "word-counter", "explain-simple"];
+    return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
   if (tool.category === "AI Tools") {
     const preferred = [
       "ai-study-notes",
       "explain-simple",
       "ai-email-writer",
-      "chat-reply-generator",
-      "content-rewriter",
-      "productivity-assistant",
       "ai-text-summarizer",
-      "paraphrasing-tool",
-      "keyword-extractor",
       "grammar-fixer",
-      "title-generator",
-      "bio-generator",
-      "faq-generator",
-      "text-to-bullet-points",
-      "ai-resume-cover-letter"
+      "ai-resume-cover-letter",
+      "resume-ats-checker",
+      "transcript-summarizer",
+      "ai-homework-helper",
+      "ai-interview-answer-generator",
+      "ai-linkedin-summary-generator"
     ].filter((slug) => slug !== tool.slug);
-    return preferred.map((slug) => getTool(slug)).filter((item): item is Tool => Boolean(item));
+    return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
-  return tools.filter((item) => item.category === tool.category && item.slug !== tool.slug).slice(0, 4);
+  return tools.filter((item) => item.category === tool.category && item.slug !== tool.slug && isToolIndexedForSearch(item.slug)).slice(0, 4);
 }

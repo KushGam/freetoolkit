@@ -22,7 +22,18 @@ function seo(input: NewToolInput) {
 }
 
 function tool(input: NewToolInput): Tool {
-  return { ...input, seo: seo(input) };
+  const {
+    primary,
+    audience,
+    does,
+    when,
+    workflow,
+    benefit,
+    caution,
+    related,
+    ...rest
+  } = input;
+  return { ...rest, seo: seo(input) };
 }
 
 export const newTools: Tool[] = [
@@ -1200,7 +1211,6 @@ export const newTools: Tool[] = [
   }),
   tool({
     slug: "ai-resume-cover-letter",
-    href: "/student-tools/ai-resume-cover-letter",
     title: "AI Resume & Cover Letter Generator (for Students & Graduates)",
     category: "Student Tools",
     badge: "NEW",

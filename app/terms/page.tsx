@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { TrustCallout } from "@/components/TrustCallout";
 import { Card, Container, PageHeader } from "@/components/ui";
 import { withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
@@ -25,6 +27,7 @@ export default function TermsPage() {
           description="Simple terms for using FreeToolKit's AI tools, file tools, SEO helpers, social media utilities, calculators, and browser-based workflows."
           badges={["Use responsibly", "Review results", "As-is tools"]}
         />
+        <TrustCallout className="mt-6" />
         <Card className="prose-lite mt-6 p-6 sm:p-8">
           <p>
             These Terms of Use explain how you may use FreeToolKit. The site is built as a practical toolkit for everyday productivity, education, content work, file preparation, SEO tasks, social media workflows, resumes, calculators, and lightweight technical utilities.
@@ -93,7 +96,10 @@ export default function TermsPage() {
 
           <h2>Contact</h2>
           <p>
-            If you have questions about these terms or notice an issue with a tool, contact us through the FreeToolKit contact page.
+            If you have questions about these terms or notice an issue with a tool, email{" "}
+            <a className="font-bold text-brand-700 hover:text-brand-900" href="mailto:hello@freetoolkitapp.com">hello@freetoolkitapp.com</a>, use the{" "}
+            <Link href="/contact" className="font-bold text-brand-700 hover:text-brand-900">contact page</Link>, or review the{" "}
+            <Link href="/privacy-policy" className="font-bold text-brand-700 hover:text-brand-900">Privacy Policy</Link>.
           </p>
         </Card>
       </Container>

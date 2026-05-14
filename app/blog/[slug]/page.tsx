@@ -50,6 +50,11 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       type: "article",
       publishedTime: post.publishedAt,
       tags: post.keywords
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description
     }
   };
 }

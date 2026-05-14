@@ -15,6 +15,7 @@ import {
   toolHref,
   type TopLevelCategory
 } from "@/data/tools";
+import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema";
 
 const categoryBadges: Record<TopLevelCategory, string[]> = {
@@ -23,7 +24,7 @@ const categoryBadges: Record<TopLevelCategory, string[]> = {
   Student: ["Grades", "GPA", "Attendance", "Study"],
   Developer: ["JSON", "URLs", "UUIDs", "Base64"],
   "PDF & Image": ["PDF", "Images", "Converters", "Browser-based"],
-  "SEO Tools": ["Meta", "SERP", "Schema", "Crawling"],
+  "SEO Tools": ["Meta tags", "SERP preview", "Robots & sitemaps", "Browser-based"],
   "Social Media Tools": ["Captions", "Hashtags", "Bios", "Counters"]
 };
 
@@ -36,6 +37,7 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
     .flatMap((cluster) => cluster.toolSlugs)
     .map((slug) => getTool(slug))
     .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
+    .filter((tool) => isToolIndexedForSearch(tool.slug))
     .slice(0, 6);
   const faqSchema = buildFaqSchema(seo.faqs);
   const breadcrumbSchema = buildBreadcrumbSchema([

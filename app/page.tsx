@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
+import { HomeSeoContent } from "@/components/HomeSeoContent";
 import { HomeToolSearch } from "@/components/HomeToolSearch";
 import { Badge, Card, CategoryCard, Container, ToolCard } from "@/components/ui";
 import { blogHref, blogPosts } from "@/data/blog";
-import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategories, topLevelCategoryRoutes, type TopLevelCategory } from "@/data/tools";
+import { isToolIndexedForSearch } from "@/data/indexing-policy";
+import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategories, topLevelCategoryRoutes, type Tool, type TopLevelCategory } from "@/data/tools";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -24,17 +26,26 @@ export const metadata: Metadata = {
 const popularSlugs = [
   "ai-resume-cover-letter",
   "image-to-pdf",
-  "ai-image-to-word",
   "ai-text-summarizer",
   "qr-code-generator",
-  "pdf-to-word"
+  "pdf-to-word",
+  "merge-pdf"
+];
+
+const recentlyAddedSlugs = [
+  "transcript-summarizer",
+  "grammar-fixer",
+  "meta-tag-generator",
+  "open-graph-generator",
+  "robots-txt-generator",
+  "sitemap-generator"
 ];
 
 const secondaryPopularSlugs = [
   "image-compressor",
   "merge-pdf",
   "pdf-to-jpg",
-  "qr-code-generator",
+  "gpa-calculator",
   "discount-calculator",
   "bmi-calculator"
 ];
@@ -122,14 +133,25 @@ const whyCards = [
 const homeFaqs = [
   ["Is FreeToolKit free to use?", "Yes. FreeToolKit provides free AI and everyday productivity tools with no signup required."],
   ["Are my files uploaded?", "File tools are designed to process in your browser where supported. AI tools use only the text or image needed to generate the requested result."],
-  ["What tools are most popular?", "High-value tools include AI Resume Generator, Image to PDF, AI Image to Word, PDF to Word, QR Code Generator, and Text Summarizer."],
+  [
+    "What tools are most popular?",
+    "We spotlight high-trust utilities first—PDF merge/compress, image compression, GPA planning, QR codes, JSON cleanup, and the curated AI writing helpers shown on the homepage."
+  ],
   ["Does FreeToolKit work on mobile?", "Yes. The layout, controls, and tool cards are built for phones, tablets, and desktops."],
   ["Can I use these tools for work or study?", "Yes. The site is useful for documents, applications, assignments, content workflows, calculations, and developer tasks."]
 ];
 
+function pickIndexedTools(slugs: string[]) {
+  return slugs
+    .map((slug) => tools.find((tool) => tool.slug === slug))
+    .filter((tool): tool is Tool => tool !== undefined)
+    .filter((tool) => isToolIndexedForSearch(tool.slug));
+}
+
 export default function HomePage() {
-  const trendingTools = popularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
-  const popularTools = secondaryPopularSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter(Boolean);
+  const trendingTools = pickIndexedTools(popularSlugs);
+  const popularTools = pickIndexedTools(secondaryPopularSlugs);
+  const recentlyAddedTools = pickIndexedTools(recentlyAddedSlugs);
   const latestPosts = blogPosts.slice(0, 3);
 
   return (
@@ -138,13 +160,13 @@ export default function HomePage() {
         <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-20">
           <div className="max-w-4xl text-center lg:text-left">
             <Badge className="mx-auto border-brand-100 text-[11px] font-semibold uppercase tracking-wide text-brand-700 sm:text-xs lg:mx-0">
-              Free AI & everyday productivity tools
+              Free browser-based online tools · no signup
             </Badge>
             <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.04] tracking-tight text-slate-950 sm:text-5xl lg:mx-0 lg:text-6xl">
-              Free AI & Everyday Productivity Tools
+              Free tools for students, developers, and everyday documents
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg lg:mx-0">
-              Use fast browser-based tools for AI writing, resumes, PDFs, images, calculators, study workflows, and developer tasks. No signup, no clutter, just useful productivity tools.
+              Compress images, merge PDFs, fix JSON, draft AI summaries, calculate GPA, and prep resumes—fast, privacy-aware where possible, and designed for phones as well as desktops. No account wall, no clutter: just useful utilities with clear explanations.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:justify-start">
               <Link href="/all-tools" className="rounded-2xl bg-gradient-to-b from-brand-500 to-brand-700 px-6 py-3 text-center text-sm font-bold text-white shadow-[0_16px_35px_rgba(127,29,29,0.24)] transition hover:-translate-y-0.5 hover:from-brand-600 hover:to-brand-700">
@@ -225,7 +247,9 @@ export default function HomePage() {
           <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {topLevelCategories.map((category) => {
               const details = categoryDetails[category];
-              const categoryTools = getToolsByTopLevelCategory(category).slice(0, 3);
+              const categoryTools = getToolsByTopLevelCategory(category)
+                .filter((tool) => isToolIndexedForSearch(tool.slug))
+                .slice(0, 3);
               return (
                 <CategoryCard key={category} title={category} description={details.description} href={details.href} icon={details.icon} tools={categoryTools.map((tool) => tool.title)} />
               );
@@ -251,6 +275,23 @@ export default function HomePage() {
         </section>
 
         <section className="mt-16">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Recently added</p>
+              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Fresh utilities worth bookmarking</h2>
+            </div>
+            <Link href="/all-tools" className="text-sm font-semibold text-brand-700 hover:text-brand-900">
+              Browse directory →
+            </Link>
+          </div>
+          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {recentlyAddedTools.map((tool) => (
+              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-16">
           <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">Trust basics</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Why FreeToolKit?</h2>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -264,22 +305,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="prose-lite mt-16 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_rgba(15,23,42,0.06)] sm:p-8">
-          <h2>Free AI and Everyday Productivity Tools</h2>
-          <p>
-            FreeToolKit is built as a modern productivity platform for people who need quick answers without installing extra software or creating an account. The site brings together free AI tools, PDF utilities, image converters, student calculators, writing helpers, and developer tools in one clean browser-based workspace. Instead of treating tools as a cluttered directory, FreeToolKit organizes them around real workflows: prepare a resume, convert an image, clean text, create a PDF, summarize notes, calculate a result, or format developer data.
-          </p>
-          <p>
-            The <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI Tools</Link> section helps with summaries, captions, hashtags, email drafts, study notes, ATS checks, and resume support. The <Link href="/pdf-image" className="font-bold text-brand-700 hover:text-brand-900">PDF & Image</Link> section focuses on practical file workflows such as Image to PDF, PDF to Word, PDF to JPG, Merge PDF, Image Compressor, and AI Image to Word. The <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">Student</Link> section keeps grade planning, attendance, study timers, and writing checks easy to reach, while the <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">Developer</Link> section covers JSON, Base64, URL encoding, and UUID generation. Creative workflows also include focused <Link href="/gaming-tools" className="font-bold text-brand-700 hover:text-brand-900">Gaming Tools</Link> such as breeding, sensitivity, crafting, and matchup calculators.
-          </p>
-          <p>
-            Every page is designed for fast mobile and desktop use. Inputs are large, cards are easy to scan, outputs are clear, and related tools keep the next step nearby. File tools are browser-based where possible, while AI tools use a protected generation flow with clear review steps. That balance helps FreeToolKit feel fast, trustworthy, and practical for everyday tasks, schoolwork, content creation, job applications, office documents, and lightweight technical workflows.
-          </p>
-          <h2>A cleaner alternative to scattered utility sites</h2>
-          <p>
-            Many online utility pages feel crowded, outdated, or confusing. FreeToolKit aims for a calmer SaaS-style experience: clear navigation, modern typography, concise helper text, and tool cards that explain exactly what each page does. You can search across all tools, browse focused categories, or start from trending workflows like AI Resume Generator, PDF to Word, AI Image to Word, Text Summarizer, QR Code Generator, and Image to PDF. The goal is simple: free online productivity tools that feel premium, work quickly, and remain easy to trust.
-          </p>
-        </section>
+        <HomeSeoContent />
 
         <section className="mt-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
