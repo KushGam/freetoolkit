@@ -172,12 +172,14 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
     title: "Free Social Media Tools Online | Captions, Hashtags, Bios, Counters",
     description: "Use free social media tools for captions, hashtags, bios, character counts, tag cleanup, and post formatting.",
     keywords: ["social media tools", "caption formatter", "hashtag counter", "Twitter character counter", "bio generator"],
-    intro: "Free social media tools for preparing captions, hashtags, bios, tags, and short post copy before publishing.",
+    intro: "Free social media tools for preparing captions, hashtags, bios, tags, and short post copy before publishing. Many caption and hashtag utilities are being expanded; meanwhile use Word Counter, Case Converter, and Text Formatter from Everyday tools for reliable copy cleanup.",
     body: [
       "Social media workflows often need small cleanup steps: count characters, format captions, extract tags, write a concise bio, or check whether a hashtag list is too long.",
       "Use these tools as publishing helpers. Review tone, accuracy, and platform rules before posting, especially for brand accounts or client work.",
       "Character limits change; when a network updates limits, re-check counts on a draft before scheduling—do not trust a months-old screenshot of “280 characters” lore alone.",
-      "Pair social copy helpers with Word Counter and Case Converter when the same message must exist in long-form blog and short-form post variants with consistent terminology."
+      "Pair social copy helpers with Word Counter and Case Converter when the same message must exist in long-form blog and short-form post variants with consistent terminology.",
+      "FreeToolKit’s fully documented, search-ready tools live in the Everyday and AI hubs today—this category page remains a navigation bridge while additional social utilities receive the same depth treatment as our PDF and student tools.",
+      "If you need SERP or Open Graph previews for link posts, open the SEO Tools hub for Meta Tag Generator, Open Graph Generator, and SERP Preview—those generators help you sanity-check how titles render before you publish."
     ],
     faqs: [
       { question: "Are social media tools free?", answer: "Yes. They are free browser-based tools with no signup required." },
@@ -186,15 +188,17 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
     ]
   },
   "Gaming Tools": {
-    title: "Free Gaming Tools Online | Breeding, Sensitivity, Crafting, Type Calculators",
-    description: "Use free browser-based gaming tools for Palworld breeding results, Valorant sensitivity conversion, Minecraft crafting materials, and Pokemon type effectiveness.",
-    keywords: ["gaming tools", "Palworld breeding calculator", "Valorant sensitivity converter", "Minecraft crafting calculator", "Pokemon type calculator"],
-    intro: "Free gaming tools for repeat-use calculations and lookups across popular games. Built for quick browser use on desktop and mobile without signup.",
+    title: "Free Gaming Tools Online | Palworld Breeding & Game Calculators",
+    description: "Use free browser-based gaming tools including the Palworld breeding calculator. Additional game helpers are expanded over time with the same editorial depth as our indexed tools.",
+    keywords: ["gaming tools", "Palworld breeding calculator", "game calculators", "browser gaming utilities"],
+    intro: "Free gaming tools for repeat-use calculations and lookups. The Palworld Breeding Calculator is our primary indexed game utility today—use it to plan offspring paths before you spend hours farming. Other game calculators remain available in the directory and will be expanded to the same quality bar over time.",
     body: [
-      "Gaming tools are most useful when they solve small decisions fast: sensitivity conversion before a match, breeding checks before resource grinding, type effectiveness during team planning, or crafting breakdowns before farming.",
+      "Gaming tools are most useful when they solve small decisions fast: breeding checks before resource grinding, type effectiveness during team planning, or crafting breakdowns before farming.",
       "This category stays focused on practical utility workflows. Tools run in the browser with lightweight datasets, clear controls, and fast outputs so players can check values quickly and get back to gameplay.",
       "Game balance patches can change underlying data; treat outputs as community-model estimates unless the publisher provides an official API you are calling.",
-      "Use Percentage Calculator or Unit Converter from the Everyday hub when you are theorycrafting resource or odds math that spills outside a single game’s built-in UI."
+      "Use Percentage Calculator or Unit Converter from the Everyday hub when you are theorycrafting resource or odds math that spills outside a single game’s built-in UI.",
+      "Read the Palworld breeding guide on our blog for workflow tips, then open the Palworld Breeding Calculator to verify parent pairs and expected offspring before you commit rare resources in-game.",
+      "FreeToolKit is not affiliated with game publishers; names and trademarks belong to their owners. We provide independent calculators for personal planning only."
     ],
     faqs: [
       { question: "Do these gaming tools need login?", answer: "No. Gaming tools work in your browser with no signup required." },
@@ -244,7 +248,17 @@ export const topLevelCategorySeo: Record<TopLevelCategory, Pick<CategorySeo, "bo
     faqs: categorySeo["SEO Tools"].faqs
   },
   "Social Media Tools": {
-    body: categorySeo["Social Media Tools"].body,
-    faqs: categorySeo["Social Media Tools"].faqs
+    body: [
+      ...categorySeo["Social Media Tools"].body,
+      "For character limits and caption cleanup today, start on the Everyday hub with Word Counter, Remove Extra Spaces, and Case Converter—those pages are fully indexed with long-form guidance.",
+      "When you publish links to landing pages, pair social drafts with Meta Tag Generator and SERP Preview from the SEO Tools section so titles and descriptions match what you intend to share."
+    ],
+    faqs: [
+      ...categorySeo["Social Media Tools"].faqs,
+      {
+        question: "Which social tools are fully expanded on FreeToolKit?",
+        answer: "Caption and hashtag specialists are still growing. For reliable, in-depth pages today, use Word Counter, Text Formatter, and AI writing tools linked from the Everyday and AI Tools hubs."
+      }
+    ]
   }
 };

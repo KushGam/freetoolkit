@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge, Card, Container, PageHeader } from "@/components/ui";
 import { blogHref, blogPosts } from "@/data/blog";
+import { isBlogIndexedForSearch } from "@/data/indexing-policy";
 import { canonicalUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
   }
 };
 
-const categories = Array.from(new Set(blogPosts.map((post) => post.category)));
+const indexedBlogPosts = blogPosts.filter((post) => isBlogIndexedForSearch(post.slug));
+const categories = Array.from(new Set(indexedBlogPosts.map((post) => post.category)));
 
 export default function BlogPage() {
   return (
@@ -43,7 +45,7 @@ export default function BlogPage() {
           </div>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {blogPosts.map((post) => (
+            {indexedBlogPosts.map((post) => (
               <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-brand-100">
                 <Card className="flex h-full flex-col p-6 group-hover:-translate-y-1 group-hover:border-brand-200">
                   <div className="flex flex-wrap items-center gap-2">

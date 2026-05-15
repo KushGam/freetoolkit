@@ -11,7 +11,7 @@ import { categoryRoutes, getTool, getToolsByCategory, getTopLevelCategory, topLe
 import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema";
 
-export function CategoryPage({ category, intro }: { category: ToolCategory; intro: string }) {
+export function CategoryPage({ category, intro, hubNote }: { category: ToolCategory; intro: string; hubNote?: string }) {
   const categoryTools = getToolsByCategory(category);
   const seo = categorySeo[category];
   const featuredGuides = getBlogPostsBySlugs(getBlogSlugsForCategory(category, 4));
@@ -34,6 +34,12 @@ export function CategoryPage({ category, intro }: { category: ToolCategory; intr
       {faqSchema ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} /> : null}
       <Container className="max-w-6xl py-10 sm:py-12">
       <PageHeader eyebrow="Free browser tools" title={category} description={seo?.intro ?? intro} badges={["No signup", "Fast", "Mobile friendly"]} />
+      {hubNote ? (
+        <section className="mt-8 rounded-2xl border border-brand-100 bg-brand-50/80 p-5 text-sm leading-relaxed text-slate-700">
+          <p className="font-semibold text-slate-900">Where to start</p>
+          <p className="mt-2">{hubNote}</p>
+        </section>
+      ) : null}
       {featuredTools.length ? (
         <section className="mt-10">
           <p className="text-sm font-black uppercase tracking-wide text-brand-600">Featured tools</p>

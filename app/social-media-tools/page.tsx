@@ -12,5 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function SocialMediaToolsPage() {
-  return <CategoryPage category="Social Media Tools" intro={categorySeo["Social Media Tools"].intro} />;
+  return (
+    <CategoryPage
+      category="Social Media Tools"
+      intro={categorySeo["Social Media Tools"].intro}
+      hubNote="For fully expanded copy helpers today, use Word Counter, Case Converter, and Text Formatter from the Everyday hub, or AI Email Writer from AI Tools. Dedicated caption and hashtag utilities on this page are still being expanded to our indexed quality bar."
+    />
+  );
 }

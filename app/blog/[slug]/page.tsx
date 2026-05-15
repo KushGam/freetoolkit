@@ -5,6 +5,7 @@ import { FAQ } from "@/components/FAQ";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { Badge, Container, PageHeader, ToolCard } from "@/components/ui";
 import { blogHref, blogPosts, getBlogFaqs, getBlogPost, getBlogRelatedToolLinks, getRelatedBlogPosts } from "@/data/blog";
+import { isBlogIndexedForSearch } from "@/data/indexing-policy";
 import { categoryRoutes } from "@/data/tools";
 import { buildBlogPostingSchema, buildBreadcrumbSchema, buildFaqSchema, withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
@@ -36,12 +37,14 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   if (!post) return {};
 
   const canonical = canonicalUrl(blogHref(post));
+  const indexed = isBlogIndexedForSearch(post.slug);
 
   return {
     title: withoutBrandSuffix(`${post.title} | FreeToolKit Blog`),
     description: post.description,
     keywords: post.keywords,
     alternates: { canonical },
+    robots: indexed ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       title: post.title,
       description: post.description,

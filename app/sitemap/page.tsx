@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, Container, PageHeader } from "@/components/ui";
-import { blogHref, blogPosts } from "@/data/blog";
+import { blogHref, getIndexedBlogPosts } from "@/data/blog";
 import { getToolsByTopLevelCategory, topLevelCategories, topLevelCategoryRoutes, toolHref, type TopLevelCategory } from "@/data/tools";
 import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
@@ -61,7 +61,7 @@ export default function HtmlSitemapPage() {
           <Card className="p-6">
             <h2 className="font-display text-xl font-bold text-slate-950">Blog guides</h2>
             <ul className="mt-4 grid max-h-[28rem] gap-2 overflow-y-auto text-sm">
-              {blogPosts.map((post) => (
+              {getIndexedBlogPosts().map((post) => (
                 <li key={post.slug}>
                   <Link href={blogHref(post)} className="font-semibold text-brand-700 hover:text-brand-900">
                     {post.title}

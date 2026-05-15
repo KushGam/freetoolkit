@@ -1,5 +1,5 @@
 import { getTool, toolHref, type Tool } from "@/data/tools";
-import { isToolIndexedForSearch } from "@/data/indexing-policy";
+import { isBlogIndexedForSearch, isToolIndexedForSearch } from "@/data/indexing-policy";
 import { getBlogSlugsForTool, getRelatedBlogSlugsForBlog } from "@/data/tool-relations";
 import { additionalBlogPosts } from "@/data/blog-additional-posts";
 import type { BlogCategory, BlogFaq, BlogPost, BlogSection } from "@/data/blog-types";
@@ -447,7 +447,7 @@ export const blogPosts: BlogPost[] = [
     category: "Gaming Guides",
     publishedAt: "2026-05-11",
     readingTime: "4 min read",
-    relatedTools: ["valorant-sensitivity-converter", "palworld-breeding-calculator", "pokemon-type-calculator"],
+    relatedTools: ["palworld-breeding-calculator", "percentage-calculator", "unit-converter"],
     keywords: ["Valorant sensitivity converter", "FPS sensitivity conversion", "Valorant aim settings", "gaming tools"],
     content: [
       {
@@ -482,6 +482,10 @@ export function blogHref(post: Pick<BlogPost, "slug">) {
 
 export function getBlogPost(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
+}
+
+export function getIndexedBlogPosts() {
+  return blogPosts.filter((post) => isBlogIndexedForSearch(post.slug));
 }
 
 export function getBlogPostsBySlugs(slugs: string[]) {
@@ -524,12 +528,15 @@ export function getBlogRelatedToolLinks(post: BlogPost) {
 export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
   const clusterSlugs = getRelatedBlogSlugsForBlog(post.slug, limit);
   if (clusterSlugs.length) {
-    return clusterSlugs.map((slug) => getBlogPost(slug)).filter((item): item is BlogPost => Boolean(item)).slice(0, limit);
+    return clusterSlugs
+      .map((slug) => getBlogPost(slug))
+      .filter((item): item is BlogPost => item !== undefined && isBlogIndexedForSearch(item.slug))
+      .slice(0, limit);
   }
 
   const relatedToolSlugs = new Set(post.relatedTools);
   return blogPosts
-    .filter((item) => item.slug !== post.slug)
+    .filter((item) => item.slug !== post.slug && isBlogIndexedForSearch(item.slug))
     .map((item) => {
       const sharedTools = item.relatedTools.filter((slug) => relatedToolSlugs.has(slug)).length;
       const categoryMatch = item.category === post.category ? 2 : 0;
@@ -542,8 +549,10 @@ export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
 
 export function getBlogPostsForTool(toolSlug: string, limit = 3) {
   const clusterSlugs = getBlogSlugsForTool(toolSlug, limit);
-  const clusterPosts = clusterSlugs.map((slug) => getBlogPost(slug)).filter((item): item is BlogPost => Boolean(item));
-  const directPosts = blogPosts.filter((post) => post.relatedTools.includes(toolSlug));
+  const clusterPosts = clusterSlugs
+    .map((slug) => getBlogPost(slug))
+    .filter((item): item is BlogPost => item !== undefined && isBlogIndexedForSearch(item.slug));
+  const directPosts = blogPosts.filter((post) => post.relatedTools.includes(toolSlug) && isBlogIndexedForSearch(post.slug));
   return uniquePosts([...directPosts, ...clusterPosts]).slice(0, limit);
 }
 

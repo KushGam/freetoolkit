@@ -12,5 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function GamingToolsPage() {
-  return <CategoryPage category="Gaming Tools" intro={categorySeo["Gaming Tools"].intro} />;
+  return (
+    <CategoryPage
+      category="Gaming Tools"
+      intro={categorySeo["Gaming Tools"].intro}
+      hubNote="Our primary indexed game utility is the Palworld Breeding Calculator—read the Palworld breeding guide on the blog, then use the calculator before you commit rare in-game resources."
+    />
+  );
 }

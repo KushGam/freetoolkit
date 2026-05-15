@@ -134,7 +134,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["Gaming Tools"],
     topLevelCategories: ["Social Media Tools", "Everyday"],
     toolSlugs: ["palworld-breeding-calculator", "valorant-sensitivity-converter", "minecraft-crafting-calculator", "pokemon-type-calculator"],
-    blogSlugs: ["palworld-breeding-guide", "valorant-sensitivity-guide"]
+    blogSlugs: ["palworld-breeding-guide"]
   }
 ];
 
@@ -152,8 +152,7 @@ export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
   "cgpa-calculator": ["how-to-calculate-gpa", "best-free-student-tools"],
   "word-counter": ["word-counter-guide", "best-free-student-tools"],
   "password-generator": ["password-generator-guide", "privacy-friendly-online-tools-checklist", "best-free-online-tools-for-daily-work"],
-  "palworld-breeding-calculator": ["palworld-breeding-guide", "valorant-sensitivity-guide"],
-  "valorant-sensitivity-converter": ["valorant-sensitivity-guide", "palworld-breeding-guide"],
+  "palworld-breeding-calculator": ["palworld-breeding-guide"],
   "minecraft-crafting-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
   "pokemon-type-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
   "qr-code-generator": ["best-free-online-tools-for-daily-work", "browser-tools-vs-desktop-software", "privacy-friendly-online-tools-checklist"],

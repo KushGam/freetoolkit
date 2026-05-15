@@ -8,46 +8,27 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { tools, getTool } from "../data/tools";
-import { INDEXED_TOOL_SLUGS, isToolIndexedForSearch } from "../data/indexing-policy";
+import sitemapPolicy from "../data/sitemap-policy.json";
+import { BLOG_NOINDEX_SLUGS, INDEXED_TOOL_SLUGS, isToolIndexedForSearch } from "../data/indexing-policy";
 import { getRelatedToolSlugs } from "../data/tool-relations";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-const hubSingleSegments = new Set([
-  "about",
-  "contact",
-  "terms",
-  "disclaimer",
-  "privacy",
-  "privacy-policy",
-  "blog",
-  "all-tools",
-  "sitemap",
-  "ads.txt",
-  "ai-tools",
-  "student",
-  "student-tools",
-  "developer",
-  "developer-tools",
-  "everyday",
-  "pdf-tools",
-  "image-tools",
-  "pdf-image",
-  "calculator-tools",
-  "security-tools",
-  "seo-tools",
-  "social-media-tools",
-  "gaming-tools",
-  "text-tools"
-]);
+const allowedStaticPaths = new Set(sitemapPolicy.staticInclude as string[]);
+const alwaysExcludePaths = new Set(sitemapPolicy.alwaysExclude as string[]);
+const blogNoindexPaths = new Set((sitemapPolicy.blogNoindex as string[]).map((slug) => `/blog/${slug}`));
 
 function collectSitemapPaths(): string[] {
   const publicDir = path.join(root, "public");
-  if (!fs.existsSync(publicDir)) return [];
+  const urlsetFile = path.join(publicDir, "sitemap-0.xml");
+  if (!fs.existsSync(urlsetFile)) return [];
   const paths: string[] = [];
-  for (const name of fs.readdirSync(publicDir)) {
-    if (!name.endsWith(".xml") || !name.includes("sitemap")) continue;
-    const text = fs.readFileSync(path.join(publicDir, name), "utf8");
+  const files = ["sitemap-0.xml"];
+  for (const name of files) {
+    const filePath = path.join(publicDir, name);
+    if (!fs.existsSync(filePath)) continue;
+    const text = fs.readFileSync(filePath, "utf8");
+    if (!text.includes("<urlset")) continue;
     const locRe = /<loc>([^<]+)<\/loc>/g;
     let locMatch: RegExpExecArray | null;
     while ((locMatch = locRe.exec(text)) !== null) {
@@ -115,14 +96,32 @@ function main() {
   }
 
   if (sitemapPaths.size) {
+    for (const excluded of alwaysExcludePaths) {
+      if (sitemapPaths.has(excluded)) {
+        errors.push(`Sitemap must not include ${excluded}`);
+      }
+    }
+    for (const excluded of blogNoindexPaths) {
+      if (sitemapPaths.has(excluded)) {
+        errors.push(`Sitemap must not include noindex blog path ${excluded}`);
+      }
+    }
+    const thinHubs = ["/social-media-tools", "/gaming-tools", "/pdf-tools", "/image-tools", "/developer-tools", "/student-tools", "/calculator-tools", "/text-tools", "/security-tools", "/seo-tools", "/sitemap"];
+    for (const hub of thinHubs) {
+      if (sitemapPaths.has(hub)) {
+        errors.push(`Sitemap should exclude thin or duplicate hub ${hub}`);
+      }
+    }
     for (const p of sitemapPaths) {
       const parts = p.split("/").filter(Boolean);
-      if (parts.length !== 1) continue;
-      const seg = parts[0];
-      if (hubSingleSegments.has(seg)) continue;
-      if (!toolSlugSet.has(seg)) continue;
-      if (!isToolIndexedForSearch(seg)) {
-        errors.push(`Sitemap includes path /${seg} but slug is not in indexed-tool-slugs.json (should be excluded)`);
+      if (parts.length === 1 && toolSlugSet.has(parts[0]) && !isToolIndexedForSearch(parts[0])) {
+        errors.push(`Sitemap includes path ${p} but slug is not in indexed-tool-slugs.json`);
+      }
+      if (parts.length === 1 && !toolSlugSet.has(parts[0]) && !allowedStaticPaths.has(p)) {
+        errors.push(`Sitemap includes unexpected single-segment path ${p} (not indexed tool or allowed static page)`);
+      }
+      if (parts[0] === "blog" && parts.length === 2 && blogNoindexPaths.has(p)) {
+        errors.push(`Sitemap includes noindex blog ${p}`);
       }
     }
   }

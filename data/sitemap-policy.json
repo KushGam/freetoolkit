@@ -1,0 +1,19 @@
+{
+  "alwaysExclude": ["/ads.txt"],
+  "staticInclude": [
+    "/",
+    "/about",
+    "/contact",
+    "/terms",
+    "/disclaimer",
+    "/privacy-policy",
+    "/blog",
+    "/all-tools",
+    "/ai-tools",
+    "/everyday",
+    "/pdf-image",
+    "/developer",
+    "/student"
+  ],
+  "blogNoindex": ["valorant-sensitivity-guide"]
+}
