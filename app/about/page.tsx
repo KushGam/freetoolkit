@@ -48,6 +48,16 @@ export default function AboutPage() {
         <TrustCallout className="mt-6" />
 
         <Card className="prose-lite mt-6 p-6 sm:p-8">
+          <h2>Why freetoolkitapp exists</h2>
+          <p>
+            I built freetoolkitapp after watching too many “free tool” sites optimize for ad clicks instead of outcomes — thin pages, duplicate copy, and utilities that barely work. I wanted the opposite: a small, curated catalog where every page explains what the tool does, when it fails, and how to verify results before you submit them anywhere important.
+          </p>
+          <p>
+            I am {founder.name}, an independent builder who writes many of the guides, tests tools in real browsers (Chrome, Safari, Firefox on desktop and mobile), and ships fixes when behavior changes. This is not a faceless content farm — you can verify who operates the site on this page, on{" "}
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href={founder.linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a>, and via email at{" "}
+            <a className="font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a>.
+          </p>
+
           <h2>Mission</h2>
           <p>{brandMission}</p>
           <p>
@@ -91,6 +101,12 @@ export default function AboutPage() {
           <h2>AI philosophy</h2>
           <p>
             AI-assisted pages disclose that outputs require human review. We do not promise perfect grades, guaranteed job offers, or legal compliance from generated text. Where models can hallucinate, we warn first. Academic integrity matters: follow your institution&apos;s policies and use assistants to learn — not to shortcut ethical rules.
+          </p>
+
+          <h2>Advertising and sustainability</h2>
+          <p>
+            freetoolkitapp may display third-party advertisements, including Google AdSense, to help cover hosting and development costs. Ads are shown only after essential page content loads — we do not prioritize ad density over useful instructions, FAQs, and guides. See our{" "}
+            <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link> for how advertising partners may use cookies.
           </p>
 
           <h2>What we won&apos;t do</h2>

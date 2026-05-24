@@ -18,7 +18,7 @@ export const topicalAuthorityMap: SiloNode[] = [
   { id: "merge-pdf", label: "Merge PDF", path: "/merge-pdf", tier: "tool", silo: "pdf-image", linksTo: ["compress-pdf", "split-pdf", "word-to-pdf", "blog/how-to-merge-pdf-files-online"] },
   { id: "image-compressor", label: "Image Compressor", path: "/image-compressor", tier: "tool", silo: "pdf-image", linksTo: ["image-resizer", "webp-converter", "png-to-jpg", "blog/how-to-compress-images-without-losing-quality"] },
   { id: "ai-tools", label: "AI Tools Hub", path: "/ai-tools", tier: "hub", silo: "ai", linksTo: ["ai-resume-cover-letter", "resume-ats-checker", "ai-email-writer", "grammar-fixer", "ai-text-summarizer"] },
-  { id: "ai-resume-cover-letter", label: "AI Resume Generator", path: "/ai-resume-cover-letter", tier: "tool", silo: "ai", linksTo: ["resume-ats-checker", "ai-interview-answer-generator", "ai-linkedin-summary-generator", "grammar-fixer"] },
+  { id: "ai-resume-cover-letter", label: "AI Resume Generator", path: "/ai-resume-cover-letter", tier: "tool", silo: "ai", linksTo: ["resume-ats-checker", "ai-linkedin-summary-generator", "grammar-fixer", "ai-email-writer"] },
   { id: "resume-ats-checker", label: "ATS Resume Checker", path: "/resume-ats-checker", tier: "tool", silo: "ai", linksTo: ["ai-resume-cover-letter", "ai-email-writer", "grammar-fixer"] },
   { id: "seo-tools", label: "SEO Tools Hub", path: "/seo-tools", tier: "hub", silo: "seo", linksTo: ["meta-tag-generator", "schema-markup-generator", "serp-preview", "sitemap-generator"] },
   { id: "developer", label: "Developer Hub", path: "/developer", tier: "hub", silo: "developer", linksTo: ["json-formatter", "jwt-decoder", "regex-tester", "base64-encoder-decoder"] },

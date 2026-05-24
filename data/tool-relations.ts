@@ -34,7 +34,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["PDF Tools"],
     topLevelCategories: ["PDF & Image"],
     toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "extract-pdf-pages", "rotate-pdf", "pdf-to-word", "word-to-pdf", "image-to-pdf", "add-text-to-pdf", "pdf-to-jpg", "edit-pdf"],
-    blogSlugs: ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work", "pdf-to-word-conversion-quality"]
+    blogSlugs: ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work", "pdf-to-word-conversion-quality"]
   },
   {
     id: "image-optimization",
@@ -44,7 +44,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["Image Tools"],
     topLevelCategories: ["PDF & Image"],
     toolSlugs: ["image-compressor", "image-resizer", "png-to-jpg", "jpg-to-png", "webp-converter", "image-cropper", "image-rotator", "image-watermark", "image-grayscale", "heic-to-jpg", "svg-to-png", "png-to-webp", "webp-to-png", "passport-photo-maker", "image-to-pdf"],
-    blogSlugs: ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online", "best-free-online-tools-for-daily-work"]
+    blogSlugs: ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online", "best-free-online-tools-for-daily-work"]
   },
   {
     id: "student-success",
@@ -53,8 +53,8 @@ export const contentClusters: ContentCluster[] = [
     priority: 3,
     categories: ["Student Tools"],
     topLevelCategories: ["AI Tools"],
-    toolSlugs: ["ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "grammar-fixer", "ai-essay-writer"],
-    blogSlugs: ["best-free-student-tools", "how-to-calculate-gpa", "word-counter-guide"]
+    toolSlugs: ["ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "grammar-fixer"],
+    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "how-to-calculate-gpa", "word-counter-guide"]
   },
   {
     id: "ai-writing-productivity",
@@ -63,8 +63,8 @@ export const contentClusters: ContentCluster[] = [
     priority: 4,
     categories: ["AI Tools"],
     topLevelCategories: ["AI Tools"],
-    toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "ai-email-writer", "content-rewriter", "ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "ai-essay-writer", "ai-interview-answer-generator", "ai-linkedin-summary-generator"],
-    blogSlugs: ["best-free-student-tools", "word-counter-guide", "best-free-online-tools-for-daily-work"]
+    toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "ai-email-writer", "ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "ai-linkedin-summary-generator"],
+    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide", "best-free-online-tools-for-daily-work"]
   },
   {
     id: "calculator-utilities",
@@ -99,14 +99,16 @@ export const contentClusters: ContentCluster[] = [
 ];
 
 export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
-  "compress-pdf": ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
-  "merge-pdf": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
-  "split-pdf": ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
-  "image-compressor": ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp"],
-  "image-resizer": ["how-to-resize-images-online", "how-to-compress-images-without-losing-quality"],
-  "png-to-jpg": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
-  "jpg-to-png": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
-  "webp-converter": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
+  "compress-pdf": ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
+  "merge-pdf": ["complete-pdf-workflow-guide", "how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
+  "split-pdf": ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
+  "image-compressor": ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp"],
+  "image-resizer": ["complete-image-optimization-guide", "how-to-resize-images-online", "how-to-compress-images-without-losing-quality"],
+  "ai-resume-cover-letter": ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide"],
+  "resume-ats-checker": ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide"],
+  "png-to-jpg": ["complete-image-optimization-guide", "png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
+  "jpg-to-png": ["complete-image-optimization-guide", "png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
+  "webp-converter": ["complete-image-optimization-guide", "png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
   "pdf-to-word": ["pdf-to-word-conversion-quality", "how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
   "gpa-calculator": ["how-to-calculate-gpa", "best-free-student-tools"],
   "cgpa-calculator": ["how-to-calculate-gpa", "best-free-student-tools"],

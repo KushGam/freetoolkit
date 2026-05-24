@@ -13,7 +13,7 @@ export const founder = {
 export const brandMission =
   "freetoolkitapp helps people finish real work — compress a PDF, fix a resume, generate meta tags — with fast browser tools, clear instructions, and no account required.";
 
-export const curatedToolCount = 60;
+export const curatedToolCount = 57;
 
 export type PrivacyTier = "local" | "ai" | "hybrid" | "client";
 
@@ -96,7 +96,6 @@ export function getToolPrivacyTier(tool: Pick<Tool, "slug" | "category">): Priva
 }
 
 export const siteUpdates = [
-  { date: "May 2026", text: "Curated catalog to ~60 deep tools with expanded guides and privacy labels." },
-  { date: "May 2026", text: "Premium dark UI refresh for readability across tool, blog, and legal pages." },
-  { date: "May 2026", text: "Structured SEO content and FAQs on flagship PDF, image, and AI tools." }
+  { date: "May 2026", text: "Curated catalog to 57 high-depth tools; removed policy-risk and duplicate pages from search index." },
+  { date: "May 2026", text: "Premium dark UI refresh for readability across tool, blog, and legal pages." }
 ] as const;

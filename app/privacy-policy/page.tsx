@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
         <Card className="prose-lite mt-6 p-6 sm:p-8">
           <h2>Who we are</h2>
           <p>
-            freetoolkitapp (“freetoolkitapp”, “we”, “us”) operates freetoolkitappApp.com as a founder-led collection of browser-based productivity utilities, educational articles, and optional AI-assisted features. The site is built and maintained by Kushal Gautam. The service is designed so that many tasks can be completed without creating an account.
+            freetoolkitapp (“freetoolkitapp”, “we”, “us”) operates freetoolkitapp.com as a founder-led collection of browser-based productivity utilities, educational articles, and optional AI-assisted features. The site is built and maintained by Kushal Gautam. The service is designed so that many tasks can be completed without creating an account.
           </p>
 
           <h2>Information we collect</h2>
@@ -57,10 +57,15 @@ export default function PrivacyPolicyPage() {
 
           <h2>Advertising and Google AdSense</h2>
           <p>
-            freetoolkitapp is supported in part by display advertising. Third-party ad vendors, including Google, may use cookies to serve ads based on your visits to this and other websites. Google’s use of advertising cookies enables it and its partners to serve ads based on your browsing. You can learn more about how Google uses data in Google’s Privacy &amp; Terms documentation.
+            freetoolkitapp is supported in part by display advertising. Third-party ad vendors, including Google, may use cookies to serve ads based on your visits to this and other websites. Google&apos;s use of advertising cookies enables it and its partners to serve ads based on your browsing. You can learn more about how Google uses data at{" "}
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google&apos;s partner sites policy</a> and opt out of personalized advertising via{" "}
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>.
           </p>
           <p>
-            Where required, we present consent options before loading non-essential advertising or analytics scripts.
+            Where required by law (including EEA/UK visitors), we present consent options before loading non-essential advertising or analytics scripts. Essential cookies needed for security and basic site operation may still apply.
+          </p>
+          <p>
+            After AdSense approval, our ads.txt file at <code className="text-ink-secondary">/ads.txt</code> will list authorized ad sellers. Until then, the placeholder file indicates the site is preparing for monetization review.
           </p>
 
           <h2>AI processing</h2>

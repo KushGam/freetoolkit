@@ -19,35 +19,35 @@ export const blogClusters: BlogCluster[] = [
   {
     id: "pdf-mastery",
     pillarTitle: "Complete Guide to PDF Workflows Online",
-    pillarSlug: null,
+    pillarSlug: "complete-pdf-workflow-guide",
     hubPath: "/pdf-image",
     targetKeywords: ["compress pdf online", "merge pdf free", "split pdf", "pdf to word"],
     toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "pdf-to-word", "word-to-pdf", "pdf-to-jpg", "edit-pdf", "add-text-to-pdf"],
-    blogSlugs: ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality"],
+    blogSlugs: ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality"],
     status: "live",
-    wordTarget: "Pillar: 3000+ words; spokes: 1500–2500 each"
+    wordTarget: "Pillar live (~2400 words); spokes 1500–2500 each"
   },
   {
     id: "image-optimization",
     pillarTitle: "Web Image Optimization Handbook",
-    pillarSlug: "png-vs-jpg-vs-webp",
+    pillarSlug: "complete-image-optimization-guide",
     hubPath: "/pdf-image",
     targetKeywords: ["compress image online", "png to jpg", "webp converter", "resize image"],
     toolSlugs: ["image-compressor", "png-to-jpg", "webp-converter", "image-resizer", "heic-to-jpg"],
-    blogSlugs: ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
+    blogSlugs: ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
     status: "live",
-    wordTarget: "Pillar exists; expand with Core Web Vitals + Shopify upload guide"
+    wordTarget: "Pillar live (~2300 words); format + resize spokes linked"
   },
   {
     id: "ai-career",
     pillarTitle: "AI-Powered Job Search Playbook",
-    pillarSlug: null,
+    pillarSlug: "resume-ats-complete-guide",
     hubPath: "/ai-tools",
-    targetKeywords: ["ai resume generator", "ats resume checker", "ai cover letter", "ai interview prep"],
-    toolSlugs: ["ai-resume-cover-letter", "resume-ats-checker", "ai-interview-answer-generator", "ai-linkedin-summary-generator", "ai-email-writer"],
-    blogSlugs: ["best-free-student-tools"],
-    status: "planned",
-    wordTarget: "New pillar + 4 spokes: ATS myths, ethical AI, LinkedIn alignment, follow-up emails"
+    targetKeywords: ["ai resume generator", "ats resume checker", "ai cover letter", "resume keywords"],
+    toolSlugs: ["ai-resume-cover-letter", "resume-ats-checker", "ai-linkedin-summary-generator", "ai-email-writer"],
+    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide"],
+    status: "live",
+    wordTarget: "Pillar live (~2200 words); ethical AI + ATS formatting"
   },
   {
     id: "ai-writing",
@@ -55,7 +55,7 @@ export const blogClusters: BlogCluster[] = [
     pillarSlug: null,
     hubPath: "/ai-tools",
     targetKeywords: ["ai summarizer", "paraphrasing tool", "grammar fixer", "ai essay writer"],
-    toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "content-rewriter", "ai-essay-writer", "ai-study-notes"],
+    toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "ai-study-notes"],
     blogSlugs: ["word-counter-guide"],
     status: "planned",
     wordTarget: "Pillar on human-in-the-loop AI + integrity policies"

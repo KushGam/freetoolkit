@@ -1359,7 +1359,7 @@ function PdfToWord() {
         </div>
       ) : null}
 
-      <div className="rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 text-sm leading-6 text-brand-800 shadow-sm">
+      <div className="rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 text-sm leading-6 text-indigo-100 shadow-sm">
         <p className="font-black">Text-based PDF to Word conversion</p>
         <p className="mt-2">
           This tool extracts readable text from your PDF in the browser and creates a downloadable DOCX file.

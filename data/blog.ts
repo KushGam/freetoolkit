@@ -2,6 +2,7 @@ import { getTool, toolHref, type Tool } from "@/data/tools";
 import { isBlogIndexedForSearch, isToolIndexedForSearch } from "@/data/indexing-policy";
 import { getBlogSlugsForTool, getRelatedBlogSlugsForBlog } from "@/data/tool-relations";
 import { additionalBlogPosts } from "@/data/blog-additional-posts";
+import { pillarBlogPosts } from "@/data/blog-pillar-posts";
 import type { BlogCategory, BlogFaq, BlogPost, BlogSection } from "@/data/blog-types";
 
 export type { BlogCategory, BlogFaq, BlogPost, BlogSection } from "@/data/blog-types";
@@ -473,7 +474,8 @@ export const blogPosts: BlogPost[] = [
       }
     ]
   },
-  ...additionalBlogPosts
+  ...additionalBlogPosts,
+  ...pillarBlogPosts
 ];
 
 export function blogHref(post: Pick<BlogPost, "slug">) {

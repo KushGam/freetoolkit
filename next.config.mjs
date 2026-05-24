@@ -23,7 +23,24 @@ const nextConfig = {
         has: [{ type: "host", value: "freetoolkitapp.com" }],
         destination: "https://www.freetoolkitapp.com/:path+",
         permanent: true
-      }
+      },
+      { source: "/everyday", destination: "/calculators", permanent: true },
+      { source: "/gaming-tools", destination: "/", permanent: true },
+      { source: "/social-media-tools", destination: "/", permanent: true },
+      { source: "/student", destination: "/ai-tools", permanent: true },
+      { source: "/student-tools", destination: "/ai-tools", permanent: true },
+      { source: "/student-tools/ai-resume-cover-letter", destination: "/ai-resume-cover-letter", permanent: true },
+      { source: "/text-tools", destination: "/ai-tools", permanent: true },
+      { source: "/security-tools", destination: "/developer", permanent: true },
+      { source: "/shift-hours-calculator", destination: "/", permanent: true },
+      { source: "/privacy", destination: "/privacy-policy", permanent: true },
+      { source: "/pdf-tools", destination: "/pdf-image", permanent: true },
+      { source: "/image-tools", destination: "/pdf-image", permanent: true },
+      { source: "/developer-tools", destination: "/developer", permanent: true },
+      { source: "/calculator-tools", destination: "/calculators", permanent: true },
+      { source: "/ai-essay-writer", destination: "/grammar-fixer", permanent: true },
+      { source: "/ai-interview-answer-generator", destination: "/ai-resume-cover-letter", permanent: true },
+      { source: "/content-rewriter", destination: "/paraphrasing-tool", permanent: true }
     ];
   },
   async headers() {

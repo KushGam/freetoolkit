@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 import { tools, getTool } from "../data/tools";
 import sitemapPolicy from "../data/sitemap-policy.json";
 import { BLOG_NOINDEX_SLUGS, INDEXED_TOOL_SLUGS, isToolIndexedForSearch } from "../data/indexing-policy";
+import { countToolEditorialWords, MIN_EDITORIAL_WORDS } from "../data/apply-default-sections";
 import { getRelatedToolSlugs } from "../data/tool-relations";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -61,8 +62,14 @@ function main() {
       errors.push(`Indexed slug "${slug}" has no tool definition in merged tools[]`);
       continue;
     }
-    if (!tool.seo || tool.seo.length < 10) {
-      errors.push(`${slug}: seo[] must have length >= 10 (got ${tool.seo?.length ?? 0})`);
+    if (!tool.seo || tool.seo.length < 6) {
+      errors.push(`${slug}: seo[] must have at least 6 unique paragraphs (got ${tool.seo?.length ?? 0})`);
+    } else {
+      const normalized = tool.seo.map((p) => p.trim().toLowerCase());
+      const dupes = normalized.length - new Set(normalized).size;
+      if (dupes > 0) {
+        errors.push(`${slug}: seo[] contains ${dupes} duplicate paragraph(s)—AdSense flags thin/duplicate content`);
+      }
     }
     if (!tool.faq?.length) {
       errors.push(`${slug}: faq[] must be non-empty`);
@@ -75,6 +82,14 @@ function main() {
     }
     if (!tool.commonMistakes?.length) {
       errors.push(`${slug}: commonMistakes[] missing or empty`);
+    }
+
+    const wordCount = countToolEditorialWords(tool);
+    if (wordCount < MIN_EDITORIAL_WORDS) {
+      errors.push(`${slug}: editorial word count ${wordCount} below minimum ${MIN_EDITORIAL_WORDS} (thin page risk)`);
+    }
+    if (!tool.sections?.length) {
+      errors.push(`${slug}: sections[] missing — long-form editorial content required for AdSense`);
     }
 
     const related = getRelatedToolSlugs(slug, 12);

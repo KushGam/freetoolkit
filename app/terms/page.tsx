@@ -81,6 +81,12 @@ export default function TermsPage() {
             You also agree not to abuse the service, scrape at unreasonable scale, bypass limits, overload infrastructure, run automated attacks, interfere with other users, or attempt to disrupt the site. AI tools should not be used to impersonate others, fabricate credentials, cheat, or misrepresent facts.
           </p>
 
+          <h2>Advertising</h2>
+          <p>
+            freetoolkitapp may display third-party advertisements, including Google AdSense, to support free access to tools and guides. Ad partners may use cookies to serve and measure ads. Your use of the site constitutes acceptance of ad-supported delivery where applicable. For cookie controls and partner details, see the{" "}
+            <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link>.
+          </p>
+
           <h2>Limitation of Liability</h2>
           <p>
             freetoolkitapp does not guarantee that a tool output will meet official, legal, academic, platform, workplace, government, or technical requirements. Before using any result, verify it against the source of truth that applies to your situation.

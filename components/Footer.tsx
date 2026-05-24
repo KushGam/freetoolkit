@@ -12,10 +12,16 @@ const legalLinks = [
   { href: "/disclaimer", label: "Disclaimer" }
 ];
 
+const exploreLinks = [
+  { href: "/blog", label: "Blog & guides" },
+  { href: "/all-tools", label: "All tools" },
+  { href: "/sitemap", label: "HTML sitemap" }
+];
+
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-white/10 bg-black">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))] lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1.35fr)_repeat(4,minmax(0,1fr))] lg:px-8">
         <div>
           <SiteLogo />
           <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-muted">
@@ -59,7 +65,17 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-ink-secondary">Categories</h3>
+          <h3 className="text-sm font-semibold text-ink-secondary">Explore</h3>
+          <ul className="mt-4 grid gap-2 text-sm text-ink-muted">
+            {exploreLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="transition hover:text-ink-secondary">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <h3 className="mt-6 text-sm font-semibold text-ink-secondary">Categories</h3>
           <ul className="mt-4 grid gap-2 text-sm text-ink-muted">
             {topLevelCategories.map((category) => (
               <li key={category}>

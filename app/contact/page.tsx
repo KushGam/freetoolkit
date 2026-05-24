@@ -104,6 +104,13 @@ export default function ContactPage() {
             </div>
           ))}
 
+          <h2>AdSense and privacy inquiries</h2>
+          <p>
+            For questions about cookies, advertising partners (including Google AdSense), or data handling, email{" "}
+            <a className="font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a> with subject line <strong>Privacy</strong> or read the{" "}
+            <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link> first — it covers AI processing, analytics, and ad cookies in plain language.
+          </p>
+
           <h2>Legal &amp; privacy</h2>
           <p>
             For policy questions, review the <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link>,{" "}

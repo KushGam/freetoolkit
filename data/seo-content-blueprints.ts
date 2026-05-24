@@ -290,7 +290,7 @@ export const toolSeoBlueprints: ToolSeoBlueprint[] = [
     ],
     relatedInternalLinks: [
       { label: "ATS Resume Checker", href: "/resume-ats-checker", anchorContext: "Validate keywords and formatting before apply" },
-      { label: "AI Interview Answer Generator", href: "/ai-interview-answer-generator", anchorContext: "Prep talking points from the same JD" },
+      { label: "AI LinkedIn Summary Generator", href: "/ai-linkedin-summary-generator", anchorContext: "Align profile with resume narrative" },
       { label: "Grammar Fixer", href: "/grammar-fixer", anchorContext: "Polish final prose" },
       { label: "AI LinkedIn Summary", href: "/ai-linkedin-summary-generator", anchorContext: "Align public profile with resume narrative" }
     ],
@@ -423,7 +423,7 @@ export const toolSeoBlueprints: ToolSeoBlueprint[] = [
       { label: "Grammar Fixer", href: "/grammar-fixer", anchorContext: "Polish tone and mechanics" },
       { label: "Paraphrasing Tool", href: "/paraphrasing-tool", anchorContext: "Soften or shorten drafts" },
       { label: "AI Resume Generator", href: "/ai-resume-cover-letter", anchorContext: "Pair with recruiter outreach" },
-      { label: "Content Rewriter", href: "/content-rewriter", anchorContext: "Adapt one email for multiple segments" }
+      { label: "Paraphrasing Tool", href: "/paraphrasing-tool", anchorContext: "Adapt one email for multiple segments" }
     ],
     schemaRecommendations: sharedSchema,
     sections: [
@@ -454,6 +454,410 @@ export const toolSeoBlueprints: ToolSeoBlueprint[] = [
         heading: "Tone, length, and deliverability",
         paragraphs: [
           "Shorter emails outperform rambling drafts on mobile. One ask per message. Subject lines should be specific ('Q2 report draft — feedback by Thursday') rather than vague ('Quick question'). Pair with Grammar Fixer when translating or tightening non-native phrasing."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "merge-pdf",
+    h1: "Merge PDF Online Free",
+    metaTitle: "Merge PDF Online Free — Combine PDF Files in Your Browser",
+    metaDescription:
+      "Merge PDF files online free in your browser. Combine cover letters, resumes, exhibits, and scans into one submission-ready packet. No signup, with order control and verification tips.",
+    searchIntent: "transactional",
+    primaryKeyword: "merge pdf online free",
+    secondaryKeywords: ["combine pdf files", "join pdf documents", "merge pdf no watermark", "pdf combiner free"],
+    semanticKeywords: ["page order", "exhibit packet", "job application pdf", "single attachment", "pdf bundle", "document assembly"],
+    longTailKeywords: [
+      "how to merge pdf files for job application",
+      "combine pdf cover letter and resume online",
+      "merge pdf without acrobat free",
+      "merge pdf in order online browser",
+      "merge multiple pdf files for university upload"
+    ],
+    relatedInternalLinks: [
+      { label: "Split PDF", href: "/split-pdf", anchorContext: "Trim sources before merging" },
+      { label: "Compress PDF", href: "/compress-pdf", anchorContext: "Meet portal size caps after merge" },
+      { label: "Rotate PDF", href: "/rotate-pdf", anchorContext: "Fix sideways scans before combine" },
+      { label: "Word to PDF", href: "/word-to-pdf", anchorContext: "Convert DOCX sources first" },
+      { label: "How to merge PDF files", href: "/blog/how-to-merge-pdf-files-online", anchorContext: "Step-by-step workflow guide" }
+    ],
+    schemaRecommendations: sharedSchema,
+    sections: [
+      {
+        id: "what-is-merge-pdf",
+        heading: "What merge PDF means — and why order matters more than software",
+        paragraphs: [
+          "Merging PDFs combines separate files into one linear document. Portals, HR systems, and school LMS tools often accept only one attachment—even when your materials naturally span a cover letter, resume, transcript, and ID scan. Merge is mechanical: it preserves what you upload in the sequence you choose.",
+          "Most merge failures are not software bugs. They are wrong order, missing exhibits, landscape pages buried mid-file, or a final megabyte count two bytes over the limit. freetoolkitapp treats merge as a discipline problem first: name files, preview sources, merge, download, scroll once, then submit."
+        ],
+        subsections: [
+          {
+            heading: "When merge is the right first step",
+            paragraphs: [
+              "Use merge when every page belongs in one packet and you already cleaned sources (rotation, blank pages, encryption). If one chapter is 200 MB of photos, split or compress that source before merging the full bundle."
+            ]
+          },
+          {
+            heading: "When to split or compress instead",
+            paragraphs: [
+              "If the portal rejects size, merge clarifies packaging problems early—but compression or Extract PDF Pages fixes the bytes. Merge does not shrink pages; it only concatenates them."
+            ]
+          }
+        ]
+      },
+      {
+        id: "how-to-merge",
+        heading: "How to merge PDF files for applications, filings, and classroom packets",
+        paragraphs: [
+          "Inventory every PDF and decide final reading order. Rename with numeric prefixes (01-cover.pdf, 02-resume.pdf) so the upload list sorts predictably. Open each source once and note password prompts, upside-down scans, or mixed landscape/portrait.",
+          "Upload in exact sequence, merge, download to a dated filename, then open cover-to-cover. Search (Ctrl/Cmd+F) for a distinctive keyword from each source section to confirm nothing silently dropped."
+        ],
+        subsections: [
+          {
+            heading: "Job and university application workflow",
+            paragraphs: [
+              "Typical order: cover letter → resume → portfolio or transcript → references → scans. If the ATS caps at 5 MB and portfolio scans dominate, compress portfolio first, then merge—not the reverse."
+            ]
+          },
+          {
+            heading: "Verification before irreversible upload",
+            paragraphs: [
+              "Check page count, orientation, form tab order, and whether any confidential appendix from a prior project accidentally stayed attached. Keep originals in a source/ folder until the portal confirms acceptance."
+            ]
+          }
+        ]
+      },
+      {
+        id: "use-cases",
+        heading: "Real-world merge PDF use cases",
+        subsections: [
+          {
+            heading: "Students and educators",
+            paragraphs: [
+              "Scholarship packets, study-abroad forms, and homework bundles often require one PDF. Merge after rotating sideways passport scans so reviewers see clean portrait pages first."
+            ]
+          },
+          {
+            heading: "Legal, finance, and compliance",
+            paragraphs: [
+              "Exhibit packets for e-filing or board meetings. Merge does not redact—verify privilege and matter numbers against filenames before sending. Never merge unrelated client matters into one file."
+            ]
+          },
+          {
+            heading: "Freelancers and small business",
+            paragraphs: [
+              "Monthly invoice + signed SOW excerpt + receipts in one email attachment so finance stops asking for the missing file. Use descriptive names: smith-2026-04-invoice-bundle.pdf beats merged.pdf."
+            ]
+          }
+        ]
+      },
+      {
+        id: "limitations",
+        heading: "Bookmarks, forms, signatures, and merge limitations",
+        paragraphs: [
+          "Visual content usually copies forward, but bookmarks, form field names, JavaScript actions, and embedded attachments may flatten or behave differently. Digital signatures may invalidate when bytes change—test on a duplicate when compliance matters.",
+          "Merge does not renumber headers that say Page 3 of 40, does not invent OCR on image scans, and does not bypass encryption. Unlock password-protected PDFs locally before merge."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "split-pdf",
+    h1: "Split PDF Online Free",
+    metaTitle: "Split PDF Online Free — Extract Pages in Your Browser",
+    metaDescription:
+      "Split PDF pages online free. Extract chapters, statements, or exhibits into a smaller file without altering your original. Range syntax, privacy tips, and workflow links.",
+    searchIntent: "transactional",
+    primaryKeyword: "split pdf online free",
+    secondaryKeywords: ["extract pdf pages", "separate pdf pages", "pdf page extractor", "split pdf by pages"],
+    semanticKeywords: ["page range", "partial sharing", "bank statements", "exhibit extract", "least privilege"],
+    longTailKeywords: [
+      "split pdf extract specific pages online",
+      "how to split pdf for email attachment size",
+      "split pdf pages 1-5 free browser",
+      "extract one chapter from pdf online",
+      "split pdf without losing quality"
+    ],
+    relatedInternalLinks: [
+      { label: "Merge PDF", href: "/merge-pdf", anchorContext: "Recombine curated slices" },
+      { label: "Compress PDF", href: "/compress-pdf", anchorContext: "Shrink the split output" },
+      { label: "Extract PDF Pages", href: "/extract-pdf-pages", anchorContext: "Alternative subset interface" },
+      { label: "Rotate PDF", href: "/rotate-pdf", anchorContext: "Fix orientation in slices" },
+      { label: "How to compress PDF files", href: "/blog/how-to-compress-pdf-files", anchorContext: "Size workflow after split" }
+    ],
+    schemaRecommendations: sharedSchema,
+    sections: [
+      {
+        id: "what-is-split-pdf",
+        heading: "What split PDF does — minimum necessary disclosure for files",
+        paragraphs: [
+          "Split PDF copies selected pages from a larger PDF into a new, smaller file without altering your original. It is the right tool when portals ask for one month of statements, when you share one handbook chapter, or when you remove blank feeder pages before merging elsewhere.",
+          "Splitting is least-privilege sharing applied to documents: send eight pricing exhibits instead of a 120-page agreement. That reduces breach blast radius if the thread is forwarded and speeds mobile downloads."
+        ],
+        subsections: [
+          {
+            heading: "Split vs compress vs merge",
+            paragraphs: [
+              "Split removes pages entirely. Compress shrinks bytes on pages you keep. Merge combines multiple files. Often the chain is split heavy appendix → compress remainder → merge curated slices from vendors."
+            ]
+          }
+        ]
+      },
+      {
+        id: "how-to-split",
+        heading: "How to split PDF pages with correct ranges and verification",
+        paragraphs: [
+          "Open the source in a desktop reader and write exact page numbers—printed page 5 may not equal software page 5. Confirm the tool’s page count matches your reader before typing ranges like 1-5,8,12-14.",
+          "Download to a descriptive filename (acme-statement-2026-03-pages7-9.pdf), open the slice cover-to-cover, and confirm no neighbor pages leaked in. If email still rejects size, compress the split output—not the full original."
+        ],
+        subsections: [
+          {
+            heading: "Common range mistakes",
+            paragraphs: [
+              "Off-by-one errors, commas versus hyphens, and assuming ascending numeric order equals narrative order. Witness statements sometimes must appear chronologically even when PDF page numbers are not."
+            ]
+          },
+          {
+            heading: "Forms and interactive PDFs",
+            paragraphs: [
+              "Tab through fields after download. Some PDFs lose field names when subsets omit referenced pages. Split does not sanitize sloppy black-box redaction—secrets may remain recoverable."
+            ]
+          }
+        ]
+      },
+      {
+        id: "use-cases",
+        heading: "Who splits PDFs and why",
+        subsections: [
+          {
+            heading: "Finance and mortgage workflows",
+            paragraphs: [
+              "Underwriters request March and April statements only from a twelve-month merged bank PDF. Split the exact pages their portal fields specify—note in email: Pages 7–9 of 42 total."
+            ]
+          },
+          {
+            heading: "Education and research",
+            paragraphs: [
+              "Share one lab protocol chapter instead of a 400-page manual. Respect copyright scope. Researchers isolate supplementary figures for citations—still cite the DOI when sharing excerpts."
+            ]
+          },
+          {
+            heading: "Legal and consulting",
+            paragraphs: [
+              "Extract signature blocks for overnight mobile review. Remove appendix pages with another client’s watermark before sending deck excerpts—split plus visual review prevents cross-client leakage."
+            ]
+          }
+        ]
+      },
+      {
+        id: "privacy",
+        heading: "Privacy, copyright, and partial sharing",
+        paragraphs: [
+          "Tools are neutral; copyright, privacy, and contract rules still apply. Partial statements can still reveal account numbers. Medical records splits for second opinions need HIPAA-approved channels—even when the file is smaller.",
+          "Journalists splitting court PDFs must consider whether excerpts omit context. Split enables technical possibility; editorial and legal judgment govern ethics."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "grammar-fixer",
+    h1: "Grammar Fixer Free Online",
+    metaTitle: "Grammar Fixer Free — Polish Emails, Essays, and Professional Writing",
+    metaDescription:
+      "Fix grammar, punctuation, and clarity online free. Polish emails, essays, and support macros before you send. Not a plagiarism bypass—review suggestions and keep your voice.",
+    searchIntent: "transactional",
+    primaryKeyword: "grammar fixer free online",
+    secondaryKeywords: ["grammar checker online", "fix grammar in essay", "punctuation checker free", "proofread text online"],
+    semanticKeywords: ["academic integrity", "ESL writing", "tone of voice", "style guide", "inclusive language", "mechanics"],
+    longTailKeywords: [
+      "grammar fixer for college essay free",
+      "fix grammar in email before sending",
+      "online grammar checker no signup",
+      "grammar fixer american english",
+      "grammar checker for professional email"
+    ],
+    relatedInternalLinks: [
+      { label: "Word Counter", href: "/word-counter", anchorContext: "Check limits after edits" },
+      { label: "AI Email Writer", href: "/ai-email-writer", anchorContext: "Draft structure first" },
+      { label: "Paraphrasing Tool", href: "/paraphrasing-tool", anchorContext: "Rephrase without losing meaning" },
+      { label: "AI Resume Generator", href: "/ai-resume-cover-letter", anchorContext: "Polish application materials" },
+      { label: "Explain Simple", href: "/explain-simple", anchorContext: "Simplify vocabulary after grammar pass" }
+    ],
+    schemaRecommendations: sharedSchema,
+    sections: [
+      {
+        id: "what-grammar-fixer-does",
+        heading: "What a grammar fixer does — and what it cannot replace",
+        paragraphs: [
+          "Grammar Fixer suggests punctuation, agreement, and clarity fixes for text you paste. It helps before emails, essays, and support macros ship. Good sentences can still argue wrongly—mechanical correctness is not thinking.",
+          "Voice, argument, citations, and factual claims remain yours. Accept mechanical fixes; reject voice flattening. Creative writing, dialogue, and defined legal terms often need human judgment over automated concision."
+        ],
+        subsections: [
+          {
+            heading: "Grammar help vs ghostwriting",
+            paragraphs: [
+              "Institutions draw different lines on AI assistance. Polishing comma splices is usually fine; rewriting argument paragraphs wholesale may violate integrity policies. Follow your school or employer rules and disclose when required."
+            ]
+          }
+        ]
+      },
+      {
+        id: "how-to-use",
+        heading: "How to use Grammar Fixer effectively",
+        paragraphs: [
+          "Paste smaller chunks for best focus—a whole thesis at once overwhelms context and you. Specify American or British English explicitly. Re-read aloud after accepting changes; your ear catches new awkwardness tools introduce.",
+          "For ESL writers, note patterns the tool repeats and study them—that builds long-term skill, not dependency. Pair with Word Counter when page limits matter; grammar passes sometimes shorten brutally."
+        ],
+        subsections: [
+          {
+            heading: "Professional and support workflows",
+            paragraphs: [
+              "Support agents clean macro templates for consistent professionalism. Journalists hit deadline on breaking briefs with a last-minute grammar pass—but fact-check separately. Legal writing should reject aggressive concision that drops defined terms."
+            ]
+          },
+          {
+            heading: "Privacy and policy",
+            paragraphs: [
+              "Do not paste confidential client memos, PHI, or production secrets without organizational approval. Some industries log text sent to cloud grammar services—check policy before using browser tools on regulated data."
+            ]
+          }
+        ]
+      },
+      {
+        id: "use-cases",
+        heading: "High-intent grammar fixer use cases",
+        subsections: [
+          {
+            heading: "Students and educators",
+            paragraphs: [
+              "Fix comma splices before submission while still citing sources yourself. Teachers can show which suggestions to accept—a critical digital literacy lesson. Grammar tools mishandle citations; use APA/MLA generators for references."
+            ]
+          },
+          {
+            heading: "Job search and professional communication",
+            paragraphs: [
+              "Non-native English speakers polish cover letters—content remains their story. Pair with AI Email Writer for structure, then Grammar Fixer for mechanics before recruiter outreach."
+            ]
+          },
+          {
+            heading: "Creative and technical writers",
+            paragraphs: [
+              "Novelists reject half of suggestions to preserve voice—the tool as sparring partner. Developers run README passes; typos undermine trust in code quality perception. Poets should expect to fight the tool—that is a healthy signal."
+            ]
+          }
+        ]
+      },
+      {
+        id: "limitations",
+        heading: "Homophones, citations, and known limitations",
+        paragraphs: [
+          "Grammar tools miss there/their/they’re and may introduce new errors if you accept every suggestion. Citations, math, code, and poetry need specialized handling—not this tool.",
+          "Accessibility: clear sentences help cognitive disabilities, but grammar alone does not create accessible structure. Use headings, alt text, and semantic markup in final published documents."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "pdf-to-word",
+    h1: "PDF to Word Converter Free",
+    metaTitle: "PDF to Word Converter Free — When Conversion Actually Works",
+    metaDescription:
+      "Convert PDF to Word online with honest expectations. Text-native PDFs convert cleanly; scans need OCR. Workflow tips for tables, footnotes, privacy, and when copy-paste wins.",
+    searchIntent: "transactional",
+    primaryKeyword: "pdf to word converter free",
+    secondaryKeywords: ["convert pdf to docx", "pdf to word online", "editable pdf to word", "scanned pdf to word"],
+    semanticKeywords: ["OCR", "text layer", "layout preservation", "tables footnotes", "reading order", "round trip"],
+    longTailKeywords: [
+      "convert scanned pdf to editable word free",
+      "pdf to word without losing formatting",
+      "pdf to word online no email",
+      "extract text from pdf to word",
+      "pdf to word for resume editing"
+    ],
+    relatedInternalLinks: [
+      { label: "Word to PDF", href: "/word-to-pdf", anchorContext: "Reverse path after edits" },
+      { label: "OCR PDF", href: "/ocr-pdf", anchorContext: "When scans need recognition" },
+      { label: "Split PDF", href: "/split-pdf", anchorContext: "Isolate chapters before convert" },
+      { label: "Compress PDF", href: "/compress-pdf", anchorContext: "When uploads fail on huge scans" },
+      { label: "PDF to Word conversion quality", href: "/blog/pdf-to-word-conversion-quality", anchorContext: "Deep dive on expectations" }
+    ],
+    schemaRecommendations: sharedSchema,
+    sections: [
+      {
+        id: "expectations",
+        heading: "PDF to Word expectations — text-native vs scanned sources",
+        paragraphs: [
+          "PDF to Word conversion is where expectations crash into layout physics. Text-native PDFs born from Word or export often convert cleanly because glyphs and reading order already exist. A scan of typewritten paper is photographs—turning that into editable Word requires OCR, deskew, denoise, and human proofreading.",
+          "Classify in thirty seconds: try selecting text with a cursor. If you cannot select sentences, assume image-only until OCR proves otherwise. For short text-native snippets, time yourself copying into Word—sometimes two minutes beats two hours of cleanup."
+        ],
+        subsections: [
+          {
+            heading: "When conversion is worth it",
+            paragraphs: [
+              "Long prose edits, track changes workflows, and accessibility accommodations where disability services authorize format shifts. When only one paragraph matters, copy-paste often wins on speed."
+            ]
+          },
+          {
+            heading: "When to use sibling tools instead",
+            paragraphs: [
+              "Split PDF or Extract PDF Pages for the chapter you need. OCR PDF when recognition is the bottleneck. Add Text to PDF for simple annotations without full conversion. Compare PDF Files when legal needs proof nothing dropped."
+            ]
+          }
+        ]
+      },
+      {
+        id: "how-to-convert",
+        heading: "How to convert PDF to Word with fewer surprises",
+        paragraphs: [
+          "For long files, split to isolate the section you truly need—smaller inputs mean cheaper OCR and fewer mistakes. Compress when uploads fail or RAM spikes. After conversion, search for OCR gremlins: rn instead of m, 8 instead of B, mangled currency decimals.",
+          "Keep the original PDF read-only; version converted DOCX as working copies with dates in filenames. If signatures or stamps are present, consult counsel before editing—flattened ink may move unexpectedly."
+        ],
+        subsections: [
+          {
+            heading: "Tables, footnotes, and STEM content",
+            paragraphs: [
+              "Merged cells and footnotes break naive parsers—plan reconstruction time. Equations may become images or broken Unicode; STEM workflows often need LaTeX source, not PDF reverse engineering. Two-column academic PDFs expect reading-order chaos."
+            ]
+          },
+          {
+            heading: "Quality checklist after download",
+            paragraphs: [
+              "Compare page count and critical paragraphs against the PDF. Apply heading styles in Word for screen readers—conversion does not infer semantics. Finance users: normalize thousand separators in Excel after Word if imports trip."
+            ]
+          }
+        ]
+      },
+      {
+        id: "use-cases",
+        heading: "Real PDF to Word workflows",
+        subsections: [
+          {
+            heading: "Legal and finance",
+            paragraphs: [
+              "Paralegals extract contract clause pages, OCR in desktop tools when needed, then merge clean Word sections. Never upload sealed evidence to random converters without chain-of-custody approval. Trust converted citations only after comparing superscripts."
+            ]
+          },
+          {
+            heading: "Students and researchers",
+            paragraphs: [
+              "Convert text-native arXiv PDFs to translate paragraphs with track changes—tables still break, prose may survive. Copyright: owning a PDF does not grant reproduction rights; use official accessibility channels when applicable."
+            ]
+          },
+          {
+            heading: "Business and product teams",
+            paragraphs: [
+              "Prototype copy edits on vendor specs, then return comments as PDF via Word to PDF for partners locked to PDF-only review. Product managers learn when copy-paste beats automation for one-off edits."
+            ]
+          }
+        ]
+      },
+      {
+        id: "privacy",
+        heading: "Privacy, copyright, and regulated documents",
+        paragraphs: [
+          "Regulated data belongs on approved systems—browser tools may be inappropriate even if convenient. Medical records conversion belongs in certified EMR workflows, not ad-supported hobby sites.",
+          "Trying to convert DRM textbooks for piracy violates policy, law, and ethics. When conversion succeeds, celebrate then verify: round-trip print-to-PDF when stakes are non-trivial."
         ]
       }
     ]

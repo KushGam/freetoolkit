@@ -6,6 +6,9 @@ import { buildBreadcrumbSchema, buildFaqSchema, buildHowToSchema, buildToolSoftw
 import { canonicalUrl } from "@/lib/utils";
 import { isToolIndexedForSearch } from "@/data/indexing-policy";
 
+/** Only pre-built tool slugs are valid; unknown paths return a real 404. */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return tools.filter((tool) => !tool.href).map((tool) => ({ slug: tool.slug }));
 }
@@ -69,9 +72,7 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
-      {tool.sections?.length ? (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
-      ) : null}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <ToolLayout tool={tool} />
     </>
   );

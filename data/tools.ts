@@ -3,6 +3,7 @@ import { expandedTools } from "./expanded-tools";
 import { applyIndexedRichPack } from "./indexed-tool-rich-packs";
 import { applyIndexedSupplement } from "./indexed-tool-supplements";
 import { applyRichToolPack } from "./rich-tool-packs";
+import { applyDefaultSections } from "./apply-default-sections";
 import { applyToolSections } from "./apply-tool-sections";
 import type { ToolContentSection } from "./tool-content-types";
 import type { SchemaRecommendation, SearchIntent } from "./tool-content-types";
@@ -454,9 +455,10 @@ const allTools: Tool[] = [...coreTools, ...newTools, ...expandedTools]
   .map(applyRichToolPack)
   .map(applyIndexedRichPack)
   .map(applyIndexedSupplement)
-  .map(applyToolSections);
+  .map(applyToolSections)
+  .map(applyDefaultSections);
 
-/** Public catalog: curated high-traffic tools only (~60). */
+/** Public catalog: curated high-traffic tools only. */
 export const tools: Tool[] = allTools.filter((tool) => retainedSet.has(tool.slug));
 
 export const categories: ToolCategory[] = ["Image Tools", "PDF Tools", "AI Tools", "SEO Tools", "Developer Tools", "Calculator Tools"];
@@ -488,27 +490,24 @@ export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
 
 export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: string; href: string }>> = {
   "AI Tools": [{ label: "AI Tools", href: "/ai-tools" }],
-  "PDF & Image": [
-    { label: "PDF Tools", href: "/pdf-tools" },
-    { label: "Image Tools", href: "/image-tools" }
-  ],
+  "PDF & Image": [{ label: "PDF & Image", href: "/pdf-image" }],
   "SEO Tools": [{ label: "SEO Tools", href: "/seo-tools" }],
-  Developer: [{ label: "Developer Tools", href: "/developer-tools" }],
-  Calculators: [{ label: "Calculator Tools", href: "/calculator-tools" }]
+  Developer: [{ label: "Developer", href: "/developer" }],
+  Calculators: [{ label: "Calculators", href: "/calculators" }]
 };
 
 export const categoryRoutes: Record<ToolCategory, string> = {
-  "Image Tools": "/image-tools",
-  "PDF Tools": "/pdf-tools",
-  "Student Tools": "/student-tools",
+  "Image Tools": "/pdf-image",
+  "PDF Tools": "/pdf-image",
+  "Student Tools": "/ai-tools",
   "AI Tools": "/ai-tools",
-  "Text Tools": "/text-tools",
-  "Developer Tools": "/developer-tools",
-  "Calculator Tools": "/calculator-tools",
-  "Security Tools": "/security-tools",
+  "Text Tools": "/ai-tools",
+  "Developer Tools": "/developer",
+  "Calculator Tools": "/calculators",
+  "Security Tools": "/developer",
   "SEO Tools": "/seo-tools",
-  "Social Media Tools": "/social-media-tools",
-  "Gaming Tools": "/gaming-tools"
+  "Social Media Tools": "/",
+  "Gaming Tools": "/"
 };
 
 export function getTool(slug: string) {
@@ -551,7 +550,7 @@ export function getRelatedTools(tool: Tool) {
   const onlyIndexed = (t: Tool | undefined): t is Tool => t !== undefined && isToolIndexedForSearch(t.slug);
 
   if (tool.slug === "ai-resume-cover-letter") {
-    const preferred = ["resume-ats-checker", "ai-text-summarizer", "grammar-fixer", "ai-interview-answer-generator"];
+    const preferred = ["resume-ats-checker", "ai-text-summarizer", "grammar-fixer", "ai-linkedin-summary-generator"];
     return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
   }
   if (tool.slug === "image-to-pdf") {
@@ -570,8 +569,6 @@ export function getRelatedTools(tool: Tool) {
       "ai-text-summarizer",
       "grammar-fixer",
       "paraphrasing-tool",
-      "content-rewriter",
-      "ai-interview-answer-generator",
       "ai-linkedin-summary-generator"
     ].filter((slug) => slug !== tool.slug);
     return preferred.map((slug) => getTool(slug)).filter(onlyIndexed).slice(0, 4);
