@@ -6,13 +6,13 @@ import { canonicalUrl } from "@/lib/utils";
 import { withoutBrandSuffix } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: withoutBrandSuffix("Disclaimer | FreeToolKit"),
+  title: withoutBrandSuffix("Disclaimer | freetoolkitapp"),
   description:
-    "Important disclaimer for FreeToolKit: AI outputs, calculations, file conversions, and third-party services are provided as-is for informational and productivity use.",
+    "Important disclaimer for freetoolkitapp: AI outputs, calculations, file conversions, and third-party services are provided as-is for informational and productivity use.",
   alternates: { canonical: canonicalUrl("/disclaimer") },
   openGraph: {
-    title: "Disclaimer | FreeToolKit",
-    description: "How to interpret AI results, file tools, calculators, and educational content on FreeToolKit.",
+    title: "Disclaimer | freetoolkitapp",
+    description: "How to interpret AI results, file tools, calculators, and educational content on freetoolkitapp.",
     url: canonicalUrl("/disclaimer"),
     type: "website"
   }
@@ -20,19 +20,19 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <Container className="max-w-4xl py-12 sm:py-16">
         <PageHeader
           eyebrow="Legal"
           title="Disclaimer"
-          description="FreeToolKit provides browser-based utilities and guides. Please read this page before relying on any output for important decisions."
+          description="freetoolkitapp provides browser-based utilities and guides. Please read this page before relying on any output for important decisions."
           badges={["As-is tools", "Review outputs", "Not professional advice"]}
         />
         <TrustCallout className="mt-6" />
         <Card className="prose-lite mt-6 p-6 sm:p-8">
           <h2>General</h2>
           <p>
-            FreeToolKit (the “site”) offers free online tools, articles, and educational content. All materials are provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied, including fitness for a particular purpose, accuracy, completeness, or non-infringement.
+            freetoolkitapp (the “site”) offers free online tools, articles, and educational content. All materials are provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied, including fitness for a particular purpose, accuracy, completeness, or non-infringement.
           </p>
           <p>
             We do not guarantee uninterrupted access, error-free operation, or that every tool will meet every regulatory, academic, workplace, or platform requirement. You use the site at your own risk.
@@ -58,7 +58,7 @@ export default function DisclaimerPage() {
 
           <h2>Third-party trademarks and games</h2>
           <p>
-            References to games, software, or brands are for descriptive purposes. Names and logos belong to their respective owners. FreeToolKit is not affiliated with or endorsed by those owners unless explicitly stated.
+            References to games, software, or brands are for descriptive purposes. Names and logos belong to their respective owners. freetoolkitapp is not affiliated with or endorsed by those owners unless explicitly stated.
           </p>
 
           <h2>External links and advertising</h2>
@@ -68,16 +68,16 @@ export default function DisclaimerPage() {
 
           <h2>Limitation of liability</h2>
           <p>
-            To the maximum extent permitted by law, FreeToolKit and its operators shall not be liable for any indirect, incidental, consequential, or special damages arising from your use of the site, including loss of data, profits, or business opportunities.
+            To the maximum extent permitted by law, freetoolkitapp and its operators shall not be liable for any indirect, incidental, consequential, or special damages arising from your use of the site, including loss of data, profits, or business opportunities.
           </p>
 
           <h2>Contact</h2>
           <p>
             Questions about this disclaimer? Email{" "}
-            <a className="font-bold text-brand-700 hover:text-brand-900" href="mailto:hello@freetoolkitapp.com">hello@freetoolkitapp.com</a>, visit our{" "}
-            <Link href="/contact" className="font-bold text-brand-700 hover:text-brand-900">contact page</Link>, or review the{" "}
-            <Link href="/terms" className="font-bold text-brand-700 hover:text-brand-900">Terms of Use</Link> and{" "}
-            <Link href="/privacy-policy" className="font-bold text-brand-700 hover:text-brand-900">Privacy Policy</Link>.
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href="mailto:hello@freetoolkitapp.com">hello@freetoolkitapp.com</a>, visit our{" "}
+            <Link href="/contact" className="font-bold text-indigo-400 hover:text-ink-primary">contact page</Link>, or review the{" "}
+            <Link href="/terms" className="font-bold text-indigo-400 hover:text-ink-primary">Terms of Use</Link> and{" "}
+            <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link>.
           </p>
         </Card>
       </Container>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AuthorByline } from "@/components/AuthorByline";
 import { FAQ } from "@/components/FAQ";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
 import { Badge, Container, PageHeader, ToolCard } from "@/components/ui";
@@ -22,7 +23,7 @@ const blogCategoryRouteMap: Record<string, string> = {
   "PDF Guides": categoryRoutes["PDF Tools"],
   "Image Guides": categoryRoutes["Image Tools"],
   "Student Guides": categoryRoutes["Student Tools"],
-  "Productivity Guides": "/everyday",
+  "Productivity Guides": "/calculators",
   "Text Guides": categoryRoutes["Text Tools"],
   "Security Guides": categoryRoutes["Security Tools"],
   "Gaming Guides": categoryRoutes["Gaming Tools"]
@@ -40,7 +41,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   const indexed = isBlogIndexedForSearch(post.slug);
 
   return {
-    title: withoutBrandSuffix(`${post.title} | FreeToolKit Blog`),
+    title: withoutBrandSuffix(`${post.title} | freetoolkitapp Blog`),
     description: post.description,
     keywords: post.keywords,
     alternates: { canonical },
@@ -49,7 +50,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       title: post.title,
       description: post.description,
       url: canonical,
-      siteName: "FreeToolKit",
+      siteName: "freetoolkitapp",
       type: "article",
       publishedTime: post.publishedAt,
       tags: post.keywords
@@ -99,7 +100,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     return (
       <>
         {paragraph.slice(0, startIndex)}
-        <Link href={match.href} className="font-semibold text-brand-700 transition hover:text-brand-900">
+        <Link href={match.href} className="font-semibold text-indigo-400 transition hover:text-ink-primary">
           {paragraph.slice(startIndex, endIndex)}
         </Link>
         {paragraph.slice(endIndex)}
@@ -108,12 +109,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Container className="max-w-5xl py-10">
-        <Link href="/blog" className="text-sm font-black text-brand-700 transition hover:text-brand-900">
+        <Link href="/blog" className="text-sm font-black text-indigo-400 transition hover:text-ink-primary">
           ← Back to blog
         </Link>
 
@@ -124,14 +125,15 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           description={post.description}
           badges={[formatDate(post.publishedAt), post.readingTime]}
         />
+        <AuthorByline publishedAt={post.publishedAt} />
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-black uppercase tracking-wide text-brand-600">Contents</p>
+            <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-5 shadow-sm">
+              <p className="text-xs font-black uppercase tracking-wide text-indigo-400">Contents</p>
               <nav className="mt-3 grid gap-2" aria-label="Table of contents">
                 {post.content.map((section) => (
-                  <a key={section.heading} href={`#${section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`} className="text-sm font-bold leading-6 text-slate-600 hover:text-brand-700">
+                  <a key={section.heading} href={`#${section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`} className="text-sm font-bold leading-6 text-ink-muted hover:text-indigo-400">
                     {section.heading}
                   </a>
                 ))}
@@ -141,10 +143,10 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           <article className="max-w-3xl">
             {post.content.map((section) => (
               <section key={section.heading} id={section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")} className="scroll-mt-24 mt-10 first:mt-0">
-                <h2 className="font-display text-3xl font-bold tracking-tight text-slate-950">{section.heading}</h2>
+                <h2 className="font-display text-3xl font-bold tracking-tight text-ink-primary">{section.heading}</h2>
                 <div className="mt-4 space-y-5">
                   {section.paragraphs.map((paragraph) => (
-                    <p key={paragraph} className="text-base leading-8 text-slate-700">
+                    <p key={paragraph} className="text-base leading-8 text-ink-secondary">
                       {linkifyParagraph(paragraph)}
                     </p>
                   ))}
@@ -158,13 +160,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         <FAQ items={faqs} />
 
         {relatedTools.length ? (
-          <section className="mt-14 border-t border-slate-200 pt-10">
+          <section className="mt-14 border-t border-white/[0.08] pt-10">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <Badge className="border-brand-100 bg-brand-50 text-[11px] font-black uppercase tracking-wide text-brand-700">Related tools</Badge>
-                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-950">Try the tools mentioned in this guide</h2>
+                <Badge className="border-indigo-400/20 bg-indigo-500/10 text-[11px] font-black uppercase tracking-wide text-indigo-400">Related tools</Badge>
+                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink-primary">Try the tools mentioned in this guide</h2>
               </div>
-              <Link href="/all-tools" className="text-sm font-black text-brand-700 transition hover:text-brand-900">
+              <Link href="/all-tools" className="text-sm font-black text-indigo-400 transition hover:text-ink-primary">
                 See all tools →
               </Link>
             </div>
@@ -175,16 +177,16 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </section>
         ) : null}
-        <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-black uppercase tracking-wide text-brand-600">Continue the workflow</p>
+        <section className="mt-10 rounded-2xl border border-white/[0.08] bg-surface-card p-5 shadow-sm">
+          <p className="text-xs font-black uppercase tracking-wide text-indigo-400">Continue the workflow</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <Link href={blogCategoryRouteMap[post.category] ?? "/all-tools"} className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            <Link href={blogCategoryRouteMap[post.category] ?? "/all-tools"} className="pill-link">
               Explore category tools
             </Link>
-            <Link href="/all-tools" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            <Link href="/all-tools" className="pill-link">
               Browse all tools
             </Link>
-            <Link href="/blog" className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+            <Link href="/blog" className="pill-link">
               More guides
             </Link>
           </div>

@@ -38,10 +38,10 @@ function bytesToPdfBlob(bytes: Uint8Array) {
 function Download({ output }: { output: Output | null }) {
   if (!output) return null;
   return (
-    <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
-      <p className="text-sm font-black uppercase tracking-wide text-emerald-700">Output ready</p>
-      <p className="mt-1 break-words text-sm font-bold text-emerald-900">{output.name} · {formatBytes(output.size)}</p>
-      <a className="mt-4 inline-flex min-h-11 items-center rounded-2xl bg-emerald-600 px-5 py-2.5 text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700" href={output.url} download={output.name}>
+    <div className="alert-success mt-6 p-5 shadow-sm">
+      <p className="text-sm font-black uppercase tracking-wide text-emerald-400">Output ready</p>
+      <p className="mt-1 break-words text-sm font-bold text-emerald-200">{output.name} · {formatBytes(output.size)}</p>
+      <a className="mt-4 inline-flex min-h-11 items-center rounded-2xl bg-emerald-600 px-5 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-emerald-500" href={output.url} download={output.name}>
         Download
       </a>
     </div>
@@ -50,7 +50,7 @@ function Download({ output }: { output: Output | null }) {
 
 function ErrorMessage({ message }: { message: string }) {
   if (!message) return null;
-  return <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold leading-6 text-red-700">Something needs attention: {message}</p>;
+  return <p className="alert-error mt-4">Something needs attention: {message}</p>;
 }
 
 function useObjectUrlCleanup(output: Output | null) {
@@ -120,12 +120,12 @@ async function loadPdfDocument(PDFDocument: typeof import("pdf-lib").PDFDocument
 
 function FileInfo({ file }: { file: File | null }) {
   return file ? (
-    <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-      <p className="text-xs font-black uppercase tracking-wide text-slate-500">Selected file</p>
-      <p className="mt-1 break-words text-sm font-bold text-slate-800">{file.name} · {formatBytes(file.size)}</p>
+    <div className="mt-4 rounded-2xl border border-white/[0.08] bg-surface-card p-4">
+      <p className="text-xs font-black uppercase tracking-wide text-ink-muted">Selected file</p>
+      <p className="mt-1 break-words text-sm font-bold text-ink-primary">{file.name} · {formatBytes(file.size)}</p>
     </div>
   ) : (
-    <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-500">Choose a file to enable this tool.</p>
+    <p className="mt-4 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-semibold text-ink-muted">Choose a file to enable this tool.</p>
   );
 }
 
@@ -179,16 +179,16 @@ function ImageCompressor() {
     <div>
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={(files) => setFile(files[0] ?? null)} />
       <FileInfo file={file} />
-      <label className="mt-5 block text-sm font-bold text-slate-700">Quality: {quality.toFixed(2)}</label>
-      <input className="mt-2 w-full accent-brand-600" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} />
+      <label className="mt-5 block text-sm font-bold text-ink-secondary">Quality: {quality.toFixed(2)}</label>
+      <input className="mt-2 w-full accent-indigo-500" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} />
       <div className="mt-4 flex flex-wrap gap-3">
         <Button onClick={compress} disabled={!file || busy}>{busy ? "Compressing..." : "Compress"}</Button>
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
-      {output && file ? <p className="mt-4 text-sm font-bold text-slate-700">Original {formatBytes(file.size)} → compressed {formatBytes(output.size)}. Reduction: {reduction.toFixed(1)}%</p> : null}
+      {output && file ? <p className="mt-4 text-sm font-bold text-ink-secondary">Original {formatBytes(file.size)} → compressed {formatBytes(output.size)}. Reduction: {reduction.toFixed(1)}%</p> : null}
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        {before ? <img className="max-h-72 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={before} alt="Original preview" /> : null}
-        {preview ? <img className="max-h-72 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Compressed preview" /> : null}
+        {before ? <img className="max-h-72 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={before} alt="Original preview" /> : null}
+        {preview ? <img className="max-h-72 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Compressed preview" /> : null}
       </div>
       <ErrorMessage message={error} />
       <Download output={output} />
@@ -241,15 +241,15 @@ function ImageConverter({ mode }: { mode: "png-to-jpg" | "jpg-to-png" | "webp" }
       <FileInfo file={file} />
       {mode === "webp" ? (
         <>
-          <label className="mt-5 block text-sm font-bold text-slate-700">Quality: {quality.toFixed(2)}</label>
-          <input className="mt-2 w-full accent-brand-600" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} />
+          <label className="mt-5 block text-sm font-bold text-ink-secondary">Quality: {quality.toFixed(2)}</label>
+          <input className="mt-2 w-full accent-indigo-500" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} />
         </>
       ) : null}
       <div className="mt-4 flex flex-wrap gap-3">
         <Button onClick={convert} disabled={!file || busy}>{busy ? "Converting..." : "Convert"}</Button>
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
-      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Converted preview" /> : null}
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Converted preview" /> : null}
       <ErrorMessage message={error} />
       <Download output={output} />
     </div>
@@ -323,15 +323,15 @@ function ImageResizer() {
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={setImage} />
       <FileInfo file={file} />
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Width <Input type="number" min={1} value={width} onChange={(event) => updateWidth(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Height <Input type="number" min={1} value={height} onChange={(event) => updateHeight(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Width <Input type="number" min={1} value={width} onChange={(event) => updateWidth(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Height <Input type="number" min={1} value={height} onChange={(event) => updateHeight(Number(event.target.value))} /></label>
       </div>
-      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={ratio} onChange={(event) => setRatio(event.target.checked)} /> Maintain aspect ratio</label>
+      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-ink-secondary"><input type="checkbox" checked={ratio} onChange={(event) => setRatio(event.target.checked)} /> Maintain aspect ratio</label>
       <div className="mt-4 flex flex-wrap gap-3">
         <Button onClick={resize} disabled={!file || busy}>{busy ? "Resizing..." : "Resize image"}</Button>
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
-      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Resized preview" /> : null}
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Resized preview" /> : null}
       <ErrorMessage message={error} />
       <Download output={output} />
     </div>
@@ -409,8 +409,8 @@ function PdfTool({ mode }: { mode: "merge" | "split" | "compress" | "rotate" | "
           result.setAuthor("");
           result.setSubject("");
           result.setKeywords([]);
-          result.setProducer("FreeToolKit");
-          result.setCreator("FreeToolKit");
+          result.setProducer("freetoolkitapp");
+          result.setCreator("freetoolkitapp");
         } else {
           const selected = parseRanges(ranges, source.getPageCount());
           const copied = await result.copyPages(source, selected);
@@ -451,36 +451,36 @@ function PdfTool({ mode }: { mode: "merge" | "split" | "compress" | "rotate" | "
     <div>
       <FileUploadDropzone label={multiple ? "Upload PDF files" : "Upload a PDF"} accept="application/pdf" multiple={multiple} onFiles={handlePdfFiles} />
       {files.length ? (
-        <div className="mt-4 rounded-2xl bg-slate-50 p-4">
-          <p className="text-sm font-bold text-slate-700">File order</p>
-          <ol className="mt-2 grid list-decimal gap-1 pl-5 text-sm text-slate-600">
+        <div className="mt-4 rounded-2xl bg-surface-card p-4">
+          <p className="text-sm font-bold text-ink-secondary">File order</p>
+          <ol className="mt-2 grid list-decimal gap-1 pl-5 text-sm text-ink-muted">
             {files.map((file) => <li key={`${file.name}-${file.size}`}>{file.name} ({formatBytes(file.size)})</li>)}
           </ol>
         </div>
       ) : null}
       {(mode === "split" || mode === "extract") ? (
-        <div className="mt-5 rounded-2xl border border-brand-100 bg-brand-50 p-4">
+        <div className="mt-5 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <label className="text-sm font-black text-slate-800" htmlFor="pdf-ranges">Pages or ranges</label>
-            <span className="text-sm font-bold text-brand-700">
+            <label className="text-sm font-black text-ink-primary" htmlFor="pdf-ranges">Pages or ranges</label>
+            <span className="text-sm font-bold text-indigo-400">
               {pageCount ? `This PDF has ${pageCount} page${pageCount === 1 ? "" : "s"}` : pageCountStatus || "Upload a PDF to see the page count"}
             </span>
           </div>
-          <Input id="pdf-ranges" className="mt-3 bg-white" value={ranges} onChange={(event) => setRanges(event.target.value)} placeholder={pageCount ? `Example: 1-3,5 or 1-${pageCount}` : "1-3,5,7-9"} />
-          <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">
+          <Input id="pdf-ranges" className="mt-3 bg-surface-card" value={ranges} onChange={(event) => setRanges(event.target.value)} placeholder={pageCount ? `Example: 1-3,5 or 1-${pageCount}` : "1-3,5,7-9"} />
+          <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">
             Use commas for separate pages and hyphens for ranges. Example: <span className="font-black">1-3,5</span>.
           </p>
         </div>
       ) : null}
       {mode === "rotate" ? (
-        <label className="mt-5 block text-sm font-bold text-slate-700">Rotation <Select className="mt-2" value={rotation} onChange={(event) => setRotation(event.target.value)}><option value="90">90 degrees</option><option value="180">180 degrees</option><option value="270">270 degrees</option></Select></label>
+        <label className="mt-5 block text-sm font-bold text-ink-secondary">Rotation <Select className="mt-2" value={rotation} onChange={(event) => setRotation(event.target.value)}><option value="90">90 degrees</option><option value="180">180 degrees</option><option value="270">270 degrees</option></Select></label>
       ) : null}
-      {mode === "compress" ? <p className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm font-semibold leading-6 text-amber-800">Browser PDF optimization may reduce metadata and rebuild structure, but it cannot always heavily compress scanned image PDFs.</p> : null}
+      {mode === "compress" ? <p className="mt-4 alert-warning">Browser PDF optimization may reduce metadata and rebuild structure, but it cannot always heavily compress scanned image PDFs.</p> : null}
       <div className="mt-5 flex flex-wrap gap-3">
         <Button onClick={run} disabled={!files.length || busy}>{busy ? "Working..." : mode === "merge" ? "Merge PDFs" : mode === "compress" ? "Optimize PDF" : mode === "rotate" ? "Rotate PDF" : "Generate PDF"}</Button>
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
-      {message ? <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold leading-6 text-slate-700">{message}</p> : null}
+      {message ? <p className="mt-4 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold leading-6 text-ink-secondary">{message}</p> : null}
       <Download output={output} />
     </div>
   );
@@ -497,7 +497,7 @@ function GpaCalculator() {
     <div>
       <div className="grid gap-3">
         {rows.map((row, index) => (
-          <div key={index} className="grid gap-3 rounded-2xl bg-slate-50 p-3 md:grid-cols-[1fr_130px_130px_auto]">
+          <div key={index} className="grid gap-3 rounded-2xl bg-surface-card p-3 md:grid-cols-[1fr_130px_130px_auto]">
             <Input placeholder="Course name" value={row.name} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, name: event.target.value } : item))} />
             <Input type="number" min={0} step={0.5} value={row.credits} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, credits: Number(event.target.value) } : item))} />
             <Select value={row.grade} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, grade: event.target.value } : item))}>{Object.keys(gradePoints).map((grade) => <option key={grade}>{grade}</option>)}</Select>
@@ -509,9 +509,9 @@ function GpaCalculator() {
         <SecondaryButton onClick={() => setRows([...rows, { name: "", credits: 3, grade: "A" }])}>Add course</SecondaryButton>
         <SecondaryButton onClick={() => setRows([{ name: "", credits: 3, grade: "A" }, { name: "", credits: 3, grade: "B+" }])}>Reset</SecondaryButton>
       </div>
-      <div className="mt-5 rounded-2xl border border-brand-100 bg-brand-50 p-5 shadow-sm">
-        <p className="text-sm font-bold text-brand-700">Formula: total grade points / total credit hours</p>
-        <p className="mt-2 text-4xl font-black text-brand-700">{result.toFixed(2)}</p>
+      <div className="mt-5 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 shadow-sm">
+        <p className="text-sm font-bold text-indigo-400">Formula: total grade points / total credit hours</p>
+        <p className="mt-2 text-4xl font-black text-indigo-400">{result.toFixed(2)}</p>
       </div>
     </div>
   );
@@ -527,14 +527,14 @@ function CgpaCalculator() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Previous CGPA <Input type="number" step={0.01} value={previous} onChange={(event) => setPrevious(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Completed credits <Input type="number" step={0.5} value={completed} onChange={(event) => setCompleted(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Current semester GPA <Input type="number" step={0.01} value={current} onChange={(event) => setCurrent(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Current semester credits <Input type="number" step={0.5} value={currentCredits} onChange={(event) => setCurrentCredits(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Previous CGPA <Input type="number" step={0.01} value={previous} onChange={(event) => setPrevious(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Completed credits <Input type="number" step={0.5} value={completed} onChange={(event) => setCompleted(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Current semester GPA <Input type="number" step={0.01} value={current} onChange={(event) => setCurrent(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Current semester credits <Input type="number" step={0.5} value={currentCredits} onChange={(event) => setCurrentCredits(Number(event.target.value))} /></label>
       </div>
-      <div className="mt-5 rounded-2xl border border-brand-100 bg-brand-50 p-5 shadow-sm">
-        <p className="text-sm font-bold text-brand-700">((previous CGPA * completed credits) + (current GPA * current credits)) / total credits</p>
-        <p className="mt-2 text-4xl font-black text-brand-700">{cgpa.toFixed(2)}</p>
+      <div className="mt-5 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 shadow-sm">
+        <p className="text-sm font-bold text-indigo-400">((previous CGPA * completed credits) + (current GPA * current credits)) / total credits</p>
+        <p className="mt-2 text-4xl font-black text-indigo-400">{cgpa.toFixed(2)}</p>
         <SecondaryButton className="mt-4" onClick={() => { setPrevious(3.2); setCompleted(60); setCurrent(3.6); setCurrentCredits(15); }}>Reset</SecondaryButton>
       </div>
     </div>
@@ -551,7 +551,7 @@ function GradePercentageCalculator() {
     <div>
       <div className="grid gap-3">
         {rows.map((row, index) => (
-          <div key={index} className="grid gap-3 rounded-2xl bg-slate-50 p-3 sm:grid-cols-[1fr_1fr_auto]">
+          <div key={index} className="grid gap-3 rounded-2xl bg-surface-card p-3 sm:grid-cols-[1fr_1fr_auto]">
             <Input type="number" step={0.01} value={row.obtained} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, obtained: Number(event.target.value) } : item))} placeholder="Marks obtained" />
             <Input type="number" step={0.01} value={row.total} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, total: Number(event.target.value) } : item))} placeholder="Total marks" />
             <SecondaryButton onClick={() => setRows(rows.filter((_, i) => i !== index))}>Remove</SecondaryButton>
@@ -562,9 +562,9 @@ function GradePercentageCalculator() {
         <SecondaryButton onClick={() => setRows([...rows, { obtained: 0, total: 100 }])}>Add assessment</SecondaryButton>
         <SecondaryButton onClick={() => setRows([{ obtained: 85, total: 100 }])}>Reset</SecondaryButton>
       </div>
-      <div className="mt-5 rounded-2xl border border-brand-100 bg-brand-50 p-5 shadow-sm">
-        <p className="text-sm font-bold text-brand-700">{obtained} / {total}</p>
-        <p className="mt-2 text-4xl font-black text-brand-700">{pct.toFixed(2)}% · Grade {grade}</p>
+      <div className="mt-5 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 shadow-sm">
+        <p className="text-sm font-bold text-indigo-400">{obtained} / {total}</p>
+        <p className="mt-2 text-4xl font-black text-indigo-400">{pct.toFixed(2)}% · Grade {grade}</p>
       </div>
     </div>
   );
@@ -604,13 +604,13 @@ function StudyTimer() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Focus minutes <Input type="number" min={1} value={focus} onChange={(event) => { setFocus(Number(event.target.value)); if (mode === "Focus") setSeconds(Number(event.target.value) * 60); }} /></label>
-        <label className="text-sm font-bold text-slate-700">Break minutes <Input type="number" min={1} value={breakMin} onChange={(event) => { setBreakMin(Number(event.target.value)); if (mode === "Break") setSeconds(Number(event.target.value) * 60); }} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Focus minutes <Input type="number" min={1} value={focus} onChange={(event) => { setFocus(Number(event.target.value)); if (mode === "Focus") setSeconds(Number(event.target.value) * 60); }} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Break minutes <Input type="number" min={1} value={breakMin} onChange={(event) => { setBreakMin(Number(event.target.value)); if (mode === "Break") setSeconds(Number(event.target.value) * 60); }} /></label>
       </div>
-      <div className="mt-6 rounded-2xl bg-slate-50 p-6 text-center">
-        <p className="text-sm font-black uppercase tracking-wide text-brand-600">{mode}</p>
-        <p className="mt-2 text-6xl font-black text-slate-950">{minutes}:{secs}</p>
-        <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-brand-600" style={{ width: `${progress}%` }} /></div>
+      <div className="mt-6 rounded-2xl bg-surface-card p-6 text-center">
+        <p className="text-sm font-black uppercase tracking-wide text-indigo-400">{mode}</p>
+        <p className="mt-2 text-6xl font-black text-ink-primary">{minutes}:{secs}</p>
+        <div className="mt-5 h-3 overflow-hidden rounded-full bg-surface-card/10"><div className="h-full rounded-full bg-indigo-500" style={{ width: `${progress}%` }} /></div>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
           <Button onClick={() => setRunning(true)}>Start</Button>
           <SecondaryButton onClick={() => setRunning(false)}>Pause</SecondaryButton>
@@ -647,9 +647,9 @@ function WordCounter() {
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map(([label, value]) => (
-          <div key={label} className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-xs font-black uppercase tracking-wide text-slate-500">{label}</p>
-            <p className="mt-2 text-2xl font-black text-slate-950">{value}</p>
+          <div key={label} className="rounded-2xl bg-surface-card p-4">
+            <p className="text-xs font-black uppercase tracking-wide text-ink-muted">{label}</p>
+            <p className="mt-2 text-2xl font-black text-ink-primary">{value}</p>
           </div>
         ))}
       </div>
@@ -663,9 +663,9 @@ function CopyAction({ value, label = "Copy" }: { value: string; label?: string }
 
 function ResultBox({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 shadow-sm">
-      <p className="text-xs font-black uppercase tracking-wide text-brand-700">{label}</p>
-      <div className="mt-2 break-words text-2xl font-black text-slate-950">{value}</div>
+    <div className="rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 shadow-sm">
+      <p className="text-xs font-black uppercase tracking-wide text-indigo-400">{label}</p>
+      <div className="mt-2 break-words text-2xl font-black text-ink-primary">{value}</div>
     </div>
   );
 }
@@ -695,18 +695,18 @@ function QrCodeGenerator() {
 
   return (
     <div>
-      <label className="text-sm font-bold text-slate-700">Text or URL <Textarea className="mt-2 min-h-36" value={text} onChange={(event) => setText(event.target.value)} placeholder="Enter a URL, note, contact text, or message..." /></label>
+      <label className="text-sm font-bold text-ink-secondary">Text or URL <Textarea className="mt-2 min-h-36" value={text} onChange={(event) => setText(event.target.value)} placeholder="Enter a URL, note, contact text, or message..." /></label>
       <div className="mt-4 flex flex-wrap gap-3">
         <Button onClick={generate} disabled={busy || !text.trim()}>{busy ? "Generating..." : "Generate QR code"}</Button>
         <CopyAction value={text} label="Copy text" />
         <SecondaryButton onClick={() => { setText(""); setQr(""); setError(""); }}>Reset</SecondaryButton>
       </div>
       {qr ? (
-        <div className="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-[220px_1fr] sm:items-center">
-          <img src={qr} alt="Generated QR code" className="mx-auto h-52 w-52 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm" />
+        <div className="mt-6 grid gap-5 rounded-2xl border border-white/[0.08] bg-surface-card p-5 sm:grid-cols-[220px_1fr] sm:items-center">
+          <img src={qr} alt="Generated QR code" className="mx-auto h-52 w-52 rounded-2xl border border-white/[0.08] bg-surface-card p-3 shadow-sm" />
           <div>
-            <p className="text-sm font-bold leading-6 text-slate-600">Your QR code is ready. Test it with a phone camera before printing or sharing.</p>
-            <a className="mt-4 inline-flex min-h-11 items-center rounded-2xl bg-brand-600 px-5 py-2.5 text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-brand-700" href={qr} download="freetoolkit-qr-code.png">Download PNG</a>
+            <p className="text-sm font-bold leading-6 text-ink-muted">Your QR code is ready. Test it with a phone camera before printing or sharing.</p>
+            <a className="mt-4 inline-flex min-h-11 items-center rounded-2xl bg-indigo-500 px-5 py-2.5 text-sm font-black text-white shadow-sm transition  hover:bg-indigo-400" href={qr} download="freetoolkit-qr-code.png">Download PNG</a>
           </div>
         </div>
       ) : null}
@@ -793,8 +793,8 @@ function WordToPdf() {
 
   return (
     <div>
-      <label className="text-sm font-bold text-slate-700">Document title <Input className="mt-2" value={title} onChange={(event) => setTitle(event.target.value)} /></label>
-      <label className="mt-5 block text-sm font-bold text-slate-700">Body text <Textarea className="mt-2" value={body} onChange={(event) => setBody(event.target.value)} placeholder="Write or paste the document body..." /></label>
+      <label className="text-sm font-bold text-ink-secondary">Document title <Input className="mt-2" value={title} onChange={(event) => setTitle(event.target.value)} /></label>
+      <label className="mt-5 block text-sm font-bold text-ink-secondary">Body text <Textarea className="mt-2" value={body} onChange={(event) => setBody(event.target.value)} placeholder="Write or paste the document body..." /></label>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={createPdf} disabled={busy || (!title.trim() && !body.trim())}>{busy ? "Creating..." : "Create PDF"}</Button><SecondaryButton onClick={() => { setTitle("Untitled Document"); setBody(""); setOutput(null); setError(""); }}>Reset</SecondaryButton></div>
       <ErrorMessage message={error} />
       <Download output={output} />
@@ -935,14 +935,14 @@ function ImageToPdf() {
     <div>
       <FileUploadDropzone label="Upload images" accept="image/jpeg,image/png,image/webp" multiple onFiles={load} />
       <div className="mt-5 grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">Page orientation <Select className="mt-2" value={orientation} onChange={(event) => setOrientation(event.target.value as "portrait" | "landscape")}><option value="portrait">Portrait</option><option value="landscape">Landscape</option></Select></label>
-        <label className="text-sm font-bold text-slate-700">Image fit <Select className="mt-2" value={fit} onChange={(event) => setFit(event.target.value as "contain" | "fill")}><option value="contain">Contain</option><option value="fill">Fill</option></Select></label>
-        <label className="text-sm font-bold text-slate-700">Page size <Select className="mt-2" value={pageSize} onChange={(event) => setPageSize(event.target.value as "a4" | "letter")}><option value="a4">A4</option><option value="letter">Letter</option></Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Page orientation <Select className="mt-2" value={orientation} onChange={(event) => setOrientation(event.target.value as "portrait" | "landscape")}><option value="portrait">Portrait</option><option value="landscape">Landscape</option></Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Image fit <Select className="mt-2" value={fit} onChange={(event) => setFit(event.target.value as "contain" | "fill")}><option value="contain">Contain</option><option value="fill">Fill</option></Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Page size <Select className="mt-2" value={pageSize} onChange={(event) => setPageSize(event.target.value as "a4" | "letter")}><option value="a4">A4</option><option value="letter">Letter</option></Select></label>
       </div>
 
       {images.length ? (
         <div className="mt-6">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Preview and reorder</p>
+          <p className="text-sm font-black uppercase tracking-wide text-indigo-400">Preview and reorder</p>
           <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {images.map((item, index) => (
               <div
@@ -952,17 +952,17 @@ function ImageToPdf() {
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={() => moveImage(item.id)}
                 onDragEnd={() => setDragId("")}
-                className="cursor-move rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition hover:border-brand-200"
+                className="cursor-move rounded-2xl border border-white/[0.08] bg-surface-card p-3 shadow-sm transition hover:border-indigo-400/30"
               >
-                <img className="h-44 w-full rounded-xl bg-slate-50 object-contain" src={item.dataUrl} alt={`Image ${index + 1} preview`} />
-                <p className="mt-3 break-words text-sm font-bold text-slate-800 [overflow-wrap:anywhere]">{index + 1}. {item.file.name}</p>
-                <p className="mt-1 text-xs font-semibold text-slate-500">{formatBytes(item.file.size)}</p>
+                <img className="h-44 w-full rounded-xl bg-surface-card object-contain" src={item.dataUrl} alt={`Image ${index + 1} preview`} />
+                <p className="mt-3 break-words text-sm font-bold text-ink-primary [overflow-wrap:anywhere]">{index + 1}. {item.file.name}</p>
+                <p className="mt-1 text-xs font-semibold text-ink-muted">{formatBytes(item.file.size)}</p>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-500">Choose JPG, PNG, or WebP images to enable this tool.</p>
+        <p className="mt-4 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-semibold text-ink-muted">Choose JPG, PNG, or WebP images to enable this tool.</p>
       )}
 
       <div className="mt-5 flex flex-wrap gap-3">
@@ -1068,11 +1068,11 @@ function ImageToWord() {
     <div>
       <FileUploadDropzone label="Upload a JPG or PNG image" accept="image/jpeg,image/png" onFiles={load} />
       <FileInfo file={file} />
-      <p className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm font-semibold leading-6 text-brand-700">
+      <p className="mt-4 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-4 text-sm font-semibold leading-6 text-indigo-400">
         This tool extracts text from images. Formatting and layout may not be preserved.
       </p>
 
-      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Uploaded image preview" /> : null}
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Uploaded image preview" /> : null}
 
       <div className="mt-5 flex flex-wrap gap-3">
         <Button onClick={extractText} disabled={!file || busy}>{busy ? `Extracting${ocrProgress ? ` ${ocrProgress}%` : "..."}` : "Extract text"}</Button>
@@ -1080,7 +1080,7 @@ function ImageToWord() {
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
 
-      <label className="mt-5 block text-sm font-bold text-slate-700">
+      <label className="mt-5 block text-sm font-bold text-ink-secondary">
         Extracted text
         <Textarea className="mt-2 min-h-72" value={text} onChange={(event) => setText(event.target.value)} placeholder="Extracted text will appear here. You can edit it before downloading as DOCX." />
       </label>
@@ -1230,14 +1230,14 @@ function AiImageToWord() {
     <div>
       <FileUploadDropzone label="Upload a JPG, PNG, or WebP image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
       <FileInfo file={file} />
-      <p className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm font-semibold leading-6 text-brand-700">
+      <p className="mt-4 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-4 text-sm font-semibold leading-6 text-indigo-400">
         This AI tool extracts and structures text from images. Complex layouts, handwriting, and scanned documents may not be perfectly preserved.
       </p>
-      <p className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-600">
+      <p className="mt-3 rounded-2xl border border-white/[0.08] bg-surface-card px-4 py-3 text-sm font-semibold text-ink-muted">
         {remaining} AI image conversion{remaining === 1 ? "" : "s"} remaining today in this browser.
       </p>
 
-      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Uploaded image preview" /> : null}
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Uploaded image preview" /> : null}
 
       <div className="mt-5 flex flex-wrap gap-3">
         <Button onClick={extract} disabled={!file || busy || remaining <= 0}>{busy ? "Extracting with AI..." : "Extract with AI"}</Button>
@@ -1245,7 +1245,7 @@ function AiImageToWord() {
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
 
-      <label className="mt-5 block text-sm font-bold text-slate-700">
+      <label className="mt-5 block text-sm font-bold text-ink-secondary">
         Extracted structured text / Markdown
         <Textarea className="mt-2 min-h-80 font-mono" value={markdown} onChange={(event) => setMarkdown(event.target.value)} placeholder="AI-extracted Markdown will appear here. You can edit it before downloading as DOCX." />
       </label>
@@ -1352,14 +1352,14 @@ function PdfToWord() {
       <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={load} />
 
       {file ? (
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Selected file</p>
-          <p className="mt-2 break-words text-base font-bold text-slate-950 [overflow-wrap:anywhere]">{file.name}</p>
-          <p className="mt-1 text-sm font-semibold text-slate-500">{formatBytes(file.size)}</p>
+        <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-5 shadow-sm">
+          <p className="text-sm font-black uppercase tracking-wide text-indigo-400">Selected file</p>
+          <p className="mt-2 break-words text-base font-bold text-ink-primary [overflow-wrap:anywhere]">{file.name}</p>
+          <p className="mt-1 text-sm font-semibold text-ink-muted">{formatBytes(file.size)}</p>
         </div>
       ) : null}
 
-      <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 text-sm leading-6 text-brand-800 shadow-sm">
+      <div className="rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 text-sm leading-6 text-brand-800 shadow-sm">
         <p className="font-black">Text-based PDF to Word conversion</p>
         <p className="mt-2">
           This tool extracts readable text from your PDF in the browser and creates a downloadable DOCX file.
@@ -1382,7 +1382,7 @@ function PdfToWord() {
       </div>
 
       {text ? (
-        <label className="block text-sm font-bold text-slate-700">
+        <label className="block text-sm font-bold text-ink-secondary">
           Extracted text
           <Textarea className="mt-2 min-h-72 font-mono" value={text} onChange={(event) => setText(event.target.value)} />
         </label>
@@ -1391,21 +1391,21 @@ function PdfToWord() {
       <ErrorMessage message={error} />
       <Download output={output} />
 
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
-        <p className="font-bold text-slate-950">Text-based conversion note</p>
+      <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-5 text-sm leading-6 text-ink-muted">
+        <p className="font-bold text-ink-primary">Text-based conversion note</p>
         <p className="mt-2">
           This converter focuses on readable PDF text. Complex formatting, tables, scanned pages, handwriting, and exact page layout may not be preserved.
         </p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <a className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" href="/extract-pdf-pages">
+        <a className="rounded-2xl border border-white/[0.08] bg-surface-card px-5 py-3 text-center text-sm font-black text-ink-primary shadow-sm transition  hover:border-indigo-400/30 hover:bg-surface-card/5 hover:text-indigo-400" href="/extract-pdf-pages">
           Extract PDF Pages
         </a>
-        <a className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" href="/add-text-to-pdf">
+        <a className="rounded-2xl border border-white/[0.08] bg-surface-card px-5 py-3 text-center text-sm font-black text-ink-primary shadow-sm transition  hover:border-indigo-400/30 hover:bg-surface-card/5 hover:text-indigo-400" href="/add-text-to-pdf">
           Add Text to PDF
         </a>
-        <a className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700" href="/word-to-pdf">
+        <a className="rounded-2xl border border-white/[0.08] bg-surface-card px-5 py-3 text-center text-sm font-black text-ink-primary shadow-sm transition  hover:border-indigo-400/30 hover:bg-surface-card/5 hover:text-indigo-400" href="/word-to-pdf">
           Word to PDF
         </a>
       </div>
@@ -1478,7 +1478,7 @@ function PdfToJpg() {
     <div className="grid gap-6">
       <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={load} />
       <FileInfo file={file} />
-      <label className="text-sm font-bold text-slate-700">
+      <label className="text-sm font-bold text-ink-secondary">
         Pages or ranges
         <Input className="mt-2" value={ranges} onChange={(event) => setRanges(event.target.value)} placeholder="Leave empty for all pages, or use 1-3,5" />
       </label>
@@ -1490,13 +1490,13 @@ function PdfToJpg() {
       {outputs.length ? (
         <div className="grid gap-4 sm:grid-cols-2">
           {outputs.map((output) => (
-            <a key={output.url} className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-black text-emerald-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-100" href={output.url} download={output.name}>
+            <a key={output.url} className="alert-success shadow-sm transition hover:border-emerald-400/30" href={output.url} download={output.name}>
               Download {output.name} · {formatBytes(output.size)}
             </a>
           ))}
         </div>
       ) : null}
-      <p className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold leading-6 text-slate-600">JPG files are image exports. Text will not remain editable, and very large PDFs may take longer on mobile devices.</p>
+      <p className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-semibold leading-6 text-ink-muted">JPG files are image exports. Text will not remain editable, and very large PDFs may take longer on mobile devices.</p>
     </div>
   );
 }
@@ -1513,14 +1513,14 @@ function DiscountCalculator() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">Original price <Input className="mt-2" type="number" min={0} value={price} onChange={(event) => setPrice(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Discount % <Input className="mt-2" type="number" min={0} max={100} value={discount} onChange={(event) => setDiscount(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Tax % optional <Input className="mt-2" type="number" min={0} value={tax} onChange={(event) => setTax(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Original price <Input className="mt-2" type="number" min={0} value={price} onChange={(event) => setPrice(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Discount % <Input className="mt-2" type="number" min={0} max={100} value={discount} onChange={(event) => setDiscount(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Tax % optional <Input className="mt-2" type="number" min={0} value={tax} onChange={(event) => setTax(Number(event.target.value))} /></label>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
-        <ResultCard title="You save"><p className="text-3xl font-black text-slate-950">${savings.toFixed(2)}</p></ResultCard>
-        <ResultCard title="Sale price"><p className="text-3xl font-black text-slate-950">${salePrice.toFixed(2)}</p></ResultCard>
-        <ResultCard title="Estimated total"><p className="text-3xl font-black text-slate-950">${total.toFixed(2)}</p></ResultCard>
+        <ResultCard title="You save"><p className="text-3xl font-black text-ink-primary">${savings.toFixed(2)}</p></ResultCard>
+        <ResultCard title="Sale price"><p className="text-3xl font-black text-ink-primary">${salePrice.toFixed(2)}</p></ResultCard>
+        <ResultCard title="Estimated total"><p className="text-3xl font-black text-ink-primary">${total.toFixed(2)}</p></ResultCard>
       </div>
       <SecondaryButton onClick={() => { setPrice(100); setDiscount(20); setTax(0); }}>Reset</SecondaryButton>
     </div>
@@ -1538,16 +1538,16 @@ function BmiCalculator() {
 
   return (
     <div className="grid gap-6">
-      <label className="text-sm font-bold text-slate-700">Units <Select className="mt-2" value={unit} onChange={(event) => setUnit(event.target.value as "metric" | "imperial")}><option value="metric">Metric (cm, kg)</option><option value="imperial">Imperial (in, lb)</option></Select></label>
+      <label className="text-sm font-bold text-ink-secondary">Units <Select className="mt-2" value={unit} onChange={(event) => setUnit(event.target.value as "metric" | "imperial")}><option value="metric">Metric (cm, kg)</option><option value="imperial">Imperial (in, lb)</option></Select></label>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Height ({unit === "metric" ? "cm" : "in"}) <Input className="mt-2" type="number" min={1} value={height} onChange={(event) => setHeight(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Weight ({unit === "metric" ? "kg" : "lb"}) <Input className="mt-2" type="number" min={1} value={weight} onChange={(event) => setWeight(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Height ({unit === "metric" ? "cm" : "in"}) <Input className="mt-2" type="number" min={1} value={height} onChange={(event) => setHeight(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Weight ({unit === "metric" ? "kg" : "lb"}) <Input className="mt-2" type="number" min={1} value={weight} onChange={(event) => setWeight(Number(event.target.value))} /></label>
       </div>
       <ResultCard title="BMI result">
-        <p className="text-4xl font-black text-slate-950">{Number.isFinite(bmi) ? bmi.toFixed(1) : "0.0"}</p>
-        <p className="mt-2 text-sm font-bold text-slate-600">{category}</p>
+        <p className="text-4xl font-black text-ink-primary">{Number.isFinite(bmi) ? bmi.toFixed(1) : "0.0"}</p>
+        <p className="mt-2 text-sm font-bold text-ink-muted">{category}</p>
       </ResultCard>
-      <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-6 text-amber-900">BMI is a general screening estimate, not medical advice. It does not measure muscle, body composition, age, pregnancy, or individual health risk.</p>
+      <p className="alert-warning">BMI is a general screening estimate, not medical advice. It does not measure muscle, body composition, age, pregnancy, or individual health risk.</p>
     </div>
   );
 }
@@ -1584,7 +1584,7 @@ function PdfUnlockTool() {
         <Button type="button" onClick={unlock} disabled={!file || busy}>{busy ? "Trying unlock..." : "Try Unlock PDF"}</Button>
         <SecondaryButton type="button" onClick={() => { setFile(null); setOutput(null); setError(""); }}>Reset</SecondaryButton>
       </div>
-      <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-6 text-amber-900">Only use this on PDFs you own or have permission to modify. Strong encryption or password-required files may not work.</p>
+      <p className="alert-warning">Only use this on PDFs you own or have permission to modify. Strong encryption or password-required files may not work.</p>
       <ErrorMessage message={error} />
       <Download output={output} />
     </div>
@@ -1614,7 +1614,7 @@ function UrlEncoderDecoder() {
 }
 
 function JsonFormatter() {
-  const [input, setInput] = useState('{"name":"FreeToolKit","free":true}');
+  const [input, setInput] = useState('{"name":"freetoolkitapp","free":true}');
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   function run(minify = false) {
@@ -1658,14 +1658,14 @@ function PasswordGenerator() {
   }
   return (
     <div>
-      <label className="text-sm font-bold text-slate-700">Length: {length}<input className="mt-3 w-full accent-brand-600" type="range" min="8" max="64" value={length} onChange={(event) => setLength(Number(event.target.value))} /></label>
+      <label className="text-sm font-bold text-ink-secondary">Length: {length}<input className="mt-3 w-full accent-indigo-500" type="range" min="8" max="64" value={length} onChange={(event) => setLength(Number(event.target.value))} /></label>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         {[["Uppercase", upper, setUpper], ["Lowercase", lower, setLower], ["Numbers", numbers, setNumbers], ["Symbols", symbols, setSymbols]].map(([label, checked, setter]) => (
-          <label key={label as string} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700"><input className="mr-2" type="checkbox" checked={checked as boolean} onChange={(event) => (setter as (value: boolean) => void)(event.target.checked)} />{label as string}</label>
+          <label key={label as string} className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold text-ink-secondary"><input className="mr-2" type="checkbox" checked={checked as boolean} onChange={(event) => (setter as (value: boolean) => void)(event.target.checked)} />{label as string}</label>
         ))}
       </div>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={generate}>Generate password</Button><CopyAction value={password} /><SecondaryButton onClick={() => { setPassword(""); setError(""); }}>Reset</SecondaryButton></div>
-      {password ? <div className="mt-5 rounded-2xl border border-brand-100 bg-brand-50 p-5"><p className="text-xs font-black uppercase tracking-wide text-brand-700">Strength: {strength}</p><p className="mt-2 break-all font-mono text-xl font-black text-slate-950">{password}</p></div> : null}
+      {password ? <div className="mt-5 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5"><p className="text-xs font-black uppercase tracking-wide text-indigo-400">Strength: {strength}</p><p className="mt-2 break-all font-mono text-xl font-black text-ink-primary">{password}</p></div> : null}
       <ErrorMessage message={error} />
     </div>
   );
@@ -1680,9 +1680,9 @@ function UuidGenerator() {
   }
   return (
     <div>
-      <label className="text-sm font-bold text-slate-700">How many UUIDs? <Input className="mt-2" type="number" min={1} max={100} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label>
+      <label className="text-sm font-bold text-ink-secondary">How many UUIDs? <Input className="mt-2" type="number" min={1} max={100} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={generate}>Generate UUIDs</Button><CopyAction value={ids.join("\n")} label="Copy all" /><SecondaryButton onClick={() => setIds([])}>Reset</SecondaryButton></div>
-      <div className="mt-5 grid gap-2">{ids.map((id) => <div key={id} className="flex flex-col gap-2 rounded-2xl bg-slate-50 p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span className="break-all font-mono">{id}</span><CopyAction value={id} /></div>)}</div>
+      <div className="mt-5 grid gap-2">{ids.map((id) => <div key={id} className="flex flex-col gap-2 rounded-2xl bg-surface-card p-3 text-sm font-bold text-ink-secondary sm:flex-row sm:items-center sm:justify-between"><span className="break-all font-mono">{id}</span><CopyAction value={id} /></div>)}</div>
     </div>
   );
 }
@@ -1754,7 +1754,7 @@ function AgeCalculator() {
   }
   return (
     <div>
-      <label className="text-sm font-bold text-slate-700">Date of birth <Input className="mt-2" type="date" value={dob} onChange={(event) => setDob(event.target.value)} /></label>
+      <label className="text-sm font-bold text-ink-secondary">Date of birth <Input className="mt-2" type="date" value={dob} onChange={(event) => setDob(event.target.value)} /></label>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={calculate}>Calculate age</Button><SecondaryButton onClick={() => { setDob(""); setResult(null); setError(""); }}>Reset</SecondaryButton></div>
       {result ? <div className="mt-5 grid gap-3 sm:grid-cols-4"><ResultBox label="Years" value={result.years} /><ResultBox label="Months" value={result.months} /><ResultBox label="Days" value={result.days} /><ResultBox label="Next birthday" value={result.next} /></div> : null}
       <ErrorMessage message={error} />
@@ -1793,10 +1793,10 @@ function UnitConverter() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Category <Select className="mt-2" value={category} onChange={(event) => setCategory(event.target.value as keyof typeof unitGroups)}>{Object.keys(unitGroups).map((item) => <option key={item} value={item}>{toTitleCase(item)}</option>)}</Select></label>
-        <label className="text-sm font-bold text-slate-700">Value <Input className="mt-2" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">From <Select className="mt-2" value={from} onChange={(event) => setFrom(event.target.value)}>{units.map((unit) => <option key={unit}>{unit}</option>)}</Select></label>
-        <label className="text-sm font-bold text-slate-700">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{units.map((unit) => <option key={unit}>{unit}</option>)}</Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Category <Select className="mt-2" value={category} onChange={(event) => setCategory(event.target.value as keyof typeof unitGroups)}>{Object.keys(unitGroups).map((item) => <option key={item} value={item}>{toTitleCase(item)}</option>)}</Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Value <Input className="mt-2" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">From <Select className="mt-2" value={from} onChange={(event) => setFrom(event.target.value)}>{units.map((unit) => <option key={unit}>{unit}</option>)}</Select></label>
+        <label className="text-sm font-bold text-ink-secondary">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{units.map((unit) => <option key={unit}>{unit}</option>)}</Select></label>
       </div>
       <div className="mt-5"><ResultBox label="Converted result" value={`${Number.isFinite(result) ? result.toLocaleString(undefined, { maximumFractionDigits: 6 }) : "0"} ${to}`} /></div>
     </div>
@@ -1810,10 +1810,10 @@ function PercentageCalculator() {
   const result = mode === "of" ? (a / 100) * b : mode === "share" ? b ? (a / b) * 100 : 0 : a ? ((b - a) / a) * 100 : 0;
   return (
     <div>
-      <div className="grid gap-2 sm:grid-cols-3">{[["of", "Percent of number"], ["share", "X is what % of Y"], ["change", "Increase/decrease"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${mode === value ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => setMode(value)}>{label}</button>)}</div>
+      <div className="grid gap-2 sm:grid-cols-3">{[["of", "Percent of number"], ["share", "X is what % of Y"], ["change", "Increase/decrease"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${mode === value ? "border-indigo-400/30 bg-indigo-500/10 text-indigo-400" : "border-white/[0.08] bg-surface-card text-ink-secondary"}`} onClick={() => setMode(value)}>{label}</button>)}</div>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">{mode === "change" ? "Original value" : mode === "share" ? "X value" : "Percentage"} <Input className="mt-2" type="number" value={a} onChange={(event) => setA(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">{mode === "change" ? "New value" : mode === "share" ? "Y value" : "Number"} <Input className="mt-2" type="number" value={b} onChange={(event) => setB(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">{mode === "change" ? "Original value" : mode === "share" ? "X value" : "Percentage"} <Input className="mt-2" type="number" value={a} onChange={(event) => setA(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">{mode === "change" ? "New value" : mode === "share" ? "Y value" : "Number"} <Input className="mt-2" type="number" value={b} onChange={(event) => setB(Number(event.target.value))} /></label>
       </div>
       <div className="mt-5"><ResultBox label="Result" value={mode === "of" ? result.toLocaleString(undefined, { maximumFractionDigits: 4 }) : `${result.toLocaleString(undefined, { maximumFractionDigits: 4 })}%`} /></div>
     </div>
@@ -1831,9 +1831,9 @@ function LoanEmiCalculator() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">Loan amount <Input className="mt-2" type="number" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Annual interest % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Term in years <Input className="mt-2" type="number" step={0.5} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Loan amount <Input className="mt-2" type="number" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Annual interest % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Term in years <Input className="mt-2" type="number" step={0.5} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="Monthly EMI" value={`$${emi.toFixed(2)}`} /><ResultBox label="Total interest" value={`$${(total - amount).toFixed(2)}`} /><ResultBox label="Total payment" value={`$${total.toFixed(2)}`} /></div>
     </div>
@@ -1976,9 +1976,9 @@ function TimeZoneConverter() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">From <Select className="mt-2" value={from} onChange={(event) => setFrom(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
-        <label className="text-sm font-bold text-slate-700">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
-        <label className="text-sm font-bold text-slate-700">Date and time <Input className="mt-2" type="datetime-local" value={value} onChange={(event) => setValue(event.target.value)} /></label>
+        <label className="text-sm font-bold text-ink-secondary">From <Select className="mt-2" value={from} onChange={(event) => setFrom(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
+        <label className="text-sm font-bold text-ink-secondary">To <Select className="mt-2" value={to} onChange={(event) => setTo(event.target.value)}>{timeZones.map(([zone, label]) => <option key={zone} value={zone}>{label}</option>)}</Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Date and time <Input className="mt-2" type="datetime-local" value={value} onChange={(event) => setValue(event.target.value)} /></label>
       </div>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={convert}>Convert time</Button><SecondaryButton onClick={() => { setResult(null); setError(""); }}>Reset result</SecondaryButton></div>
       <ErrorMessage message={error} />
@@ -2097,21 +2097,21 @@ function PalworldBreedingCalculator() {
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <label className="block text-sm font-bold text-slate-700">
+      <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 shadow-sm">
+        <label className="block text-sm font-bold text-ink-secondary">
           Search pals
           <Input className="mt-2" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type a pal name..." />
         </label>
-        <p className="mt-2 text-xs font-semibold text-slate-500">{filteredPals.length} pals matched</p>
+        <p className="mt-2 text-xs font-semibold text-ink-muted">{filteredPals.length} pals matched</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Parent A
           <Select className="mt-2" value={parentA} onChange={(event) => setParentA(event.target.value)}>
             {filteredPals.map((pal) => <option key={pal.name} value={pal.name}>{pal.name}</option>)}
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Parent B
           <Select className="mt-2" value={parentB} onChange={(event) => setParentB(event.target.value)}>
             {filteredPals.map((pal) => <option key={pal.name} value={pal.name}>{pal.name}</option>)}
@@ -2119,19 +2119,19 @@ function PalworldBreedingCalculator() {
         </label>
       </div>
       <ResultCard title="Offspring result">
-        <p className="text-sm font-semibold text-slate-700">{parentA} + {parentB}</p>
-        <p className="mt-2 text-lg font-black text-slate-950">{offspring}</p>
+        <p className="text-sm font-semibold text-ink-secondary">{parentA} + {parentB}</p>
+        <p className="mt-2 text-lg font-black text-ink-primary">{offspring}</p>
       </ResultCard>
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <label className="text-sm font-bold text-slate-700">
+      <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 shadow-sm">
+        <label className="text-sm font-bold text-ink-secondary">
           Reverse breeding lookup
           <Input className="mt-2" value={target} onChange={(event) => setTarget(event.target.value)} placeholder="Enter target offspring (e.g. Anubis)" />
         </label>
         <div className="mt-3 space-y-2">
-          {!target.trim() ? <p className="text-sm text-slate-500">Enter an offspring name to find possible parent pairs.</p> : null}
-          {target.trim() && !reverseMatches.length ? <p className="text-sm text-slate-500">No mapped parent pairs found for this target.</p> : null}
+          {!target.trim() ? <p className="text-sm text-ink-muted">Enter an offspring name to find possible parent pairs.</p> : null}
+          {target.trim() && !reverseMatches.length ? <p className="text-sm text-ink-muted">No mapped parent pairs found for this target.</p> : null}
           {reverseMatches.map((match, index) => (
-            <p key={`${match.result}-${index}`} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+            <p key={`${match.result}-${index}`} className="rounded-xl border border-white/[0.08] bg-surface-card px-3 py-2 text-sm font-semibold text-ink-secondary">
               {match.pair[0]} + {match.pair[1]} → {match.result}
             </p>
           ))}
@@ -2176,19 +2176,19 @@ function ValorantSensitivityConverter() {
   return (
     <div className="space-y-5">
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           From game
           <Select className="mt-2" value={fromGame} onChange={(event) => setFromGame(event.target.value)}>
             {games.map((game) => <option key={game}>{game}</option>)}
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           To game
           <Select className="mt-2" value={toGame} onChange={(event) => setToGame(event.target.value)}>
             {games.map((game) => <option key={game}>{game}</option>)}
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Sensitivity
           <Input className="mt-2" value={inputSens} onChange={(event) => setInputSens(event.target.value)} placeholder="2.0" />
         </label>
@@ -2224,13 +2224,13 @@ function MinecraftCraftingCalculator() {
   return (
     <div className="space-y-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Craft item
           <Select className="mt-2" value={item} onChange={(event) => setItem(event.target.value)}>
             {recipes.map((name) => <option key={name}>{name}</option>)}
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Quantity
           <Input className="mt-2" type="number" min={1} max={999} value={count} onChange={(event) => setCount(Math.max(1, Number(event.target.value) || 1))} />
         </label>
@@ -2238,7 +2238,7 @@ function MinecraftCraftingCalculator() {
       <ResultCard title="Required materials">
         <div className="space-y-2">
           {materials.map((material) => (
-            <p key={material.name} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+            <p key={material.name} className="rounded-xl border border-white/[0.08] bg-surface-card px-3 py-2 text-sm font-semibold text-ink-secondary">
               {material.name}: {material.qty}
             </p>
           ))}
@@ -2290,19 +2290,19 @@ function PokemonTypeCalculator() {
   return (
     <div className="space-y-5">
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Attack type
           <Select className="mt-2" value={attack} onChange={(event) => setAttack(event.target.value as PokemonType)}>
             {pokemonTypes.map((type) => <option key={type}>{type}</option>)}
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Defender primary
           <Select className="mt-2" value={defPrimary} onChange={(event) => setDefPrimary(event.target.value as PokemonType)}>
             {pokemonTypes.map((type) => <option key={type}>{type}</option>)}
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Defender secondary
           <Select className="mt-2" value={defSecondary} onChange={(event) => setDefSecondary(event.target.value as "None" | PokemonType)}>
             <option value="None">None</option>
@@ -2311,9 +2311,9 @@ function PokemonTypeCalculator() {
         </label>
       </div>
       <ResultCard title="Type effectiveness">
-        <p className="text-sm font-semibold text-slate-700">{attack} vs {defPrimary}{defSecondary !== "None" ? ` / ${defSecondary}` : ""}</p>
-        <p className="mt-2 text-2xl font-black text-slate-950">{multiplier}x</p>
-        <p className="mt-1 text-sm font-semibold text-slate-600">{label}</p>
+        <p className="text-sm font-semibold text-ink-secondary">{attack} vs {defPrimary}{defSecondary !== "None" ? ` / ${defSecondary}` : ""}</p>
+        <p className="mt-2 text-2xl font-black text-ink-primary">{multiplier}x</p>
+        <p className="mt-1 text-sm font-semibold text-ink-muted">{label}</p>
       </ResultCard>
     </div>
   );
@@ -2361,7 +2361,7 @@ function DuplicateLineRemover() {
   return (
     <div>
       <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste one item per line..." />
-      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={caseSensitive} onChange={(event) => setCaseSensitive(event.target.checked)} /> Case-sensitive matching</label>
+      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-ink-secondary"><input type="checkbox" checked={caseSensitive} onChange={(event) => setCaseSensitive(event.target.checked)} /> Case-sensitive matching</label>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={remove} disabled={!input}>Remove duplicates</Button><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2"><ResultBox label="Before lines" value={before} /><ResultBox label="After lines" value={after} /></div>
       <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Cleaned lines appear here..." />
@@ -2384,7 +2384,7 @@ function RandomTextGenerator() {
   }
   return (
     <div>
-      <div className="grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Output type <Select className="mt-2" value={type} onChange={(event) => setType(event.target.value)}><option value="words">Words</option><option value="sentences">Sentences</option><option value="paragraphs">Paragraphs</option></Select></label><label className="text-sm font-bold text-slate-700">Amount <Input className="mt-2" type="number" min={1} max={100} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label></div>
+      <div className="grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-ink-secondary">Output type <Select className="mt-2" value={type} onChange={(event) => setType(event.target.value)}><option value="words">Words</option><option value="sentences">Sentences</option><option value="paragraphs">Paragraphs</option></Select></label><label className="text-sm font-bold text-ink-secondary">Amount <Input className="mt-2" type="number" min={1} max={100} value={count} onChange={(event) => setCount(Number(event.target.value))} /></label></div>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={generate}>Generate text</Button><CopyAction value={output} /><SecondaryButton onClick={() => setOutput("")}>Reset</SecondaryButton></div>
       <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Random text appears here..." />
     </div>
@@ -2405,7 +2405,7 @@ function TextSorter() {
   return (
     <div>
       <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste one item per line..." />
-      <div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Sort direction <Select className="mt-2" value={direction} onChange={(event) => setDirection(event.target.value)}><option value="az">A-Z</option><option value="za">Z-A</option></Select></label><label className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700"><input type="checkbox" checked={dedupe} onChange={(event) => setDedupe(event.target.checked)} /> Remove duplicates</label></div>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-ink-secondary">Sort direction <Select className="mt-2" value={direction} onChange={(event) => setDirection(event.target.value)}><option value="az">A-Z</option><option value="za">Z-A</option></Select></label><label className="flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold text-ink-secondary"><input type="checkbox" checked={dedupe} onChange={(event) => setDedupe(event.target.checked)} /> Remove duplicates</label></div>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={sort} disabled={!input}>Sort lines</Button><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
       <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Sorted output appears here..." />
     </div>
@@ -2423,7 +2423,7 @@ function RemoveExtraSpaces() {
   return (
     <div>
       <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="Paste messy text..." />
-      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={removeBlank} onChange={(event) => setRemoveBlank(event.target.checked)} /> Remove blank lines</label>
+      <label className="mt-4 flex items-center gap-2 text-sm font-bold text-ink-secondary"><input type="checkbox" checked={removeBlank} onChange={(event) => setRemoveBlank(event.target.checked)} /> Remove blank lines</label>
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={clean} disabled={!input}>Clean spaces</Button><CopyAction value={output} /><SecondaryButton onClick={() => { setInput(""); setOutput(""); }}>Reset</SecondaryButton></div>
       <Textarea className="mt-5" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Cleaned text appears here..." />
     </div>
@@ -2524,16 +2524,16 @@ function ImageCropper() {
     <div>
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
       <FileInfo file={file} />
-      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Image preview" /> : null}
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Image preview" /> : null}
       {file ? (
         <>
-          <div className="mt-5 grid gap-2 sm:grid-cols-4">{[["free", "Free"], ["1:1", "1:1"], ["16:9", "16:9"], ["4:3", "4:3"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${ratio === value ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => applyRatio(value)}>{label}</button>)}</div>
-          <p className="mt-4 text-sm font-bold text-slate-600">Image size: {natural.width} × {natural.height}px</p>
-          <p className="mt-2 rounded-2xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm font-bold text-brand-700">
+          <div className="mt-5 grid gap-2 sm:grid-cols-4">{[["free", "Free"], ["1:1", "1:1"], ["16:9", "16:9"], ["4:3", "4:3"]].map(([value, label]) => <button key={value} className={`rounded-2xl border px-4 py-3 text-sm font-black ${ratio === value ? "border-indigo-400/30 bg-indigo-500/10 text-indigo-400" : "border-white/[0.08] bg-surface-card text-ink-secondary"}`} onClick={() => applyRatio(value)}>{label}</button>)}</div>
+          <p className="mt-4 text-sm font-bold text-ink-muted">Image size: {natural.width} × {natural.height}px</p>
+          <p className="mt-2 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 px-4 py-3 text-sm font-bold text-indigo-400">
             Current crop: {crop.width} × {crop.height}px from X {crop.x}, Y {crop.y}. Aspect buttons center the largest matching crop inside your image.
           </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-4">
-            {(["x", "y", "width", "height"] as const).map((key) => <label key={key} className="text-sm font-bold capitalize text-slate-700">{key}<Input className="mt-2" type="number" min={0} value={crop[key]} onChange={(event) => updateCrop({ [key]: Number(event.target.value) })} /></label>)}
+            {(["x", "y", "width", "height"] as const).map((key) => <label key={key} className="text-sm font-bold capitalize text-ink-secondary">{key}<Input className="mt-2" type="number" min={0} value={crop[key]} onChange={(event) => updateCrop({ [key]: Number(event.target.value) })} /></label>)}
           </div>
           <div className="mt-4 flex flex-wrap gap-3"><Button onClick={cropImage} disabled={busy}>{busy ? "Cropping..." : "Crop image"}</Button><SecondaryButton onClick={() => { setFile(null); setPreview(""); setOutput(null); setError(""); }}>Reset</SecondaryButton></div>
         </>
@@ -2566,7 +2566,7 @@ function ImageToBase64() {
     <div>
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp,image/gif" onFiles={load} />
       <FileInfo file={file} />
-      {preview ? <img className="mt-5 max-h-72 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Uploaded preview" /> : null}
+      {preview ? <img className="mt-5 max-h-72 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Uploaded preview" /> : null}
       <div className="mt-4 flex flex-wrap gap-3"><CopyAction value={output} label="Copy Base64" /><SecondaryButton onClick={() => { setFile(null); setPreview(""); setOutput(""); setError(""); }}>Reset</SecondaryButton></div>
       <Textarea className="mt-5 min-h-48 font-mono" value={output} onChange={(event) => setOutput(event.target.value)} placeholder="Base64 data URL appears here..." />
       <ErrorMessage message={error} />
@@ -2584,15 +2584,15 @@ function FinalGradeCalculator() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">Current grade % <Input className="mt-2" type="number" value={current} onChange={(event) => setCurrent(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Target grade % <Input className="mt-2" type="number" value={target} onChange={(event) => setTarget(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Final exam weight % <Input className="mt-2" type="number" min={1} max={100} value={finalWeight} onChange={(event) => setFinalWeight(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Current grade % <Input className="mt-2" type="number" value={current} onChange={(event) => setCurrent(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Target grade % <Input className="mt-2" type="number" value={target} onChange={(event) => setTarget(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Final exam weight % <Input className="mt-2" type="number" min={1} max={100} value={finalWeight} onChange={(event) => setFinalWeight(Number(event.target.value))} /></label>
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <ResultBox label="Needed on final" value={`${Number.isFinite(needed) ? needed.toFixed(2) : "0.00"}%`} />
         <ResultBox label="Current coursework weight" value={`${currentWeight}%`} />
       </div>
-      <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold leading-6 text-slate-700">{status}</p>
+      <p className="mt-4 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold leading-6 text-ink-secondary">{status}</p>
     </div>
   );
 }
@@ -2606,7 +2606,7 @@ function WeightedGradeCalculator() {
     <div>
       <div className="grid gap-3">
         {rows.map((row, index) => (
-          <div key={index} className="grid gap-3 rounded-2xl bg-slate-50 p-3 md:grid-cols-[1fr_130px_130px_auto]">
+          <div key={index} className="grid gap-3 rounded-2xl bg-surface-card p-3 md:grid-cols-[1fr_130px_130px_auto]">
             <Input placeholder="Category or assessment" value={row.name} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, name: event.target.value } : item))} />
             <Input type="number" value={row.score} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, score: Number(event.target.value) } : item))} placeholder="Score %" />
             <Input type="number" value={row.weight} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, weight: Number(event.target.value) } : item))} placeholder="Weight %" />
@@ -2644,9 +2644,9 @@ function AttendanceCalculator() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-slate-700">Classes held <Input className="mt-2" type="number" min={0} value={held} onChange={(event) => setHeld(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Classes attended <Input className="mt-2" type="number" min={0} value={attended} onChange={(event) => setAttended(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Required attendance % <Input className="mt-2" type="number" min={1} max={100} value={required} onChange={(event) => setRequired(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Classes held <Input className="mt-2" type="number" min={0} value={held} onChange={(event) => setHeld(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Classes attended <Input className="mt-2" type="number" min={0} value={attended} onChange={(event) => setAttended(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Required attendance % <Input className="mt-2" type="number" min={1} max={100} value={required} onChange={(event) => setRequired(Number(event.target.value))} /></label>
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
         <ResultBox label="Current attendance" value={`${percentage.toFixed(2)}%`} />
@@ -2670,10 +2670,10 @@ function InterestCalculator() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Principal <Input className="mt-2" type="number" value={principal} onChange={(event) => setPrincipal(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Annual rate % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Time in years <Input className="mt-2" type="number" step={0.1} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-slate-700">Compound frequency <Select className="mt-2" value={frequency} onChange={(event) => setFrequency(Number(event.target.value))}><option value={1}>Yearly</option><option value={2}>Half-yearly</option><option value={4}>Quarterly</option><option value={12}>Monthly</option><option value={365}>Daily</option></Select></label>
+        <label className="text-sm font-bold text-ink-secondary">Principal <Input className="mt-2" type="number" value={principal} onChange={(event) => setPrincipal(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Annual rate % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Time in years <Input className="mt-2" type="number" step={0.1} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Compound frequency <Select className="mt-2" value={frequency} onChange={(event) => setFrequency(Number(event.target.value))}><option value={1}>Yearly</option><option value={2}>Half-yearly</option><option value={4}>Quarterly</option><option value={12}>Monthly</option><option value={365}>Daily</option></Select></label>
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <ResultBox label="Simple interest" value={`$${simpleInterest.toFixed(2)}`} />
@@ -2693,11 +2693,11 @@ function GpaToPercentageConverter() {
   return (
     <div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">Formula <Select className="mt-2" value={scale} onChange={(event) => setScale(event.target.value)}><option value="10-india">10 point CGPA × 9.5</option><option value="10-direct">10 point GPA × 10</option><option value="4-direct">4.0 GPA ÷ 4 × 100</option></Select></label>
-        <label className="text-sm font-bold text-slate-700">GPA / CGPA <Input className="mt-2" type="number" min={0} max={max} step={0.01} value={gpa} onChange={(event) => setGpa(Number(event.target.value))} /></label>
+        <label className="text-sm font-bold text-ink-secondary">Formula <Select className="mt-2" value={scale} onChange={(event) => setScale(event.target.value)}><option value="10-india">10 point CGPA × 9.5</option><option value="10-direct">10 point GPA × 10</option><option value="4-direct">4.0 GPA ÷ 4 × 100</option></Select></label>
+        <label className="text-sm font-bold text-ink-secondary">GPA / CGPA <Input className="mt-2" type="number" min={0} max={max} step={0.01} value={gpa} onChange={(event) => setGpa(Number(event.target.value))} /></label>
       </div>
       <div className="mt-5"><ResultBox label="Estimated percentage" value={`${percentage.toFixed(2)}%`} /></div>
-      <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-800">Use this as an estimate only. Schools, universities, and application portals may require their own official conversion formula.</p>
+      <p className="mt-4 alert-warning">Use this as an estimate only. Schools, universities, and application portals may require their own official conversion formula.</p>
     </div>
   );
 }
@@ -2717,7 +2717,7 @@ function AdvancedImageConverter({ mode }: { mode: "rotate" | "convert" | "waterm
   const [flip, setFlip] = useState("none");
   const [format, setFormat] = useState("image/webp");
   const [quality, setQuality] = useState(0.85);
-  const [watermark, setWatermark] = useState("FreeToolKit");
+  const [watermark, setWatermark] = useState("freetoolkitapp");
   const [position, setPosition] = useState("bottom-right");
   const [opacity, setOpacity] = useState(0.65);
   const [fontSize, setFontSize] = useState(42);
@@ -2797,14 +2797,14 @@ function AdvancedImageConverter({ mode }: { mode: "rotate" | "convert" | "waterm
     <div>
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={setImage} />
       <FileInfo file={file} />
-      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Preview" /> : null}
-      {file && mode === "rotate" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Rotate <Select className="mt-2" value={rotation} onChange={(event) => setRotation(event.target.value)}><option value="90">90 degrees</option><option value="180">180 degrees</option><option value="270">270 degrees</option></Select></label><label className="text-sm font-bold text-slate-700">Flip <Select className="mt-2" value={flip} onChange={(event) => setFlip(event.target.value)}><option value="none">No flip</option><option value="horizontal">Flip horizontal</option><option value="vertical">Flip vertical</option></Select></label></div> : null}
-      {file && mode === "convert" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Output format <Select className="mt-2" value={format} onChange={(event) => setFormat(event.target.value)}><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></Select></label><label className="text-sm font-bold text-slate-700">Quality: {quality.toFixed(2)}<input className="mt-3 w-full accent-brand-600" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} /></label></div> : null}
-      {file && mode === "watermark" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-slate-700">Watermark text <Input className="mt-2" value={watermark} onChange={(event) => setWatermark(event.target.value)} /></label><label className="text-sm font-bold text-slate-700">Position <Select className="mt-2" value={position} onChange={(event) => setPosition(event.target.value)}><option value="top-left">Top-left</option><option value="center">Center</option><option value="bottom-right">Bottom-right</option></Select></label><label className="text-sm font-bold text-slate-700">Opacity: {opacity.toFixed(2)}<input className="mt-3 w-full accent-brand-600" type="range" min="0.1" max="1" step="0.05" value={opacity} onChange={(event) => setOpacity(Number(event.target.value))} /></label><label className="text-sm font-bold text-slate-700">Font size <Input className="mt-2" type="number" min={12} value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} /></label></div> : null}
+      {preview ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Preview" /> : null}
+      {file && mode === "rotate" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-ink-secondary">Rotate <Select className="mt-2" value={rotation} onChange={(event) => setRotation(event.target.value)}><option value="90">90 degrees</option><option value="180">180 degrees</option><option value="270">270 degrees</option></Select></label><label className="text-sm font-bold text-ink-secondary">Flip <Select className="mt-2" value={flip} onChange={(event) => setFlip(event.target.value)}><option value="none">No flip</option><option value="horizontal">Flip horizontal</option><option value="vertical">Flip vertical</option></Select></label></div> : null}
+      {file && mode === "convert" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-ink-secondary">Output format <Select className="mt-2" value={format} onChange={(event) => setFormat(event.target.value)}><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></Select></label><label className="text-sm font-bold text-ink-secondary">Quality: {quality.toFixed(2)}<input className="mt-3 w-full accent-indigo-500" type="range" min="0.1" max="1" step="0.05" value={quality} onChange={(event) => setQuality(Number(event.target.value))} /></label></div> : null}
+      {file && mode === "watermark" ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-sm font-bold text-ink-secondary">Watermark text <Input className="mt-2" value={watermark} onChange={(event) => setWatermark(event.target.value)} /></label><label className="text-sm font-bold text-ink-secondary">Position <Select className="mt-2" value={position} onChange={(event) => setPosition(event.target.value)}><option value="top-left">Top-left</option><option value="center">Center</option><option value="bottom-right">Bottom-right</option></Select></label><label className="text-sm font-bold text-ink-secondary">Opacity: {opacity.toFixed(2)}<input className="mt-3 w-full accent-indigo-500" type="range" min="0.1" max="1" step="0.05" value={opacity} onChange={(event) => setOpacity(Number(event.target.value))} /></label><label className="text-sm font-bold text-ink-secondary">Font size <Input className="mt-2" type="number" min={12} value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} /></label></div> : null}
       <div className="mt-4 flex flex-wrap gap-3"><Button onClick={run} disabled={!file || busy}>{busy ? "Working..." : mode === "rotate" ? "Apply transform" : mode === "watermark" ? "Add watermark" : mode === "grayscale" ? "Convert to grayscale" : "Convert image"}</Button><SecondaryButton onClick={() => { setImage([]); setOutput(null); }}>Reset</SecondaryButton></div>
       <ErrorMessage message={error} />
       <Download output={output} />
-      {output ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-emerald-200 bg-emerald-50 object-contain p-2" src={output.url} alt="Result preview" /> : null}
+      {output ? <img className="mt-5 max-h-80 w-full rounded-2xl border border-white/[0.08] bg-surface-section object-contain p-2" src={output.url} alt="Result preview" /> : null}
     </div>
   );
 }
@@ -2885,8 +2885,8 @@ function ImageMetadataTool({ dpiOnly = false }: { dpiOnly?: boolean }) {
     <div>
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
       <FileInfo file={file} />
-      {busy ? <p className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Reading image details...</p> : null}
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">{details.map(([key, value]) => <div key={key} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><p className="text-xs font-black uppercase tracking-wide text-slate-500">{key}</p><p className="mt-2 break-words text-lg font-black text-slate-950">{value}</p></div>)}</div>
+      {busy ? <p className="mt-4 rounded-2xl bg-surface-card p-4 text-sm font-bold text-ink-muted">Reading image details...</p> : null}
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">{details.map(([key, value]) => <div key={key} className="rounded-2xl border border-white/[0.08] bg-surface-card p-4"><p className="text-xs font-black uppercase tracking-wide text-ink-muted">{key}</p><p className="mt-2 break-words text-lg font-black text-ink-primary">{value}</p></div>)}</div>
       <div className="mt-4"><SecondaryButton onClick={() => { setFile(null); setDetails([]); setError(""); }}>Reset</SecondaryButton></div>
       <ErrorMessage message={error} />
     </div>
@@ -2978,7 +2978,7 @@ function ImageColorPicker() {
       <FileUploadDropzone label="Upload an image" accept="image/jpeg,image/png,image/webp" onFiles={load} />
       <FileInfo file={file} />
       {file ? (
-        <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-2">
+        <div className="mt-5 rounded-2xl border border-white/[0.08] bg-surface-card p-2">
           <canvas
             ref={canvasRef}
             className="mx-auto max-h-96 max-w-full cursor-crosshair rounded-xl"
@@ -2988,7 +2988,7 @@ function ImageColorPicker() {
           />
         </div>
       ) : null}
-      {color ? <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="HEX" value={color.hex} /><ResultBox label="RGB" value={color.rgb} /><ResultBox label="Pixel" value={`${color.x}, ${color.y}`} /><CopyAction value={color.hex} label="Copy HEX" /><CopyAction value={color.rgb} label="Copy RGB" /><div className="min-h-16 rounded-2xl border border-slate-200" style={{ backgroundColor: color.hex }} /></div> : null}
+      {color ? <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="HEX" value={color.hex} /><ResultBox label="RGB" value={color.rgb} /><ResultBox label="Pixel" value={`${color.x}, ${color.y}`} /><CopyAction value={color.hex} label="Copy HEX" /><CopyAction value={color.rgb} label="Copy RGB" /><div className="min-h-16 rounded-2xl border border-white/[0.08]" style={{ backgroundColor: color.hex }} /></div> : null}
       <div className="mt-4"><SecondaryButton onClick={() => { setFile(null); setColor(null); setError(""); }}>Reset</SecondaryButton></div>
       <ErrorMessage message={error} />
     </div>
@@ -3356,42 +3356,42 @@ function AddTextToPdf() {
     <div>
       <FileUploadDropzone label="Upload a PDF" accept="application/pdf" onFiles={load} />
       <FileInfo file={file} />
-      {busy && !output ? <p className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Reading or updating PDF...</p> : null}
+      {busy && !output ? <p className="mt-4 rounded-2xl bg-surface-card p-4 text-sm font-bold text-ink-muted">Reading or updating PDF...</p> : null}
       {file && pageCount ? (
         <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)]">
           <div className="grid gap-4">
-            <label className="text-sm font-bold text-slate-700">Page <Select className="mt-2" value={page} onChange={(event) => setPage(Number(event.target.value))}>{Array.from({ length: pageCount }, (_, index) => <option key={index + 1} value={index + 1}>Page {index + 1}</option>)}</Select></label>
-            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1">
+            <label className="text-sm font-bold text-ink-secondary">Page <Select className="mt-2" value={page} onChange={(event) => setPage(Number(event.target.value))}>{Array.from({ length: pageCount }, (_, index) => <option key={index + 1} value={index + 1}>Page {index + 1}</option>)}</Select></label>
+            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-surface-section p-1">
               {(["text", "signature"] as const).map((tab) => (
-                <button key={tab} className={`rounded-xl px-4 py-3 text-sm font-black ${activePdfTab === tab ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActivePdfTab(tab)}>
+                <button key={tab} className={`rounded-xl px-4 py-3 text-sm font-black ${activePdfTab === tab ? "bg-surface-card text-indigo-400 shadow-sm" : "text-ink-muted"}`} onClick={() => setActivePdfTab(tab)}>
                   {tab === "text" ? "Add Text" : "Sign PDF"}
                 </button>
               ))}
             </div>
-            <p className="rounded-2xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm font-bold leading-6 text-brand-700">
+            <p className="rounded-2xl border border-indigo-400/20 bg-indigo-500/10 px-4 py-3 text-sm font-bold leading-6 text-indigo-400">
               Click on the real PDF preview to place your {activePdfTab === "text" ? "text" : "signature"}. Your PDF is processed in your browser where supported. Files are not uploaded to a server by this tool.
             </p>
             {activePdfTab === "text" ? (
               <>
-                <label className="text-sm font-bold text-slate-700">Text to add <Input className="mt-2" value={text} onChange={(event) => setText(event.target.value)} placeholder="Date, note, label, or name..." /></label>
+                <label className="text-sm font-bold text-ink-secondary">Text to add <Input className="mt-2" value={text} onChange={(event) => setText(event.target.value)} placeholder="Date, note, label, or name..." /></label>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="text-sm font-bold text-slate-700">Font size: {size}<input className="mt-3 w-full accent-brand-600" type="range" min={8} max={72} value={size} onChange={(event) => setSize(Number(event.target.value))} /></label>
-                  <label className="text-sm font-bold text-slate-700">Text color <Input className="mt-2 h-12 p-1" type="color" value={color} onChange={(event) => setColor(event.target.value)} /></label>
+                  <label className="text-sm font-bold text-ink-secondary">Font size: {size}<input className="mt-3 w-full accent-indigo-500" type="range" min={8} max={72} value={size} onChange={(event) => setSize(Number(event.target.value))} /></label>
+                  <label className="text-sm font-bold text-ink-secondary">Text color <Input className="mt-2 h-12 p-1" type="color" value={color} onChange={(event) => setColor(event.target.value)} /></label>
                 </div>
               </>
             ) : (
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4">
                 <div className="grid gap-2 sm:grid-cols-3">
                   {(["type", "draw", "upload"] as const).map((mode) => (
-                    <button key={mode} className={`rounded-xl border px-4 py-3 text-sm font-black capitalize ${signatureMode === mode ? "border-brand-200 bg-brand-50 text-brand-700" : "border-slate-200 bg-white text-slate-700"}`} onClick={() => setSignatureMode(mode)}>
+                    <button key={mode} className={`rounded-xl border px-4 py-3 text-sm font-black capitalize ${signatureMode === mode ? "border-indigo-400/30 bg-indigo-500/10 text-indigo-400" : "border-white/[0.08] bg-surface-card text-ink-secondary"}`} onClick={() => setSignatureMode(mode)}>
                       {mode}
                     </button>
                   ))}
                 </div>
                 {signatureMode === "type" ? (
                   <div className="mt-4">
-                    <label className="text-sm font-bold text-slate-700">Typed signature <Input className="mt-2" value={typedSignature} onChange={(event) => setTypedSignature(event.target.value)} placeholder="Your name" /></label>
-                    {typedSignature ? <p className="mt-3 rounded-2xl bg-white p-4 text-4xl text-slate-950 [font-family:'Brush_Script_MT','Segoe_Script',cursive]">{typedSignature}</p> : null}
+                    <label className="text-sm font-bold text-ink-secondary">Typed signature <Input className="mt-2" value={typedSignature} onChange={(event) => setTypedSignature(event.target.value)} placeholder="Your name" /></label>
+                    {typedSignature ? <p className="mt-3 rounded-2xl bg-surface-card p-4 text-4xl text-ink-primary [font-family:'Brush_Script_MT','Segoe_Script',cursive]">{typedSignature}</p> : null}
                   </div>
                 ) : null}
                 {signatureMode === "draw" ? (
@@ -3400,7 +3400,7 @@ function AddTextToPdf() {
                       ref={signatureCanvasRef}
                       width={520}
                       height={180}
-                      className="mt-4 h-36 w-full touch-none rounded-2xl border border-dashed border-slate-300 bg-white shadow-inner"
+                      className="mt-4 h-36 w-full touch-none rounded-2xl border border-dashed border-white/[0.12] bg-surface-card shadow-inner"
                       onPointerDown={startSignature}
                       onPointerMove={drawSignature}
                       onPointerUp={stopSignature}
@@ -3412,16 +3412,16 @@ function AddTextToPdf() {
                 ) : null}
                 {signatureMode === "upload" ? (
                   <div className="mt-4">
-                    <label className="text-sm font-bold text-slate-700">Upload signature image <Input className="mt-2" type="file" accept="image/png,image/jpeg" onChange={(event) => loadSignatureImage(event.target.files)} /></label>
-                    {uploadedSignature ? <img src={uploadedSignature} alt="Uploaded signature preview" className="mt-3 max-h-32 rounded-2xl border border-slate-200 bg-white p-3" /> : null}
+                    <label className="text-sm font-bold text-ink-secondary">Upload signature image <Input className="mt-2" type="file" accept="image/png,image/jpeg" onChange={(event) => loadSignatureImage(event.target.files)} /></label>
+                    {uploadedSignature ? <img src={uploadedSignature} alt="Uploaded signature preview" className="mt-3 max-h-32 rounded-2xl border border-white/[0.08] bg-surface-card p-3" /> : null}
                   </div>
                 ) : null}
-                <label className="mt-4 block text-sm font-bold text-slate-700">Signature width: {signatureWidth}px<input className="mt-2 w-full accent-brand-600" type="range" min={80} max={320} value={signatureWidth} onChange={(event) => setSignatureWidth(Number(event.target.value))} /></label>
+                <label className="mt-4 block text-sm font-bold text-ink-secondary">Signature width: {signatureWidth}px<input className="mt-2 w-full accent-indigo-500" type="range" min={80} max={320} value={signatureWidth} onChange={(event) => setSignatureWidth(Number(event.target.value))} /></label>
               </div>
             )}
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="text-sm font-bold text-slate-700">X position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.width)} value={x} onChange={(event) => setX(Number(event.target.value))} /></label>
-              <label className="text-sm font-bold text-slate-700">Y position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.height)} value={y} onChange={(event) => setY(Number(event.target.value))} /></label>
+              <label className="text-sm font-bold text-ink-secondary">X position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.width)} value={x} onChange={(event) => setX(Number(event.target.value))} /></label>
+              <label className="text-sm font-bold text-ink-secondary">Y position <Input className="mt-2" type="number" min={0} max={Math.round(currentSize.height)} value={y} onChange={(event) => setY(Number(event.target.value))} /></label>
             </div>
             <div className="flex flex-wrap gap-3">
               {activePdfTab === "text" ? <Button onClick={addItem} disabled={!file || !text.trim()}>Add Text</Button> : <Button onClick={addSignature} disabled={!file}>Add Signature</Button>}
@@ -3429,33 +3429,33 @@ function AddTextToPdf() {
               <SecondaryButton onClick={reset}>Reset</SecondaryButton>
             </div>
             {(items.length || signatureItems.length) ? (
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-sm font-black text-slate-800">PDF items</p>
+              <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4">
+                <p className="text-sm font-black text-ink-primary">PDF items</p>
                 <div className="mt-3 grid gap-2">
-                  {items.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-white p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: {item.text}</span><SecondaryButton onClick={() => setItems(items.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
-                  {signatureItems.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-white p-3 text-sm font-bold text-slate-700 sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: Signature at X {item.x}, Y {item.y}</span><SecondaryButton onClick={() => setSignatureItems(signatureItems.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
+                  {items.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-surface-card p-3 text-sm font-bold text-ink-secondary sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: {item.text}</span><SecondaryButton onClick={() => setItems(items.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
+                  {signatureItems.map((item) => <div key={item.id} className="flex flex-col gap-2 rounded-xl bg-surface-card p-3 text-sm font-bold text-ink-secondary sm:flex-row sm:items-center sm:justify-between"><span>Page {item.page}: Signature at X {item.x}, Y {item.y}</span><SecondaryButton onClick={() => setSignatureItems(signatureItems.filter((entry) => entry.id !== item.id))}>Remove</SecondaryButton></div>)}
                 </div>
               </div>
             ) : null}
           </div>
           <div>
-            <p className="mb-2 text-sm font-bold text-slate-700">Real PDF preview. Click the page to set X/Y.</p>
-            {renderingPreview ? <p className="mb-3 rounded-2xl bg-slate-50 p-3 text-sm font-bold text-slate-600">Rendering page preview...</p> : null}
-            <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-inner">
+            <p className="mb-2 text-sm font-bold text-ink-secondary">Real PDF preview. Click the page to set X/Y.</p>
+            {renderingPreview ? <p className="mb-3 rounded-2xl bg-surface-card p-3 text-sm font-bold text-ink-muted">Rendering page preview...</p> : null}
+            <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl border border-white/[0.12] bg-surface-card shadow-inner">
               <canvas ref={previewCanvasRef} className="block h-auto w-full cursor-crosshair" onClick={placeFromClick} aria-label="PDF page preview" />
               <div className="pointer-events-none absolute inset-0">
               {[...pageItems, ...(text.trim() ? [{ id: "draft", page, text, x, y, size, color }] : [])].map((item) => (
-                <span key={item.id} className="absolute max-w-[85%] -translate-y-full break-words rounded-md bg-white/80 px-1 font-bold shadow-sm" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, color: item.color, fontSize: Math.max(10, Math.round(item.size * (520 / currentSize.width))) }}>
+                <span key={item.id} className="absolute max-w-[85%] -translate-y-full break-words rounded-md bg-surface-card/80 px-1 font-bold shadow-sm" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, color: item.color, fontSize: Math.max(10, Math.round(item.size * (520 / currentSize.width))) }}>
                   {item.text}
                 </span>
               ))}
               {pageSignatureItems.map((item) => (
-                <img key={item.id} src={item.dataUrl} alt="Signature placement preview" className="absolute -translate-y-full rounded-sm bg-white/70" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, width: `${(item.width / currentSize.width) * 100}%`, height: "auto" }} />
+                <img key={item.id} src={item.dataUrl} alt="Signature placement preview" className="absolute -translate-y-full rounded-sm bg-surface-card/70" style={{ left: `${(item.x / currentSize.width) * 100}%`, top: `${100 - (item.y / currentSize.height) * 100}%`, width: `${(item.width / currentSize.width) * 100}%`, height: "auto" }} />
               ))}
-              {activePdfTab === "signature" && currentSignatureDataUrl() ? <img src={currentSignatureDataUrl()} alt="Draft signature placement preview" className="absolute -translate-y-full rounded-sm bg-white/70" style={{ left: `${(x / currentSize.width) * 100}%`, top: `${100 - (y / currentSize.height) * 100}%`, width: `${(signatureWidth / currentSize.width) * 100}%`, height: "auto" }} /> : null}
+              {activePdfTab === "signature" && currentSignatureDataUrl() ? <img src={currentSignatureDataUrl()} alt="Draft signature placement preview" className="absolute -translate-y-full rounded-sm bg-surface-card/70" style={{ left: `${(x / currentSize.width) * 100}%`, top: `${100 - (y / currentSize.height) * 100}%`, width: `${(signatureWidth / currentSize.width) * 100}%`, height: "auto" }} /> : null}
               </div>
             </div>
-            <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">PDF coordinates start at the bottom-left, while browser clicks start at the top-left. FreeToolKit maps the click position automatically.</p>
+            <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">PDF coordinates start at the bottom-left, while browser clicks start at the top-left. freetoolkitapp maps the click position automatically.</p>
           </div>
         </div>
       ) : null}
@@ -3549,7 +3549,7 @@ const utilityLabels: Record<string, { label: string; placeholder: string; button
   "png-to-webp": { label: "Upload or describe PNG file", placeholder: "Upload a PNG file above or note the conversion requirement.", button: "Prepare conversion notes" },
   "webp-to-png": { label: "Upload or describe WebP file", placeholder: "Upload a WebP file above or note the conversion requirement.", button: "Prepare conversion notes" },
   "blur-image": { label: "Upload or describe image", placeholder: "Upload an image and choose blur strength.", button: "Prepare blur workflow" },
-  "favicon-generator": { label: "Site name or initials", placeholder: "FT or FreeToolKit", button: "Generate favicon plan" },
+  "favicon-generator": { label: "Site name or initials", placeholder: "FT or freetoolkitapp", button: "Generate favicon plan" },
   "photo-collage-maker": { label: "Collage notes", placeholder: "Describe the images and layout you want.", button: "Create collage plan" },
   "youtube-thumbnail-downloader": { label: "YouTube video URL", placeholder: "https://www.youtube.com/watch?v=VIDEO_ID", button: "Get thumbnail links" },
   "apa-citation-generator": { label: "Source details", placeholder: "Author, year, title, website/book/journal, URL, accessed date...", button: "Generate citation draft" },
@@ -3566,7 +3566,7 @@ const utilityLabels: Record<string, { label: string; placeholder: string; button
   "html-formatter": { label: "HTML", placeholder: "<main><h1>Hello</h1><p>Text</p></main>", button: "Format HTML" },
   "css-formatter": { label: "CSS", placeholder: "body{color:#111;background:#fff}.card{padding:1rem}", button: "Format CSS" },
   "markdown-previewer": { label: "Markdown", placeholder: "# Heading\n\n- Item one\n- Item two", button: "Preview Markdown" },
-  "json-validator": { label: "JSON", placeholder: "{\"name\":\"FreeToolKit\"}", button: "Validate JSON" },
+  "json-validator": { label: "JSON", placeholder: "{\"name\":\"freetoolkitapp\"}", button: "Validate JSON" },
   "curl-to-fetch": { label: "cURL command", placeholder: "curl -X POST https://api.example.com -H 'Content-Type: application/json' -d '{\"ok\":true}'", button: "Convert to fetch" },
   "password-strength-checker": { label: "Password", placeholder: "Type a password to check locally", button: "Check strength" },
   "sha256-generator": { label: "Text", placeholder: "Text to hash", button: "Generate SHA-256" },
@@ -3608,7 +3608,7 @@ function LightweightUtilityTool({ slug }: { slug: string }) {
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div className="space-y-4">
-        <label className="block text-sm font-bold text-slate-700">
+        <label className="block text-sm font-bold text-ink-secondary">
           {config.label}
           <Textarea className="mt-2 min-h-72" value={input} onChange={(event) => setInput(event.target.value)} placeholder={config.placeholder} />
         </label>
@@ -3618,7 +3618,7 @@ function LightweightUtilityTool({ slug }: { slug: string }) {
         </div>
       </div>
       <ResultCard title="Output">
-        {output ? <pre className="min-h-72 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800 [overflow-wrap:anywhere]">{output}</pre> : <p className="min-h-72 text-sm leading-7 text-slate-500">Your result will appear here.</p>}
+        {output ? <pre className="min-h-72 whitespace-pre-wrap break-words text-sm leading-7 text-ink-primary [overflow-wrap:anywhere]">{output}</pre> : <p className="min-h-72 text-sm leading-7 text-ink-muted">Your result will appear here.</p>}
         <div className="mt-4 flex flex-wrap gap-3">
           <SecondaryButton onClick={copy} disabled={!output}>{copied ? "Copied" : "Copy"}</SecondaryButton>
           <SecondaryButton onClick={() => downloadTextFile(`${slug}.txt`, output)} disabled={!output}>Download TXT</SecondaryButton>
@@ -3647,12 +3647,12 @@ function FileWorkflowTool({ slug }: { slug: string }) {
     <div>
       <FileUploadDropzone label="Upload file" accept="*/*" multiple onFiles={(selected) => setFiles(selected)} />
       <FileInfo file={files[0] ?? null} />
-      {files.length > 1 ? <p className="mt-3 text-sm font-bold text-slate-600">{files.length} files selected.</p> : null}
+      {files.length > 1 ? <p className="mt-3 text-sm font-bold text-ink-muted">{files.length} files selected.</p> : null}
       <div className="mt-4 flex flex-wrap gap-3">
         <Button onClick={run}>{isChecksum ? "Generate checksum" : "Review workflow"}</Button>
         <SecondaryButton onClick={() => { setFiles([]); setNote(""); }}>Reset</SecondaryButton>
       </div>
-      {note ? <ResultCard title="Browser workflow note" className="mt-5"><pre className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-700">{note}</pre></ResultCard> : null}
+      {note ? <ResultCard title="Browser workflow note" className="mt-5"><pre className="whitespace-pre-wrap break-words text-sm leading-7 text-ink-secondary">{note}</pre></ResultCard> : null}
     </div>
   );
 }
@@ -3724,7 +3724,7 @@ function OcrPdfTool() {
     <div>
       <FileUploadDropzone label="Upload PDF for OCR" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
       <FileInfo file={file} />
-      <p className="mt-3 text-sm leading-7 text-slate-600">
+      <p className="mt-3 text-sm leading-7 text-ink-muted">
         Extract text from scanned PDFs. This browser OCR run processes up to {MAX_PAGES} pages per file for faster results.
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
@@ -3734,9 +3734,9 @@ function OcrPdfTool() {
       <ErrorMessage message={error} />
       <ResultCard title="Extracted text" className="mt-5">
         {output ? (
-          <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">{output}</pre>
+          <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap break-words text-sm leading-7 text-ink-primary">{output}</pre>
         ) : (
-          <p className="text-sm leading-7 text-slate-500">Your OCR result will appear here.</p>
+          <p className="text-sm leading-7 text-ink-muted">Your OCR result will appear here.</p>
         )}
         <div className="mt-4 flex flex-wrap gap-3">
           <SecondaryButton onClick={() => void navigator.clipboard.writeText(output)} disabled={!output}>Copy</SecondaryButton>
@@ -3820,7 +3820,7 @@ function PdfToExcelTool() {
     <div>
       <FileUploadDropzone label="Upload PDF with tables" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
       <FileInfo file={file} />
-      <p className="mt-3 text-sm leading-7 text-slate-600">
+      <p className="mt-3 text-sm leading-7 text-ink-muted">
         Extract likely table rows from text-based PDFs. For scanned documents, run OCR PDF first for better extraction.
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
@@ -3830,13 +3830,13 @@ function PdfToExcelTool() {
       <ErrorMessage message={error} />
       <ResultCard title="Preview rows" className="mt-5">
         {rows.length ? (
-          <div className="max-h-[26rem] overflow-auto rounded-xl border border-slate-200 bg-white">
+          <div className="max-h-[26rem] overflow-auto rounded-xl border border-white/[0.08] bg-surface-card">
             <table className="w-full text-left text-sm">
               <tbody>
                 {rows.slice(0, 80).map((row, index) => (
-                  <tr key={`${index}-${row.join("|")}`} className="border-b border-slate-100">
+                  <tr key={`${index}-${row.join("|")}`} className="border-b border-white/[0.08]">
                     {row.map((cell, cellIndex) => (
-                      <td key={`${index}-${cellIndex}`} className="px-3 py-2 align-top text-slate-700">{cell}</td>
+                      <td key={`${index}-${cellIndex}`} className="px-3 py-2 align-top text-ink-secondary">{cell}</td>
                     ))}
                   </tr>
                 ))}
@@ -3844,7 +3844,7 @@ function PdfToExcelTool() {
             </table>
           </div>
         ) : (
-          <p className="text-sm leading-7 text-slate-500">Extracted rows will appear here.</p>
+          <p className="text-sm leading-7 text-ink-muted">Extracted rows will appear here.</p>
         )}
         <div className="mt-4 flex flex-wrap gap-3">
           <SecondaryButton onClick={downloadExcel} disabled={!rows.length}>Download XLSX</SecondaryButton>
@@ -3905,14 +3905,14 @@ function ImageUpscalerTool() {
       <FileUploadDropzone label="Upload image to upscale" accept="image/jpeg,image/png,image/webp" onFiles={(files) => setFile(files[0] ?? null)} />
       <FileInfo file={file} />
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Scale factor
           <Select className="mt-2" value={scale} onChange={(event) => setScale(Number(event.target.value) as 2 | 4)}>
             <option value={2}>2x</option>
             <option value={4}>4x</option>
           </Select>
         </label>
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Smoothing quality
           <Select className="mt-2" value={smoothing} onChange={(event) => setSmoothing(event.target.value as "high" | "medium" | "low")}>
             <option value="high">High</option>
@@ -3925,10 +3925,10 @@ function ImageUpscalerTool() {
         <Button onClick={upscale} disabled={!file || busy}>{busy ? "Upscaling..." : "Upscale image"}</Button>
         <SecondaryButton onClick={reset}>Reset</SecondaryButton>
       </div>
-      <p className="mt-3 text-sm leading-7 text-slate-600">
+      <p className="mt-3 text-sm leading-7 text-ink-muted">
         This browser upscaler enlarges image dimensions for previews and drafts. For advanced AI enhancement, a model-based service is typically required.
       </p>
-      {preview ? <img className="mt-5 max-h-96 w-full rounded-2xl border border-slate-200 bg-slate-50 object-contain p-2" src={preview} alt="Upscaled preview" /> : null}
+      {preview ? <img className="mt-5 max-h-96 w-full rounded-2xl border border-white/[0.08] bg-surface-card object-contain p-2" src={preview} alt="Upscaled preview" /> : null}
       <ErrorMessage message={error} />
       <Download output={output} />
     </div>
@@ -4016,7 +4016,7 @@ function EditPdfTool() {
       <FileUploadDropzone label="Upload PDF to edit" accept="application/pdf" onFiles={(files) => setFile(files[0] ?? null)} />
       <FileInfo file={file} />
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-bold text-slate-700">
+        <label className="text-sm font-bold text-ink-secondary">
           Action
           <Select className="mt-2" value={mode} onChange={(event) => setMode(event.target.value as "rotate" | "delete" | "reorder")}>
             <option value="rotate">Rotate all pages</option>
@@ -4025,7 +4025,7 @@ function EditPdfTool() {
           </Select>
         </label>
         {mode === "rotate" ? (
-          <label className="text-sm font-bold text-slate-700">
+          <label className="text-sm font-bold text-ink-secondary">
             Rotation
             <Select className="mt-2" value={rotateBy} onChange={(event) => setRotateBy(Number(event.target.value) as 90 | 180 | 270)}>
               <option value={90}>90 degrees</option>
@@ -4036,13 +4036,13 @@ function EditPdfTool() {
         ) : null}
       </div>
       {mode === "delete" ? (
-        <label className="mt-4 block text-sm font-bold text-slate-700">
+        <label className="mt-4 block text-sm font-bold text-ink-secondary">
           Pages to delete
           <Input className="mt-2" value={deletePages} onChange={(event) => setDeletePages(event.target.value)} placeholder="2,4-5" />
         </label>
       ) : null}
       {mode === "reorder" ? (
-        <label className="mt-4 block text-sm font-bold text-slate-700">
+        <label className="mt-4 block text-sm font-bold text-ink-secondary">
           New page order
           <Input className="mt-2" value={reorderPages} onChange={(event) => setReorderPages(event.target.value)} placeholder="2,1,3,4" />
         </label>
@@ -4111,7 +4111,7 @@ function TranscriptSummarizerTool() {
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div className="space-y-4">
-        <label className="block text-sm font-bold text-slate-700">
+        <label className="block text-sm font-bold text-ink-secondary">
           Transcript type
           <Select className="mt-2" value={sourceType} onChange={(event) => setSourceType(event.target.value as "meeting" | "youtube")}>
             <option value="meeting">Meeting notes / transcript</option>
@@ -4119,12 +4119,12 @@ function TranscriptSummarizerTool() {
           </Select>
         </label>
         {sourceType === "youtube" ? (
-          <label className="block text-sm font-bold text-slate-700">
+          <label className="block text-sm font-bold text-ink-secondary">
             YouTube URL (optional reference)
             <Input className="mt-2" value={youtubeUrl} onChange={(event) => setYoutubeUrl(event.target.value)} placeholder="https://www.youtube.com/watch?v=..." />
           </label>
         ) : null}
-        <label className="block text-sm font-bold text-slate-700">
+        <label className="block text-sm font-bold text-ink-secondary">
           Paste transcript or notes
           <Textarea className="mt-2 min-h-72" value={transcript} onChange={(event) => setTranscript(event.target.value)} placeholder="Paste meeting notes or transcript text..." />
         </label>
@@ -4134,7 +4134,7 @@ function TranscriptSummarizerTool() {
         </div>
       </div>
       <ResultCard title="Summary output">
-        {output ? <pre className="min-h-72 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800 [overflow-wrap:anywhere]">{output}</pre> : <p className="min-h-72 text-sm leading-7 text-slate-500">Your summary will appear here.</p>}
+        {output ? <pre className="min-h-72 whitespace-pre-wrap break-words text-sm leading-7 text-ink-primary [overflow-wrap:anywhere]">{output}</pre> : <p className="min-h-72 text-sm leading-7 text-ink-muted">Your summary will appear here.</p>}
         <div className="mt-4 flex flex-wrap gap-3">
           <SecondaryButton onClick={() => void navigator.clipboard.writeText(output)} disabled={!output}>Copy</SecondaryButton>
           <SecondaryButton onClick={() => downloadTextFile("transcript-summary.txt", output)} disabled={!output}>Download TXT</SecondaryButton>
@@ -4146,7 +4146,7 @@ function TranscriptSummarizerTool() {
 
 function InvoiceGeneratorTool() {
   const [prompt, setPrompt] = useState("");
-  const [fromName, setFromName] = useState("FreeToolKit Services");
+  const [fromName, setFromName] = useState("freetoolkitapp Services");
   const [toName, setToName] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState(`INV-${Date.now().toString().slice(-6)}`);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -4246,7 +4246,7 @@ function InvoiceGeneratorTool() {
 
   function reset() {
     setPrompt("");
-    setFromName("FreeToolKit Services");
+    setFromName("freetoolkitapp Services");
     setToName("");
     setInvoiceNumber(`INV-${Date.now().toString().slice(-6)}`);
     setDate(new Date().toISOString().slice(0, 10));
@@ -4257,10 +4257,10 @@ function InvoiceGeneratorTool() {
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-brand-50 to-white p-4 shadow-sm">
-        <p className="text-xs font-black uppercase tracking-wide text-brand-700">AI invoice brief</p>
-        <p className="mt-1 text-sm font-semibold leading-6 text-slate-600">Describe services, pricing style, and client context. AI drafts the invoice structure and you can export PDF instantly.</p>
-        <label className="mt-3 block text-sm font-bold text-slate-700">
+      <div className="rounded-2xl border border-indigo-400/20 bg-gradient-to-b from-brand-50 to-surface-card p-4 shadow-sm">
+        <p className="text-xs font-black uppercase tracking-wide text-indigo-400">AI invoice brief</p>
+        <p className="mt-1 text-sm font-semibold leading-6 text-ink-muted">Describe services, pricing style, and client context. AI drafts the invoice structure and you can export PDF instantly.</p>
+        <label className="mt-3 block text-sm font-bold text-ink-secondary">
           Request
           <Textarea
             className="mt-2 min-h-24"
@@ -4276,43 +4276,43 @@ function InvoiceGeneratorTool() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <p className="text-xs font-black uppercase tracking-wide text-slate-500">Invoice details</p>
+      <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 shadow-sm">
+        <p className="text-xs font-black uppercase tracking-wide text-ink-muted">Invoice details</p>
         <div className="mt-3 grid gap-4 sm:grid-cols-2">
-          <label className="text-sm font-bold text-slate-700">From <Input className="mt-2" value={fromName} onChange={(event) => setFromName(event.target.value)} /></label>
-          <label className="text-sm font-bold text-slate-700">Bill To <Input className="mt-2" value={toName} onChange={(event) => setToName(event.target.value)} placeholder="Client name" /></label>
-          <label className="text-sm font-bold text-slate-700">Invoice Number <Input className="mt-2" value={invoiceNumber} onChange={(event) => setInvoiceNumber(event.target.value)} /></label>
-          <label className="text-sm font-bold text-slate-700">Date <Input className="mt-2" type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
+          <label className="text-sm font-bold text-ink-secondary">From <Input className="mt-2" value={fromName} onChange={(event) => setFromName(event.target.value)} /></label>
+          <label className="text-sm font-bold text-ink-secondary">Bill To <Input className="mt-2" value={toName} onChange={(event) => setToName(event.target.value)} placeholder="Client name" /></label>
+          <label className="text-sm font-bold text-ink-secondary">Invoice Number <Input className="mt-2" value={invoiceNumber} onChange={(event) => setInvoiceNumber(event.target.value)} /></label>
+          <label className="text-sm font-bold text-ink-secondary">Date <Input className="mt-2" type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
         </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <label className="block rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-700 shadow-sm">
+        <label className="block rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold text-ink-secondary shadow-sm">
           Line items (one per line: item,quantity,price)
           <Textarea className="mt-2 min-h-40" value={itemsRaw} onChange={(event) => setItemsRaw(event.target.value)} />
         </label>
-        <label className="block rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-700 shadow-sm">
+        <label className="block rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold text-ink-secondary shadow-sm">
           Notes
           <Textarea className="mt-2 min-h-40" value={notes} onChange={(event) => setNotes(event.target.value)} />
         </label>
       </div>
 
-      <ResultCard title="AI Invoice Preview" className="border-slate-200 bg-gradient-to-b from-white to-slate-50">
-        <div className="grid gap-1 text-sm font-semibold text-slate-700 sm:grid-cols-2">
+      <ResultCard title="AI Invoice Preview" className="border-white/[0.08] bg-gradient-to-b from-surface-card to-surface-section">
+        <div className="grid gap-1 text-sm font-semibold text-ink-secondary sm:grid-cols-2">
           <p>From: {fromName}</p>
           <p>To: {toName || "Client"}</p>
           <p>Invoice: {invoiceNumber}</p>
           <p>Date: {date}</p>
         </div>
-        <div className="mt-4 rounded-xl border border-slate-200 bg-white">
+        <div className="mt-4 rounded-xl border border-white/[0.08] bg-surface-card">
           {parsedItems.map((item, index) => (
-            <div key={`${item.name}-${index}`} className="flex items-center justify-between gap-3 border-b border-slate-100 px-3 py-2 text-sm text-slate-700 last:border-b-0">
+            <div key={`${item.name}-${index}`} className="flex items-center justify-between gap-3 border-b border-white/[0.08] px-3 py-2 text-sm text-ink-secondary last:border-b-0">
               <span className="truncate">{item.name}</span>
               <span className="whitespace-nowrap">{item.qty} x {item.price.toFixed(2)} = {(item.qty * item.price).toFixed(2)}</span>
             </div>
           ))}
         </div>
-        <p className="mt-4 text-sm font-black text-slate-900">Subtotal: {subtotal.toFixed(2)}</p>
+        <p className="mt-4 text-sm font-black text-ink-primary">Subtotal: {subtotal.toFixed(2)}</p>
       </ResultCard>
 
       <div className="flex flex-wrap gap-3">
@@ -4626,26 +4626,26 @@ function AiResumeCoverLetterGenerator() {
       <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
         <div className="grid min-w-0 gap-5">
           <div className="min-w-0">
-            <p className="mb-2 text-sm font-bold text-slate-700">Optional TXT upload</p>
+            <p className="mb-2 text-sm font-bold text-ink-secondary">Optional TXT upload</p>
             <FileUploadDropzone label="Upload a TXT resume" accept=".txt,text/plain" onFiles={loadResume} />
             {resumeFile ? (
               <FileInfo file={resumeFile} />
             ) : !resumeText.trim() ? (
-              <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-500">
+              <p className="mt-4 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-semibold text-ink-muted">
                 Choose a file or paste your resume text to enable this tool.
               </p>
             ) : null}
-            <p className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold leading-6 text-slate-600">
+            <p className="mt-3 rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold leading-6 text-ink-muted">
               PDF resume upload is coming soon. Please copy and paste your resume text.
             </p>
           </div>
           {resumeText ? (
-            <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Resume preview</p>
-              <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-700 [overflow-wrap:anywhere]">{resumeText.slice(0, 500)}{resumeText.length > 500 ? "..." : ""}</p>
+            <div className="min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-surface-card p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-ink-muted">Resume preview</p>
+              <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-ink-secondary [overflow-wrap:anywhere]">{resumeText.slice(0, 500)}{resumeText.length > 500 ? "..." : ""}</p>
             </div>
           ) : null}
-          <label className="text-sm font-bold text-slate-700">
+          <label className="text-sm font-bold text-ink-secondary">
             Paste your resume
             <Textarea
               className="mt-2 min-h-72"
@@ -4664,31 +4664,31 @@ function AiResumeCoverLetterGenerator() {
               placeholder="Paste your resume here."
             />
           </label>
-          <div className="flex min-w-0 flex-col gap-2 text-xs font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 flex-col gap-2 text-xs font-semibold text-ink-muted sm:flex-row sm:items-center sm:justify-between">
             <p className="min-w-0 break-words [overflow-wrap:anywhere]">Copy your resume from Word, PDF, or LinkedIn and paste it here.</p>
-            <p className="font-black text-slate-600">{resumeLength.toLocaleString()} characters</p>
+            <p className="font-black text-ink-muted">{resumeLength.toLocaleString()} characters</p>
           </div>
-          <p className="break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold leading-6 text-slate-600 [overflow-wrap:anywhere]">
+          <p className="break-words rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold leading-6 text-ink-muted [overflow-wrap:anywhere]">
             For PDF resumes, copy the text from your PDF and paste it here. PDF upload support is coming soon.
           </p>
           {resumeLength > 0 && resumeLength < 200 ? (
-            <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-800">
+            <p className="alert-warning">
               Add at least {200 - resumeLength} more characters of resume text before generating.
             </p>
           ) : null}
-          <label className="text-sm font-bold text-slate-700">
+          <label className="text-sm font-bold text-ink-secondary">
             Job description
             <Textarea className="mt-2 min-h-56" value={jobDescription} onChange={(event) => setJobDescription(event.target.value)} placeholder="Paste job description here..." />
           </label>
-          <p className="text-xs font-black text-slate-600">{jobDescriptionLength.toLocaleString()} job description characters</p>
+          <p className="text-xs font-black text-ink-muted">{jobDescriptionLength.toLocaleString()} job description characters</p>
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="text-sm font-bold text-slate-700">Role title <Input className="mt-2" value={roleTitle} onChange={(event) => setRoleTitle(event.target.value)} placeholder="Software Intern, Marketing Assistant..." /></label>
-            <label className="text-sm font-bold text-slate-700">Tone <Select className="mt-2" value={tone} onChange={(event) => setTone(event.target.value)}>{["Professional", "Friendly", "Confident"].map((item) => <option key={item}>{item}</option>)}</Select></label>
-            <label className="text-sm font-bold text-slate-700">Experience level <Select className="mt-2" value={experienceLevel} onChange={(event) => setExperienceLevel(event.target.value)}>{["Student", "Graduate", "Entry-level"].map((item) => <option key={item}>{item}</option>)}</Select></label>
-            <label className="text-sm font-bold text-slate-700">Output type <Select className="mt-2" value={outputType} onChange={(event) => setOutputType(event.target.value)}>{["Resume", "Cover Letter", "Both"].map((item) => <option key={item}>{item}</option>)}</Select></label>
+            <label className="text-sm font-bold text-ink-secondary">Role title <Input className="mt-2" value={roleTitle} onChange={(event) => setRoleTitle(event.target.value)} placeholder="Software Intern, Marketing Assistant..." /></label>
+            <label className="text-sm font-bold text-ink-secondary">Tone <Select className="mt-2" value={tone} onChange={(event) => setTone(event.target.value)}>{["Professional", "Friendly", "Confident"].map((item) => <option key={item}>{item}</option>)}</Select></label>
+            <label className="text-sm font-bold text-ink-secondary">Experience level <Select className="mt-2" value={experienceLevel} onChange={(event) => setExperienceLevel(event.target.value)}>{["Student", "Graduate", "Entry-level"].map((item) => <option key={item}>{item}</option>)}</Select></label>
+            <label className="text-sm font-bold text-ink-secondary">Output type <Select className="mt-2" value={outputType} onChange={(event) => setOutputType(event.target.value)}>{["Resume", "Cover Letter", "Both"].map((item) => <option key={item}>{item}</option>)}</Select></label>
           </div>
-          <label className="flex gap-3 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm font-bold leading-6 text-brand-800">
-            <input className="mt-1 h-5 w-5 accent-brand-600" type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} />
+          <label className="flex gap-3 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-4 text-sm font-bold leading-6 text-brand-800">
+            <input className="mt-1 h-5 w-5 accent-indigo-500" type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} />
             I confirm the generated content should only use my real experience.
           </label>
           <div className="flex flex-wrap gap-3">
@@ -4697,30 +4697,30 @@ function AiResumeCoverLetterGenerator() {
             </Button>
             <SecondaryButton onClick={reset}>Reset</SecondaryButton>
           </div>
-          <p className="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold leading-6 text-slate-600">
+          <p className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm font-bold leading-6 text-ink-muted">
             This tool improves your resume using AI based on your input. Always review before using.
           </p>
-          <p className="text-xs font-semibold text-slate-500">Daily free usage: {usageCount}/{AI_CLIENT_LIMIT} requests used in this browser.</p>
-          {busy ? <p className="rounded-2xl bg-slate-50 p-4 text-sm font-bold text-slate-600">Generating your tailored resume and cover letter...</p> : null}
+          <p className="text-xs font-semibold text-ink-muted">Daily free usage: {usageCount}/{AI_CLIENT_LIMIT} requests used in this browser.</p>
+          {busy ? <p className="rounded-2xl bg-surface-card p-4 text-sm font-bold text-ink-muted">Generating your tailored resume and cover letter...</p> : null}
           <ErrorMessage message={error} />
         </div>
 
-        <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 sm:grid-cols-4">
+        <div className="min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-surface-card p-4 shadow-sm">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-surface-section p-1 sm:grid-cols-4">
             {(Object.keys(outputLabels) as Array<keyof AiResumeOutput>).map((key) => (
-              <button key={key} className={`min-w-0 rounded-xl px-2 py-3 text-xs font-black leading-tight sm:px-3 sm:text-sm ${activeOutput === key ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`} onClick={() => setActiveOutput(key)}>
+              <button key={key} className={`min-w-0 rounded-xl px-2 py-3 text-xs font-black leading-tight sm:px-3 sm:text-sm ${activeOutput === key ? "bg-surface-card text-indigo-400 shadow-sm" : "text-ink-muted"}`} onClick={() => setActiveOutput(key)}>
                 {outputLabels[key]}
               </button>
             ))}
           </div>
-          <div className="mt-4 min-h-[28rem] min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
+          <div className="mt-4 min-h-[28rem] min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-surface-card p-4">
             {currentOutput ? (
-              <pre className="max-w-full whitespace-pre-wrap break-words text-sm leading-7 text-slate-800 [overflow-wrap:anywhere]">{currentOutput}</pre>
+              <pre className="max-w-full whitespace-pre-wrap break-words text-sm leading-7 text-ink-primary [overflow-wrap:anywhere]">{currentOutput}</pre>
             ) : (
               <div className="flex min-h-[24rem] items-center justify-center text-center">
                 <div className="min-w-0">
-                  <p className="break-words text-lg font-black text-slate-900 [overflow-wrap:anywhere]">Your AI output will appear here</p>
-                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Your AI output will appear here.</p>
+                  <p className="break-words text-lg font-black text-ink-primary [overflow-wrap:anywhere]">Your AI output will appear here</p>
+                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-ink-muted">Your AI output will appear here.</p>
                 </div>
               </div>
             )}
@@ -4832,7 +4832,7 @@ export function ToolRunner({ slug }: { slug: string }) {
     "resume-ats-checker": <GeminiAiTool slug="resume-ats-checker" />
   };
 
-  return <div>{map[slug] ?? <p className="text-sm text-slate-600">Tool coming soon.</p>}</div>;
+  return <div>{map[slug] ?? <p className="text-sm text-ink-muted">Tool coming soon.</p>}</div>;
 }
 
 export default ToolRunner;

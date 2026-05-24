@@ -46,7 +46,7 @@ function makeTool(input: ExpandedToolInput): Tool {
     browserNote
   ];
   const defaultFaq: Tool["faq"] = [
-    { question: `Is ${input.title} free?`, answer: `Yes. ${input.title} is free to use on FreeToolKit and does not require signup.` },
+    { question: `Is ${input.title} free?`, answer: `Yes. ${input.title} is free to use on freetoolkitapp and does not require signup.` },
     { question: "Does this tool need a backend upload?", answer: "The tool is designed to run in your browser where possible. Some advanced file formats depend on browser support and may show limitations clearly." },
     { question: "Can I use the result professionally?", answer: "Yes, but review the output first, especially for documents, SEO metadata, citations, security values, or social posts." },
     { question: "Does it work on mobile?", answer: "Yes. The page is built for phones, tablets, and desktop browsers." },
@@ -54,10 +54,10 @@ function makeTool(input: ExpandedToolInput): Tool {
   ];
   const defaultSeo = [
     `${input.title} helps ${input.audience} ${input.action} without opening heavy desktop software or signing up for another account. The page is focused on a single practical job, so the workflow stays quick: enter your content, generate or preview the output, and review the result before copying or downloading it.`,
-    `This tool fits into the larger FreeToolKit workflow for documents, images, AI writing, SEO, social media, development, student tasks, and security checks. Related tools are linked on the page so you can move from one step to the next without searching again. That makes it useful for everyday work as well as repeat publishing or study routines.`,
+    `This tool fits into the larger freetoolkitapp workflow for documents, images, AI writing, SEO, social media, development, student tasks, and security checks. Related tools are linked on the page so you can move from one step to the next without searching again. That makes it useful for everyday work as well as repeat publishing or study routines.`,
     `The interface is intentionally lightweight. It avoids unnecessary dashboards, account walls, and paid API requirements for normal use. Where browser support is limited, the page explains what is possible and what may require dedicated software or a server-side workflow.`,
-    `${limitation} For best results, keep a copy of your original file or text, compare the output with your requirement, and use related FreeToolKit tools when the task needs another step.`,
-    `FreeToolKit is building this category for long-term, evergreen workflows. ${input.title} is part of that broader toolkit, designed to be crawlable, useful, fast, and easy to understand for people arriving from search or internal links.`
+    `${limitation} For best results, keep a copy of your original file or text, compare the output with your requirement, and use related freetoolkitapp tools when the task needs another step.`,
+    `freetoolkitapp is building this category for long-term, evergreen workflows. ${input.title} is part of that broader toolkit, designed to be crawlable, useful, fast, and easy to understand for people arriving from search or internal links.`
   ];
 
   return {
@@ -66,7 +66,7 @@ function makeTool(input: ExpandedToolInput): Tool {
     category: input.category,
     badge: "New",
     description: input.description,
-    intro: `Use ${input.title} online free to ${input.action}. This lightweight FreeToolKit page is designed for ${input.audience}, with clear controls, mobile-friendly layout, and no signup.`,
+    intro: `Use ${input.title} online free to ${input.action}. This lightweight freetoolkitapp page is designed for ${input.audience}, with clear controls, mobile-friendly layout, and no signup.`,
     metaTitle: `${input.title} Online Free`,
     metaDescription: `${input.description} Free browser-based tool with no signup, clean output, helpful FAQs, and related productivity tools.`,
     howToUse: input.howToUse ?? defaultHowToUse,

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { ToolLayout } from "@/components/ToolLayout";
 import { categoryRoutes, getTool, tools, toolHref } from "@/data/tools";
-import { buildBreadcrumbSchema, buildFaqSchema, buildToolSoftwareSchema, withoutBrandSuffix } from "@/lib/schema";
+import { buildBreadcrumbSchema, buildFaqSchema, buildHowToSchema, buildToolSoftwareSchema, buildWebPageSchema, withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
 import { isToolIndexedForSearch } from "@/data/indexing-policy";
 
@@ -25,7 +25,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       title: cleanTitle,
       description: tool.metaDescription,
       url: canonical,
-      siteName: "FreeToolKit",
+      siteName: "freetoolkitapp",
       type: "website"
     },
     twitter: {
@@ -51,12 +51,27 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
     description: tool.description,
     href: toolHref(tool)
   });
+  const howToSchema = buildHowToSchema({
+    name: `How to use ${tool.title}`,
+    description: tool.intro,
+    steps: tool.howToUse,
+    href: toolHref(tool)
+  });
+  const webPageSchema = buildWebPageSchema({
+    name: tool.title,
+    description: tool.metaDescription,
+    href: toolHref(tool)
+  });
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      {tool.sections?.length ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      ) : null}
       <ToolLayout tool={tool} />
     </>
   );

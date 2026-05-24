@@ -1,6 +1,63 @@
-import { canonicalUrl, siteUrl } from "@/lib/utils";
+import { canonicalUrl, siteUrl, siteName } from "@/lib/utils";
+import { founder, siteContactEmail } from "@/data/site-trust";
 
 type FaqItem = { question: string; answer: string };
+
+export const organizationId = `${siteUrl}/#organization`;
+export const founderId = `${siteUrl}/#founder`;
+export const websiteId = `${siteUrl}/#website`;
+
+export function buildPersonSchema() {
+  return {
+    "@type": "Person",
+    "@id": founderId,
+    name: founder.name,
+    jobTitle: founder.role,
+    email: siteContactEmail,
+    sameAs: [founder.linkedinUrl],
+    worksFor: { "@id": organizationId },
+    url: canonicalUrl("/about")
+  };
+}
+
+export function buildOrganizationSchema() {
+  return {
+    "@type": "Organization",
+    "@id": organizationId,
+    name: siteName,
+    url: siteUrl,
+    email: siteContactEmail,
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteUrl}/og-image.png?v=2`
+    },
+    founder: { "@id": founderId },
+    description:
+      "Independent productivity toolkit with curated browser-based PDF, image, AI, SEO, developer, and calculator tools."
+  };
+}
+
+export function buildWebSiteSchema() {
+  return {
+    "@type": "WebSite",
+    "@id": websiteId,
+    name: siteName,
+    url: siteUrl,
+    publisher: { "@id": organizationId },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}/all-tools?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+}
+
+export function buildGlobalSchemaGraph() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [buildOrganizationSchema(), buildPersonSchema(), buildWebSiteSchema()]
+  };
+}
 
 export function buildFaqSchema(faqs: FaqItem[]) {
   return {
@@ -64,12 +121,16 @@ export function buildBlogPostingSchema(input: {
     mainEntityOfPage: canonicalUrl(input.href),
     keywords: input.keywords.join(", "),
     author: {
-      "@type": "Organization",
-      name: "FreeToolKit"
+      "@type": "Person",
+      "@id": founderId,
+      name: founder.name,
+      url: founder.linkedinUrl,
+      sameAs: [founder.linkedinUrl]
     },
     publisher: {
       "@type": "Organization",
-      name: "FreeToolKit",
+      "@id": organizationId,
+      name: siteName,
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/og-image.png?v=2`
@@ -77,12 +138,43 @@ export function buildBlogPostingSchema(input: {
     },
     isPartOf: {
       "@type": "Blog",
-      name: "FreeToolKit Blog",
+      name: `${siteName} Blog`,
       url: canonicalUrl("/blog")
     }
   };
 }
 
+export function buildHowToSchema(input: { name: string; description: string; steps: string[]; href: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: input.name,
+    description: input.description,
+    step: input.steps.map((text, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: `Step ${index + 1}`,
+      text
+    })),
+    tool: {
+      "@type": "SoftwareApplication",
+      name: input.name,
+      url: canonicalUrl(input.href)
+    }
+  };
+}
+
+export function buildWebPageSchema(input: { name: string; description: string; href: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: input.name,
+    description: input.description,
+    url: canonicalUrl(input.href),
+    isPartOf: { "@type": "WebSite", "@id": websiteId, name: siteName, url: siteUrl }
+  };
+}
+
 export function withoutBrandSuffix(title: string) {
-  return title.replace(/\s*\|\s*FreeToolKit(?:\s*Blog)?\s*$/i, "").trim();
+  return title.replace(/\s*\|\s*(?:FreeToolKit|freetoolkitapp)(?:\s*Blog)?\s*$/i, "").trim();
 }

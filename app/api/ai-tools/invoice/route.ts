@@ -58,7 +58,7 @@ function safeDraft(input: Partial<InvoiceDraft>): InvoiceDraft {
     .slice(0, 20);
 
   return {
-    fromName: String(input.fromName ?? "FreeToolKit Services").trim() || "FreeToolKit Services",
+    fromName: String(input.fromName ?? "freetoolkitapp Services").trim() || "freetoolkitapp Services",
     toName: String(input.toName ?? "Client").trim() || "Client",
     notes: String(input.notes ?? "Thank you for your business.").trim() || "Thank you for your business.",
     invoiceNumber: String(input.invoiceNumber ?? "").trim() || undefined,

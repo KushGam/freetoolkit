@@ -4,13 +4,13 @@ import { Container, PageHeader } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
-  description: "The requested FreeToolKit page could not be found.",
+  description: "The requested freetoolkitapp page could not be found.",
   robots: { index: false, follow: true }
 };
 
 export default function NotFound() {
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <Container className="max-w-5xl py-12">
         <PageHeader
           eyebrow="404"
@@ -19,13 +19,13 @@ export default function NotFound() {
           badges={["Tools", "Guides", "No signup"]}
         />
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/all-tools" className="rounded-2xl bg-brand-600 px-6 py-3.5 text-center text-sm font-black text-white shadow-sm hover:bg-brand-700">
+          <Link href="/all-tools" className="btn-primary">
             Search all tools
           </Link>
-          <Link href="/blog" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-center text-sm font-black text-slate-800 shadow-sm hover:bg-brand-50">
+          <Link href="/blog" className="btn-secondary">
             Read guides
           </Link>
-          <Link href="/" className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-center text-sm font-black text-slate-800 shadow-sm hover:bg-brand-50">
+          <Link href="/" className="btn-secondary">
             Go home
           </Link>
         </div>

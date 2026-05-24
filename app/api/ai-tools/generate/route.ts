@@ -156,7 +156,7 @@ Restructure messy notes according to the OUTPUT STYLE option.
 - Separate decisions, open questions, and action items`
   };
 
-  const basePrompt = exactPrompts[toolType] ?? `You are a concise writing assistant for FreeToolKit.
+  const basePrompt = exactPrompts[toolType] ?? `You are a concise writing assistant for freetoolkitapp.
 
 TOOL TYPE:
 ${toolType}

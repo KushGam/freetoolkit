@@ -5,7 +5,8 @@ import { Footer } from "@/components/Footer";
 import { ConsentLoader } from "@/components/ConsentLoader";
 import { AdSlot } from "@/components/AdSlot";
 import { DeferredAnalytics } from "@/components/DeferredAnalytics";
-import { siteUrl } from "@/lib/utils";
+import { buildGlobalSchemaGraph } from "@/lib/schema";
+import { siteUrl, siteName } from "@/lib/utils";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: "FreeToolKit — Free AI & Everyday Productivity Tools",
-    template: "%s | FreeToolKit"
+    default: "freetoolkitapp — Free AI & Everyday Productivity Tools",
+    template: `%s | ${siteName}`
   },
 
   description:
@@ -43,14 +44,14 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "FreeToolKit — Free AI & Everyday Productivity Tools",
+    title: "freetoolkitapp — Free AI & Everyday Productivity Tools",
 
     description:
       "Free browser-based AI and productivity tools for PDFs, images, resumes, calculators, students, and developers.",
 
     url: siteUrl,
 
-    siteName: "FreeToolKit",
+    siteName,
 
     type: "website",
 
@@ -59,7 +60,7 @@ export const metadata: Metadata = {
         url: `${siteUrl}/og-image.png?v=2`,
         width: 1200,
         height: 630,
-        alt: "FreeToolKit — Free AI & Everyday Productivity Tools",
+        alt: "freetoolkitapp — Free AI & Everyday Productivity Tools",
       },
     ],
   },
@@ -67,7 +68,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "FreeToolKit — Free AI & Everyday Productivity Tools",
+    title: "freetoolkitapp — Free AI & Everyday Productivity Tools",
 
     description:
       "Free browser-based tools for AI writing, PDFs, images, resumes, calculators, students, and developers.",
@@ -92,34 +93,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const globalSchema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": `${siteUrl}/#organization`,
-        name: "FreeToolKit",
-        url: siteUrl,
-        logo: `${siteUrl}/og-image.png?v=2`
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${siteUrl}/#website`,
-        name: "FreeToolKit",
-        url: siteUrl,
-        publisher: { "@id": `${siteUrl}/#organization` },
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${siteUrl}/all-tools?q={search_term_string}`,
-          "query-input": "required name=search_term_string"
-        }
-      }
-    ]
-  };
+  const globalSchema = buildGlobalSchemaGraph();
 
   return (
-    <html lang="en" className={inter.variable}>
-      <body>
+    <html lang="en" className={`${inter.variable} dark`}>
+      <body className="mesh-bg min-h-screen antialiased text-ink-primary">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
         <Header />
         {children}

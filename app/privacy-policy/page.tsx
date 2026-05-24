@@ -6,13 +6,13 @@ import { canonicalUrl } from "@/lib/utils";
 import { withoutBrandSuffix } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: withoutBrandSuffix("Privacy Policy | FreeToolKit"),
+  title: withoutBrandSuffix("Privacy Policy | freetoolkitapp"),
   description:
-    "FreeToolKit Privacy Policy: browser-first processing, AI features, analytics, advertising (including Google AdSense), cookies, data retention, children’s privacy, and how to contact us.",
+    "freetoolkitapp Privacy Policy: browser-first processing, AI features, analytics, advertising (including Google AdSense), cookies, data retention, children’s privacy, and how to contact us.",
   alternates: { canonical: canonicalUrl("/privacy-policy") },
   openGraph: {
-    title: "Privacy Policy | FreeToolKit",
-    description: "How FreeToolKit handles privacy for free browser tools, AI features, ads, and analytics.",
+    title: "Privacy Policy | freetoolkitapp",
+    description: "How freetoolkitapp handles privacy for free browser tools, AI features, ads, and analytics.",
     url: canonicalUrl("/privacy-policy"),
     type: "website"
   },
@@ -21,19 +21,19 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <Container className="max-w-4xl py-12 sm:py-16">
         <PageHeader
           eyebrow="Legal"
           title="Privacy Policy"
-          description="Last updated: May 14, 2026. This policy explains how FreeToolKit treats information when you use our free tools, read guides, or contact the team."
+          description="Last updated: May 14, 2026. This policy explains how freetoolkitapp treats information when you use our free tools, read guides, or contact the team."
           badges={["No account required", "Browser-first design", "Transparency"]}
         />
         <TrustCallout className="mt-6" />
         <Card className="prose-lite mt-6 p-6 sm:p-8">
           <h2>Who we are</h2>
           <p>
-            FreeToolKit (“FreeToolKit”, “we”, “us”) operates the website FreeToolKitApp.com as a collection of browser-based productivity utilities, educational articles, and optional AI-assisted features. The service is designed so that many tasks can be completed without creating an account.
+            freetoolkitapp (“freetoolkitapp”, “we”, “us”) operates freetoolkitappApp.com as a founder-led collection of browser-based productivity utilities, educational articles, and optional AI-assisted features. The site is built and maintained by Kushal Gautam. The service is designed so that many tasks can be completed without creating an account.
           </p>
 
           <h2>Information we collect</h2>
@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
 
           <h2>Advertising and Google AdSense</h2>
           <p>
-            FreeToolKit is supported in part by display advertising. Third-party ad vendors, including Google, may use cookies to serve ads based on your visits to this and other websites. Google’s use of advertising cookies enables it and its partners to serve ads based on your browsing. You can learn more about how Google uses data in Google’s Privacy &amp; Terms documentation.
+            freetoolkitapp is supported in part by display advertising. Third-party ad vendors, including Google, may use cookies to serve ads based on your visits to this and other websites. Google’s use of advertising cookies enables it and its partners to serve ads based on your browsing. You can learn more about how Google uses data in Google’s Privacy &amp; Terms documentation.
           </p>
           <p>
             Where required, we present consent options before loading non-essential advertising or analytics scripts.
@@ -75,12 +75,12 @@ export default function PrivacyPolicyPage() {
 
           <h2>Children’s privacy</h2>
           <p>
-            FreeToolKit is a general-purpose productivity site and is not directed at children under 13. We do not knowingly collect personal information from children. If you believe a child has provided personal data, contact us so we can delete it where appropriate.
+            freetoolkitapp is a general-purpose productivity site and is not directed at children under 13. We do not knowingly collect personal information from children. If you believe a child has provided personal data, contact us so we can delete it where appropriate.
           </p>
 
           <h2>International users</h2>
           <p>
-            Visitors may access the site from many countries. By using FreeToolKit, you understand that information may be processed in jurisdictions where privacy laws differ from your own.
+            Visitors may access the site from many countries. By using freetoolkitapp, you understand that information may be processed in jurisdictions where privacy laws differ from your own.
           </p>
 
           <h2>Your choices</h2>
@@ -95,10 +95,10 @@ export default function PrivacyPolicyPage() {
 
           <h2>Contact</h2>
           <p>
-            Privacy questions: <a className="font-bold text-brand-700" href="mailto:hello@freetoolkitapp.com">hello@freetoolkitapp.com</a>. You can also read our{" "}
-            <Link href="/terms" className="font-bold text-brand-700 hover:text-brand-900">Terms of Use</Link>,{" "}
-            <Link href="/disclaimer" className="font-bold text-brand-700 hover:text-brand-900">Disclaimer</Link>, and{" "}
-            <Link href="/contact" className="font-bold text-brand-700 hover:text-brand-900">Contact</Link> pages.
+            Privacy questions: <a className="font-bold text-indigo-400" href="mailto:hello@freetoolkitapp.com">hello@freetoolkitapp.com</a>. You can also read our{" "}
+            <Link href="/terms" className="font-bold text-indigo-400 hover:text-ink-primary">Terms of Use</Link>,{" "}
+            <Link href="/disclaimer" className="font-bold text-indigo-400 hover:text-ink-primary">Disclaimer</Link>, and{" "}
+            <Link href="/contact" className="font-bold text-indigo-400 hover:text-ink-primary">Contact</Link> pages.
           </p>
         </Card>
       </Container>

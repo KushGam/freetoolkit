@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 const ToolRunner = dynamic(() => import("@/components/ToolRunner"), {
   ssr: false,
   loading: () => (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 text-sm font-semibold text-slate-600">
+    <div className="rounded-2xl border border-white/[0.08] bg-surface-card px-4 py-5 text-sm font-semibold text-ink-muted">
       Loading interactive tool workspace...
     </div>
   )

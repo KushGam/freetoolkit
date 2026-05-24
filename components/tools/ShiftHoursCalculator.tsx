@@ -43,9 +43,9 @@ function emptyWeek(): DayRow[] {
 
 function ResultBox({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-      <p className="text-xs font-black uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 break-words text-2xl font-black text-slate-950">{value}</p>
+    <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4">
+      <p className="text-xs font-black uppercase tracking-wide text-ink-muted">{label}</p>
+      <p className="mt-1 break-words text-2xl font-black text-ink-primary">{value}</p>
     </div>
   );
 }
@@ -99,11 +99,11 @@ export function ShiftHoursCalculator() {
   return (
     <div className="grid gap-6">
       <section>
-        <h3 className="text-lg font-black tracking-tight text-slate-950">Single shift</h3>
+        <h3 className="text-lg font-black tracking-tight text-ink-primary">Single shift</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          <label className="text-sm font-bold text-slate-700">Start time <Input className="mt-2" type="time" value={singleStart} onChange={(event) => setSingleStart(event.target.value)} /></label>
-          <label className="text-sm font-bold text-slate-700">End time <Input className="mt-2" type="time" value={singleEnd} onChange={(event) => setSingleEnd(event.target.value)} /></label>
-          <label className="text-sm font-bold text-slate-700">
+          <label className="text-sm font-bold text-ink-secondary">Start time <Input className="mt-2" type="time" value={singleStart} onChange={(event) => setSingleStart(event.target.value)} /></label>
+          <label className="text-sm font-bold text-ink-secondary">End time <Input className="mt-2" type="time" value={singleEnd} onChange={(event) => setSingleEnd(event.target.value)} /></label>
+          <label className="text-sm font-bold text-ink-secondary">
             Break duration
             <Select className="mt-2" value={singleBreak} onChange={(event) => setSingleBreak(Number(event.target.value))}>
               {breakOptions.map((mins) => <option key={mins} value={mins}>{mins} minutes</option>)}
@@ -116,15 +116,15 @@ export function ShiftHoursCalculator() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-4">
-        <h3 className="text-lg font-black tracking-tight text-slate-950">Weekly timesheet</h3>
+      <section className="rounded-2xl border border-white/[0.08] bg-surface-card p-4">
+        <h3 className="text-lg font-black tracking-tight text-ink-primary">Weekly timesheet</h3>
         <div className="mt-4 grid gap-3">
           {rows.map((row, index) => {
             const rowHours = row.enabled ? calculateHours(row.start, row.end, row.breakMins) : 0;
             return (
-              <div key={row.day} className={`grid gap-3 rounded-2xl border p-3 transition md:grid-cols-[72px_1fr_1fr_1fr_96px] md:items-center ${row.enabled ? "border-slate-200 bg-slate-50" : "border-slate-100 bg-slate-50/60 opacity-60"}`}>
-                <label className="flex items-center gap-2 text-sm font-black text-slate-700">
-                  <input className="h-4 w-4 accent-brand-600" type="checkbox" checked={row.enabled} onChange={(event) => updateRow(index, { enabled: event.target.checked })} />
+              <div key={row.day} className={`grid gap-3 rounded-2xl border p-3 transition md:grid-cols-[72px_1fr_1fr_1fr_96px] md:items-center ${row.enabled ? "border-white/[0.08] bg-surface-card" : "border-white/[0.08] bg-surface-card/60 opacity-60"}`}>
+                <label className="flex items-center gap-2 text-sm font-black text-ink-secondary">
+                  <input className="h-4 w-4 accent-indigo-500" type="checkbox" checked={row.enabled} onChange={(event) => updateRow(index, { enabled: event.target.checked })} />
                   {row.day}
                 </label>
                 <Input type="time" value={row.start} disabled={!row.enabled} onChange={(event) => updateRow(index, { start: event.target.value })} />
@@ -132,7 +132,7 @@ export function ShiftHoursCalculator() {
                 <Select value={row.breakMins} disabled={!row.enabled} onChange={(event) => updateRow(index, { breakMins: Number(event.target.value) })}>
                   {breakOptions.map((mins) => <option key={mins} value={mins}>{mins} min break</option>)}
                 </Select>
-                <p className="rounded-xl bg-white px-3 py-2 text-sm font-black text-slate-800 shadow-sm">{formatHours(rowHours)}</p>
+                <p className="rounded-xl bg-surface-card px-3 py-2 text-sm font-black text-ink-primary shadow-sm">{formatHours(rowHours)}</p>
               </div>
             );
           })}
@@ -140,9 +140,9 @@ export function ShiftHoursCalculator() {
       </section>
 
       <section>
-        <h3 className="text-lg font-black tracking-tight text-slate-950">Pay estimator</h3>
+        <h3 className="text-lg font-black tracking-tight text-ink-primary">Pay estimator</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <label className="text-sm font-bold text-slate-700">Hourly rate ($ AUD) <Input className="mt-2" type="number" min={0} step={0.01} value={hourlyRate} onChange={(event) => setHourlyRate(event.target.value)} placeholder="30.00" /></label>
+          <label className="text-sm font-bold text-ink-secondary">Hourly rate ($ AUD) <Input className="mt-2" type="number" min={0} step={0.01} value={hourlyRate} onChange={(event) => setHourlyRate(event.target.value)} placeholder="30.00" /></label>
           <ResultBox label="Estimated gross pay (before tax)" value={grossPay ? `$${grossPay.toFixed(2)} AUD` : "$0.00 AUD"} />
         </div>
       </section>

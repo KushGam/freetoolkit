@@ -19,7 +19,7 @@ export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string })
 
   return (
     <div>
-      <div className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white/95 to-slate-50/90 p-3 shadow-[0_10px_25px_rgba(15,23,42,0.08)] backdrop-blur">
+      <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-b from-surface-card/95 to-surface-section/90 p-3 shadow-[0_10px_25px_rgba(15,23,42,0.08)] backdrop-blur">
         <label className="sr-only" htmlFor="all-tools-search">Search all tools</label>
         <Input
           id="all-tools-search"
@@ -30,19 +30,19 @@ export function AllToolsSearch({ initialQuery = "" }: { initialQuery?: string })
           placeholder="Search AI, everyday, PDF, image, gaming, student, or developer tools..."
         />
       </div>
-      <div className="mt-4 flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white/85 p-2 shadow-sm">
+      <div className="mt-4 flex flex-wrap gap-2 rounded-2xl border border-white/[0.08] bg-surface-card/85 p-2 shadow-sm">
         {(["All", ...topLevelCategories] as Array<TopLevelCategory | "All">).map((item) => (
           <button
             key={item}
             type="button"
             onClick={() => setCategory(item)}
-            className={`rounded-full border px-4 py-2 text-sm font-bold transition-all duration-200 ${category === item ? "border-brand-200 bg-brand-50 text-brand-700 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.14)]" : "border-slate-200 bg-white text-slate-600 hover:border-brand-200 hover:text-brand-700"}`}
+            className={`rounded-full border px-4 py-2 text-sm font-bold transition-all duration-200 ${category === item ? "border-indigo-400/30 bg-indigo-500/10 text-indigo-400 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.14)]" : "border-white/[0.08] bg-surface-card text-ink-muted hover:border-indigo-400/30 hover:text-indigo-400"}`}
           >
             {item}
           </button>
         ))}
       </div>
-      <p className="mt-3 text-sm font-semibold text-slate-500">{filtered.length} tool{filtered.length === 1 ? "" : "s"} found</p>
+      <p className="mt-3 text-sm font-semibold text-ink-muted">{filtered.length} tool{filtered.length === 1 ? "" : "s"} found</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />)}
       </div>

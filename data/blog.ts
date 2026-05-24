@@ -122,7 +122,7 @@ export const blogPosts: BlogPost[] = [
         heading: "Quick decision guide",
         paragraphs: [
           "Choose JPG for photos, PNG for transparency or crisp graphics, and WebP for modern website images. If file size is your main problem, compress or resize the image before converting formats.",
-          "FreeToolKit includes converters for common format changes, so you can test one image, compare the result, and choose the format that fits your upload, website, or document."
+          "freetoolkitapp includes converters for common format changes, so you can test one image, compare the result, and choose the format that fits your upload, website, or document."
         ]
       }
     ]
@@ -141,7 +141,7 @@ export const blogPosts: BlogPost[] = [
         heading: "Tools should save time, not create more work",
         paragraphs: [
           "Students often need quick answers: calculate a grade, clean up writing, summarize notes, or prepare a document before a deadline. A good online tool should make that task simpler without requiring a new account.",
-          "FreeToolKit focuses on small, practical workflows that run in the browser where possible. That makes it useful for quick checks between classes, study sessions, applications, and assignments."
+          "freetoolkitapp focuses on small, practical workflows that run in the browser where possible. That makes it useful for quick checks between classes, study sessions, applications, and assignments."
         ]
       },
       {
@@ -496,7 +496,7 @@ export function getBlogFaqs(post: BlogPost): BlogFaq[] {
   const primaryTool = getBlogRelatedTools(post)[0];
   return [
     {
-      question: `Which FreeToolKit tool should I use after reading this guide?`,
+      question: `Which freetoolkitapp tool should I use after reading this guide?`,
       answer: primaryTool
         ? `Start with ${primaryTool.title}. It is the closest tool for the workflow covered in "${post.title}".`
         : "Start with the related tools listed on this guide and choose the one that matches your file, text, or calculation task."

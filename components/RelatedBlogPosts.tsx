@@ -7,16 +7,16 @@ export function RelatedBlogPosts({ posts, title = "Related guides" }: { posts: B
 
   return (
     <section className="mt-12">
-      <Badge className="border-brand-100 bg-brand-50 text-[11px] font-black uppercase tracking-wide text-brand-700">Guides</Badge>
-      <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-slate-950">{title}</h2>
+      <Badge className="border-indigo-400/20 bg-indigo-500/10 text-[11px] font-black uppercase tracking-wide text-indigo-400">Guides</Badge>
+      <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink-primary">{title}</h2>
       <div className="mt-5 grid gap-4 md:grid-cols-3">
         {posts.map((post) => (
-          <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-brand-100">
-            <Card className="flex h-full flex-col p-5 group-hover:-translate-y-1 group-hover:border-brand-200">
-              <p className="text-xs font-black uppercase tracking-wide text-brand-600">{post.category}</p>
-              <h3 className="mt-3 text-lg font-bold tracking-tight text-slate-950 group-hover:text-brand-700">{post.title}</h3>
-              <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{post.description}</p>
-              <p className="mt-4 text-xs font-bold text-slate-500">{post.readingTime}</p>
+          <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-indigo-400/30">
+            <Card className="flex h-full flex-col p-5  group-hover:border-indigo-400/30">
+              <p className="text-xs font-black uppercase tracking-wide text-indigo-400">{post.category}</p>
+              <h3 className="mt-3 text-lg font-bold tracking-tight text-ink-primary group-hover:text-indigo-400">{post.title}</h3>
+              <p className="mt-2 flex-1 text-sm leading-6 text-ink-muted">{post.description}</p>
+              <p className="mt-4 text-xs font-bold text-ink-muted">{post.readingTime}</p>
             </Card>
           </Link>
         ))}

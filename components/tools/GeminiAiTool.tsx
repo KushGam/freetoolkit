@@ -481,31 +481,31 @@ export function GeminiAiTool({ slug }: { slug: string }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.85fr)]">
       <div className="space-y-5">
-        <div className="rounded-2xl border border-brand-100 bg-brand-50/70 p-4 text-sm leading-6 text-brand-800">
+        <div className="rounded-2xl border border-indigo-400/20 bg-indigo-500/10/70 p-4 text-sm leading-6 text-brand-800">
           <p className="font-black">AI workspace</p>
           <p className="mt-1 font-semibold">Paste useful context, choose a mode, and review the output before using it. Your settings stay simple and the generation runs securely.</p>
         </div>
 
         {config.bio ? (
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="grid gap-2 text-sm font-bold text-slate-700">
+            <label className="grid gap-2 text-sm font-bold text-ink-secondary">
               Name
               <Input value={name} onChange={(event) => setName(event.target.value)} placeholder="Your name" />
             </label>
-            <label className="grid gap-2 text-sm font-bold text-slate-700">
+            <label className="grid gap-2 text-sm font-bold text-ink-secondary">
               Role
               <Input value={role} onChange={(event) => setRole(event.target.value)} placeholder="Student, designer, developer..." />
             </label>
           </div>
         ) : null}
 
-        <label className="grid gap-2 text-sm font-bold text-slate-700">
+        <label className="grid gap-2 text-sm font-bold text-ink-secondary">
           {config.bio ? "Skills and interests" : "Input text"}
           <Textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder={config.placeholder} className="min-h-72" />
         </label>
 
         {config.options?.length ? (
-          <label className="grid gap-2 text-sm font-bold text-slate-700">
+          <label className="grid gap-2 text-sm font-bold text-ink-secondary">
             {config.optionLabel ?? "Options"}
             <Select value={option} onChange={(event) => setOption(event.target.value)}>
               {config.options.map((item) => <option key={item}>{item}</option>)}
@@ -514,15 +514,15 @@ export function GeminiAiTool({ slug }: { slug: string }) {
         ) : null}
 
         {config.examplePrompts?.length ? (
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-xs font-black uppercase tracking-wide text-slate-500">Example prompts</p>
+          <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4 shadow-sm">
+            <p className="text-xs font-black uppercase tracking-wide text-ink-muted">Example prompts</p>
             <div className="mt-3 grid gap-2">
               {config.examplePrompts.map((prompt) => (
                 <button
                   key={prompt}
                   type="button"
                   onClick={() => setInput(prompt)}
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm font-semibold leading-6 text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
+                  className="rounded-xl border border-white/[0.08] bg-surface-card px-3 py-2 text-left text-sm font-semibold leading-6 text-ink-secondary transition hover:border-indigo-400/30 hover:bg-surface-card/5 hover:text-indigo-400"
                 >
                   {prompt}
                 </button>
@@ -540,22 +540,22 @@ export function GeminiAiTool({ slug }: { slug: string }) {
           </SecondaryButton>
         </div>
 
-        <p className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-600">
+        <p className="rounded-2xl border border-white/[0.08] bg-surface-card px-4 py-3 text-sm font-semibold text-ink-muted">
           {remaining} free AI generation{remaining === 1 ? "" : "s"} left today for this tool in this browser ({CLIENT_LIMIT} per tool, resets nightly).
         </p>
         {!hasEnoughInput ? (
-          <p className="text-sm font-semibold leading-6 text-slate-500">
+          <p className="text-sm font-semibold leading-6 text-ink-muted">
             Please enter more text
           </p>
         ) : null}
-        {error ? <p className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold leading-6 text-red-700">{error}</p> : null}
+        {error ? <p className="alert-error">{error}</p> : null}
       </div>
 
-      <Card className="min-h-80 bg-gradient-to-b from-white to-slate-50/80">
+      <Card className="min-h-80 bg-gradient-to-b from-surface-card to-surface-section/80">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-sm font-black uppercase tracking-wide text-brand-600">Output</p>
-            <h3 className="mt-1 text-xl font-bold tracking-tight text-slate-950">{config.title}</h3>
+            <p className="text-sm font-black uppercase tracking-wide text-indigo-400">Output</p>
+            <h3 className="mt-1 text-xl font-bold tracking-tight text-ink-primary">{config.title}</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             <SecondaryButton type="button" onClick={copyOutput} disabled={!output} className="min-h-10 px-4 py-2">
@@ -576,15 +576,15 @@ export function GeminiAiTool({ slug }: { slug: string }) {
             Regenerate
           </SecondaryButton>
         ) : null}
-        <div className="relative mt-5 min-h-72 whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
+        <div className="relative mt-5 min-h-72 whitespace-pre-wrap break-words rounded-2xl border border-white/[0.08] bg-surface-card p-4 text-sm leading-relaxed text-ink-secondary">
           {loading ? (
             <div className="space-y-3 animate-pulse" aria-hidden="true">
-              <div className="h-3 max-w-[66%] rounded-full bg-slate-200" />
-              <div className="h-3 w-full rounded-full bg-slate-100" />
-              <div className="h-3 max-w-[83%] rounded-full bg-slate-100" />
-              <div className="h-3 w-full rounded-full bg-slate-100" />
-              <div className="h-3 w-1/2 rounded-full bg-slate-200" />
-              <p className="pt-4 text-xs font-bold uppercase tracking-wide text-slate-400">Generating structured output…</p>
+              <div className="h-3 max-w-[66%] rounded-full bg-surface-card/10" />
+              <div className="h-3 w-full rounded-full bg-surface-section" />
+              <div className="h-3 max-w-[83%] rounded-full bg-surface-section" />
+              <div className="h-3 w-full rounded-full bg-surface-section" />
+              <div className="h-3 w-1/2 rounded-full bg-surface-card/10" />
+              <p className="pt-4 text-xs font-bold uppercase tracking-wide text-ink-muted">Generating structured output…</p>
             </div>
           ) : null}
           {!loading ? (

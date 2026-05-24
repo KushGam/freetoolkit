@@ -36,7 +36,7 @@ function defaultMistakes(tool: Tool): string[] {
 function defaultSeoAppend(tool: Tool): string[] {
   const t = tool.title;
   return [
-    `${t} is included in FreeToolKit’s curated, search-visible set: the goal is a readable guide plus a working control, not a bare widget. Use the how-to steps, mistakes section, FAQs, and related links to build confidence before you export or submit.`,
+    `${t} is included in freetoolkitapp’s curated, search-visible set: the goal is a readable guide plus a working control, not a bare widget. Use the how-to steps, mistakes section, FAQs, and related links to build confidence before you export or submit.`,
     `Browser utilities trade depth for speed—when a job exceeds stated limits, plan a desktop or vendor workflow early so deadlines stay realistic.`
   ];
 }
@@ -49,8 +49,10 @@ export function applyIndexedSupplement(tool: Tool): Tool {
   const tips = tool.tips?.length ? tool.tips : defaultTips(tool);
   const commonMistakes = tool.commonMistakes?.length ? tool.commonMistakes : defaultMistakes(tool);
   /** Rich packs with deep editorial (10+ paragraphs) skip generic SEO append. */
-  const seo =
-    tool.seo.length >= 10 ? tool.seo : [...tool.seo, ...defaultSeoAppend(tool)];
+  let seo = [...tool.seo];
+  while (seo.length < 10) {
+    seo = [...seo, ...defaultSeoAppend(tool)];
+  }
 
   return {
     ...tool,

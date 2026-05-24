@@ -7,14 +7,14 @@ import { siteUrl } from "@/lib/utils";
 const tool = getTool("add-text-to-pdf");
 
 export const metadata: Metadata = {
-  title: withoutBrandSuffix("Add Text and Sign PDF Online Free | FreeToolKit"),
+  title: withoutBrandSuffix("Add Text and Sign PDF Online Free | freetoolkitapp"),
   description: "Add text, notes, dates, and signatures to PDF files online for free. No signup required. Works directly in your browser.",
   alternates: { canonical: `${siteUrl}/add-text-to-pdf` },
   openGraph: {
-    title: withoutBrandSuffix("Add Text and Sign PDF Online Free | FreeToolKit"),
+    title: withoutBrandSuffix("Add Text and Sign PDF Online Free | freetoolkitapp"),
     description: "Add text, notes, dates, and signatures to PDF files online for free. No signup required. Works directly in your browser.",
     url: `${siteUrl}/add-text-to-pdf`,
-    siteName: "FreeToolKit",
+    siteName: "freetoolkitapp",
     type: "website"
   }
 };

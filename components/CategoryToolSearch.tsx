@@ -15,7 +15,7 @@ export function CategoryToolSearch({ tools }: { tools: Tool[] }) {
   return (
     <div className="mt-8">
       <label className="sr-only" htmlFor="category-tool-search">Search this category</label>
-      <div className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white/95 to-slate-50/90 p-3 shadow-[0_10px_25px_rgba(15,23,42,0.08)] backdrop-blur">
+      <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-b from-surface-card/95 to-surface-section/90 p-3 shadow-[0_10px_25px_rgba(15,23,42,0.08)] backdrop-blur">
         <Input
           id="category-tool-search"
           className="min-h-14 rounded-2xl text-base"
@@ -25,7 +25,7 @@ export function CategoryToolSearch({ tools }: { tools: Tool[] }) {
           type="search"
         />
       </div>
-      <p className="mt-3 text-sm font-semibold text-slate-500">{filtered.length} tool{filtered.length === 1 ? "" : "s"} in this category</p>
+      <p className="mt-3 text-sm font-semibold text-ink-muted">{filtered.length} tool{filtered.length === 1 ? "" : "s"} in this category</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />)}
       </div>

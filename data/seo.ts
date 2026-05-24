@@ -27,7 +27,7 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
       "When you need a text layer for search or copying, plan an OCR step; when you need legally defensible redaction, use tools built for redaction—not only opaque boxes in a general-purpose editor."
     ],
     faqs: [
-      { question: "Are these PDF tools free?", answer: "Yes. FreeToolKit PDF tools are free to use and do not require signup." },
+      { question: "Are these PDF tools free?", answer: "Yes. freetoolkitapp PDF tools are free to use and do not require signup." },
       { question: "Do PDF files upload to a server?", answer: "PDF tools are designed to process in your browser where possible. Some limitations depend on browser support, file size, and PDF restrictions." },
       { question: "Which PDF tool should I start with?", answer: "Use Merge PDF to combine files, Split PDF or Extract Pages to keep selected pages, and Compress PDF when the final file is too large." }
     ]
@@ -62,7 +62,7 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
     ],
     faqs: [
       { question: "Are GPA results official?", answer: "No. GPA and grade calculators provide estimates. Your institution's grading policy and records are the official source." },
-      { question: "Can I use these tools on mobile?", answer: "Yes. FreeToolKit pages are designed for phones, tablets, and desktops." },
+      { question: "Can I use these tools on mobile?", answer: "Yes. freetoolkitapp pages are designed for phones, tablets, and desktops." },
       { question: "Do student tools require login?", answer: "No. Student tools work without signup." }
     ]
   },
@@ -73,7 +73,7 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
     intro: "Free AI tools for writing support, summarizing, resumes, study notes, interview practice, and clear explanations—always with human review.",
     body: [
       "AI tools are best used as assistants for drafting, brainstorming, rewriting, and organizing. Review every generated result before using it in a final message, assignment, resume, or public post.",
-      "FreeToolKit AI pages use a protected generation flow while preserving a simple, mobile-friendly interface.",
+      "freetoolkitapp AI pages use a protected generation flow while preserving a simple, mobile-friendly interface.",
       "Outputs can be wrong, outdated, or poorly matched to your tone. Treat suggestions as editable drafts, keep personal data out of prompts when possible, and follow your school or employer policies on acceptable assistance.",
       "Pair AI drafts with the Word Counter, Grammar Fixer, and Resume ATS Checker when you are preparing something with strict length or formatting rules—automation is faster, but you remain responsible for the final text."
     ],
@@ -178,7 +178,7 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
       "Use these tools as publishing helpers. Review tone, accuracy, and platform rules before posting, especially for brand accounts or client work.",
       "Character limits change; when a network updates limits, re-check counts on a draft before scheduling—do not trust a months-old screenshot of “280 characters” lore alone.",
       "Pair social copy helpers with Word Counter and Case Converter when the same message must exist in long-form blog and short-form post variants with consistent terminology.",
-      "FreeToolKit’s fully documented, search-ready tools live in the Everyday and AI hubs today—this category page remains a navigation bridge while additional social utilities receive the same depth treatment as our PDF and student tools.",
+      "freetoolkitapp’s fully documented, search-ready tools live in the Everyday and AI hubs today—this category page remains a navigation bridge while additional social utilities receive the same depth treatment as our PDF and student tools.",
       "If you need SERP or Open Graph previews for link posts, open the SEO Tools hub for Meta Tag Generator, Open Graph Generator, and SERP Preview—those generators help you sanity-check how titles render before you publish."
     ],
     faqs: [
@@ -198,7 +198,7 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
       "Game balance patches can change underlying data; treat outputs as community-model estimates unless the publisher provides an official API you are calling.",
       "Use Percentage Calculator or Unit Converter from the Everyday hub when you are theorycrafting resource or odds math that spills outside a single game’s built-in UI.",
       "Read the Palworld breeding guide on our blog for workflow tips, then open the Palworld Breeding Calculator to verify parent pairs and expected offspring before you commit rare resources in-game.",
-      "FreeToolKit is not affiliated with game publishers; names and trademarks belong to their owners. We provide independent calculators for personal planning only."
+      "freetoolkitapp is not affiliated with game publishers; names and trademarks belong to their owners. We provide independent calculators for personal planning only."
     ],
     faqs: [
       { question: "Do these gaming tools need login?", answer: "No. Gaming tools work in your browser with no signup required." },
@@ -209,26 +209,9 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
 };
 
 export const topLevelCategorySeo: Record<TopLevelCategory, Pick<CategorySeo, "body" | "faqs">> = {
-  Everyday: {
-    body: [
-      "Everyday tools collect small productivity jobs that come up during work, school, and personal tasks: count words, clean text, generate QR codes, calculate percentages, create passwords, or convert units.",
-      "The category is built for repeat use. Search within the page, open the right utility, and keep moving without a login wall or complex dashboard.",
-      "Most entries here are deterministic calculators and formatters—they run fully in your browser and give immediate results from the numbers and text you supply.",
-      "When you graduate from a quick answer to a heavier workflow (for example building a full PDF packet), use the PDF & Image or Student hubs next so you are not trying to force one textarea to do everything."
-    ],
-    faqs: [
-      { question: "What are everyday tools?", answer: "They are quick browser utilities for common tasks such as calculators, text cleanup, QR codes, and passwords." },
-      { question: "Do everyday tools work on mobile?", answer: "Yes. The layouts and controls are built for mobile and desktop use." },
-      { question: "Do I need an account?", answer: "No. These tools are free to use without signup." }
-    ]
-  },
   "AI Tools": {
     body: categorySeo["AI Tools"].body,
     faqs: categorySeo["AI Tools"].faqs
-  },
-  Student: {
-    body: categorySeo["Student Tools"].body,
-    faqs: categorySeo["Student Tools"].faqs
   },
   Developer: {
     body: categorySeo["Developer Tools"].body,
@@ -236,10 +219,10 @@ export const topLevelCategorySeo: Record<TopLevelCategory, Pick<CategorySeo, "bo
   },
   "PDF & Image": {
     body: [
-      "PDF and image tasks often happen together: prepare a scan, compress a photo, convert a document, or create a smaller upload-ready file. This category keeps those workflows close.",
-      "Use related tools to move step by step: resize an image before converting, extract PDF pages before merging, or compress the final file before upload.",
-      "Browser-first design matters when you are on a loaner laptop or a school Chromebook—many utilities avoid unnecessary uploads, but always read the banner on each tool when encryption or huge files change what is possible.",
-      "If you are unsure whether a problem is pixels or pages, start with PDF Reader Online for a quick triage pass, then branch to Split PDF, Compress PDF, or Image Compressor based on what you see."
+      "PDF and image tasks often happen together: prepare a scan, compress a photo, convert a document, or create a smaller upload-ready file. This hub keeps high-traffic workflows in one place.",
+      "Use related tools step by step: resize an image before converting, extract PDF pages before merging, or compress the final file before upload.",
+      "Browser-first design matters on loaner laptops and Chromebooks—many utilities avoid unnecessary uploads when your browser supports local processing.",
+      "Start with Merge PDF or Compress PDF for documents, and Image Compressor or Image Resizer for media. Each tool page includes long-form guidance, FAQs, and related links."
     ],
     faqs: [...categorySeo["PDF Tools"].faqs.slice(0, 2), ...categorySeo["Image Tools"].faqs.slice(0, 2)]
   },
@@ -247,18 +230,8 @@ export const topLevelCategorySeo: Record<TopLevelCategory, Pick<CategorySeo, "bo
     body: categorySeo["SEO Tools"].body,
     faqs: categorySeo["SEO Tools"].faqs
   },
-  "Social Media Tools": {
-    body: [
-      ...categorySeo["Social Media Tools"].body,
-      "For character limits and caption cleanup today, start on the Everyday hub with Word Counter, Remove Extra Spaces, and Case Converter—those pages are fully indexed with long-form guidance.",
-      "When you publish links to landing pages, pair social drafts with Meta Tag Generator and SERP Preview from the SEO Tools section so titles and descriptions match what you intend to share."
-    ],
-    faqs: [
-      ...categorySeo["Social Media Tools"].faqs,
-      {
-        question: "Which social tools are fully expanded on FreeToolKit?",
-        answer: "Caption and hashtag specialists are still growing. For reliable, in-depth pages today, use Word Counter, Text Formatter, and AI writing tools linked from the Everyday and AI Tools hubs."
-      }
-    ]
+  Calculators: {
+    body: categorySeo["Calculator Tools"].body,
+    faqs: categorySeo["Calculator Tools"].faqs
   }
 };

@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FounderCard } from "@/components/FounderCard";
 import { TrustCallout } from "@/components/TrustCallout";
 import { Card, Container, PageHeader } from "@/components/ui";
-import { buildBreadcrumbSchema } from "@/lib/schema";
+import { brandMission, curatedToolCount, founder, siteContactEmail, siteUpdates } from "@/data/site-trust";
+import { buildBreadcrumbSchema, buildPersonSchema, buildWebPageSchema } from "@/lib/schema";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "About FreeToolKit",
+  title: "About freetoolkitapp",
   description:
-    "FreeToolKit publishes free browser-based productivity tools, student calculators, PDF utilities, image workflows, and editorial guides. Learn our mission, quality bar, and how we approach AI-assisted features.",
+    "freetoolkitapp is a founder-led productivity site by Kushal Gautam — curated browser tools for PDFs, images, AI drafting, SEO, developers, and calculators. Learn our mission, privacy stance, and editorial standards.",
   alternates: { canonical: canonicalUrl("/about") },
   openGraph: {
-    title: "About FreeToolKit",
-    description: "Mission, editorial standards, and approach for FreeToolKit's free browser tools and guides.",
+    title: "About freetoolkitapp — Founder-led productivity toolkit",
+    description: "Mission, editorial standards, and privacy-first approach for freetoolkitapp's curated browser tools and guides.",
     url: canonicalUrl("/about"),
     type: "website"
   }
@@ -23,52 +25,110 @@ export default function AboutPage() {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" }
   ]);
+  const pageSchema = buildWebPageSchema({
+    name: "About freetoolkitapp",
+    description: brandMission,
+    href: "/about"
+  });
 
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonSchema()) }} />
       <Container className="max-w-4xl py-12 sm:py-16">
         <PageHeader
           eyebrow="About"
-          title="About FreeToolKit"
-          description="FreeToolKit is an independent productivity site that ships calm, fast utilities for documents, media, writing, math, and developer workflows—without forcing visitors through signup walls."
-          badges={["Editorial guides", "Browser-first", "Transparent AI use"]}
+          title="About freetoolkitapp"
+          description="freetoolkitapp is an independent productivity site built by Kushal Gautam — free browser tools and practical guides for PDFs, images, writing, SEO, and everyday work. No signup walls. No tool spam."
+          badges={["Founder-led", "Browser-first", `${curatedToolCount} curated tools`, "Editorial guides"]}
         />
+
+        <FounderCard />
         <TrustCallout className="mt-6" />
+
         <Card className="prose-lite mt-6 p-6 sm:p-8">
           <h2>Mission</h2>
+          <p>{brandMission}</p>
           <p>
-            Utility sites often optimize for ad clicks instead of outcomes. We optimize for task completion: clear headings, predictable controls, honest limitations, and long-form context when a topic deserves more than a textarea. Whether you are compressing a photo before a deadline or generating study notes, the interface should respect your time and attention.
+            Most utility sites optimize for ad clicks instead of outcomes. We optimize for task completion: clear headings, predictable controls, honest limitations, and long-form context when a topic deserves more than a textarea.
           </p>
+
+          <h2>Our principles</h2>
+          <ul>
+            <li>
+              <strong>Curated over cluttered</strong> — about {curatedToolCount} tools with real instructions, not hundreds of thin pages.
+            </li>
+            <li>
+              <strong>Privacy-conscious</strong> — many PDF and image tools run locally in your browser; AI tools are labeled clearly.
+            </li>
+            <li>
+              <strong>Human review</strong> — AI outputs are drafts. We do not promise grades, job offers, rankings, or legal results.
+            </li>
+            <li>
+              <strong>No signup</strong> — open a tool, finish the job, leave. No account wall.
+            </li>
+          </ul>
 
           <h2>What we publish</h2>
           <p>
-            The directory spans{" "}
-            <Link href="/pdf-image" className="font-bold text-brand-700 hover:text-brand-900">PDF &amp; image tools</Link>,{" "}
-            <Link href="/ai-tools" className="font-bold text-brand-700 hover:text-brand-900">AI drafting assistants</Link>,{" "}
-            <Link href="/student" className="font-bold text-brand-700 hover:text-brand-900">student calculators</Link>,{" "}
-            <Link href="/developer" className="font-bold text-brand-700 hover:text-brand-900">developer utilities</Link>,{" "}
-            <Link href="/seo-tools" className="font-bold text-brand-700 hover:text-brand-900">SEO helpers</Link>, and more. Each tool page explains how to use the feature, when it works best, and what to double-check before you submit results to school or work.
+            The catalog spans{" "}
+            <Link href="/pdf-image" className="font-bold text-indigo-400 hover:text-ink-primary">PDF &amp; image tools</Link>,{" "}
+            <Link href="/ai-tools" className="font-bold text-indigo-400 hover:text-ink-primary">AI drafting assistants</Link>,{" "}
+            <Link href="/calculators" className="font-bold text-indigo-400 hover:text-ink-primary">calculators</Link>,{" "}
+            <Link href="/developer" className="font-bold text-indigo-400 hover:text-ink-primary">developer utilities</Link>,{" "}
+            <Link href="/seo-tools" className="font-bold text-indigo-400 hover:text-ink-primary">SEO helpers</Link>, and more. Each tool page explains how to use the feature, when it works best, and what to double-check before you submit results to school or work.
           </p>
           <p>
-            The <Link href="/blog" className="font-bold text-brand-700 hover:text-brand-900">blog</Link> hosts evergreen guides on PDF hygiene, image formats, GPA planning, privacy habits, and productivity workflows. Guides intentionally link back into tools so reading becomes doing.
+            The <Link href="/blog" className="font-bold text-indigo-400 hover:text-ink-primary">blog</Link> hosts evergreen guides on PDF hygiene, image formats, privacy habits, and productivity workflows. Guides link back into tools so reading becomes doing.
           </p>
 
-          <h2>AI principles</h2>
+          <h2>Editorial standards</h2>
           <p>
-            AI-assisted pages disclose that outputs require human review. We do not promise perfect grades, guaranteed job offers, or legal compliance from generated text. Where models can hallucinate, we warn first. Academic integrity matters: follow your institution&apos;s policies and use assistants to learn—not to shortcut ethical rules.
+            Guides and tool pages are written to be useful first — tested in real browsers, linked to related workflows, and updated when behavior changes. We avoid vague AI hype, fake outcome guarantees, and copy-paste filler. When a tool has limits (password-locked PDFs, scanned documents, model hallucinations), we say so upfront.
           </p>
 
-          <h2>Contact &amp; improvements</h2>
+          <h2>AI philosophy</h2>
+          <p>
+            AI-assisted pages disclose that outputs require human review. We do not promise perfect grades, guaranteed job offers, or legal compliance from generated text. Where models can hallucinate, we warn first. Academic integrity matters: follow your institution&apos;s policies and use assistants to learn — not to shortcut ethical rules.
+          </p>
+
+          <h2>What we won&apos;t do</h2>
+          <ul>
+            <li>Promise specific SEO rankings, grades, or job outcomes from tool output.</li>
+            <li>Hide server uploads or AI processing behind vague &quot;free tool&quot; marketing.</li>
+            <li>Publish hundreds of duplicate thin pages to inflate catalog size.</li>
+          </ul>
+
+          <h2>Recent improvements</h2>
+          <ul>
+            {siteUpdates.map((item) => (
+              <li key={item.text}>
+                <strong>{item.date}:</strong> {item.text}
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-ink-muted">Last updated: May 24, 2026</p>
+
+          <h2>Contact</h2>
           <p>
             Feedback keeps the platform accurate. If a tool behaves unexpectedly on your browser, or you want a responsible new utility, reach out via the{" "}
-            <Link href="/contact" className="font-bold text-brand-700 hover:text-brand-900">contact page</Link>. We read messages even if we cannot reply instantly.
+            <Link href="/contact" className="font-bold text-indigo-400 hover:text-ink-primary">contact page</Link> or email{" "}
+            <a className="font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a>. {founder.name} reads messages even if replies are not instant.
           </p>
 
           <h2>Operator</h2>
           <p>
-            FreeToolKit is built and maintained by Kushal Gautam. Product updates ship continuously; you can verify the live domain at{" "}
-            <a className="font-bold text-brand-700" href={siteUrl}>{siteUrl.replace("https://", "")}</a>.
+            freetoolkitapp is maintained by{" "}
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href={founder.linkedinUrl} target="_blank" rel="noopener noreferrer">
+              {founder.name}
+            </a>
+            . You can verify the live domain at{" "}
+            <a className="font-bold text-indigo-400" href={siteUrl}>{siteUrl.replace("https://", "")}</a> or view the founder profile on{" "}
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href={founder.linkedinUrl} target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+            .
           </p>
         </Card>
       </Container>

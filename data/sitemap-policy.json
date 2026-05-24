@@ -10,10 +10,10 @@
     "/blog",
     "/all-tools",
     "/ai-tools",
-    "/everyday",
     "/pdf-image",
     "/developer",
-    "/student"
+    "/calculators",
+    "/seo-tools"
   ],
-  "blogNoindex": ["valorant-sensitivity-guide"]
+  "blogNoindex": ["valorant-sensitivity-guide", "palworld-breeding-guide"]
 }

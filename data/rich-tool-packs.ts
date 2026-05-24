@@ -23,7 +23,7 @@ export function applyRichToolPack(tool: Tool): Tool {
 export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   "merge-pdf": {
     intro:
-      "Merge PDF combines separate PDF files into one linear document you can upload, email, or archive as a single artifact. FreeToolKit is built for the real constraint that many portals, HR systems, and school LMS tools only allow one attachment—even when your story naturally lives across a cover letter, resume, transcript, and ID scan. This page explains merge order, file hygiene, and what to verify after download so the packet you submit matches what reviewers expect.",
+      "Merge PDF combines separate PDF files into one linear document you can upload, email, or archive as a single artifact. freetoolkitapp is built for the real constraint that many portals, HR systems, and school LMS tools only allow one attachment—even when your story naturally lives across a cover letter, resume, transcript, and ID scan. This page explains merge order, file hygiene, and what to verify after download so the packet you submit matches what reviewers expect.",
     howToUse: [
       "Inventory every PDF you need and decide the final reading order (cover first, then resume, then portfolio, for example). Rename files with numeric prefixes so the list sorts predictably before you upload.",
       "Open each source PDF once in a desktop reader and note oddities: blank pages, upside-down scans, password prompts, or mixed landscape/portrait. Fix rotation with Rotate PDF or trim junk pages with Split PDF before merging—merge preserves what you give it.",
@@ -87,7 +87,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is merged PDF OK for long-term archives?", answer: "For legal archives, institutions often want PDF/A with embedded fonts and explicit color profiles. Consumer merge may not enforce PDF/A—ask records management before assuming compliance." }
     ],
     seo: [
-      "Merge PDF is the glue step between “I have the right pieces” and “the portal will accept my packet.” Most rejection stories are not dramatic software failures—they are wrong order, missing exhibits, landscape pages buried mid-file, or a final megabyte count two bytes over the limit. FreeToolKit treats merge as a discipline problem first: name files, preview sources, merge, download, scroll once, then submit.",
+      "Merge PDF is the glue step between “I have the right pieces” and “the portal will accept my packet.” Most rejection stories are not dramatic software failures—they are wrong order, missing exhibits, landscape pages buried mid-file, or a final megabyte count two bytes over the limit. freetoolkitapp treats merge as a discipline problem first: name files, preview sources, merge, download, scroll once, then submit.",
       "Consider a concrete job-search example. You have resume.pdf (2 pages), cover.pdf (1 page), portfolio.pdf (12 pages), and references.pdf (1 page). The ATS says “single PDF, max 5 MB.” If you merge blindly and hit 6.4 MB, you learn that portfolio scans were 300 DPI color photos. The fix is not “merge harder”—it is compress portfolio.pdf, maybe downsample photos inside InDesign or Photoshop, then merge again. Merge clarifies packaging problems early.",
       "Universities often ask for transcripts, financial affidavits, and passport copies in one slot for exchange programs. Officers scroll fast; if page 1 is a sideways passport, some reviewers never rotate and may mis-read dates. Rotate PDF on that scan first, then merge so the first screen a human sees is clean, portrait, and high-contrast.",
       "Legal teams merging exhibits should still think about privilege and redaction. Merge combines visibility: if page 47 of an appendix accidentally includes a privileged footnote from another matter because filenames were confusing, merge made the problem visible sooner—which is good if you catch it, catastrophic if you do not. Always diff filenames against matter numbers.",
@@ -98,12 +98,12 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       "Nonprofits merging grant attachments should cross-check each funder’s page-limit rules. Some count pages after merge, others count files before merge. If a funder wants separate uploads for budget vs narrative, merging everything can actually disqualify you—read instructions literally.",
       "Photographers merging client proof PDFs should watermark before merge when contracts require it, not after, if watermark tools expect per-image workflows. Alternatively merge first, then watermark the combined file in a tool that supports multi-page stamping.",
       "Students merging scholarship applications should keep a merge recipe text file listing sources and versions. When a recommender sends v2 of a letter, you swap one PDF and re-merge without guessing which upload slot was which.",
-      "Finally, merge is one link in a chain: Extract PDF Pages removes noise, Rotate PDF fixes ergonomics, Compress PDF meets byte caps, Add Text to PDF covers simple annotations, and PDF to Word is for when you must edit prose—not merge’s job. FreeToolKit documents the chain so you pick the right link at the right time."
+      "Finally, merge is one link in a chain: Extract PDF Pages removes noise, Rotate PDF fixes ergonomics, Compress PDF meets byte caps, Add Text to PDF covers simple annotations, and PDF to Word is for when you must edit prose—not merge’s job. freetoolkitapp documents the chain so you pick the right link at the right time."
     ]
   },
   "compress-pdf": {
     intro:
-      "Compress PDF reduces the byte size of a PDF so it can travel through email, LMS uploads, municipal portals, and client inboxes that still enforce hard megabyte ceilings. FreeToolKit focuses on honest expectations: some PDFs shrink dramatically because they contain redundant structure or oversized embedded images, while others barely move because every page is already a dense scan. This guide walks through when compression helps, when splitting or re-scanning is smarter, and how to verify quality after optimization.",
+      "Compress PDF reduces the byte size of a PDF so it can travel through email, LMS uploads, municipal portals, and client inboxes that still enforce hard megabyte ceilings. freetoolkitapp focuses on honest expectations: some PDFs shrink dramatically because they contain redundant structure or oversized embedded images, while others barely move because every page is already a dense scan. This guide walks through when compression helps, when splitting or re-scanning is smarter, and how to verify quality after optimization.",
     howToUse: [
       "Download a duplicate of your original PDF into a dated folder before you start—compression rewrites bytes and may invalidate digital signatures depending on policy.",
       "Upload the working copy and note the starting file size and page count shown on the tool page so you can compare after optimization.",
@@ -162,7 +162,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is ZIP the same as PDF compression?", answer: "No. ZIP wraps files losslessly. PDF compression rewrites internal streams and may apply lossy transforms to images depending on settings and engine behavior." },
       { question: "What should I do after compressing?", answer: "Open the optimized PDF once, search a random keyword, flip through any page with fine graphics, and confirm page count matches expectations before deleting intermediates." },
       { question: "Can compression harm accessibility tags?", answer: "Mostly tags survive, but complex tagging with nested structures can occasionally need repair in Acrobat or axesPDF after heavy optimization. Test with a screen reader if WCAG compliance is mandatory." },
-      { question: "Does this replace Ghostscript or Acrobat Preflight?", answer: "No. Those tools expose finer controls for prepress and compliance. FreeToolKit targets fast, good-enough optimization for general business and school PDFs." },
+      { question: "Does this replace Ghostscript or Acrobat Preflight?", answer: "No. Those tools expose finer controls for prepress and compliance. freetoolkitapp targets fast, good-enough optimization for general business and school PDFs." },
       { question: "Why did colors shift slightly?", answer: "Some pipelines convert wide-gamut images to sRGB during optimization. Proof on a calibrated display if color fidelity is contractual." },
       { question: "Can I automate batch compression here?", answer: "This page optimizes one PDF per flow for clarity. Batch automation belongs in desktop scripts or enterprise DAM pipelines." }
     ],
@@ -173,12 +173,12 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       "Legal users: know your e-filing rules. Some courts accept optimized PDFs; others treat optimization as altering evidence if hashes change. When doubt exists, upload pristine scans per exhibit and let clerk staff guide you.",
       "Marketing users: exported PDFs from slide decks often bloat because slides are PNG screenshots of charts. Rebuild charts as native vector objects in PowerPoint or Keynote, export again, then compress. The marketing win is faster landing pages, not the smallest possible bad chart.",
       "Engineering users: log PDFs attached to tickets compress well when they are mostly monospace text. Binary heap dumps embedded as images do not—split attachments instead.",
-      "Healthcare users: never use random online compressors for PHI. If FreeToolKit’s browser workflow fits your risk assessment because bytes stay local, document that decision internally; if not, use your HIPAA-approved toolchain.",
+      "Healthcare users: never use random online compressors for PHI. If freetoolkitapp’s browser workflow fits your risk assessment because bytes stay local, document that decision internally; if not, use your HIPAA-approved toolchain.",
       "Accessibility angle: smaller PDFs download faster for assistive technology users on slow connections, but only if text remains crisp. Always verify that compression did not turn small print into muddy shapes.",
       "Archivists: consider PDF/A for long-term retention rather than repeatedly lossy-compressing the same cultural heritage scans. Compression here is for distribution copies, not necessarily for vault masters.",
       "Developers: if you generate PDFs programmatically, log average size pre/post compression in CI to catch accidental embedded base64 images in HTML-to-PDF pipelines early.",
       "Students abroad: hostel Wi-Fi is not a mythological beast—it is real, and it hates 25 MB syllabi. Compression is kindness to classmates sharing the same contended access point.",
-      "Finally, pair reading with the FreeToolKit blog guide on compressing PDF files for a narrative explanation, then bookmark Merge PDF and Split PDF for the rest of the lifecycle. Compression is one chapter, not the whole book."
+      "Finally, pair reading with the freetoolkitapp blog guide on compressing PDF files for a narrative explanation, then bookmark Merge PDF and Split PDF for the rest of the lifecycle. Compression is one chapter, not the whole book."
     ]
   },
   "split-pdf": {
@@ -258,7 +258,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       "Developers splitting API spec PDFs for microservice teams should version filenames with service names so Confluence uploads do not collide.",
       "Photographers splitting client proof books should watermark slices when contracts require it—splitting does not add protection automatically.",
       "Historians splitting archival scans should record which physical folios map to which PDF pages for citation continuity.",
-      "Finally, treat split outputs as inputs to Merge PDF, Compress PDF, or Add Text to PDF in larger workflows—FreeToolKit documents each hop so you assemble chains instead of hoping one tool does everything."
+      "Finally, treat split outputs as inputs to Merge PDF, Compress PDF, or Add Text to PDF in larger workflows—freetoolkitapp documents each hop so you assemble chains instead of hoping one tool does everything."
     ]
   },
   "extract-pdf-pages": {
@@ -423,7 +423,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "image-compressor": {
     intro:
-      "Image Compressor reduces file size for JPG, PNG, and WebP images so pages load faster, email attachments fit limits, and forms accept uploads. FreeToolKit is built around a simple idea: you should see the tradeoff between quality and bytes instead of guessing. This guide covers when to resize first, how to judge artifacts on text-heavy screenshots, how compression interacts with EXIF privacy, and how to pair this tool with WebP conversion or PDF workflows when your destination is not a raw image file.",
+      "Image Compressor reduces file size for JPG, PNG, and WebP images so pages load faster, email attachments fit limits, and forms accept uploads. freetoolkitapp is built around a simple idea: you should see the tradeoff between quality and bytes instead of guessing. This guide covers when to resize first, how to judge artifacts on text-heavy screenshots, how compression interacts with EXIF privacy, and how to pair this tool with WebP conversion or PDF workflows when your destination is not a raw image file.",
     howToUse: [
       "Duplicate your original image into a working folder when the asset is client-owned or legally sensitive—compression is a destructive pipeline even when subtle.",
       "Upload the image and note the starting dimensions and file size; oversized width/height often explains huge bytes more than encoding alone.",
@@ -487,7 +487,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is browser compression safe for PHI?", answer: "Follow your HIPAA policy; many teams prefer approved desktop pipelines for clinical imagery even if browsers are local." }
     ],
     seo: [
-      "Image compression is the fastest web performance win that non-engineers can still own. Core Web Vitals dashboards might blame JavaScript, but unoptimized hero images remain a chronic LCP villain. FreeToolKit gives you a slider, a preview, and a download—enough to run a lunch-and-learn for marketers without opening Lightroom licensing debates.",
+      "Image compression is the fastest web performance win that non-engineers can still own. Core Web Vitals dashboards might blame JavaScript, but unoptimized hero images remain a chronic LCP villain. freetoolkitapp gives you a slider, a preview, and a download—enough to run a lunch-and-learn for marketers without opening Lightroom licensing debates.",
       "Start with the physics: compression removes redundant information. Photos of forests compress well because leaves repeat statistically; screenshots of 9pt grey text on white compress poorly because JPEG assumes photographic smoothness. Recognizing the difference prevents “why did my UI turn mushy?” support tickets.",
       "Ecommerce teams should standardize on two or three quality tiers per category: pack shots, lifestyle, and thumbnails. Document them beside your DAM naming convention so seasonal interns do not improvise.",
       "Students and teachers on Chromebooks benefit when syllabus PDFs and image attachments stop timing out on rural connections—compression is an equity issue, not vanity.",
@@ -498,12 +498,12 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       "Game modders compressing texture replacers should watch for banding in gradients—sometimes DDS pipelines beat JPEG for real-time engines anyway.",
       "Healthcare marketers: FDA-regulated imagery may have approval constraints on edits—compression counts as an edit when artifacts alter interpretation.",
       "Photographers delivering galleries should watermark before aggressive compression when piracy is a concern—artifacts can obscure watermark legibility if done wrong.",
-      "Finally, read the companion blog post on compressing images without losing quality, then chain Image Resizer → Compress → WebP Converter when modern browsers are your only targets. FreeToolKit is one link in a chain, not the whole supply chain."
+      "Finally, read the companion blog post on compressing images without losing quality, then chain Image Resizer → Compress → WebP Converter when modern browsers are your only targets. freetoolkitapp is one link in a chain, not the whole supply chain."
     ]
   },
   "png-to-jpg": {
     intro:
-      "PNG to JPEG conversion answers portal uploaders, LMS validators, and ancient ERPs that still think transparency is suspicious. PNG preserves edges and alpha; JPEG trades transparency for smaller bytes on photographic content. Flattening transparent logos onto white is a design choice, not a default law—dark websites may need dark matte colors from desktop tools instead. FreeToolKit pairs this hop with Image Compressor, Image Resizer, WebP Converter, and Image to PDF when the real destination is a submission packet, not a single image living alone.",
+      "PNG to JPEG conversion answers portal uploaders, LMS validators, and ancient ERPs that still think transparency is suspicious. PNG preserves edges and alpha; JPEG trades transparency for smaller bytes on photographic content. Flattening transparent logos onto white is a design choice, not a default law—dark websites may need dark matte colors from desktop tools instead. freetoolkitapp pairs this hop with Image Compressor, Image Resizer, WebP Converter, and Image to PDF when the real destination is a submission packet, not a single image living alone.",
     howToUse: [
       "Confirm whether transparency exists in the PNG—JPEG cannot keep alpha; preview the flattened background before export.",
       "For UI screenshots with thin colored lines on white, preview at 100% zoom after conversion—JPEG ringing shows up early on diagonals.",
@@ -567,7 +567,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Undo?", answer: "Keep originals; JPEG is lossy." }
     ],
     seo: [
-      "PNG to JPG is the enterprise compatibility shim that refuses to die. FreeToolKit teaches why JPEG exists (photographic compression) versus why PNG exists (lossless edges, alpha). Understanding both prevents “why is my logo fuzzy?” Slack threads at 10 PM.",
+      "PNG to JPG is the enterprise compatibility shim that refuses to die. freetoolkitapp teaches why JPEG exists (photographic compression) versus why PNG exists (lossless edges, alpha). Understanding both prevents “why is my logo fuzzy?” Slack threads at 10 PM.",
       "Ecommerce SEO clusters love format keywords; pair internal links to WebP Converter and Image Compressor so readers finish jobs, not half jobs.",
       "Accessibility: JPEG-softened small text in syllabi hurts low-vision students—keep PNG or vector when pedagogy demands crispness.",
       "Long-tail: “convert png to jpg without losing quality” is a mythic query—explain tradeoffs honestly to earn trust and AdSense RPM stability.",
@@ -583,7 +583,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "jpg-to-png": {
     intro:
-      "JPG to PNG conversion freezes the current pixels into a lossless container—useful when you need transparency later, when repeated JPEG edits are destroying UI text, or when a pipeline wrongly demanded JPEG upstream. It does not recover detail already smoothed away by prior JPEG compression; noise and mosquito artifacts become part of the PNG’s honest pixel record. FreeToolKit links to Image Compressor, PNG to WebP, Image Resizer, and SVG to PNG so you pick the right next hop instead of cargo-culting PNG because it sounds “higher quality.”",
+      "JPG to PNG conversion freezes the current pixels into a lossless container—useful when you need transparency later, when repeated JPEG edits are destroying UI text, or when a pipeline wrongly demanded JPEG upstream. It does not recover detail already smoothed away by prior JPEG compression; noise and mosquito artifacts become part of the PNG’s honest pixel record. freetoolkitapp links to Image Compressor, PNG to WebP, Image Resizer, and SVG to PNG so you pick the right next hop instead of cargo-culting PNG because it sounds “higher quality.”",
     howToUse: [
       "Open the JPEG at 100% zoom and decide whether artifacts are acceptable before locking them into PNG forever.",
       "If you need transparency, cut subjects in an editor first—JPEG never had alpha to resurrect.",
@@ -647,7 +647,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Undo?", answer: "Restore JPEG master from backups if kept." }
     ],
     seo: [
-      "JPG to PNG is the damage-control format hop. FreeToolKit refuses to market it as upscaling magic—students deserve honesty before thesis figures print with JPEG blocks around axis labels.",
+      "JPG to PNG is the damage-control format hop. freetoolkitapp refuses to market it as upscaling magic—students deserve honesty before thesis figures print with JPEG blocks around axis labels.",
       "Developer docs pipelines sometimes demand PNG screenshots—internal linking from PNG to WebP helps teams modernize without breaking older doc builds.",
       "Long-tail: “jpeg to png without losing quality” still implies misunderstanding—clarify preservation versus recovery in FAQs for trust.",
       "Accessibility: crisp PNG diagrams help color-blind readers when paired with patterns, not only hue—format choice is one lever.",
@@ -661,7 +661,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "webp-converter": {
     intro:
-      "WebP Converter bridges modern browsers and lean bytes: predictive encoding often beats JPEG on photos while still supporting transparency like PNG—when encoders and decoders agree. Email clients, ancient intranets, and some print RIPs still stumble on WebP, so FreeToolKit teaches when to keep JPEG fallbacks, how to pair with Image Resizer before conversion, and when WebP to PNG escape hatches matter for stubborn downstream editors.",
+      "WebP Converter bridges modern browsers and lean bytes: predictive encoding often beats JPEG on photos while still supporting transparency like PNG—when encoders and decoders agree. Email clients, ancient intranets, and some print RIPs still stumble on WebP, so freetoolkitapp teaches when to keep JPEG fallbacks, how to pair with Image Resizer before conversion, and when WebP to PNG escape hatches matter for stubborn downstream editors.",
     howToUse: [
       "Start from the cleanest source—converting a tiny JPEG to WebP does not invent detail.",
       "Pick lossy versus lossless WebP mindfully: diagrams with text often prefer lossless; photos tolerate lossy.",
@@ -725,7 +725,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Animated WebP?", answer: "Support improved but verify target platforms if motion matters." }
     ],
     seo: [
-      "WebP Converter pages attract performance engineers and panicked marketers the night before a Lighthouse audit. FreeToolKit gives both a shared vocabulary: predictive coding, alpha, fallback strategies, measurement-first culture.",
+      "WebP Converter pages attract performance engineers and panicked marketers the night before a Lighthouse audit. freetoolkitapp gives both a shared vocabulary: predictive coding, alpha, fallback strategies, measurement-first culture.",
       "Internal link to the PNG vs JPG vs Webp blog cluster so readers understand when WebP is not the first hop from camera.",
       "Long-tail: “convert jpg to webp for website” should land on pages that mention `<picture>` patterns—not only upload UI.",
       "Accessibility: pair WebP wins with readable typography—LCP is not the only UX metric that matters morally.",
@@ -739,7 +739,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "image-resizer": {
     intro:
-      "Image Resizer changes pixel dimensions so uploads fit portals, heroes match CSS max widths, and email attachments stop bouncing. Downscaling often looks sharper; upscaling cannot invent lace detail. FreeToolKit emphasizes aspect-ratio discipline for inclusive portraits, pairing with Image Compressor after resize when bytes still exceed caps, and with Image Cropper when composition—not only size—is wrong. SVG to PNG and Favicon Generator sit downstream when vector sources need honest raster sizes.",
+      "Image Resizer changes pixel dimensions so uploads fit portals, heroes match CSS max widths, and email attachments stop bouncing. Downscaling often looks sharper; upscaling cannot invent lace detail. freetoolkitapp emphasizes aspect-ratio discipline for inclusive portraits, pairing with Image Compressor after resize when bytes still exceed caps, and with Image Cropper when composition—not only size—is wrong. SVG to PNG and Favicon Generator sit downstream when vector sources need honest raster sizes.",
     howToUse: [
       "Know the target width and height from the syllabus, CMS field, or computed CSS—guesswork wastes cycles.",
       "Keep aspect ratio locked for portraits and product shots unless intentional distortion is part of the art direction (rare and sensitive).",
@@ -803,7 +803,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Undo?", answer: "Keep originals; destructive pipelines happen fast." }
     ],
     seo: [
-      "Image Resizer is the unsung hero of upload-form UX. FreeToolKit connects dimension literacy to Core Web Vitals: fewer pixels, less JPEG entropy budget wasted, faster LCP, happier humans on metered data.",
+      "Image Resizer is the unsung hero of upload-form UX. freetoolkitapp connects dimension literacy to Core Web Vitals: fewer pixels, less JPEG entropy budget wasted, faster LCP, happier humans on metered data.",
       "Long-tail: “resize image for website without photoshop” maps here—mention CSS `max-width` interplay honestly.",
       "Accessibility: never stretch people’s faces to fit banners—DEI guidelines and basic decency align.",
       "Pair with Image Compressor in tutorials because newcomers think one tool solves both problems—it rarely does alone.",
@@ -817,7 +817,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "gpa-calculator": {
     intro:
-      "GPA Calculator estimates your grade-point average using credit-weighted math—the same core idea registrars use, but simplified for planning conversations. A four-credit B and a three-credit B are not equal pulls on your cumulative GPA; this tool makes that visible before you commit study hours or email an advisor. FreeToolKit does not replace official transcripts; it helps you model scenarios, document assumptions, and ask sharper questions about repeat policies, pass/fail exclusions, and scholarship cutoffs.",
+      "GPA Calculator estimates your grade-point average using credit-weighted math—the same core idea registrars use, but simplified for planning conversations. A four-credit B and a three-credit B are not equal pulls on your cumulative GPA; this tool makes that visible before you commit study hours or email an advisor. freetoolkitapp does not replace official transcripts; it helps you model scenarios, document assumptions, and ask sharper questions about repeat policies, pass/fail exclusions, and scholarship cutoffs.",
     howToUse: [
       "Gather your syllabus or transcript rows: course name, letter grade (or numeric), and credit hours exactly as your institution prints them.",
       "Enter each row into the calculator, double-checking that lab sections listed as separate courses get their own credit values.",
@@ -874,14 +874,14 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Repeated courses?", answer: "Some institutions replace the earlier grade, some average both, some exclude the repeat from GPA while keeping it on transcript. The calculator cannot guess; apply the policy your advisor confirms." },
       { question: "Weighted high school GPAs?", answer: "Honors/AP bump rules differ widely. This tool models credit-weighted college-style averages unless you manually adjust grade points to mimic your high school’s published scale." },
       { question: "International scales?", answer: "Do not eyeball percentage-to-GPA conversions. Use official conversion documents from your target institution or credential evaluator." },
-      { question: "Privacy?", answer: "Grades you type stay in your browser session for this workflow; nothing is uploaded to FreeToolKit servers for the calculation itself." },
+      { question: "Privacy?", answer: "Grades you type stay in your browser session for this workflow; nothing is uploaded to freetoolkitapp servers for the calculation itself." },
       { question: "Does GPA determine job offers?", answer: "Some employers screen early-career GPA; many weight portfolios and experience more later. Use GPA clarity to reduce anxiety, not to define self-worth." },
       { question: "What about major-specific GPA?", answer: "Filter rows manually to science or non-science subsets, then average those credits separately—useful for pre-health or honors program requirements." },
       { question: "Can advisors rely on this printout?", answer: "Treat it as a conversation starter; advisors will still pull official systems of record." },
       { question: "Why does my friend with same grades show different GPA?", answer: "Different credit totals, different mappings, different transfer histories, or different rounding policies—all normal." }
     ],
     seo: [
-      "GPA Calculator exists because weighted averages are cognitively hard under stress, yet they gate scholarships, probation warnings, and graduation timelines. Humans intuit simple averages; credit-weighted averages punish ignoring lab credit hours. FreeToolKit surfaces the arithmetic transparently so conversations with advisors start with shared facts, not fog.",
+      "GPA Calculator exists because weighted averages are cognitively hard under stress, yet they gate scholarships, probation warnings, and graduation timelines. Humans intuit simple averages; credit-weighted averages punish ignoring lab credit hours. freetoolkitapp surfaces the arithmetic transparently so conversations with advisors start with shared facts, not fog.",
       "Consider a semester with 4 credits of calculus at a B, 3 credits of seminar at an A-, and 1 credit of PE at a pass. Your brain wants to average B and A- and ignore PE; your transcript does not. Modeling that difference helps you allocate study time where leverage is highest—not where drama is loudest.",
       "Scholarship committees rarely publish internal cutoffs; students guess. Running scenarios—what if spring is all A-?—helps you ask financial aid officers specific questions before appeals windows close.",
       "First-generation students sometimes carry shame about not understanding GPA math quickly; a visible calculator demystifies the process and reduces gatekeeping. Pair with Word Counter when essays must explain academic improvement narratives honestly.",
@@ -897,7 +897,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "word-counter": {
     intro:
-      "Word & Character Counter gives live counts for words, characters, sentences, paragraphs, and rough reading or speaking time estimates. It exists because almost every modern publishing surface imposes a limit: college essays, visa forms, SMS segments, meta descriptions, podcast ad reads, and Slack announcements all punish verbosity differently. FreeToolKit keeps the interface minimal so you can paste, trim, and copy without fighting cloud doc lag or login walls.",
+      "Word & Character Counter gives live counts for words, characters, sentences, paragraphs, and rough reading or speaking time estimates. It exists because almost every modern publishing surface imposes a limit: college essays, visa forms, SMS segments, meta descriptions, podcast ad reads, and Slack announcements all punish verbosity differently. freetoolkitapp keeps the interface minimal so you can paste, trim, and copy without fighting cloud doc lag or login walls.",
     howToUse: [
       "Paste or type your draft into the textarea; counts update immediately—no submit button required.",
       "Check both word totals and character totals when the destination specifies one or the other (Common App vs SMS).",
@@ -962,7 +962,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is this ADA-compliant output?", answer: "Counts are text; pair with accessible drafting practices for the essay itself—headings, plain language, meaningful link text elsewhere." }
     ],
     seo: [
-      "Word & Character Counter is the invisible editor in every newsroom, admissions office, and developer docs team. Limits force clarity: if you cannot say it in 650 words, you probably have not decided what matters yet. FreeToolKit updates counts live so trimming loops feel immediate instead of menu-diving in desktop suites.",
+      "Word & Character Counter is the invisible editor in every newsroom, admissions office, and developer docs team. Limits force clarity: if you cannot say it in 650 words, you probably have not decided what matters yet. freetoolkitapp updates counts live so trimming loops feel immediate instead of menu-diving in desktop suites.",
       "SEO specialists watch character counts for title tags and meta descriptions because pixel truncation is real even when word count is low. Pair this tool with SERP Preview and Meta Tag Generator when shipping new landing pages so marketing and engineering agree on what Google will actually display.",
       "Accessibility writers balancing plain-language requirements use sentence and paragraph counts to prove readability improvements numerically after edits—not a substitute for automated reading level scores, but a helpful companion metric when arguing with stakeholders who only speak numbers.",
       "Developers pasting JSON into README files use character counts indirectly when checking base64 line lengths before CI complains—switch tabs to JSON Formatter when structure matters more than length, then return here before commit.",
@@ -978,7 +978,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "qr-code-generator": {
     intro:
-      "QR codes encode strings—URLs, Wi-Fi join payloads, vCard blobs, plain text—into a square grid of modules scanners decode with cameras and forgiving Reed–Solomon error correction. They are not magic trust layers: a pretty code can still point to phishing. FreeToolKit generates client-side so your unreleased campaign URL does not hit a third-party shortener’s logs by accident. This page covers payload length, contrast rules, print sizing, accessibility redundancy, and when to pair URL Encoder / Decoder, SERP Preview thinking, and PDF workflows for laminated field sheets.",
+      "QR codes encode strings—URLs, Wi-Fi join payloads, vCard blobs, plain text—into a square grid of modules scanners decode with cameras and forgiving Reed–Solomon error correction. They are not magic trust layers: a pretty code can still point to phishing. freetoolkitapp generates client-side so your unreleased campaign URL does not hit a third-party shortener’s logs by accident. This page covers payload length, contrast rules, print sizing, accessibility redundancy, and when to pair URL Encoder / Decoder, SERP Preview thinking, and PDF workflows for laminated field sheets.",
     howToUse: [
       "Draft the shortest URL that still resolves—UTM parameters add modules; campaign discipline keeps codes scannable at distance.",
       "Paste the string, generate, then scan with two phones (iOS and budget Android) before printing 500 posters.",
@@ -1030,7 +1030,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       "Forgetting to update PDF attachments when QR points to PDF menus—stale files erode trust."
     ],
     faq: [
-      { question: "Is generation local to my browser?", answer: "Yes—payloads you type are not sent to FreeToolKit servers for encoding in the standard workflow; still avoid secrets on shared machines." },
+      { question: "Is generation local to my browser?", answer: "Yes—payloads you type are not sent to freetoolkitapp servers for encoding in the standard workflow; still avoid secrets on shared machines." },
       { question: "Can I track scans?", answer: "Static codes do not analytics by themselves—use your CMS or server logs on the destination URL." },
       { question: "Dynamic QR without vendor lock-in?", answer: "Host redirects you control on your domain; avoid opaque third-party dashboards you cannot export." },
       { question: "Maximum data size?", answer: "Practical payloads stay short; long vCards or big JSON belong on hosted pages with short URLs." },
@@ -1042,7 +1042,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Can I encode SMS?", answer: "Yes with `sms:` URI schemes—test devices; behavior varies." }
     ],
     seo: [
-      "QR Code Generator is the bridge between physical space and digital intent, but bridges need guardrails. FreeToolKit explains payload discipline, contrast physics, and why client-side generation matters when your campaign URL is still embargoed.",
+      "QR Code Generator is the bridge between physical space and digital intent, but bridges need guardrails. freetoolkitapp explains payload discipline, contrast physics, and why client-side generation matters when your campaign URL is still embargoed.",
       "Long-tail searches like “wifi qr code generator ios android” hide subtle string escaping bugs—this page tells you to dry-run on both ecosystems before laminating.",
       "Marketers comparing SaaS dynamic QR platforms can still prototype creative here, then graduate to authenticated analytics once flows stabilize.",
       "Accessibility advocates deserve more than lip service: redundant printed URLs, high contrast, and staff training turn QR from gimmick into accommodation.",
@@ -1057,7 +1057,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "age-calculator": {
     intro:
-      "Age Calculator computes the time between two calendar dates—usually a birth date and today or another reference date—and expresses the gap in years, months, and days. It helps parents, administrators, and event staff sanity-check forms without building fragile spreadsheet formulas. FreeToolKit is explicit: this is arithmetic, not legal advice; courts, schools, and sports leagues define “age” with jurisdiction-specific rules about time zones, birthdays at midnight, and leap years that software cannot guess for you.",
+      "Age Calculator computes the time between two calendar dates—usually a birth date and today or another reference date—and expresses the gap in years, months, and days. It helps parents, administrators, and event staff sanity-check forms without building fragile spreadsheet formulas. freetoolkitapp is explicit: this is arithmetic, not legal advice; courts, schools, and sports leagues define “age” with jurisdiction-specific rules about time zones, birthdays at midnight, and leap years that software cannot guess for you.",
     howToUse: [
       "Confirm which calendar date counts as “today” for your use case—some forms ask for age as of application submission; others as of season start.",
       "Enter the birth date using the same month/day/year convention your region expects (US MDY vs EU DMY typos flip results).",
@@ -1118,7 +1118,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Why do two calculators disagree by a day?", answer: "Different libraries handle month-end rollups or timezone anchors differently. When it matters, align with the authoritative system of record." },
       { question: "Can I calculate gestational age?", answer: "No—medical gestational age uses clinical conventions unrelated to calendar age from birth. Use clinician-provided tools." },
       { question: "Does age affect COPPA compliance for apps?", answer: "Yes, but legal analysis is broader than a date diff. Involve counsel when building products for children." },
-      { question: "Can I embed this in my site?", answer: "Link to FreeToolKit; do not scrape outputs as authoritative compliance evidence without human review." }
+      { question: "Can I embed this in my site?", answer: "Link to freetoolkitapp; do not scrape outputs as authoritative compliance evidence without human review." }
     ],
     seo: [
       "Age Calculator seems trivial until a single day error blocks camp registration or voids an insurance rider. Humans mis-type dates, mis-read handwritten birth certificates, and mis-remember whether grandma was born before or after midnight during a storm. A structured calculator reduces arithmetic variance so staff can focus on policy interpretation, not subtraction under pressure.",
@@ -1137,7 +1137,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "percentage-calculator": {
     intro:
-      "Percentage Calculator handles the three mental models people mix up under stress: “what is X% of Y?”, “what percent is A of B?”, and “percent change from an old value to a new value.” Retail associates, students interpreting rubrics, and growth marketers all use the same symbols but mean different things. FreeToolKit separates the modes so you pick the right question before you email a number that might be wrong by an order of magnitude.",
+      "Percentage Calculator handles the three mental models people mix up under stress: “what is X% of Y?”, “what percent is A of B?”, and “percent change from an old value to a new value.” Retail associates, students interpreting rubrics, and growth marketers all use the same symbols but mean different things. freetoolkitapp separates the modes so you pick the right question before you email a number that might be wrong by an order of magnitude.",
     howToUse: [
       "Read the problem aloud once and name which mode you need—percent of, percent change, or part-to-whole percentage.",
       "Enter numbers as decimals or integers consistent with the prompt; convert mixed fractions to decimals first to avoid typos.",
@@ -1201,7 +1201,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is this OK for exams?", answer: "Only if your instructor permits calculators. Academic integrity policies always supersede convenience." }
     ],
     seo: [
-      "Percentage Calculator is the vocabulary police for quantitative conversations. “Up 10%” sounds precise but might mean ten percentage points, ten percent relative to a tiny base, or ten percent of last week’s already discounted price. FreeToolKit forces you to choose a mode so you stop arguing from different definitions.",
+      "Percentage Calculator is the vocabulary police for quantitative conversations. “Up 10%” sounds precise but might mean ten percentage points, ten percent relative to a tiny base, or ten percent of last week’s already discounted price. freetoolkitapp forces you to choose a mode so you stop arguing from different definitions.",
       "Retail training programs should demo stacked discounts with this tool on day one—employees who understand multiplicative stacking make fewer override calls to managers.",
       "Students learning statistics should pair percent change exercises with sample size discussion—otherwise TikTok finance influencers win with misleading arcs.",
       "Growth marketers comparing week-over-week activation rates should annotate denominators in slides; percentages without bases are Rorschach tests.",
@@ -1217,7 +1217,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "image-to-pdf": {
     intro:
-      "Image to PDF wraps photos, scans, and screenshots into a single linear PDF so reviewers scroll a story instead of opening twelve attachments. That matters for insurance timelines, homework evidence chains, and design approvals where sequence is argument. FreeToolKit explains what this conversion cannot do—it does not OCR handwriting into Word, it does not fix blurry sensor noise—and points you toward Compress PDF, Merge PDF, Rotate PDF, and OCR PDF when the next bottleneck appears.",
+      "Image to PDF wraps photos, scans, and screenshots into a single linear PDF so reviewers scroll a story instead of opening twelve attachments. That matters for insurance timelines, homework evidence chains, and design approvals where sequence is argument. freetoolkitapp explains what this conversion cannot do—it does not OCR handwriting into Word, it does not fix blurry sensor noise—and points you toward Compress PDF, Merge PDF, Rotate PDF, and OCR PDF when the next bottleneck appears.",
     howToUse: [
       "Rename files with numeric prefixes (01-, 02-) when order matters; folder sort order on Windows versus Mac has burned many students.",
       "Rotate and crop in the phone gallery or Image Cropper before PDF-ing so each page reads upright without later structural edits.",
@@ -1361,7 +1361,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Localization?", answer: "UTF-8 text usually survives, but proof complex scripts in preview before sending." }
     ],
     seo: [
-      "Word to PDF search volume splits oddly: some users literally mean Microsoft Word export; others mean “I have words, give me a PDF.” FreeToolKit targets the second group honestly so no one imports a novel into a textarea expecting InDesign.",
+      "Word to PDF search volume splits oddly: some users literally mean Microsoft Word export; others mean “I have words, give me a PDF.” freetoolkitapp targets the second group honestly so no one imports a novel into a textarea expecting InDesign.",
       "Chromebook classrooms exploded this use case. Teachers should link here from LMS pages alongside guidance about headings and paragraph breaks so submissions stop arriving as unopenable .pages bundles.",
       "Pair with Merge PDF when the assignment is “one PDF packet” but only the cover letter is plaintext—the rest may be scans.",
       "Remote work compliance teams sometimes block .docx but allow PDF—understand the policy reason before gaming it with daily plaintext memos that should live in wiki software instead.",
@@ -1376,7 +1376,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-to-word": {
     intro:
-      "PDF to Word conversion is where expectations crash into layout physics. A text-native PDF—born from Word or LaTeX export—often converts cleanly because glyphs and reading order already exist. A scan of a 1978 typewritten memo is photographs of paper; turning that into editable Word requires OCR, deskew, denoise, and human proofreading. FreeToolKit’s page is written for people who were promised one-click magic elsewhere. Here you get decision trees: when to Split PDF first, when OCR PDF belongs in the chain, when copy-paste beats automation, and how Add Text to PDF or Word to PDF cover interim deliverables while desktop tools do the heavy lift.",
+      "PDF to Word conversion is where expectations crash into layout physics. A text-native PDF—born from Word or LaTeX export—often converts cleanly because glyphs and reading order already exist. A scan of a 1978 typewritten memo is photographs of paper; turning that into editable Word requires OCR, deskew, denoise, and human proofreading. freetoolkitapp’s page is written for people who were promised one-click magic elsewhere. Here you get decision trees: when to Split PDF first, when OCR PDF belongs in the chain, when copy-paste beats automation, and how Add Text to PDF or Word to PDF cover interim deliverables while desktop tools do the heavy lift.",
     howToUse: [
       "Classify the PDF in thirty seconds: try selecting text with a cursor. If you cannot select sentences, assume image-only until OCR proves otherwise.",
       "For long files, Extract PDF Pages or Split PDF to isolate the chapter you truly need—smaller inputs mean cheaper OCR and fewer mistakes.",
@@ -1408,7 +1408,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       "Example: a developer tests an API’s DOCX export against a known-good PDF ground truth—conversion quality becomes a regression metric."
     ],
     tips: [
-      "Read FreeToolKit’s blog article on PDF to Word conversion quality before buying expensive desktop suites you might not need.",
+      "Read freetoolkitapp’s blog article on PDF to Word conversion quality before buying expensive desktop suites you might not need.",
       "When fonts look wrong after conversion, embedding issues in the source PDF are the culprit—Word cannot invent missing glyphs.",
       "For two-column academic PDFs, expect reading-order chaos; specialized OCR layout modes help.",
       "Pair with Compare PDF Files when legal needs proof that conversion did not silently drop a paragraph.",
@@ -1440,7 +1440,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "What if I only need one paragraph?", answer: "Copy-paste often wins on speed—conversion is for scale, not trivia." }
     ],
     seo: [
-      "PDF to Word is a high-intent keyword cluster tangled with malware, piracy, and impossible marketing claims. FreeToolKit chooses the boring path: teach classification, show sibling tools, and refuse fairy tales. That tone ranks slower with bots but earns trust with humans—and trust is AdSense inventory that does not bounce.",
+      "PDF to Word is a high-intent keyword cluster tangled with malware, piracy, and impossible marketing claims. freetoolkitapp chooses the boring path: teach classification, show sibling tools, and refuse fairy tales. That tone ranks slower with bots but earns trust with humans—and trust is AdSense inventory that does not bounce.",
       "Law firms evaluating conversion vendors should still read plain-language explainers like this to brief associates on why Tuesday’s “quick fix” failed.",
       "Students searching “convert pdf to word for free assignment” need the copyright paragraph most—campus honor councils care.",
       "Accessibility offices sometimes authorize format shifts for disabled students; this page nudges them toward official channels rather than gray-market textbook rips.",
@@ -1476,7 +1476,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Android HEIF?", answer: "Some Android devices save HEIF too; the same browser decode rules apply." }
     ],
     seo: [
-      "HEIC to JPG Converter exists because ecosystems disagree politely. Apple optimizes storage with HEIC while legacy enterprise portals still whitelist three extensions from 2005. FreeToolKit explains decode limits up front so you are not stuck at midnight blaming Safari silently.",
+      "HEIC to JPG Converter exists because ecosystems disagree politely. Apple optimizes storage with HEIC while legacy enterprise portals still whitelist three extensions from 2005. freetoolkitapp explains decode limits up front so you are not stuck at midnight blaming Safari silently.",
       "Photography teachers can use this page to teach metadata and container formats without installing Xcode—students see the pipeline: shoot, export, verify, compress, upload.",
       "Workflow tip: rename files with dates before conversion so yearbook volunteers sort chronologically instead of IMG_9841 chaos.",
       "Developers testing responsive galleries should still generate WebP derivatives with PNG to WebP after JPG baseline for older browsers—conversion is one hop, not the whole asset strategy.",
@@ -1486,7 +1486,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "svg-to-png": {
     intro:
-      "SVG to PNG rasterizes vector artwork into pixels for slide decks, CMS uploads, email clients, and Open Graph images that still fear inline SVG in 2026. Pick dimensions deliberately: too small and logos mush; too large and you ship megabytes of redundant air. FreeToolKit warns about script-bearing SVGs from random wikis, font embedding headaches, filter effects rasterizing differently per engine, and the need to keep SVG masters for future art edits. Pair with Image Resizer, Image Compressor, Favicon Generator, and Image Watermark depending on whether you are shipping icons, social cards, or leak-traced drafts.",
+      "SVG to PNG rasterizes vector artwork into pixels for slide decks, CMS uploads, email clients, and Open Graph images that still fear inline SVG in 2026. Pick dimensions deliberately: too small and logos mush; too large and you ship megabytes of redundant air. freetoolkitapp warns about script-bearing SVGs from random wikis, font embedding headaches, filter effects rasterizing differently per engine, and the need to keep SVG masters for future art edits. Pair with Image Resizer, Image Compressor, Favicon Generator, and Image Watermark depending on whether you are shipping icons, social cards, or leak-traced drafts.",
     howToUse: [
       "Sanitize or trust-verify SVG sources—vector files can embed scripts; never rasterize untrusted downloads casually.",
       "Set export width to at least 2× final CSS width for crisp retina targets; overshooting 10× wastes bytes.",
@@ -1550,7 +1550,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Better than Canvas screenshot?", answer: "Sometimes—depends on subpixel snapping needs; test both." }
     ],
     seo: [
-      "SVG to PNG is the pragmatic betrayal of infinite resolution. FreeToolKit celebrates the betrayal when pixels are required—email, OG images, ancient CMS—and defends SVG when bytes and zoom still favor vectors.",
+      "SVG to PNG is the pragmatic betrayal of infinite resolution. freetoolkitapp celebrates the betrayal when pixels are required—email, OG images, ancient CMS—and defends SVG when bytes and zoom still favor vectors.",
       "Long-tail: “convert svg to png for email signature” still exists; mention Outlook explicitly with kindness and grim realism.",
       "Pair with Image Resizer when social teams request “just export again at another size” endlessly—batch discipline matters.",
       "Accessibility: when PNG replaces informative SVG, write equivalent text nearby—decorative versus informative alt decisions belong in content design reviews.",
@@ -1564,7 +1564,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "png-to-webp": {
     intro:
-      "PNG to WebP is the pragmatic migration from lossless-ish PNG bytes to a codec that understands both photos and alpha without always inflating file size. WebP is not a religion—some paletted PNGs with few colors still win on kilobytes, and some CMS pipelines already transcode for you. FreeToolKit frames the conversion as measurement homework: compare LCP, compare edges on UI screenshots, compare alpha halos on gradients, then decide. Pair with WebP to PNG when a stubborn editor blocks modern extensions, Image Compressor when email still demands JPEG, and Image Resizer when the real problem is unused megapixels, not encoding trivia.",
+      "PNG to WebP is the pragmatic migration from lossless-ish PNG bytes to a codec that understands both photos and alpha without always inflating file size. WebP is not a religion—some paletted PNGs with few colors still win on kilobytes, and some CMS pipelines already transcode for you. freetoolkitapp frames the conversion as measurement homework: compare LCP, compare edges on UI screenshots, compare alpha halos on gradients, then decide. Pair with WebP to PNG when a stubborn editor blocks modern extensions, Image Compressor when email still demands JPEG, and Image Resizer when the real problem is unused megapixels, not encoding trivia.",
     howToUse: [
       "Duplicate masters: keep PNG in `assets/source/` and WebP in `assets/web/` so round-trips do not confuse Git blame.",
       "Upload the PNG, choose lossless when text and thin lines dominate; choose lossy when photographic noise hides compression artifacts.",
@@ -1628,7 +1628,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Copyright?", answer: "Changing format does not change licensing—rights stay with the creator." }
     ],
     seo: [
-      "PNG to WebP is a performance literacy checkpoint, not a checkbox in a Lighthouse to-do list. FreeToolKit explains when WebP saves mobile data, when it wastes engineer time because the CDN already transcodes, and when paletted PNG is still the byte champion.",
+      "PNG to WebP is a performance literacy checkpoint, not a checkbox in a Lighthouse to-do list. freetoolkitapp explains when WebP saves mobile data, when it wastes engineer time because the CDN already transcodes, and when paletted PNG is still the byte champion.",
       "Long-tail queries like “convert png to webp without losing transparency” deserve edge-case honesty: alpha survives, but semi-transparent glows around dark-mode icons need visual QA, not blind batching.",
       "Pair with Image Resizer when the dominant byte hog is unused resolution—2200px wide heroes displayed at 430px CSS waste budget regardless of codec.",
       "Accessibility advocates should zoom converted screenshots to 200% after compression—if UI labels crumble, raise quality or crop tighter instead of arguing about codecs.",
@@ -1642,7 +1642,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "webp-to-png": {
     intro:
-      "WebP to PNG translates modern WebP assets—including alpha-heavy UI captures—into PNG for Photoshop versions that lag codecs, legal reviewers who ban nonstandard extensions, print shops that speak TIFF/PNG only, and sprite pipelines keyed on `.png` filenames. If the WebP was lossy, PNG preserves what remains without additional lossy steps, but it cannot resurrect discarded frequency data. FreeToolKit links forward to PNG to WebP when round-tripping for web, to Image Resizer when PNGs explode past attachment limits, and to Image Watermark when exported frames still need traceability.",
+      "WebP to PNG translates modern WebP assets—including alpha-heavy UI captures—into PNG for Photoshop versions that lag codecs, legal reviewers who ban nonstandard extensions, print shops that speak TIFF/PNG only, and sprite pipelines keyed on `.png` filenames. If the WebP was lossy, PNG preserves what remains without additional lossy steps, but it cannot resurrect discarded frequency data. freetoolkitapp links forward to PNG to WebP when round-tripping for web, to Image Resizer when PNGs explode past attachment limits, and to Image Watermark when exported frames still need traceability.",
     howToUse: [
       "Confirm whether source WebP used lossy or lossless encoding—expectations for sharpness differ.",
       "Watch alpha edges on gradients after conversion—semi-transparent glows sometimes need manual cleanup in editors.",
@@ -1706,7 +1706,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Back to WebP?", answer: "PNG to WebP exists—measure whether round-trip worth it." }
     ],
     seo: [
-      "WebP to PNG is the escape hatch from modernity. FreeToolKit celebrates hatch usage without pretending PNG is always progress—sometimes it is bureaucracy compliance, and that is OK.",
+      "WebP to PNG is the escape hatch from modernity. freetoolkitapp celebrates hatch usage without pretending PNG is always progress—sometimes it is bureaucracy compliance, and that is OK.",
       "Long-tail: “open webp as png photoshop” traffic still exists—mention version numbers carefully because Adobe moves faster than blog posts.",
       "Pair with Image Resizer when PNGs from 8K WebP marketing stills exceed email gateways.",
       "Accessibility: PNG does not fix missing alt text on charts—pair format conversion with content fixes.",
@@ -1720,7 +1720,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "background-remover": {
     intro:
-      "Background Remover conversations sit at the intersection of computer vision, photography craft, and ethics. Good matting needs contrast between subject and backdrop, controlled lighting on hair, and honest expectations about glass reflections and motion blur. FreeToolKit refuses “AI solved it” hype: browser workflows may prepare images, preview limits, or route you toward desktop tools when fidelity matters for catalogs, passports, or clinical photography. Pair with Image Resizer for marketplace thumbnails, Passport Photo Maker when governments forbid heavy retouching, and Image Watermark when traceability matters after cutouts leak.",
+      "Background Remover conversations sit at the intersection of computer vision, photography craft, and ethics. Good matting needs contrast between subject and backdrop, controlled lighting on hair, and honest expectations about glass reflections and motion blur. freetoolkitapp refuses “AI solved it” hype: browser workflows may prepare images, preview limits, or route you toward desktop tools when fidelity matters for catalogs, passports, or clinical photography. Pair with Image Resizer for marketplace thumbnails, Passport Photo Maker when governments forbid heavy retouching, and Image Watermark when traceability matters after cutouts leak.",
     howToUse: [
       "Shoot or pick source photos with clean separation between subject and background—busy wallpaper fights every model.",
       "Prefer diffuse lighting on hair; harsh rim lights create halos segmentation models love to misread as background.",
@@ -1784,7 +1784,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Kids?", answer: "Guardian consent and school policy matter before posting cutouts." }
     ],
     seo: [
-      "Background Remover SEO is a minefield of silent uploads and fake sliders. FreeToolKit wins trust with physics vocabulary: spill, contrast, frequency, noise. Humans make better photos; models finish the job.",
+      "Background Remover SEO is a minefield of silent uploads and fake sliders. freetoolkitapp wins trust with physics vocabulary: spill, contrast, frequency, noise. Humans make better photos; models finish the job.",
       "Ecommerce managers: invest in photography SOPs; matting software cannot fix a brown product on a brown table.",
       "Long-tail: “remove background from hair photo online” deserves compassionate tutorials, not only CTA buttons.",
       "Accessibility: cutout PNGs still need alt text describing subject meaning, not only “person on transparent.”",
@@ -1798,7 +1798,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "passport-photo-maker": {
     intro:
-      "Passport Photo Maker is the last-mile crop between a decent selfie and a government JPEG that either uploads or throws a vague “image invalid” toast. Every country encodes different head-height ratios, background whites, glasses glare rules, and file-size ceilings that change without a press release. FreeToolKit refuses influencer lighting myths: we anchor on official PDF diagrams, then show how Image Resizer, Background Remover, and Image Compressor chain when kiosks demand 240 KB yet 600 DPI rhetoric simultaneously.",
+      "Passport Photo Maker is the last-mile crop between a decent selfie and a government JPEG that either uploads or throws a vague “image invalid” toast. Every country encodes different head-height ratios, background whites, glasses glare rules, and file-size ceilings that change without a press release. freetoolkitapp refuses influencer lighting myths: we anchor on official PDF diagrams, then show how Image Resizer, Background Remover, and Image Compressor chain when kiosks demand 240 KB yet 600 DPI rhetoric simultaneously.",
     howToUse: [
       "Download the current photo specification PDF from the embassy or passport agency—screenshot diagrams are not admissible evidence when rules update mid-season.",
       "Shoot with soft, even lighting against a plain wall; shadows across cheeks read as “filters” to some automated gates.",
@@ -1862,7 +1862,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Can I reuse an old photo?", answer: "Many authorities require recent photos—check maximum age in months." }
     ],
     seo: [
-      "Passport Photo Maker pages on the web range from helpful to predatory. FreeToolKit writes for humans standing in hotel hallways at 11 PM with a renewal appointment tomorrow: measure against the PDF, export twice, sleep anyway.",
+      "Passport Photo Maker pages on the web range from helpful to predatory. freetoolkitapp writes for humans standing in hotel hallways at 11 PM with a renewal appointment tomorrow: measure against the PDF, export twice, sleep anyway.",
       "Long-tail pain—“DS11 photo rejected glare glasses”—maps to real policy detail, not keyword stuffing. We link adjacent indexed tools so you compress, resize, and background-fix without opening ten sketchy tabs.",
       "Immigration attorneys can send clients here before paralegal review so obvious framing errors never reach billable hours.",
       "Retail photo associates can use the ratio vocabulary to explain why a customer’s favorite Instagram crop will fail the Chinese visa portal.",
@@ -1897,7 +1897,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Copyright?", answer: "Blurring does not sanitize stolen imagery into fair use—respect licensing." }
     ],
     seo: [
-      "Blur Image Tool sits at the intersection of privacy theater and real harm reduction. FreeToolKit tells the truth: Gaussian softness is not cryptographic redaction, but it is enough to stop casual doxxing in PTA newsletters. Pair stronger techniques when threat models include motivated adversaries.",
+      "Blur Image Tool sits at the intersection of privacy theater and real harm reduction. freetoolkitapp tells the truth: Gaussian softness is not cryptographic redaction, but it is enough to stop casual doxxing in PTA newsletters. Pair stronger techniques when threat models include motivated adversaries.",
       "Journalists on deadline sometimes blur bystanders ethically; verify newsroom policy about faces of minors versus adults in public spaces.",
       "Teachers modeling digital citizenship can demo blur versus solid black bars, sparking conversations about consent and permanence online.",
       "Marketing teams faking bokeh should disclose when asked—authentic lens blur still differs subtly from post stack.",
@@ -1907,7 +1907,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "favicon-generator": {
     intro:
-      "Favicon Generator turns a square mark into the tiny icons browsers show in tabs, bookmarks, and home-screen shortcuts. At 16×16 pixels, nuance dies—bold silhouettes beat intricate crests. FreeToolKit covers ICO versus PNG favicons, Safari’s historical SVG quirks, maskable Android icons, brutal caching during QA, and pairing with SVG to PNG when brand only ships vector masters. Credibility lives in the tab strip: a default framework favicon on production is a silent “we forgot polish.”",
+      "Favicon Generator turns a square mark into the tiny icons browsers show in tabs, bookmarks, and home-screen shortcuts. At 16×16 pixels, nuance dies—bold silhouettes beat intricate crests. freetoolkitapp covers ICO versus PNG favicons, Safari’s historical SVG quirks, maskable Android icons, brutal caching during QA, and pairing with SVG to PNG when brand only ships vector masters. Credibility lives in the tab strip: a default framework favicon on production is a silent “we forgot polish.”",
     howToUse: [
       "Start from a 512×512 master in vector or high-res raster; downscaling beats upscaling from 16px mush.",
       "Simplify geometry and increase stroke weights until the mark reads at one favicon pixel per feature, roughly.",
@@ -1971,7 +1971,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Does favicon affect SEO rank?", answer: "Minor recognition signal; titles and content dominate." }
     ],
     seo: [
-      "Favicon Generator queries are small but intent-rich: people ship tonight. FreeToolKit respects the deadline while sneaking in education about caching, maskable icons, and brand contrast.",
+      "Favicon Generator queries are small but intent-rich: people ship tonight. freetoolkitapp respects the deadline while sneaking in education about caching, maskable icons, and brand contrast.",
       "Long-tail: “favicon ico generator from png” still matters—speak both ICO and PNG dialects in copy naturally.",
       "Pair with SVG to PNG when vector is canonical—prevents blurry upscales from tiny raster masters.",
       "Accessibility: favicons do not narrate meaning to screen readers—never hide instructions only in favicon art.",
@@ -1985,7 +1985,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "image-watermark": {
     intro:
-      "Image Watermark stamps text or logos onto photos before you post drafts, send client proofs, or upload portfolio work that might walk away without credit. Unlike invisible metadata, visible watermarks trade aesthetics for deterrence—screenshots still happen, but casual reposters think twice. FreeToolKit explains opacity, tiling, EXIF pitfalls, accessibility of overlaid text, and pairings with Image Compressor, Image Resizer, Background Remover, and PDF Watermark when the asset graduates from pixels to print-ready packets.",
+      "Image Watermark stamps text or logos onto photos before you post drafts, send client proofs, or upload portfolio work that might walk away without credit. Unlike invisible metadata, visible watermarks trade aesthetics for deterrence—screenshots still happen, but casual reposters think twice. freetoolkitapp explains opacity, tiling, EXIF pitfalls, accessibility of overlaid text, and pairings with Image Compressor, Image Resizer, Background Remover, and PDF Watermark when the asset graduates from pixels to print-ready packets.",
     howToUse: [
       "Pick watermark content that communicates purpose: © YourName 2026, DRAFT, PROPERTY OF STUDIO X—not giant essays.",
       "Place watermarks where cropping hurts thieves—near faces is ethically sensitive; near corners is easily cropped.",
@@ -2049,7 +2049,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "PDF?", answer: "Use PDF Watermark when the deliverable is PDF-first." }
     ],
     seo: [
-      "Image Watermark searches blend photographers protecting work with students misunderstanding copyright. FreeToolKit separates deterrence from legal strategy: watermark plus registration plus contracts.",
+      "Image Watermark searches blend photographers protecting work with students misunderstanding copyright. freetoolkitapp separates deterrence from legal strategy: watermark plus registration plus contracts.",
       "Long-tail: “add watermark to photos online free without blur” invites honest talk about compression order—resize, watermark, compress thoughtfully.",
       "Pair with Image Compressor internal links so portfolios stay fast while still credited.",
       "Accessibility: instructional imagery in MOOCs should remain readable—watermark placement is pedagogy, not only branding.",
@@ -2084,7 +2084,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Rate limits?", answer: "Hammering URLs may hit network throttles; batch ethically." }
     ],
     seo: [
-      "YouTube Thumbnail Downloader serves researchers and creators who need pixels, not mp4 bytes. FreeToolKit surfaces limitation copy prominently because ethical reuse matters more than feature checklists. Think competitive benchmarking, not art theft.",
+      "YouTube Thumbnail Downloader serves researchers and creators who need pixels, not mp4 bytes. freetoolkitapp surfaces limitation copy prominently because ethical reuse matters more than feature checklists. Think competitive benchmarking, not art theft.",
       "Educators teaching media literacy can compare thumbnail rhetoric across news vs entertainment channels—numbers, faces, arrows, emotional palettes.",
       "Growth marketers should pair downloads with SERP Preview thinking: how would this still read at 120px wide on mobile search?",
       "Accessibility advocates can flag thumbnails that encode the only instance of a date or refund policy in unreadable microtext—violating WCAG spirit even if lawyers debate letter-of-law.",
@@ -2115,7 +2115,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Better alternative?", answer: "Reshoot or procure licensed high-res assets when quality bar is commercial print." }
     ],
     seo: [
-      "Image Upscaler pages often imply CSI-style “enhance” jokes. FreeToolKit refuses that fantasy in plain language: browser interpolation rearranges pixels mathematically; it does not hallucinate plausible fabric weave. Visitors who understand that save money on impossible deadlines.",
+      "Image Upscaler pages often imply CSI-style “enhance” jokes. freetoolkitapp refuses that fantasy in plain language: browser interpolation rearranges pixels mathematically; it does not hallucinate plausible fabric weave. Visitors who understand that save money on impossible deadlines.",
       "Product managers scoping AI features can cite this page when pushing back on one-click miracles for forensic customers.",
       "Students learning sampling theory can connect upscale blur to Nyquist limits—math class meets design class.",
       "Pair with Image Cropper when the goal is framing and composition, not forensic pixel detail—crops forgive some softness.",
@@ -2146,7 +2146,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Social crop?", answer: "Instagram square vs Stories vertical—export multiple collages if platforms differ." }
     ],
     seo: [
-      "Photo Collage Maker is storytelling in grid form. FreeToolKit keeps the workflow browser-light for PTAs, student clubs, and indie sellers who need fast layouts without learning full DTP suites. Rhythm beats randomness: repeat spacing, align eyes on portraits, and vary scale only when it reinforces narrative.",
+      "Photo Collage Maker is storytelling in grid form. freetoolkitapp keeps the workflow browser-light for PTAs, student clubs, and indie sellers who need fast layouts without learning full DTP suites. Rhythm beats randomness: repeat spacing, align eyes on portraits, and vary scale only when it reinforces narrative.",
       "Marketers should remember collages compress many messages—pair with Word Counter on adjacent caption copy so Instagram does not truncate your CTA mid-sentence.",
       "Photographers delivering contact sheets metaphorically can use collages to gate proofs before clients download full galleries—pair with Image Watermark for subtle draft marking if needed.",
       "Accessibility: describe collage content in alt text summaries; screen reader users cannot scan spatial juxtaposition the way sighted users can.",
@@ -2156,7 +2156,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-to-excel": {
     intro:
-      "PDF to Excel is the fantasy that tables trapped inside a Portable Document Format can re-enter the land of pivot tables, filters, and `=XLOOKUP` without tears. Sometimes that fantasy is true: vector PDFs exported from spreadsheets often paste cleanly. Often it is not: scanned bank statements, merged cells, footnotes inside grids, and two-column layouts turn naive extraction into alphabet soup. FreeToolKit explains the difference, points you to Split PDF and Compress PDF before heavy work, and pairs expectations with OCR PDF and PDF to Word so nobody promises a boardroom that “the bot fixed Q3” without human QA on the decimals.",
+      "PDF to Excel is the fantasy that tables trapped inside a Portable Document Format can re-enter the land of pivot tables, filters, and `=XLOOKUP` without tears. Sometimes that fantasy is true: vector PDFs exported from spreadsheets often paste cleanly. Often it is not: scanned bank statements, merged cells, footnotes inside grids, and two-column layouts turn naive extraction into alphabet soup. freetoolkitapp explains the difference, points you to Split PDF and Compress PDF before heavy work, and pairs expectations with OCR PDF and PDF to Word so nobody promises a boardroom that “the bot fixed Q3” without human QA on the decimals.",
     howToUse: [
       "Classify the PDF in thirty seconds: try selecting a table cell as text. If nothing selects, plan OCR or a visual copy workflow before Excel dreams.",
       "For small tables, time-box manual copy-paste into a scratch sheet—two minutes beats two hours of cleanup when only twelve rows matter.",
@@ -2220,7 +2220,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Better than CSV export from bank?", answer: "Often yes when banks only mail PDF statements—still reconcile to official downloads." }
     ],
     seo: [
-      "PDF to Excel is where optimism about automation meets the stubbornness of paper culture. FreeToolKit refuses to sell magic: we sell vocabulary—vector versus scan, delimiter normalization, merged cell surgery—so your spreadsheet does not quietly lie to your CFO.",
+      "PDF to Excel is where optimism about automation meets the stubbornness of paper culture. freetoolkitapp refuses to sell magic: we sell vocabulary—vector versus scan, delimiter normalization, merged cell surgery—so your spreadsheet does not quietly lie to your CFO.",
       "Long-tail searchers typing “convert pdf table to excel free accurate” deserve honesty: accuracy is a process, not a checkbox. OCR, human QA, and versioned XLSX files are the process.",
       "Pair with OCR PDF when Ctrl+F fails on the PDF—no text layer means no honest extraction story yet.",
       "Municipal transparency nerds rebuilding budget PDFs into sortable civic data should still cite source page numbers—trust in journalism follows provenance.",
@@ -2234,7 +2234,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "edit-pdf": {
     intro:
-      "Edit PDF, in the structural sense, is the midnight toolkit: delete that stray blank page, rotate the landscape exhibit, reorder annexes so Exhibit C actually follows B. It is not a word processor—paragraph reflow, style sheets, and footnote renumbering belong in Word, Google Docs, or InDesign. FreeToolKit positions page surgery next to Merge PDF, Split PDF, Compare PDF Files, and Compress PDF so you finish the job recruiters, clerks, and grant portals asked for without reinstalling a 2 GB creative suite on a borrowed laptop.",
+      "Edit PDF, in the structural sense, is the midnight toolkit: delete that stray blank page, rotate the landscape exhibit, reorder annexes so Exhibit C actually follows B. It is not a word processor—paragraph reflow, style sheets, and footnote renumbering belong in Word, Google Docs, or InDesign. freetoolkitapp positions page surgery next to Merge PDF, Split PDF, Compare PDF Files, and Compress PDF so you finish the job recruiters, clerks, and grant portals asked for without reinstalling a 2 GB creative suite on a borrowed laptop.",
     howToUse: [
       "Duplicate the source PDF before any destructive change—especially when digital signatures, certifications, or court stamps appear in the file.",
       "Open the original in PDF Reader Online or a desktop reader to write down current page order, printed page numbers versus software indices, and any form fields you must preserve.",
@@ -2298,7 +2298,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Undo?", answer: "Keep prior filenames; PDF editors rarely offer infinite undo across sessions." }
     ],
     seo: [
-      "Edit PDF queries often arrive as panic tabs: “delete blank page PDF free now.” FreeToolKit answers the panic with sequencing: duplicate, edit, verify, rename, compress, send. Rushing any step is how exhibits go missing in filings that cannot be reopened.",
+      "Edit PDF queries often arrive as panic tabs: “delete blank page PDF free now.” freetoolkitapp answers the panic with sequencing: duplicate, edit, verify, rename, compress, send. Rushing any step is how exhibits go missing in filings that cannot be reopened.",
       "Legal operations teams should train associates that margin page numbers are not authoritative software indices—miscommunication with word processing staff causes Friday night rework.",
       "Teachers love packet PDFs until one scanner inserts blank pages—structural edit tools save toner and confusion without blaming students.",
       "Pair with PDF Reader Online after every edit pass; reading is still the cheapest QA tool.",
@@ -2314,7 +2314,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "excel-to-pdf": {
     intro:
-      "Excel to PDF is less about “conversion” and more about freezing intent: here is the roster, the quote matrix, the lab calibration table—read it, do not rearrange my formulas. Portals, auditors, and grandparents on phones all prefer a flat page over a live workbook. FreeToolKit walks through paste discipline, print scaling, when charts need a separate image hop, and how to chain Word to PDF, Merge PDF, and Compress PDF so the artifact you send matches the story you told in Slack.",
+      "Excel to PDF is less about “conversion” and more about freezing intent: here is the roster, the quote matrix, the lab calibration table—read it, do not rearrange my formulas. Portals, auditors, and grandparents on phones all prefer a flat page over a live workbook. freetoolkitapp walks through paste discipline, print scaling, when charts need a separate image hop, and how to chain Word to PDF, Merge PDF, and Compress PDF so the artifact you send matches the story you told in Slack.",
     howToUse: [
       "Decide whether recipients need numbers only (paste values) or narrative context (add a title row above the grid).",
       "Copy from Excel with consistent delimiter expectations if the tool accepts TSV/CSV-style paste—tabs beat commas when cells contain commas.",
@@ -2378,7 +2378,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Better than “Print to PDF”?", answer: "Sometimes equivalent; browser tools win on locked-down machines without Office installs." }
     ],
     seo: [
-      "Excel to PDF is the diplomatic solution when collaboration ends and publication begins. FreeToolKit treats the PDF as a contract about mutability: readers see numbers, not accidental edits, while authors keep the workbook as the living model.",
+      "Excel to PDF is the diplomatic solution when collaboration ends and publication begins. freetoolkitapp treats the PDF as a contract about mutability: readers see numbers, not accidental edits, while authors keep the workbook as the living model.",
       "Long-tail: “share excel as pdf without office” still matters for Chromebook classrooms, library job centers, and loan officers on thin clients—this page explains fidelity tradeoffs instead of hiding them behind a green button.",
       "Pair with Merge PDF when cover letters, disclaimers, and tables must ship as one upload; pair with Compress PDF when the portal enforces single-digit megabytes.",
       "Accessibility auditors reviewing public budgets should insist header semantics survive export—if the browser flow cannot tag tables, attach a CSV companion when policy allows.",
@@ -2392,7 +2392,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "ocr-pdf": {
     intro:
-      "OCR (optical character recognition) turns pictures of text—scans, phone photos, fax dumps—into selectable, searchable characters inside a PDF or export file. It is pattern matching under noise, skew, coffee stains, and three-column newspaper layouts. FreeToolKit refuses the fantasy of silent perfection: OCR is probabilistic, language-dependent, and table-hostile in ways that matter to lawyers, accountants, and students alike. This page maps when browser-class OCR suffices, when desktop or cloud vendors earn their fees, and how Split PDF, Compress PDF, and PDF to Word expectations line up after the text layer exists.",
+      "OCR (optical character recognition) turns pictures of text—scans, phone photos, fax dumps—into selectable, searchable characters inside a PDF or export file. It is pattern matching under noise, skew, coffee stains, and three-column newspaper layouts. freetoolkitapp refuses the fantasy of silent perfection: OCR is probabilistic, language-dependent, and table-hostile in ways that matter to lawyers, accountants, and students alike. This page maps when browser-class OCR suffices, when desktop or cloud vendors earn their fees, and how Split PDF, Compress PDF, and PDF to Word expectations line up after the text layer exists.",
     howToUse: [
       "Classify inputs: clean 300 DPI grayscale scans versus blurry phone shots versus degraded faxes—each tier needs different expectations and sometimes different vendors.",
       "Deskew and crop borders before OCR when possible; rotation errors cascade into garbage words that look plausible until a judge reads them.",
@@ -2456,7 +2456,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "What if accuracy is 99%?", answer: "On a 10,000-word doc, that is still many errors—proof high-stakes numbers always." }
     ],
     seo: [
-      "OCR PDF is the bridge from paper nostalgia to search culture. Municipalities want Ctrl+F; lawyers want Bates-numbered hits; students want copyable quotes. The bridge has weight limits. FreeToolKit posts the limits in plain language so procurement officers do not buy fantasyware.",
+      "OCR PDF is the bridge from paper nostalgia to search culture. Municipalities want Ctrl+F; lawyers want Bates-numbered hits; students want copyable quotes. The bridge has weight limits. freetoolkitapp posts the limits in plain language so procurement officers do not buy fantasyware.",
       "Long-tail queries like “how to make scanned pdf searchable” deserve answers about DPI, deskew, and language packs—not only a green Run button.",
       "Pair with Split PDF when RFPs ask for OCR on subset exhibits—scope creep is where budgets die.",
       "Healthcare CIOs evaluating cloud OCR should read HIPAA BAAs; this page cannot sign them for you.",
@@ -2471,7 +2471,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-watermark": {
     intro:
-      "PDF Watermarking stamps visible text or graphics across pages so recipients know draft status, classification level, or provenance before they forward blindly. It is deterrence and communication, not cryptography—screenshots still leak. FreeToolKit explains opacity, contrast under grayscale print, conflicts with digital signatures, and pairings with PDF Password Protector, Compare PDF Files, and Compress PDF when bundles must still fit email gateways after stamping.",
+      "PDF Watermarking stamps visible text or graphics across pages so recipients know draft status, classification level, or provenance before they forward blindly. It is deterrence and communication, not cryptography—screenshots still leak. freetoolkitapp explains opacity, contrast under grayscale print, conflicts with digital signatures, and pairings with PDF Password Protector, Compare PDF Files, and Compress PDF when bundles must still fit email gateways after stamping.",
     howToUse: [
       "Choose language that matches policy: DRAFT, CONFIDENTIAL, attorney eyes only—avoid cute phrasing on regulated documents unless counsel approves.",
       "Set opacity high enough for phones yet low enough that underlying figures remain interpretable for reviewers who still need to read charts.",
@@ -2535,7 +2535,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Combine with password?", answer: "Yes when policy wants layered controls—see PDF Password Protector." }
     ],
     seo: [
-      "PDF Watermark is the psychology of deterrence encoded in bytes. Humans forward fewer files when the diagonal word DRAFT stares back—even though tech literate users know screenshots exist. FreeToolKit teaches both halves: the human nudge and the technical limit.",
+      "PDF Watermark is the psychology of deterrence encoded in bytes. Humans forward fewer files when the diagonal word DRAFT stares back—even though tech literate users know screenshots exist. freetoolkitapp teaches both halves: the human nudge and the technical limit.",
       "Influencer marketing teams should coordinate watermark text with legal embargoes—mismatched dates create Twitter drama.",
       "Teachers using watermarks on answer keys should pair with classroom conversations about integrity, not only surveillance vibes.",
       "Pair with Compare PDF Files when clients claim they “never saw” the confidential stamp—diff tools settle arguments faster than memory.",
@@ -2550,7 +2550,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "add-text-to-pdf": {
     intro:
-      "Add Text to PDF is the lightweight overlay pass: you place titles, labels, dates, or short callouts on top of an existing PDF when reopening Word or InDesign is not practical. It is not a substitute for reflowing body copy—PDF pages are a canvas, not a flowing document—yet for “sign here” arrows, exhibit stamps, or a missing cover-sheet title, overlay text saves hours. FreeToolKit explains font limits in browser engines, why overlays differ from true redaction, and how to chain this step with Merge PDF, Rotate PDF, and Compress PDF when packets still miss portal checks.",
+      "Add Text to PDF is the lightweight overlay pass: you place titles, labels, dates, or short callouts on top of an existing PDF when reopening Word or InDesign is not practical. It is not a substitute for reflowing body copy—PDF pages are a canvas, not a flowing document—yet for “sign here” arrows, exhibit stamps, or a missing cover-sheet title, overlay text saves hours. freetoolkitapp explains font limits in browser engines, why overlays differ from true redaction, and how to chain this step with Merge PDF, Rotate PDF, and Compress PDF when packets still miss portal checks.",
     howToUse: [
       "Open the PDF in a desktop reader first and note page dimensions, rotation, and whether text should sit in margins or over figures.",
       "Duplicate the file before editing when the original is signed, certified, or legally filed—structural changes can invalidate some signature profiles.",
@@ -2614,7 +2614,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Copyright?", answer: "Annotating a PDF does not grant rights to distribute the underlying work—respect publisher licenses." }
     ],
     seo: [
-      "Add Text to PDF queries spike the night before deadlines when someone notices a missing exhibit label. FreeToolKit frames the tool as triage, not typography nirvana: you are placing readable markers on a frozen layout, not redesigning a magazine spread.",
+      "Add Text to PDF queries spike the night before deadlines when someone notices a missing exhibit label. freetoolkitapp frames the tool as triage, not typography nirvana: you are placing readable markers on a frozen layout, not redesigning a magazine spread.",
       "Legal teams should distinguish overlays from redaction and from electronic signatures—three different risk profiles. Overlays can obscure visually yet leave recoverable text underneath if redaction was never performed correctly.",
       "Teachers merging scanned packets appreciate a quick “Name: ______” stamp on page one without re-scanning thirty notebooks—pair with Merge PDF when multiple chapters arrive separately.",
       "Insurance adjusters labeling photo PDFs with claim IDs should still keep EXIF originals elsewhere when pixel evidence matters—overlays do not replace chain of custody.",
@@ -2630,7 +2630,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-unlock": {
     intro:
-      "PDF Unlock (open-password removal) is for people who legitimately know the password and need a working copy without a prompt—archiving personal tax files, batch-processing HR bundles, or merging encrypted exhibits. It is not for breaking into someone else’s documents; unauthorized decryption violates law and policy in most jurisdictions. FreeToolKit repeats that distinction loudly while explaining how owner versus user passwords behave, why some PDFs refuse to unlock in-browser, and what to do next with Merge PDF or Compress PDF once the bytes are accessible.",
+      "PDF Unlock (open-password removal) is for people who legitimately know the password and need a working copy without a prompt—archiving personal tax files, batch-processing HR bundles, or merging encrypted exhibits. It is not for breaking into someone else’s documents; unauthorized decryption violates law and policy in most jurisdictions. freetoolkitapp repeats that distinction loudly while explaining how owner versus user passwords behave, why some PDFs refuse to unlock in-browser, and what to do next with Merge PDF or Compress PDF once the bytes are accessible.",
     howToUse: [
       "Confirm you have legal authority: employee processing firm files, owner unlocking their own export, or counsel-approved litigation copies.",
       "Try opening in a desktop reader with the known password first—if it fails there, browser unlock will not magically succeed.",
@@ -2694,7 +2694,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "What if the tool refuses my file?", answer: "Try desktop Acrobat or the authoring app that created the encryption—nonstandard handlers exist." }
     ],
     seo: [
-      "PDF Unlock is one of the most ethically sensitive utilities in any toolkit. FreeToolKit leads with authorization language because search demand mixes lawful admins with fantasy movie hackers. The page exists so legitimate owners can finish merge and compress workflows—not so strangers can open your medical records.",
+      "PDF Unlock is one of the most ethically sensitive utilities in any toolkit. freetoolkitapp leads with authorization language because search demand mixes lawful admins with fantasy movie hackers. The page exists so legitimate owners can finish merge and compress workflows—not so strangers can open your medical records.",
       "Law firms should route unlock requests through records policies; paralegals should not experiment casually on sealed filings.",
       "M&A data rooms often issue expiring passwords; unlocking for offline merge may violate room agreements even if technically possible—read the clickwrap.",
       "Pair with Merge PDF after unlock when portals demanded one non-encrypted packet yet your originals were individually passworded for email safety.",
@@ -2731,7 +2731,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Unicode?", answer: "Special characters in author fields should be tested on Windows preview panes." }
     ],
     seo: [
-      "Understanding PDF document properties prevents small embarrassments from becoming viral screenshots. FreeToolKit reminds visitors that PDFs carry invisible résumés: author names, software versions, half-baked titles. Cleaning metadata is hygiene before external publish, like spellcheck for machines.",
+      "Understanding PDF document properties prevents small embarrassments from becoming viral screenshots. freetoolkitapp reminds visitors that PDFs carry invisible résumés: author names, software versions, half-baked titles. Cleaning metadata is hygiene before external publish, like spellcheck for machines.",
       "Open-source teams releasing whitepapers should align metadata with repo LICENSE files—lawyers notice mismatches.",
       "Pair with SERP-adjacent thinking: when PDFs rank, title properties sometimes become the blue link text—write them like headlines, not filenames.",
       "Accessibility metadata overlaps conceptually with tagging, but fixing keywords does not replace alt text on embedded images—still audit figures.",
@@ -2741,7 +2741,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "compare-pdf-files": {
     intro:
-      "Compare PDF Files is the sanity check when two “final” versions float in email threads with identical filenames and different page counts. Comparison can mean pixel diffs, text extraction diffs, or manual human reconciliation—each method false-alarms differently when compression artifacts, font subsetting, or dark mode inversions enter the room. FreeToolKit teaches methodology: normalize zoom, decide whether scans need OCR first, when Split PDF reduces noise, and how Merge PDF afterward should wait until humans agree which side won each disputed paragraph.",
+      "Compare PDF Files is the sanity check when two “final” versions float in email threads with identical filenames and different page counts. Comparison can mean pixel diffs, text extraction diffs, or manual human reconciliation—each method false-alarms differently when compression artifacts, font subsetting, or dark mode inversions enter the room. freetoolkitapp teaches methodology: normalize zoom, decide whether scans need OCR first, when Split PDF reduces noise, and how Merge PDF afterward should wait until humans agree which side won each disputed paragraph.",
     howToUse: [
       "Establish goal: catch malicious edits, catch export accidents, or satisfy curiosity—scope sets acceptable false positive rates.",
       "Hash filenames and modified dates before deep comparison—sometimes you are diffing the wrong attachment entirely.",
@@ -2819,7 +2819,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-reader-online": {
     intro:
-      "PDF Reader Online is the zero-install preview lane: open a file, count pages, skim headings, check for blank inserts, read metadata in the tab title, and decide whether tonight needs Split PDF, Compress PDF, or a calm reply that you opened the wrong attachment. Reading is active triage, not passive scrolling. FreeToolKit frames the reader as the first quality gate before money, grades, or visas ride on a submission—especially on locked-down kiosks where Acrobat cannot install.",
+      "PDF Reader Online is the zero-install preview lane: open a file, count pages, skim headings, check for blank inserts, read metadata in the tab title, and decide whether tonight needs Split PDF, Compress PDF, or a calm reply that you opened the wrong attachment. Reading is active triage, not passive scrolling. freetoolkitapp frames the reader as the first quality gate before money, grades, or visas ride on a submission—especially on locked-down kiosks where Acrobat cannot install.",
     howToUse: [
       "Verify sender and filename before opening—PDF malware exists; zero-trust habits beat cool reader features.",
       "Confirm displayed page count matches expectations from the authoring team; off-by-one often means a hidden cover or merged appendix.",
@@ -2883,7 +2883,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is this archival viewing?", answer: "For long-term preservation, follow PDF/A policies and institutional readers." }
     ],
     seo: [
-      "PDF Reader Online is the front door to document hygiene. People who read before sending cause fewer “wrong file” apologies, fewer rejected uploads, fewer fax-era rescans. FreeToolKit celebrates boring competence.",
+      "PDF Reader Online is the front door to document hygiene. People who read before sending cause fewer “wrong file” apologies, fewer rejected uploads, fewer fax-era rescans. freetoolkitapp celebrates boring competence.",
       "Remote work’s hybrid personal devices make read-only browser previews attractive—still pair with DLP policies when regulated data appears.",
       "Long-tail: “open pdf online without download” intersects kiosk travelers, Chromebook students, and hospital guests—each needs different privacy advice.",
       "Pair with Edit PDF when the reader reveals the title field still says “Copy of Copy of Template.”",
@@ -2897,7 +2897,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "final-grade-calculator": {
     intro:
-      "Final Grade Calculator answers the anxious end-of-semester question: given what I have on the syllabus now, what do I need on the final to finish with a B? It is weighted arithmetic, not fate—different courses drop quizzes, replace midterms, or cap exam impact. FreeToolKit walks through entering current averages with their weights, sanity-checking whether your Canvas total matches the syllabus, and pairing results with GPA Calculator and CGPA Calculator when the real goal is cumulative standing, not one course’s drama.",
+      "Final Grade Calculator answers the anxious end-of-semester question: given what I have on the syllabus now, what do I need on the final to finish with a B? It is weighted arithmetic, not fate—different courses drop quizzes, replace midterms, or cap exam impact. freetoolkitapp walks through entering current averages with their weights, sanity-checking whether your Canvas total matches the syllabus, and pairing results with GPA Calculator and CGPA Calculator when the real goal is cumulative standing, not one course’s drama.",
     howToUse: [
       "Read the syllabus weights for homework, labs, midterm, participation, and final—copy numbers exactly, including whether the final is “20% or best of midterm/final.”",
       "Enter your current earned percentage in each completed category; leave the final blank as the unknown if that is what you are solving.",
@@ -2961,14 +2961,14 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Academic integrity?", answer: "Calculators never justify cheating; integrity policies always win." }
     ],
     seo: [
-      "Final Grade Calculator is peak semester search volume: hope, dread, and Excel avoidance in one query. FreeToolKit keeps the math transparent so students ask professors better questions than “is there extra credit?” without showing any work.",
+      "Final Grade Calculator is peak semester search volume: hope, dread, and Excel avoidance in one query. freetoolkitapp keeps the math transparent so students ask professors better questions than “is there extra credit?” without showing any work.",
       "Parents relearning weighted grades twenty years after high school appreciate plain-language explanations beside the widget—family support improves when numbers are shared, not screamed.",
       "Pair with GPA Calculator when the course is a gatekeeper for major declaration—cumulative context reframes panic.",
       "International students navigating unfamiliar LMS tiles benefit when articles explain US syllabus vocabulary alongside calculators.",
       "Accessibility: dyslexic learners may transpose digits—encourage reading weights aloud before typing.",
       "Long-tail: “what grade do I need on my final calculator” maps here; include examples with fractional weights for SEO depth.",
       "Financial aid offices watching SAP thresholds should link students to cumulative tools as well—one course story is incomplete.",
-      "Edtech ethics: calculators should not dark-pattern students into paid “grade insurance” upsells—FreeToolKit stays direct.",
+      "Edtech ethics: calculators should not dark-pattern students into paid “grade insurance” upsells—freetoolkitapp stays direct.",
       "Coaches and music lesson teachers use the same math for jury thresholds—domain changes, arithmetic does not.",
       "Therapists note catastrophizing spikes before finals—separating known weights from imagined disasters helps; numbers can calm when used gently.",
       "Developers: if you embed calculators in LMS LTI apps, expose formula strings for instructor auditability—trust rises.",
@@ -2977,7 +2977,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "weighted-grade-calculator": {
     intro:
-      "Weighted Grade Calculator combines categories—exams at 50%, homework at 20%, labs at 20%, participation at 10%—into one course average without mistaking straight point totals for percent weights. Confusion here costs letter grades: students who sum raw points when the syllabus uses percents, or who forget labs count double. FreeToolKit explains the algebra, links to Final Grade Calculator for endgame scenarios, and nudges users toward GPA Calculator when the emotional stakes are really cumulative, not category trivia.",
+      "Weighted Grade Calculator combines categories—exams at 50%, homework at 20%, labs at 20%, participation at 10%—into one course average without mistaking straight point totals for percent weights. Confusion here costs letter grades: students who sum raw points when the syllabus uses percents, or who forget labs count double. freetoolkitapp explains the algebra, links to Final Grade Calculator for endgame scenarios, and nudges users toward GPA Calculator when the emotional stakes are really cumulative, not category trivia.",
     howToUse: [
       "List every graded category from the syllabus with its weight; confirm weights sum to 100% (or normalize if the professor publishes fractions).",
       "Enter your current score in each category as the syllabus defines it—sometimes categories are out of different point totals.",
@@ -3041,7 +3041,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "International marks?", answer: "Convert using official tables before weighting—do not eyeball." }
     ],
     seo: [
-      "Weighted Grade Calculator traffic overlaps with “how do I calculate my grade in class” long-tail queries. FreeToolKit teaches the distributive property in human language: each category contributes score × weight, summed. That sentence prevents more errors than any animated mascot.",
+      "Weighted Grade Calculator traffic overlaps with “how do I calculate my grade in class” long-tail queries. freetoolkitapp teaches the distributive property in human language: each category contributes score × weight, summed. That sentence prevents more errors than any animated mascot.",
       "Tutoring centers can embed this concept in orientation slides—students who understand weights spend fewer hours arguing about 2-point quiz deltas.",
       "Pair with Final Grade Calculator near finals because questions shift from “what is my average” to “what do I need.”",
       "Accessibility: offer worked examples with alt text describing pie charts for visually impaired learners when marketing pages include diagrams.",
@@ -3057,7 +3057,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "attendance-calculator": {
     intro:
-      "Attendance Calculator turns how many sessions you attended versus how many counted into a percentage—and often answers “how many can I still miss?” without sugar-coating SAP (satisfactory academic progress), visa attendance rules, or clinical hour minimums. Syllabi hide surprises: labs weighted double, excused absences with documentation, or COVID-era hybrid attendance definitions. FreeToolKit encourages reading footnotes, pairing with Assignment Planner when skipping class correlates with missed deadlines, and checking financial aid portals because attendance math can gate money even when GPA looks fine.",
+      "Attendance Calculator turns how many sessions you attended versus how many counted into a percentage—and often answers “how many can I still miss?” without sugar-coating SAP (satisfactory academic progress), visa attendance rules, or clinical hour minimums. Syllabi hide surprises: labs weighted double, excused absences with documentation, or COVID-era hybrid attendance definitions. freetoolkitapp encourages reading footnotes, pairing with Assignment Planner when skipping class correlates with missed deadlines, and checking financial aid portals because attendance math can gate money even when GPA looks fine.",
     howToUse: [
       "Count only sessions that count per syllabus—guest lecture days, exam-only days, or canceled classes may differ.",
       "Enter held sessions, attended sessions, and the minimum percentage your program requires—some use 75%, others 80%, clinical tracks tighter.",
@@ -3121,7 +3121,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "What if I am one class short?", answer: "Attend make-up sessions if offered; otherwise speak to instructor promptly." }
     ],
     seo: [
-      "Attendance Calculator queries spike after flu season, midterms, and Greek-life busy weeks. FreeToolKit pairs math with policy literacy because the calculator cannot smell a doctor’s note requirement you ignored.",
+      "Attendance Calculator queries spike after flu season, midterms, and Greek-life busy weeks. freetoolkitapp pairs math with policy literacy because the calculator cannot smell a doctor’s note requirement you ignored.",
       "International SEO: “F1 attendance calculator” adjacent topics belong in blog spokes with DSO-reviewed language—this tool page stays general-purpose.",
       "Pair with Assignment Planner when skipping correlates with missed deadlines—symptoms, not only truancy.",
       "Accessibility: large numeric outputs help low-vision students and parents read margins quickly.",
@@ -3137,7 +3137,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "assignment-planner": {
     intro:
-      "Assignment Planner breaks intimidating prompts into sequenced chunks: understand, research, outline, draft, reverse-outline, cite, edit, sleep, submit. Procrastination is not laziness alone—it is often unclear next actions. FreeToolKit frames planning as timeboxing plus dependency awareness: you cannot polish citations before sources exist. Pair with Pomodoro Timer for execution, Word Counter for length targets, and APA or MLA generators once drafting stabilizes—not before, or citations churn endlessly.",
+      "Assignment Planner breaks intimidating prompts into sequenced chunks: understand, research, outline, draft, reverse-outline, cite, edit, sleep, submit. Procrastination is not laziness alone—it is often unclear next actions. freetoolkitapp frames planning as timeboxing plus dependency awareness: you cannot polish citations before sources exist. Pair with Pomodoro Timer for execution, Word Counter for length targets, and APA or MLA generators once drafting stabilizes—not before, or citations churn endlessly.",
     howToUse: [
       "Paste the assignment prompt into notes; highlight verbs (analyze, compare, argue) and constraints (page count, source minimums, banned genres).",
       "Back-schedule from the deadline with buffer days for printer failures, group partner ghosting, and LMS outages—assume one surprise.",
@@ -3201,7 +3201,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is perfection required?", answer: "Good-enough plans beat abandoned perfect Gantt charts." }
     ],
     seo: [
-      "Assignment Planner SEO overlaps productivity TikTok culture—FreeToolKit stays boring on purpose: dates, buffers, explicit outputs. Boring ships essays.",
+      "Assignment Planner SEO overlaps productivity TikTok culture—freetoolkitapp stays boring on purpose: dates, buffers, explicit outputs. Boring ships essays.",
       "First-gen students without family templates for college pacing benefit from printable week grids linked from this hub.",
       "Pair with Pomodoro Timer blog tutorials when procrastination is emotional avoidance, not scheduling ignorance.",
       "Accessibility: planning UIs should not rely on color-only urgency—screen reader users deserve textual priority labels too.",
@@ -3216,7 +3216,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pomodoro-timer": {
     intro:
-      "Pomodoro Timer structures work into focused intervals—classically 25 minutes on, 5 minutes off—with longer breaks after cycles. The technique fights context switching, phone reflexes, and ambiguous “study later” intentions. FreeToolKit notes when Pomodoro misfits: creative writing flow states, paired programming with colleagues talking continuously, or toddlers interrupting every four minutes. Pair with Assignment Planner for what to do inside each pomodoro, Study Timer for simple countdown needs, and Scientific Calculator when the pomodoro content is actually integrals.",
+      "Pomodoro Timer structures work into focused intervals—classically 25 minutes on, 5 minutes off—with longer breaks after cycles. The technique fights context switching, phone reflexes, and ambiguous “study later” intentions. freetoolkitapp notes when Pomodoro misfits: creative writing flow states, paired programming with colleagues talking continuously, or toddlers interrupting every four minutes. Pair with Assignment Planner for what to do inside each pomodoro, Study Timer for simple countdown needs, and Scientific Calculator when the pomodoro content is actually integrals.",
     howToUse: [
       "Pick one concrete task for the next interval—read section 3.2, draft intro paragraph, debug failing test—not “study chemistry.”",
       "Silence non-urgent notifications; inform roommates you are in a focus block when shared spaces allow.",
@@ -3280,7 +3280,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Work legal breaks?", answer: "Labor laws define breaks differently—follow jurisdiction, not blogs." }
     ],
     seo: [
-      "Pomodoro Timer is the gateway drug to timeboxing. Searchers want a button; FreeToolKit also explains why breaks are not laziness—they reset attentional blink accumulation.",
+      "Pomodoro Timer is the gateway drug to timeboxing. Searchers want a button; freetoolkitapp also explains why breaks are not laziness—they reset attentional blink accumulation.",
       "Remote work SEO clusters overlap with “focus timer online”—mention browser DND settings for long-tail depth.",
       "Pair with Assignment Planner in blog tutorials for “full thesis day” narratives readers actually finish.",
       "Accessibility: audible alarms should have visual flashes too for d/Deaf users when tools support it—request features ethically.",
@@ -3294,7 +3294,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "scientific-calculator": {
     intro:
-      "Scientific Calculator handles powers, roots, logs, exponentials, trig functions, and π-heavy homework without hunting for a physical TI in a dorm drawer. It is a learning aid, not an oracle: courses specify allowed models for exams, radians versus degrees trip everyone quarterly, and floating-point quirks exist at the edges. FreeToolKit encourages verifying mode indicators, pairing with Unit Converter for applied problems, and using GPA-adjacent tools only metaphorically—calculus mastery and transcript points correlate imperfectly.",
+      "Scientific Calculator handles powers, roots, logs, exponentials, trig functions, and π-heavy homework without hunting for a physical TI in a dorm drawer. It is a learning aid, not an oracle: courses specify allowed models for exams, radians versus degrees trip everyone quarterly, and floating-point quirks exist at the edges. freetoolkitapp encourages verifying mode indicators, pairing with Unit Converter for applied problems, and using GPA-adjacent tools only metaphorically—calculus mastery and transcript points correlate imperfectly.",
     howToUse: [
       "Confirm angle mode (DEG vs RAD) before trig—classic silent failure on exams and homework alike.",
       "Use parentheses liberally; implicit order of operations is where friendships end in group chats.",
@@ -3358,7 +3358,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Is this medical advice?", answer: "No—clinical dosing follows protocols and licensed professionals." }
     ],
     seo: [
-      "Scientific Calculator SEO competes with app stores, yet browser calculators still spike during exam seasons and device-forgotten mornings. FreeToolKit leans into pedagogy: modes, notation, and honesty about what online tools cannot replace in proctored halls.",
+      "Scientific Calculator SEO competes with app stores, yet browser calculators still spike during exam seasons and device-forgotten mornings. freetoolkitapp leans into pedagogy: modes, notation, and honesty about what online tools cannot replace in proctored halls.",
       "International curricula differ on log notation—pages that mention both capture long-tail confusion traffic ethically.",
       "Pair with Unit Converter for physics word problems mixing imperial hints with metric answers—students need both.",
       "Accessibility: math anxiety is real—calm copy around “wrong answer” experiences reduces shame bounce rates.",
@@ -3372,7 +3372,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "apa-citation-generator": {
     intro:
-      "APA Citation Generator drafts seventh-edition-style references and in-text patterns from the details you type: author, year, title, DOI, URL, publisher, edition. Style manuals are hundreds of pages because reality is messy—translators, edition numbers, preprint servers, TikTok videos. FreeToolKit treats generator output as a first draft you verify against Purdue OWL, APA.org, or your instructor’s local quirks. Pair with Word Counter while drafting, MLA or Harvard generators when courses mix styles, and Grammar Fixer before submission—not because citations fix grammar, but because last passes cluster naturally.",
+      "APA Citation Generator drafts seventh-edition-style references and in-text patterns from the details you type: author, year, title, DOI, URL, publisher, edition. Style manuals are hundreds of pages because reality is messy—translators, edition numbers, preprint servers, TikTok videos. freetoolkitapp treats generator output as a first draft you verify against Purdue OWL, APA.org, or your instructor’s local quirks. Pair with Word Counter while drafting, MLA or Harvard generators when courses mix styles, and Grammar Fixer before submission—not because citations fix grammar, but because last passes cluster naturally.",
     howToUse: [
       "Collect metadata while you read: screenshot title pages, copy DOIs from publisher sites, note access dates for unstable URLs.",
       "Choose the source template that matches reality—journal article is not the same shape as a YouTube comment thread.",
@@ -3436,7 +3436,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Does this check plagiarism?", answer: "No—citation is not originality; use integrity workflows." }
     ],
     seo: [
-      "APA Citation Generator SEO is crowded with thin pages that output wrong italics confidently. FreeToolKit differentiates with verification discipline: generators draft; humans certify. That sentence alone saves grades.",
+      "APA Citation Generator SEO is crowded with thin pages that output wrong italics confidently. freetoolkitapp differentiates with verification discipline: generators draft; humans certify. That sentence alone saves grades.",
       "International students often juggle APA with Harvard-like styles from prior schools—internal linking across generators reduces bounce confusion.",
       "Pair with Word Counter when instructors cap abstract length—citations and abstracts collide at 11 PM regularly.",
       "Accessibility: screen reader users benefit when schools publish citation audio tutorials—consider linking from LMS.",
@@ -3452,7 +3452,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "mla-citation-generator": {
     intro:
-      "MLA Citation Generator drafts ninth-edition-style works-cited lines from the fields you supply: author, title of source, container, contributor, version, number, publisher, date, location. MLA’s container model mirrors how media actually nests today—a YouTube video inside a channel inside a platform. FreeToolKit warns that database-generated citations often need database/container labels tweaked, that “Web” is not a catch-all anymore, and that pairing with APA or Harvard generators helps students in dual-enrollment programs where each professor picks a different religion.",
+      "MLA Citation Generator drafts ninth-edition-style works-cited lines from the fields you supply: author, title of source, container, contributor, version, number, publisher, date, location. MLA’s container model mirrors how media actually nests today—a YouTube video inside a channel inside a platform. freetoolkitapp warns that database-generated citations often need database/container labels tweaked, that “Web” is not a catch-all anymore, and that pairing with APA or Harvard generators helps students in dual-enrollment programs where each professor picks a different religion.",
     howToUse: [
       "Identify the source’s core container—is it a journal article, a book chapter, a site page, or a whole site?",
       "Collect stable URLs when permalinks exist; avoid sessionized library resolver URLs when your instructor bans them.",
@@ -3516,7 +3516,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Does MLA use footnotes?", answer: "Some courses use MLA notes style variants—ask before assuming parenthetical-only." }
     ],
     seo: [
-      "MLA Citation Generator queries spike during first-year composition and any humanities survey course. FreeToolKit leans into the container metaphor because once students visualize nesting, commas stop feeling random.",
+      "MLA Citation Generator queries spike during first-year composition and any humanities survey course. freetoolkitapp leans into the container metaphor because once students visualize nesting, commas stop feeling random.",
       "Dual-style programs (business communication APA + literature MLA) should interlink generators prominently—reduce identity crisis bounce.",
       "Long-tail: “mla works cited journal article database” deserves blog examples with real (de-identified) screenshots.",
       "Accessibility: teach keyboard shortcuts for hanging indents in Word and Google Docs in the same help center article that links here.",
@@ -3531,7 +3531,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "harvard-reference-generator": {
     intro:
-      "Harvard Reference Generator drafts author–date reference list entries and in-text citations common across UK, Australian, and many Commonwealth institutions—except “Harvard” is not one global standard the way APA tries to be. Different universities publish marginally different punctuation guides. FreeToolKit tells students to match their local Harvard guide PDF first, then use this generator as scaffolding. Pair with APA for students studying abroad, MLA for humanities electives, and Word Counter when reference lists push page limits.",
+      "Harvard Reference Generator drafts author–date reference list entries and in-text citations common across UK, Australian, and many Commonwealth institutions—except “Harvard” is not one global standard the way APA tries to be. Different universities publish marginally different punctuation guides. freetoolkitapp tells students to match their local Harvard guide PDF first, then use this generator as scaffolding. Pair with APA for students studying abroad, MLA for humanities electives, and Word Counter when reference lists push page limits.",
     howToUse: [
       "Download your university’s Harvard guide PDF—prefer the 2023–2026 revision if multiple float on Google.",
       "Collect author, year, title, edition, place of publication, publisher, and URL or DOI as your guide demands.",
@@ -3595,7 +3595,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Does this export BibTeX?", answer: "Likely no—use reference managers for LaTeX pipelines." }
     ],
     seo: [
-      "Harvard Reference Generator searches spike across Commonwealth semester starts. FreeToolKit wins trust by admitting variation exists—students stop fighting Turnitin ghosts when they align to local PDFs.",
+      "Harvard Reference Generator searches spike across Commonwealth semester starts. freetoolkitapp wins trust by admitting variation exists—students stop fighting Turnitin ghosts when they align to local PDFs.",
       "Pair with APA generator pages in navigation for transatlantic dual-degree programs—reduce style whiplash.",
       "Long-tail: “harvard referencing website no author” belongs in blog tutorials with institutional screenshots de-identified.",
       "Accessibility: author–date systems help dyslexic students skim sources quickly when PDFs are tagged—still fix tagging.",
@@ -3609,7 +3609,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "bmi-calculator": {
     intro:
-      "BMI Calculator estimates Body Mass Index from height and weight using the standard metric formula (kg/m²) or the imperial equivalent with unit conversion. BMI is a population screening metric, not a diagnosis: athletes with high muscle mass, older adults losing muscle, and many ethnic groups may need different clinical context. FreeToolKit presents numbers clearly while repeating that medical decisions belong to licensed professionals who review labs, waist circumference, blood pressure, and history—not a browser widget alone.",
+      "BMI Calculator estimates Body Mass Index from height and weight using the standard metric formula (kg/m²) or the imperial equivalent with unit conversion. BMI is a population screening metric, not a diagnosis: athletes with high muscle mass, older adults losing muscle, and many ethnic groups may need different clinical context. freetoolkitapp presents numbers clearly while repeating that medical decisions belong to licensed professionals who review labs, waist circumference, blood pressure, and history—not a browser widget alone.",
     howToUse: [
       "Measure height and weight consistently: morning, light clothing, flat floor for height, calibrated scale for weight when possible.",
       "Select the correct unit system before typing—mixing feet with centimeters silently produces nonsense.",
@@ -3673,7 +3673,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "When should I seek urgent care?", answer: "Sudden chest pain, fainting, or other emergencies are not BMI questions—call emergency services." }
     ],
     seo: [
-      "BMI Calculator traffic spikes every January and every beach season—not because bodies change overnight, but because shame marketing cycles repeat. FreeToolKit tries a different tone: here is the arithmetic, here are the limits, here is when to talk to a human who studied medicine. Screening metrics become harmful when treated as identity scores.",
+      "BMI Calculator traffic spikes every January and every beach season—not because bodies change overnight, but because shame marketing cycles repeat. freetoolkitapp tries a different tone: here is the arithmetic, here are the limits, here is when to talk to a human who studied medicine. Screening metrics become harmful when treated as identity scores.",
       "Clinicians often pair BMI with blood pressure, lipids, family history, sleep apnea symptoms, and waist measurements. Patients arriving with a week of home weights and heights already logged—including this BMI snapshot—use appointment time better.",
       "Strength coaches rightly note that linebackers and Olympic lifters may carry high BMI with low metabolic risk. The calculator is not calling them unhealthy; it is measuring mass relative to height, not virtue.",
       "Public health researchers use BMI at population scales because it is cheap to collect on surveys, not because it is perfect for individuals. Interpret your personal number with that context.",
@@ -3689,7 +3689,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "discount-calculator": {
     intro:
-      "Discount Calculator helps you find sale prices, stack percentage reductions, and sanity-check register math before you argue with a receipt. Retail promotions mix vocabulary—“20% off,” “$15 off $75,” “BOGO 50%”—and shoppers lose money by mis-stacking mentally. FreeToolKit focuses on transparent intermediate steps so you can screenshot numbers at customer service windows or teach teens how promotions actually compound.",
+      "Discount Calculator helps you find sale prices, stack percentage reductions, and sanity-check register math before you argue with a receipt. Retail promotions mix vocabulary—“20% off,” “$15 off $75,” “BOGO 50%”—and shoppers lose money by mis-stacking mentally. freetoolkitapp focuses on transparent intermediate steps so you can screenshot numbers at customer service windows or teach teens how promotions actually compound.",
     howToUse: [
       "Identify the original price and whether the discount is a straight percent, a fixed dollar amount, or multi-stage.",
       "For percent discounts, enter the base price and the percent off; read the sale price and dollars saved.",
@@ -3769,7 +3769,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "loan-emi-calculator": {
     intro:
-      "Loan / EMI Calculator estimates equated monthly installment payments for amortizing loans given principal, annual interest rate, and tenure in months or years. EMI math assumes a standard flat payment schedule—real banks may add fees, insurance, balloon payments, or variable rates that change midstream. FreeToolKit helps you ballpark housing, auto, or education loans before you sit with a loan officer who has authoritative disclosures.",
+      "Loan / EMI Calculator estimates equated monthly installment payments for amortizing loans given principal, annual interest rate, and tenure in months or years. EMI math assumes a standard flat payment schedule—real banks may add fees, insurance, balloon payments, or variable rates that change midstream. freetoolkitapp helps you ballpark housing, auto, or education loans before you sit with a loan officer who has authoritative disclosures.",
     howToUse: [
       "Gather principal, nominal annual interest rate, and loan term in consistent units (months vs years).",
       "Confirm whether the quoted rate is APR with fees rolled in or nominal note rate—enter the number your paperwork labels clearly.",
@@ -3833,7 +3833,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Should I leverage to the max because EMI fits?", answer: "Liquidity and risk tolerance matter—talk to a fiduciary advisor for holistic planning." }
     ],
     seo: [
-      "Loan EMI Calculator traffic correlates with Fed announcements, spring home listings, and graduation season—money anxiety spikes predictably. FreeToolKit anchors that anxiety with transparent formulas: principal, rate, term, payment. The emotional work of saying no to too much house still belongs to you, but at least the arithmetic is not mysterious.",
+      "Loan EMI Calculator traffic correlates with Fed announcements, spring home listings, and graduation season—money anxiety spikes predictably. freetoolkitapp anchors that anxiety with transparent formulas: principal, rate, term, payment. The emotional work of saying no to too much house still belongs to you, but at least the arithmetic is not mysterious.",
       "Mortgage shoppers should pair EMI estimates with property tax databases and insurance quotes—PITI shocks first-time buyers who modeled principal and interest only.",
       "Auto shoppers should negotiate total price before discussing monthly payment tricks dealers use to hide longer terms.",
       "International students should model currency risk explicitly if future earnings may not match loan currency.",
@@ -3849,7 +3849,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "unit-converter": {
     intro:
-      "Unit Converter translates measurements between systems—meters to feet, kilograms to pounds, Celsius to Fahrenheit, and more—so you can read international specs, follow recipes abroad, or interpret lab data without re-deriving conversion constants from memory. FreeToolKit emphasizes double-checking unit labels because conversion errors are famously expensive: NASA Mars Climate Orbiter expensive, or merely Thanksgiving gravy salty expensive—both matter emotionally.",
+      "Unit Converter translates measurements between systems—meters to feet, kilograms to pounds, Celsius to Fahrenheit, and more—so you can read international specs, follow recipes abroad, or interpret lab data without re-deriving conversion constants from memory. freetoolkitapp emphasizes double-checking unit labels because conversion errors are famously expensive: NASA Mars Climate Orbiter expensive, or merely Thanksgiving gravy salty expensive—both matter emotionally.",
     howToUse: [
       "Identify the dimension you are converting (length, mass, temperature, volume) and pick matching source and target units.",
       "Type the numeric value carefully, watching decimal separators if you collaborate internationally.",
@@ -3913,7 +3913,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Can I trust this for exam answers?", answer: "Show your work; instructors want dimensional analysis reasoning, not only final digits." }
     ],
     seo: [
-      "Unit Converter pages get traffic spikes during Olympics, international moves, and viral European recipe videos—humans suddenly care that a stone is not a pound even though both sound medieval. FreeToolKit reduces lookup friction so you can return to the actual task: cooking, shipping, studying, or building.",
+      "Unit Converter pages get traffic spikes during Olympics, international moves, and viral European recipe videos—humans suddenly care that a stone is not a pound even though both sound medieval. freetoolkitapp reduces lookup friction so you can return to the actual task: cooking, shipping, studying, or building.",
       "STEM classrooms should teach dimensional analysis alongside any converter button—understanding beats button mashing on exams.",
       "Manufacturing teams collaborating across US and EU plants should document master CAD unit conventions to avoid silent 25.4× scale bugs.",
       "Healthcare travelers should print bilingual unit cheat sheets for chronic conditions—not rely on airport Wi-Fi alone.",
@@ -3929,7 +3929,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "cgpa-calculator": {
     intro:
-      "CGPA Calculator helps you combine semester or term GPAs across credit hours to estimate a cumulative grade-point average the way many registrars publish it on transcripts. Unlike a single-semester GPA snapshot, cumulative math weights every past course that still counts toward the degree—sometimes including transfer credits on special scales, pass/fail hours that do not move the numerator, and repeated courses where only the latest grade counts per policy. FreeToolKit explains the algebra clearly while insisting that your official transcript and catalog rules always beat any browser estimate.",
+      "CGPA Calculator helps you combine semester or term GPAs across credit hours to estimate a cumulative grade-point average the way many registrars publish it on transcripts. Unlike a single-semester GPA snapshot, cumulative math weights every past course that still counts toward the degree—sometimes including transfer credits on special scales, pass/fail hours that do not move the numerator, and repeated courses where only the latest grade counts per policy. freetoolkitapp explains the algebra clearly while insisting that your official transcript and catalog rules always beat any browser estimate.",
     howToUse: [
       "Pull your unofficial transcript or degree audit and list each line: grade points (or letter grade), credit hours, and whether the line counts toward CGPA per your school’s repeat and pass/fail rules.",
       "Convert letter grades to the point scale your institution publishes—4.0 unweighted, 4.3 A+, or 10-point international scales differ; enter the numbers the registrar would use, not what you wish they used.",
@@ -3993,7 +3993,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "FERPA and privacy?", answer: "Avoid pasting full transcripts into untrusted devices; summarize numbers manually when possible." }
     ],
     seo: [
-      "CGPA Calculator search intent mixes panic and planning—students at 2.7 wondering if dean’s list is still mathematically reachable, or scholarship recipients guarding a 3.85 against one tough thermodynamics term. FreeToolKit foregrounds credit-hour weighting because that single concept clears half the confusion on Reddit threads.",
+      "CGPA Calculator search intent mixes panic and planning—students at 2.7 wondering if dean’s list is still mathematically reachable, or scholarship recipients guarding a 3.85 against one tough thermodynamics term. freetoolkitapp foregrounds credit-hour weighting because that single concept clears half the confusion on Reddit threads.",
       "First-generation students often hear conflicting advice from well-meaning relatives who averaged letter grades mentally without hours. Show them quality points divided by credits on paper once—generational math literacy improves.",
       "Pre-law and pre-med forums obsess over trends; cumulative GPA tells only part of the story. Pair calculator outputs with honest narratives about upward trajectories in essays.",
       "International graduate applicants should attach registrar credential evaluation summaries rather than self-mapped 4.0 guesses—admissions teams prefer paid evaluation services for borderline cases.",
@@ -4009,7 +4009,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-to-jpg": {
     intro:
-      "PDF to JPG turns pages from a Portable Document Format file into raster images—typically one JPEG per page—so you can drop slides into social posts, embed crisp thumbnails in CMS galleries, or email page previews to people whose inboxes strip PDF previews. Vector text and embedded fonts become pixels, which means resolution and compression choices matter: too low and body copy moirés; too high and mobile viewers stall. FreeToolKit walks through DPI thinking, color profile caveats, and when exporting PNG or TIFF might beat JPEG for screenshots with sharp UI lines.",
+      "PDF to JPG turns pages from a Portable Document Format file into raster images—typically one JPEG per page—so you can drop slides into social posts, embed crisp thumbnails in CMS galleries, or email page previews to people whose inboxes strip PDF previews. Vector text and embedded fonts become pixels, which means resolution and compression choices matter: too low and body copy moirés; too high and mobile viewers stall. freetoolkitapp walks through DPI thinking, color profile caveats, and when exporting PNG or TIFF might beat JPEG for screenshots with sharp UI lines.",
     howToUse: [
       "Open the PDF locally first to confirm page count, password prompts, and whether pages are mostly photos or mostly vector diagrams—export presets differ.",
       "Choose DPI or pixel width deliberately: 150–200 DPI often suffices for full-page web embeds; 300+ for print handouts; 72 for quick thumbnails only when legibility allows.",
@@ -4073,7 +4073,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Copyright?", answer: "Rasterizing does not grant reproduction rights—respect publisher licenses." }
     ],
     seo: [
-      "PDF to JPG queries spike around report card season, conference poster deadlines, and marketing launch weeks when CMS admins suddenly “need images not PDFs.” FreeToolKit explains the trade-off: convenience versus fidelity. JPEG is a delivery codec, not an archival master format for fine typography.",
+      "PDF to JPG queries spike around report card season, conference poster deadlines, and marketing launch weeks when CMS admins suddenly “need images not PDFs.” freetoolkitapp explains the trade-off: convenience versus fidelity. JPEG is a delivery codec, not an archival master format for fine typography.",
       "Journalists exporting court PDFs should remember redaction failures sometimes hide in vector layers—rasterizing can help but is not a substitute for proper redaction review by legal teams.",
       "Ecommerce operators building PDP image galleries from supplier spec sheets should still request native packshots—converted PDF pages rarely beat studio photography for conversion rate.",
       "Teachers posting homework as JPG may unintentionally exclude blind students—pair visual exports with accessible text attachments.",
@@ -4089,7 +4089,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "image-cropper": {
     intro:
-      "Image Cropper removes outer pixels to improve composition, meet strict aspect-ratio requirements, or cut away scanner bed edges before upload. Cropping is destructive to canvas size—unlike a non-destructive mask in desktop editors—so FreeToolKit stresses working from a master copy, keeping rotation and straightening in separate passes, and understanding platform-specific safe zones (Instagram reels, LinkedIn banners, passport photo templates). Good crops tell the viewer where to look; bad crops amputate storytelling hands or crop charts until axis labels vanish.",
+      "Image Cropper removes outer pixels to improve composition, meet strict aspect-ratio requirements, or cut away scanner bed edges before upload. Cropping is destructive to canvas size—unlike a non-destructive mask in desktop editors—so freetoolkitapp stresses working from a master copy, keeping rotation and straightening in separate passes, and understanding platform-specific safe zones (Instagram reels, LinkedIn banners, passport photo templates). Good crops tell the viewer where to look; bad crops amputate storytelling hands or crop charts until axis labels vanish.",
     howToUse: [
       "Duplicate the original file before cropping so you can revisit wider framing if a client changes their mind.",
       "Straighten horizons first when photos need it—crooked crops waste pixels compensating for tilt.",
@@ -4153,7 +4153,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "AI auto-crop?", answer: "Verify faces and text; AI guesses wrong under stress lighting or unusual compositions." }
     ],
     seo: [
-      "Image Cropper searches blend creative intent and bureaucratic necessity—art students refining composition alongside visa applicants forcing selfies into government boxes. FreeToolKit refuses a one-size-fits-all crop box; we explain safe margins, destructive export risks, and why your Instagram auto-crop ate the CEO’s forehead.",
+      "Image Cropper searches blend creative intent and bureaucratic necessity—art students refining composition alongside visa applicants forcing selfies into government boxes. freetoolkitapp refuses a one-size-fits-all crop box; we explain safe margins, destructive export risks, and why your Instagram auto-crop ate the CEO’s forehead.",
       "Newsrooms cropping wire photos must follow license territory rules—cropping sometimes violates contractual framing mandates.",
       "Ecommerce cropping on white-background product shots should maintain consistent padding percentages so category grids align visually.",
       "Accessibility reviewers flag crops that remove color legends from heatmaps—context disappears for color-blind readers faster than sighted ones.",
@@ -4169,7 +4169,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "image-converter": {
     intro:
-      "Image Converter changes file formats—JPEG, PNG, WebP, AVIF where supported, sometimes TIFF or BMP—so assets meet upload validators, transparency needs, or email size caps. Format choice is engineering: JPEG throws away invisible detail for smaller photos; PNG preserves sharp edges and alpha channels at the cost of bytes; WebP and AVIF negotiate modern browser support versus archival longevity. FreeToolKit explains generation loss, animation gotchas when converting GIF to static formats, and why “just make it a JPG” ruins screenshots of dark mode UIs with banding.",
+      "Image Converter changes file formats—JPEG, PNG, WebP, AVIF where supported, sometimes TIFF or BMP—so assets meet upload validators, transparency needs, or email size caps. Format choice is engineering: JPEG throws away invisible detail for smaller photos; PNG preserves sharp edges and alpha channels at the cost of bytes; WebP and AVIF negotiate modern browser support versus archival longevity. freetoolkitapp explains generation loss, animation gotchas when converting GIF to static formats, and why “just make it a JPG” ruins screenshots of dark mode UIs with banding.",
     howToUse: [
       "Start from the highest-quality master available—converting a tiny JPEG to PNG does not recover lost detail magically.",
       "Pick JPEG when the subject is photographic with gradients; pick PNG or WebP lossless when text and UI lines must stay crisp.",
@@ -4233,7 +4233,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Prefer client-side conversion for sensitive imagery when tools support it." }
     ],
     seo: [
-      "Image Converter SEO competes with a thousand identical landing pages promising “free unlimited.” FreeToolKit differentiates by teaching format literacy: when JPEG wins, when it loses, and why your night-mode screenshot banded after conversion because 8-bit quantization hates subtle gradients.",
+      "Image Converter SEO competes with a thousand identical landing pages promising “free unlimited.” freetoolkitapp differentiates by teaching format literacy: when JPEG wins, when it loses, and why your night-mode screenshot banded after conversion because 8-bit quantization hates subtle gradients.",
       "Frontend performance engineers know LCP scores hinge on correct formats and sizes—conversion is one lever alongside responsive srcset.",
       "Email marketers still battle Outlook rendering—JPEG fallbacks remain relevant years after WebP hype cycles.",
       "Archivists prefer lossless masters with documented conversion chains; social teams prefer tiny lossy derivatives—both can coexist if labeled.",
@@ -4249,7 +4249,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
   },
   "pdf-password-protector": {
     intro:
-      "PDF Password Protector adds encryption so casual snoops cannot open a file without the passphrase. PDF encryption is real cryptography in the boring sense: AES with passwords humans type. Humans type predictable things. FreeToolKit explains owner versus user permissions, why encryption is not redaction, why it is not DLP, and how to pair encrypted files with PDF Watermark, Merge PDF, and careful passphrase delivery so Friday night tax panic does not become Monday morning account lockout.",
+      "PDF Password Protector adds encryption so casual snoops cannot open a file without the passphrase. PDF encryption is real cryptography in the boring sense: AES with passwords humans type. Humans type predictable things. freetoolkitapp explains owner versus user permissions, why encryption is not redaction, why it is not DLP, and how to pair encrypted files with PDF Watermark, Merge PDF, and careful passphrase delivery so Friday night tax panic does not become Monday morning account lockout.",
     howToUse: [
       "Pick a passphrase from a password manager or diceware-style random words—length beats leetspeak gimmicks.",
       "Never email the passphrase in the same thread as the encrypted PDF unless policy explicitly allows that risk tradeoff.",
@@ -4302,7 +4302,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
     ],
     faq: [
       { question: "Is AES-256 unbreakable?", answer: "The math is strong; weak passphrases and keyloggers are the practical break points." },
-      { question: "Can FreeToolKit recover my password?", answer: "No. Design password recovery flows with your IT or password manager, not hope." },
+      { question: "Can freetoolkitapp recover my password?", answer: "No. Design password recovery flows with your IT or password manager, not hope." },
       { question: "Does encryption stop screenshots?", answer: "No. Visible content can still be captured visually." },
       { question: "Owner vs user password?", answer: "They control different permission sets depending on how the PDF was built—test exports." },
       { question: "Will signatures survive?", answer: "Often invalidated when encryption rewrites streams—plan re-signing." },
@@ -4313,7 +4313,7 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Batch?", answer: "Scripted desktop tools beat manual browser loops for hundreds of files." }
     ],
     seo: [
-      "PDF Password Protector searches mix legitimate admins with movie fantasies. FreeToolKit keeps copy grounded: encryption protects files at rest from casual access, not from compromised endpoints, angry insiders with screenshots, or nation-grade adversaries. That framing keeps AdSense traffic without promising spy-movie immunity.",
+      "PDF Password Protector searches mix legitimate admins with movie fantasies. freetoolkitapp keeps copy grounded: encryption protects files at rest from casual access, not from compromised endpoints, angry insiders with screenshots, or nation-grade adversaries. That framing keeps AdSense traffic without promising spy-movie immunity.",
       "Tax season spikes this query. CPAs should prefer client portals; when clients refuse, encrypted PDF plus phone-delivered passphrase beats plaintext, still inferior to portals.",
       "Pair with Password Generator marketing copy only if you also teach vault habits—otherwise you manufacture false confidence.",
       "Legal teams reviewing HIPAA “addressable” safeguards should cite risk analyses, not checkbox encryption alone.",

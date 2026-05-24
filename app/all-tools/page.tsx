@@ -6,13 +6,13 @@ import { canonicalUrl } from "@/lib/utils";
 export function generateMetadata({ searchParams }: { searchParams?: { q?: string } }): Metadata {
   const hasQuery = Boolean(searchParams?.q?.trim());
   return {
-    title: "All Free AI & Productivity Tools",
-    description: "Search every FreeToolKit AI, everyday, student, developer, PDF, image, SEO, social media, and gaming tool in one clean productivity platform.",
+    title: "All Free Productivity Tools",
+    description: "Search every curated freetoolkitapp tool across AI, PDF & Image, SEO, Developer, and Calculators.",
     alternates: { canonical: canonicalUrl("/all-tools") },
     robots: hasQuery ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
-      title: "All Free AI & Productivity Tools",
-      description: "Find free browser-based tools for AI workflows, everyday tasks, PDFs, images, students, developers, SEO, social media, and gaming workflows.",
+      title: "All Free Productivity Tools",
+      description: "Find free browser-based tools for AI workflows, PDFs, images, SEO, developers, and calculators.",
       url: canonicalUrl("/all-tools"),
       type: "website"
     }
@@ -21,13 +21,13 @@ export function generateMetadata({ searchParams }: { searchParams?: { q?: string
 
 export default function AllToolsPage({ searchParams }: { searchParams?: { q?: string } }) {
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <Container className="max-w-6xl py-10">
       <PageHeader
         eyebrow="Searchable toolkit"
-        title="All FreeToolKit tools"
-        description="Search every free AI and everyday productivity tool across Everyday, AI Tools, Student, Developer, PDF & Image, SEO Tools, Social Media Tools, and Gaming Tools. Tools are organized for quick access and designed to work without login."
-        badges={["Everyday", "AI Tools", "PDF & Image", "SEO Tools", "Social Media Tools", "Gaming Tools"]}
+        title="All freetoolkitapp tools"
+        description="Search every curated freetoolkitapp tool across AI Tools, PDF & Image, SEO Tools, Developer, and Calculators. Tools are organized for quick access and designed to work without login."
+        badges={["AI Tools", "PDF & Image", "SEO Tools", "Developer", "Calculators"]}
       />
       <div className="mt-8"><AllToolsSearch initialQuery={searchParams?.q ?? ""} /></div>
       </Container>

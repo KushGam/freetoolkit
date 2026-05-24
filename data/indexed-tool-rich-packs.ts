@@ -23,7 +23,7 @@ export function applyIndexedRichPack(tool: Tool): Tool {
 export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
   "image-color-picker": {
     intro:
-      "Color Picker from Image is the bridge between “that blue on the poster” and a hex code your CSS actually accepts. Sampling is honest physics: you click one pixel, you get that pixel—browser scaling, JPEG ringing, and night-shift tinting can lie to your eyes, so this page teaches verification habits. FreeToolKit links to Image Resizer when you need a denser sample grid, Image Converter when uploads fail, and Image Compressor when screenshots balloon before you even pick a swatch.",
+      "Color Picker from Image is the bridge between “that blue on the poster” and a hex code your CSS actually accepts. Sampling is honest physics: you click one pixel, you get that pixel—browser scaling, JPEG ringing, and night-shift tinting can lie to your eyes, so this page teaches verification habits. freetoolkitapp links to Image Resizer when you need a denser sample grid, Image Converter when uploads fail, and Image Compressor when screenshots balloon before you even pick a swatch.",
     howToUse: [
       "Upload the highest-resolution reference you have; upscaled social downloads steal subtle hue detail.",
       "Zoom until one UI border occupies several pixels, then sample the interior—not the anti-aliased fringe.",
@@ -87,7 +87,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Copyright?", answer: "Sampling does not grant rights to reuse imagery—respect licenses." }
     ],
     seo: [
-      "Image color picker from photo workflows sound trivial until a launch blocks because nobody documented the actual blue in the hero asset. FreeToolKit treats sampling as a measurement discipline: resolution, compression, and display profiles are part of the measurement error budget.",
+      "Image color picker from photo workflows sound trivial until a launch blocks because nobody documented the actual blue in the hero asset. freetoolkitapp treats sampling as a measurement discipline: resolution, compression, and display profiles are part of the measurement error budget.",
       "Long-tail: “get hex color from image online” should lead to nuance—HEX is a social contract between browsers, not a Platonic ideal of cerulean.",
       "Pair with Image Cropper when the region you need is 5% of a 4000px screenshot—noise drops when irrelevant pixels leave the canvas.",
       "Developers syncing Tailwind tokens from marketing’s PNG exports should diff against Figma variables when both exist—pick one source of truth.",
@@ -102,7 +102,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "json-formatter": {
     intro:
-      "JSON Formatter turns minified API dumps, log lines, and copy-paste accidents into indented trees humans can scan. It does not judge your schema—it reveals missing commas, trailing garbage, and the emotional cost of 4000-character single lines. FreeToolKit pairs this habit with JSON Validator, UUID Generator when building fixtures, and Base64 Encoder / Decoder when payloads embed binary blobs. The goal is fewer Slack threads that start with “works on my machine.”",
+      "JSON Formatter turns minified API dumps, log lines, and copy-paste accidents into indented trees humans can scan. It does not judge your schema—it reveals missing commas, trailing garbage, and the emotional cost of 4000-character single lines. freetoolkitapp pairs this habit with JSON Validator, UUID Generator when building fixtures, and Base64 Encoder / Decoder when payloads embed binary blobs. The goal is fewer Slack threads that start with “works on my machine.”",
     howToUse: [
       "Paste raw JSON from curl, browser devtools, or logs—strip leading `data: ` prefixes if copied from SSE streams.",
       "Format first, read second: indentation exposes nesting mistakes faster than squinting at braces.",
@@ -166,7 +166,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Schema validation?", answer: "Formatting does not replace JSON Schema or OpenAPI validation—pair tools." }
     ],
     seo: [
-      "JSON Formatter utility pages flood search results; FreeToolKit still invests paragraphs because beginners deserve to learn why pretty print is a debugging tactic, not vanity.",
+      "JSON Formatter utility pages flood search results; freetoolkitapp still invests paragraphs because beginners deserve to learn why pretty print is a debugging tactic, not vanity.",
       "Long-tail: “format json online pretty” intersects students, no-code operators, and senior engineers diffing incident blobs—same tool, different risk models.",
       "Pair with JSON Validator when the question is syntactic legality versus readability—two passes beat one confused pass.",
       "Developers practicing incident response should format on-call payloads before paging others—respect downstream sleep.",
@@ -181,7 +181,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "json-validator": {
     intro:
-      "JSON Validator answers the binary question: does this text parse as JSON? It is the bouncer before databases, mobile apps, and CI pipelines ingest configuration. FreeToolKit explains common false friends—smart quotes from Word, trailing commas from relaxed linters, BOM prefixes from Excel—and routes you to JSON Formatter for readability once syntax passes. Pair with Regex Tester when replacing delimiters at scale, and UUID Generator when synthetic fixtures must be unique.",
+      "JSON Validator answers the binary question: does this text parse as JSON? It is the bouncer before databases, mobile apps, and CI pipelines ingest configuration. freetoolkitapp explains common false friends—smart quotes from Word, trailing commas from relaxed linters, BOM prefixes from Excel—and routes you to JSON Formatter for readability once syntax passes. Pair with Regex Tester when replacing delimiters at scale, and UUID Generator when synthetic fixtures must be unique.",
     howToUse: [
       "Paste suspected JSON completely—including outer braces or array brackets.",
       "Read the error line/column literally; half of “mysterious” errors are a comma one line above.",
@@ -245,7 +245,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "NDJSON?", answer: "Validate line by line; whole-file single-root validation will fail." }
     ],
     seo: [
-      "JSON Validator searches spike every September when bootcamps assign REST modules. FreeToolKit writes for that panic: read the error pointer, fix the comma, breathe.",
+      "JSON Validator searches spike every September when bootcamps assign REST modules. freetoolkitapp writes for that panic: read the error pointer, fix the comma, breathe.",
       "Long-tail: “json validator trailing comma” deserves explicit mention—relaxed VS Code settings rot muscle memory.",
       "Pair with JSON Formatter so passing files become readable before code review.",
       "Site reliability engineers validating incident JSON attachments reduce pager noise—half are copy truncation.",
@@ -260,7 +260,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "uuid-generator": {
     intro:
-      "UUIDs (universally unique identifiers) are 128-bit labels formatted as hex segments—version 4 random is the default people mean when they say “give me a UUID.” They reduce collision risk when databases merge, when clients generate IDs offline, and when logs need correlation keys without a central allocator. FreeToolKit explains versions, entropy limits, and why random IDs are not secret tokens. Pair with JSON Formatter when pasting fixtures, Password Generator when you need human-memorable secrets instead, and Regex Tester when validating UUID-shaped strings in pipelines.",
+      "UUIDs (universally unique identifiers) are 128-bit labels formatted as hex segments—version 4 random is the default people mean when they say “give me a UUID.” They reduce collision risk when databases merge, when clients generate IDs offline, and when logs need correlation keys without a central allocator. freetoolkitapp explains versions, entropy limits, and why random IDs are not secret tokens. Pair with JSON Formatter when pasting fixtures, Password Generator when you need human-memorable secrets instead, and Regex Tester when validating UUID-shaped strings in pipelines.",
     howToUse: [
       "Pick the version your stack expects—most REST APIs want random v4; some databases prefer v7 time-sortable now.",
       "Generate a batch when writing seed data—paste into JSON with unique constraint confidence.",
@@ -324,7 +324,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Offline generation?", answer: "Yes—that is a core use case for client-side UUID libraries and tools." }
     ],
     seo: [
-      "UUID Generator utility pages are abundant; FreeToolKit still explains when random IDs save teams from merge hell versus when they only decorate logs prettily.",
+      "UUID Generator utility pages are abundant; freetoolkitapp still explains when random IDs save teams from merge hell versus when they only decorate logs prettily.",
       "Long-tail: “uuid v4 generator online” intersects students, mobile devs, and data engineers—same string format, different threat models.",
       "Pair with JSON Formatter so generated IDs slot into readable fixtures during code review.",
       "Site reliability teams embedding trace IDs should document cardinality impact—observability vendors bill on series explosion.",
@@ -339,7 +339,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "base64-encoder-decoder": {
     intro:
-      "Base64 encodes binary into ASCII-safe text so JSON, email, and XML can carry blobs without NUL bytes ruining parsers. It is not encryption—anyone can decode. FreeToolKit pairs encode/decode literacy with JSON Formatter when payloads nest data URLs, URL Encoder / Decoder when Base64 rides query strings, and Password Generator when teams confuse encoding with secrecy. Learn padding, line wrapping, and charset assumptions before production incidents teach you.",
+      "Base64 encodes binary into ASCII-safe text so JSON, email, and XML can carry blobs without NUL bytes ruining parsers. It is not encryption—anyone can decode. freetoolkitapp pairs encode/decode literacy with JSON Formatter when payloads nest data URLs, URL Encoder / Decoder when Base64 rides query strings, and Password Generator when teams confuse encoding with secrecy. Learn padding, line wrapping, and charset assumptions before production incidents teach you.",
     howToUse: [
       "Choose encode versus decode explicitly—swapping direction corrupts bytes silently when input was already wrong.",
       "Strip `data:image/png;base64,` prefixes before decoding unless your tool handles data URLs.",
@@ -403,7 +403,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Malware risk?", answer: "Decoded binaries can be malicious—scan and sandbox like any download." }
     ],
     seo: [
-      "Base64 Encoder Decoder searches mix beginners learning data URLs with engineers debugging HMAC mismatches. FreeToolKit separates encoding literacy from cryptography fantasy.",
+      "Base64 Encoder Decoder searches mix beginners learning data URLs with engineers debugging HMAC mismatches. freetoolkitapp separates encoding literacy from cryptography fantasy.",
       "Long-tail: “base64 decode jwt payload online” should come with warnings—decode for learning, verify signatures for trust.",
       "Pair with JSON Formatter when decoded output is JSON you must read before acting.",
       "Developers implementing webhook retries should log Base64 fingerprints, not raw secrets—ops hygiene.",
@@ -418,7 +418,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "url-encoder-decoder": {
     intro:
-      "URL encoding escapes reserved characters so query strings, paths, and form posts survive HTTP grammar. `%20` versus `+` for spaces still sparks debates. FreeToolKit clarifies component encoding versus full-URL encoding, pairs with QR Code Generator when payloads become dense modules, and with JSON Formatter when APIs return escaped strings inside JSON. Encoding is neither encryption nor authorization—do not confuse escaping with safety.",
+      "URL encoding escapes reserved characters so query strings, paths, and form posts survive HTTP grammar. `%20` versus `+` for spaces still sparks debates. freetoolkitapp clarifies component encoding versus full-URL encoding, pairs with QR Code Generator when payloads become dense modules, and with JSON Formatter when APIs return escaped strings inside JSON. Encoding is neither encryption nor authorization—do not confuse escaping with safety.",
     howToUse: [
       "Encode per component—path segments, query keys, and values each have different rules in strict clients.",
       "Decode only trusted strings—decoded `javascript:` URLs resurrect XSS lessons.",
@@ -497,7 +497,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "case-converter": {
     intro:
-      "Case Converter reshapes text capitalization—camelCase, snake_case, SCREAMING_SNAKE, Title Case—without rewriting logic by hand. Naming conventions encode team culture: JavaScript fronts love camelCase, Python data stacks love snake_case, and constants love screaming caps until someone’s voice hoarse joke stops being funny. FreeToolKit pairs with Text Formatter, Remove Extra Spaces, and Regex Tester when pasted blobs mix delimiters, smart quotes, and mystery tabs from Slack.",
+      "Case Converter reshapes text capitalization—camelCase, snake_case, SCREAMING_SNAKE, Title Case—without rewriting logic by hand. Naming conventions encode team culture: JavaScript fronts love camelCase, Python data stacks love snake_case, and constants love screaming caps until someone’s voice hoarse joke stops being funny. freetoolkitapp pairs with Text Formatter, Remove Extra Spaces, and Regex Tester when pasted blobs mix delimiters, smart quotes, and mystery tabs from Slack.",
     howToUse: [
       "Paste the exact identifier or paragraph—leading/trailing spaces skew pattern detection.",
       "Pick target convention deliberately; mixed-case product names may need manual exceptions.",
@@ -560,7 +560,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Undo?", answer: "Keep source text; transforms overwrite clipboard discipline." }
     ],
     seo: [
-      "Case Converter searches blend coders refactoring enums with students formatting titles. FreeToolKit refuses one-size title-case theology—style guides exist for reasons.",
+      "Case Converter searches blend coders refactoring enums with students formatting titles. freetoolkitapp refuses one-size title-case theology—style guides exist for reasons.",
       "Long-tail: “camelcase to snake case online” should mention acronym pain—HTTP, URL, ID strings fight naive regex.",
       "Pair with Regex Tester when delimiters are inconsistent—case is only one dimension of messy paste.",
       "Internationalization SEO deserves honesty: Turkish dotted capital I breaks assumptions—test with real locales.",
@@ -575,7 +575,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "duplicate-line-remover": {
     intro:
-      "Duplicate Line Remover deletes repeated lines from logs, CSV exports, URL lists, and copy-pasted Stack Overflow answers that somehow included the error twice. It is a hygiene tool, not a dedupe database—order-sensitive workflows and keyed rows need smarter logic. FreeToolKit pairs with Text Sorter when uniqueness should ignore order, Regex Tester when duplicates hide inside lines, and JSON Formatter when the real problem is duplicate JSON keys with different values.",
+      "Duplicate Line Remover deletes repeated lines from logs, CSV exports, URL lists, and copy-pasted Stack Overflow answers that somehow included the error twice. It is a hygiene tool, not a dedupe database—order-sensitive workflows and keyed rows need smarter logic. freetoolkitapp pairs with Text Sorter when uniqueness should ignore order, Regex Tester when duplicates hide inside lines, and JSON Formatter when the real problem is duplicate JSON keys with different values.",
     howToUse: [
       "Paste full text including newline style—Windows CRLF versus Unix LF changes matching.",
       "Decide if trimming whitespace before compare matters—`foo` and `foo ` may or may not be duplicates per tool options.",
@@ -639,7 +639,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Logs may contain secrets—avoid random uploaders; prefer local tools." }
     ],
     seo: [
-      "Duplicate Line Remover is the unsung hero of log triage and messy copy-paste. FreeToolKit explains limits so users do not blame the tool when CSV semantics needed SQL instead.",
+      "Duplicate Line Remover is the unsung hero of log triage and messy copy-paste. freetoolkitapp explains limits so users do not blame the tool when CSV semantics needed SQL instead.",
       "Long-tail: “remove duplicate lines from text online” intersects sysadmins, students, and marketers cleaning lists—different data sensitivity rules apply.",
       "Pair with Text Sorter when duplicates scatter across files after concatenation.",
       "Teachers can use dedupe exercises to show why logging frameworks need rate limiting—pedagogy meets ops.",
@@ -654,7 +654,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "remove-extra-spaces": {
     intro:
-      "Remove Extra Spaces collapses accidental double spaces, triple tabs, and PDF-copy ghosts that break CSV imports, slugifiers, and professor word counts. It is not a grammar editor—semantic spacing in poetry still needs human judgment. FreeToolKit pairs with Text Formatter, Case Converter, and Word Counter when cleaning Slack dumps, JSON string literals with odd breaks, and resume bullets copied from LinkedIn PDFs.",
+      "Remove Extra Spaces collapses accidental double spaces, triple tabs, and PDF-copy ghosts that break CSV imports, slugifiers, and professor word counts. It is not a grammar editor—semantic spacing in poetry still needs human judgment. freetoolkitapp pairs with Text Formatter, Case Converter, and Word Counter when cleaning Slack dumps, JSON string literals with odd breaks, and resume bullets copied from LinkedIn PDFs.",
     howToUse: [
       "Paste the dirty text—identify whether you need single spaces only or preserve newlines.",
       "Run collapse, then visually scan poetry or legal clauses where spaces carry meaning—undo exists for a reason.",
@@ -718,7 +718,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Poetry?", answer: "Manual review required—spacing can be semantic." }
     ],
     seo: [
-      "Remove Extra Spaces is the lint brush for human prose and sloppy CSVs. FreeToolKit warns where whitespace is semantic so poetry students do not email angry reviews.",
+      "Remove Extra Spaces is the lint brush for human prose and sloppy CSVs. freetoolkitapp warns where whitespace is semantic so poetry students do not email angry reviews.",
       "Long-tail: “remove extra spaces from text online” hides PDF copy-paste demons—this page names narrow no-break spaces explicitly.",
       "Pair with Word Counter when instructors cap words and PDF copies inflated counts artificially.",
       "Developers cleaning logs should still use structured log tools upstream—whitespace removal is triage, not architecture.",
@@ -733,7 +733,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "text-formatter": {
     intro:
-      "Text Formatter is the gentle janitor for paragraphs: line breaks, bullet normalization, wrapping hints, and the aftermath of copying from PDFs, Notion, and Slack threads. It is not a substitute for editors who understand argument structure. FreeToolKit pairs with Word Counter for academic limits, Remove Extra Spaces for invisible demons, and Markdown Previewer when the destination is README or blog markdown rather than plain email.",
+      "Text Formatter is the gentle janitor for paragraphs: line breaks, bullet normalization, wrapping hints, and the aftermath of copying from PDFs, Notion, and Slack threads. It is not a substitute for editors who understand argument structure. freetoolkitapp pairs with Word Counter for academic limits, Remove Extra Spaces for invisible demons, and Markdown Previewer when the destination is README or blog markdown rather than plain email.",
     howToUse: [
       "Paste source, choose formatting goal (paragraphs, bullets, wrap width) explicitly—defaults lie.",
       "Preview output on mobile width—email clients and phones punish long unbroken lines.",
@@ -797,7 +797,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Sensitive drafts belong in approved tools—even local tabs can leak via screen share." }
     ],
     seo: [
-      "Text Formatter utility searches mix overwhelmed students with engineers fighting PDF paste. FreeToolKit distinguishes whitespace cleanup from rewriting thought.",
+      "Text Formatter utility searches mix overwhelmed students with engineers fighting PDF paste. freetoolkitapp distinguishes whitespace cleanup from rewriting thought.",
       "Long-tail: “format paragraph text online” should mention mobile line length—readability is physical, not only semantic.",
       "Pair with Word Counter when formatting is procrastination disguised as productivity—sometimes submit instead.",
       "Teachers modeling revision can show before/after formatting while keeping sentences identical—pedagogy highlight.",
@@ -812,7 +812,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "text-sorter": {
     intro:
-      "Text Sorter alphabetizes or otherwise orders lines—useful for env var lists, dependency manifests, classroom rosters copied twice, and “find the odd one out” debugging. Sorting destroys narrative order—do not sort legal contracts or stack traces without intent. FreeToolKit pairs with Duplicate Line Remover post-sort, Regex Tester when lines need extracting before sort, and JSON Formatter when structured data should never have been lines anyway.",
+      "Text Sorter alphabetizes or otherwise orders lines—useful for env var lists, dependency manifests, classroom rosters copied twice, and “find the odd one out” debugging. Sorting destroys narrative order—do not sort legal contracts or stack traces without intent. freetoolkitapp pairs with Duplicate Line Remover post-sort, Regex Tester when lines need extracting before sort, and JSON Formatter when structured data should never have been lines anyway.",
     howToUse: [
       "Choose ascending versus descending and case sensitivity explicitly—`Z` versus `a` surprises people.",
       "Decide delimiter—is each line one item or are you sorting CSV columns? Wrong assumption scrambles data.",
@@ -876,7 +876,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Avoid sorting sensitive lists on untrusted networks—shoulder surfing exists." }
     ],
     seo: [
-      "Text Sorter searches spike during finals when students alphabetize references—FreeToolKit reminds them sorting lines is not sorting arguments.",
+      "Text Sorter searches spike during finals when students alphabetize references—freetoolkitapp reminds them sorting lines is not sorting arguments.",
       "Long-tail: “sort lines alphabetically online” should warn about CSV column corruption—structure matters.",
       "Pair with Duplicate Line Remover for classic log dedupe pipelines after sorting.",
       "Developers sorting environment variables should consider `.env` templates in repos—human sort + lint rules beat ad hoc tabs.",
@@ -891,7 +891,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "regex-tester": {
     intro:
-      "Regex Tester lets you iterate on regular expressions against sample text without shipping half-broken parsers to production first. Regex is write-only folklore until you test edge cases: empty strings, Unicode names, catastrophic backtracking on nested quotes. FreeToolKit pairs with JSON Formatter when validating patterns inside JSON paths, Text Sorter when cleaning outputs, and URL Encoder / Decoder when patterns touch percent-encoded chaos. Remember: regex cannot parse HTML reliably—use a real parser when structure matters.",
+      "Regex Tester lets you iterate on regular expressions against sample text without shipping half-broken parsers to production first. Regex is write-only folklore until you test edge cases: empty strings, Unicode names, catastrophic backtracking on nested quotes. freetoolkitapp pairs with JSON Formatter when validating patterns inside JSON paths, Text Sorter when cleaning outputs, and URL Encoder / Decoder when patterns touch percent-encoded chaos. Remember: regex cannot parse HTML reliably—use a real parser when structure matters.",
     howToUse: [
       "Start with smallest passing example, then add failing cases from production logs one at a time.",
       "Enable multiline and dotall flags deliberately—defaults hide newline behavior until deploy.",
@@ -955,7 +955,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Avoid pasting live customer strings into public testers—use synthetic fixtures." }
     ],
     seo: [
-      "Regex Tester pages are infinite; FreeToolKit still teaches flavor discipline and ReDoS awareness so juniors do not paste catastrophic patterns into Express routes.",
+      "Regex Tester pages are infinite; freetoolkitapp still teaches flavor discipline and ReDoS awareness so juniors do not paste catastrophic patterns into Express routes.",
       "Long-tail: “javascript regex tester multiline” deserves flag explanations—defaults confuse even seniors at 3 AM.",
       "Pair with JSON Formatter when regex lives inside JSON Schema pattern fields—validate end-to-end.",
       "Teachers can assign a “break this naive email regex” lab—kindness through failure cases.",
@@ -970,7 +970,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "markdown-previewer": {
     intro:
-      "Markdown Previewer renders lightweight markup—headings, lists, links, code fences—into HTML so you can sanity-check README files, lesson notes, and blog drafts before pushing to GitHub or static site generators. It is not a full CMS: macros, includes, and custom shortcodes may differ from your production pipeline. FreeToolKit pairs with Text Formatter when the source is messy plaintext first, Word Counter when submission caps loom, and JSON Formatter when embedding fenced JSON examples inside docs.",
+      "Markdown Previewer renders lightweight markup—headings, lists, links, code fences—into HTML so you can sanity-check README files, lesson notes, and blog drafts before pushing to GitHub or static site generators. It is not a full CMS: macros, includes, and custom shortcodes may differ from your production pipeline. freetoolkitapp pairs with Text Formatter when the source is messy plaintext first, Word Counter when submission caps loom, and JSON Formatter when embedding fenced JSON examples inside docs.",
     howToUse: [
       "Write markdown on the left or paste from an editor—preview on the right with scroll sync if available.",
       "Verify heading hierarchy does not jump from `#` to `###`—accessibility audits care.",
@@ -1034,7 +1034,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Avoid pasting confidential specs into untrusted online previews—local tools are safer." }
     ],
     seo: [
-      "Markdown Previewer searches ride the README-everywhere culture. FreeToolKit explains dialect drift so Hugo users do not blame React for table pipe quirks.",
+      "Markdown Previewer searches ride the README-everywhere culture. freetoolkitapp explains dialect drift so Hugo users do not blame React for table pipe quirks.",
       "Long-tail: “markdown preview online github flavor” maps to real pain—task lists are not universal.",
       "Pair with Word Counter when grant proposals have page limits after HTML render—counts differ from plain text.",
       "Teachers introducing markdown for digital literacy should pair accessibility lessons with preview—syntax is political when headings skip levels.",
@@ -1049,7 +1049,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "password-generator": {
     intro:
-      "Password Generator creates random strings with length and character-class controls so humans stop choosing `Winter2026!` for everything. Randomness quality depends on crypto APIs, not vibes. FreeToolKit pairs with Password Strength Checker after generation, explains why length beats clever leetspeak, and warns that generated passwords belong in a vault—not sticky notes, not Slack DMs. This page is education plus utility, not a backdoor to reusing one password across sites.",
+      "Password Generator creates random strings with length and character-class controls so humans stop choosing `Winter2026!` for everything. Randomness quality depends on crypto APIs, not vibes. freetoolkitapp pairs with Password Strength Checker after generation, explains why length beats clever leetspeak, and warns that generated passwords belong in a vault—not sticky notes, not Slack DMs. This page is education plus utility, not a backdoor to reusing one password across sites.",
     howToUse: [
       "Pick length ≥ 16 for master passwords when policy allows—entropy scales with length and charset size.",
       "Include uppercase, lowercase, digits, and symbols per site rules—but avoid ambiguous characters (`O0`, `l1`) if you must read them aloud rarely.",
@@ -1113,7 +1113,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Clipboard?", answer: "Assume the clipboard is observable—clear quickly on shared machines." }
     ],
     seo: [
-      "Password Generator SEO is a battlefield of dark patterns. FreeToolKit refuses to log passwords server-side in narrative—use tools that respect crypto boundaries and pair with MFA advocacy.",
+      "Password Generator SEO is a battlefield of dark patterns. freetoolkitapp refuses to log passwords server-side in narrative—use tools that respect crypto boundaries and pair with MFA advocacy.",
       "Long-tail: “strong password generator 20 characters” should explain entropy math briefly—length wins over leetspeak theater.",
       "Pair with Password Strength Checker when users tweak generated output manually—hubris detection.",
       "Teachers can assign “calculate combinations” worksheets alongside a generator demo—probability literacy sticks.",
@@ -1128,7 +1128,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "password-strength-checker": {
     intro:
-      "Password Strength Checker estimates how hard a password is to guess using heuristics—length, charset diversity, dictionary hits, and common breach patterns. It is not a guarantee: offline cracking and site-specific leaks change threat models. FreeToolKit pairs with Password Generator when your chosen phrase fails, explains why MFA still matters when the score is “strong,” and discourages pasting real production admin passwords into untrusted tabs—use synthetic variants for learning.",
+      "Password Strength Checker estimates how hard a password is to guess using heuristics—length, charset diversity, dictionary hits, and common breach patterns. It is not a guarantee: offline cracking and site-specific leaks change threat models. freetoolkitapp pairs with Password Generator when your chosen phrase fails, explains why MFA still matters when the score is “strong,” and discourages pasting real production admin passwords into untrusted tabs—use synthetic variants for learning.",
     howToUse: [
       "Type the password locally; avoid remote logging sites—verify the privacy banner each visit.",
       "Test variations: add length versus add a symbol—see which moves the needle more.",
@@ -1192,7 +1192,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "After a breach?", answer: "Rotate the password and revoke sessions—a checker cannot undo a leak." }
     ],
     seo: [
-      "Password Strength Checker searches mix curiosity with anxiety. FreeToolKit explains heuristics so users do not treat green bars as magical amulets against phishing.",
+      "Password Strength Checker searches mix curiosity with anxiety. freetoolkitapp explains heuristics so users do not treat green bars as magical amulets against phishing.",
       "Long-tail: “how strong is my password checker” should mention reuse and MFA—strength without context lies.",
       "Pair with Password Generator when users need a constructive next step after a failing score.",
       "Teachers can map password scores to entropy bits with simplified math—STEM integration.",
@@ -1207,7 +1207,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "meta-tag-generator": {
     intro:
-      "Meta Tag Generator drafts HTML snippets for `<title>`, description, robots, viewport, and charset so new pages do not ship with framework defaults like “Welcome to Next.js.” Tags are promises to crawlers and previews—lying tags hurt CTR and trust. FreeToolKit pairs with SERP Preview and Open Graph Generator so search snippets, social cards, and raw head tags stay consistent. Remember: tags alone do not create rankings—content, links, and experience still govern reality.",
+      "Meta Tag Generator drafts HTML snippets for `<title>`, description, robots, viewport, and charset so new pages do not ship with framework defaults like “Welcome to Next.js.” Tags are promises to crawlers and previews—lying tags hurt CTR and trust. freetoolkitapp pairs with SERP Preview and Open Graph Generator so search snippets, social cards, and raw head tags stay consistent. Remember: tags alone do not create rankings—content, links, and experience still govern reality.",
     howToUse: [
       "Write the unique value proposition first, then compress into a 50–60 character title where possible—pixel truncation still happens in SERPs.",
       "Craft meta descriptions as honest ad copy, not keyword stuffing—Google may rewrite them anyway, but your first draft should help humans.",
@@ -1271,7 +1271,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Security?", answer: "Escape dynamic values; meta fields are injection surface." }
     ],
     seo: [
-      "Meta Tag Generator content often reads like Mad Libs. FreeToolKit ties tags to measurable outcomes: clearer snippets, fewer staging leaks, less XSS in forgotten template strings.",
+      "Meta Tag Generator content often reads like Mad Libs. freetoolkitapp ties tags to measurable outcomes: clearer snippets, fewer staging leaks, less XSS in forgotten template strings.",
       "Long-tail: “html meta tags generator for website” should mention viewport and charset—not only description fields.",
       "Pair with SERP Preview before promising executives a “perfect” title—pixels truncate mid-word cruelly.",
       "Teachers comparing reputable news outlets’ meta teach credibility—head tags are editorial choices too.",
@@ -1286,7 +1286,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "open-graph-generator": {
     intro:
-      "Open Graph (`og:*`) tags shape how links unfurl on Slack, iMessage, LinkedIn, and Facebook—title, description, image, and type. Broken images or wrong aspect ratios turn launches into grey rectangles and jokes in public channels. FreeToolKit pairs with Meta Tag Generator for baseline HTML head, SERP Preview for Google-centric snippets, and Image Resizer when platforms crop your 4000px OG image into abstract art. Tags are not contracts with every messenger—fallbacks vary—but good defaults reduce embarrassment.",
+      "Open Graph (`og:*`) tags shape how links unfurl on Slack, iMessage, LinkedIn, and Facebook—title, description, image, and type. Broken images or wrong aspect ratios turn launches into grey rectangles and jokes in public channels. freetoolkitapp pairs with Meta Tag Generator for baseline HTML head, SERP Preview for Google-centric snippets, and Image Resizer when platforms crop your 4000px OG image into abstract art. Tags are not contracts with every messenger—fallbacks vary—but good defaults reduce embarrassment.",
     howToUse: [
       "Set `og:title` and `og:description` even if you think social will reuse `<title>`—some scrapers differ.",
       "Provide `og:image` at least 1200×630 for many networks—verify safe zone for logos near edges.",
@@ -1350,7 +1350,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Accessibility?", answer: "Write share text that stands alone without the image—blind users deserve context." }
     ],
     seo: [
-      "Open Graph Generator tutorials often skip cache psychology. FreeToolKit mentions debugger tools and versioned URLs because stale OG images outlive political careers in Slack threads.",
+      "Open Graph Generator tutorials often skip cache psychology. freetoolkitapp mentions debugger tools and versioned URLs because stale OG images outlive political careers in Slack threads.",
       "Long-tail: “open graph meta tags generator” should cover absolute URLs—half the grey rectangles are relative path bugs.",
       "Pair with Image Compressor when OG art is a Retina screenshot—bytes delay unfurl on commuter trains.",
       "Developers shipping SPAs should verify server-side head streaming—client-only OG tags still fail in places.",
@@ -1365,7 +1365,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "robots-txt-generator": {
     intro:
-      "Robots.txt is a crawl preference file at your site root—hints for polite bots, not a security fence. Malicious crawlers ignore it; sensitive URLs need auth. FreeToolKit pairs with Sitemap Generator because `Sitemap:` directives belong in robots, Meta Tag Generator when you need `noindex` on individual pages, and SERP Preview when marketing asks why staging disappeared from Google (hopefully). Write minimal rules, test with Search Console, and never rely on robots alone for secrecy.",
+      "Robots.txt is a crawl preference file at your site root—hints for polite bots, not a security fence. Malicious crawlers ignore it; sensitive URLs need auth. freetoolkitapp pairs with Sitemap Generator because `Sitemap:` directives belong in robots, Meta Tag Generator when you need `noindex` on individual pages, and SERP Preview when marketing asks why staging disappeared from Google (hopefully). Write minimal rules, test with Search Console, and never rely on robots alone for secrecy.",
     howToUse: [
       "List user-agents you intend to target (`*` common) and disallow paths that waste crawl budget or expose faceted junk.",
       "Allow intentionally blocked CSS/JS only when you understand rendering impact—Google needs assets sometimes.",
@@ -1429,7 +1429,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "CDN?", answer: "Ensure robots.txt is served from production hostname, not stale cache." }
     ],
     seo: [
-      "Robots.txt Generator pages should stop promising security. FreeToolKit frames robots as crawl budget politeness plus sitemap pointer—not a padlock.",
+      "Robots.txt Generator pages should stop promising security. freetoolkitapp frames robots as crawl budget politeness plus sitemap pointer—not a padlock.",
       "Long-tail: “robots.txt disallow staging site” belongs in launch checklists next to SSL and analytics.",
       "Pair with Sitemap Generator so crawlers find new paths after you disallow legacy junk.",
       "Enterprise SEO teams should version robots in Git—diffs explain sudden traffic cliffs.",
@@ -1444,7 +1444,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "sitemap-generator": {
     intro:
-      "XML Sitemaps list URLs you want discovered—priority hints, lastmod, and hreflang extensions help crawlers schedule fetches. They do not replace internal linking or quality. FreeToolKit pairs with Robots.txt Generator for `Sitemap:` directives, Meta Tag Generator when URLs need `noindex` exclusions instead, and SERP Preview when marketing asks why new pages are not indexed yet (patience). Keep sitemaps under size limits, gzip when huge, and submit via Search Console.",
+      "XML Sitemaps list URLs you want discovered—priority hints, lastmod, and hreflang extensions help crawlers schedule fetches. They do not replace internal linking or quality. freetoolkitapp pairs with Robots.txt Generator for `Sitemap:` directives, Meta Tag Generator when URLs need `noindex` exclusions instead, and SERP Preview when marketing asks why new pages are not indexed yet (patience). Keep sitemaps under size limits, gzip when huge, and submit via Search Console.",
     howToUse: [
       "Include only canonical indexable URLs—no 404s, no redirects chains, no session IDs.",
       "Set `lastmod` honestly from content updates—fake freshness signals erode trust long-term.",
@@ -1509,7 +1509,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Validation?", answer: "Use schema validators and Search Console reports to catch errors." }
     ],
     seo: [
-      "Sitemap Generator SEO should teach discovery economics. FreeToolKit refuses “submit sitemap rank #1” fairy tales—XML is logistics, not magic dust.",
+      "Sitemap Generator SEO should teach discovery economics. freetoolkitapp refuses “submit sitemap rank #1” fairy tales—XML is logistics, not magic dust.",
       "Long-tail: “xml sitemap generator for google” should mention canonical hygiene and Search Console verification—without both, sitemaps underperform expectations.",
       "Pair with Robots.txt Generator so crawlers know where sitemap lives—obvious but often forgotten during migrations.",
       "Enterprise publishers should diff sitemap additions against editorial calendar—rogue URLs surface fast.",
@@ -1524,7 +1524,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "serp-preview": {
     intro:
-      "SERP Preview approximates how a title and meta description may appear in Google results—pixel width, truncation, and mobile versus desktop width differences. It is a design aid, not a contract: Google rewrites titles and descriptions dynamically. FreeToolKit pairs with Meta Tag Generator for exporting tags, Word Counter for character discipline, and Open Graph Generator when social previews diverge from blue-link SERPs. Calibrate expectations with Search Console performance reports after launch.",
+      "SERP Preview approximates how a title and meta description may appear in Google results—pixel width, truncation, and mobile versus desktop width differences. It is a design aid, not a contract: Google rewrites titles and descriptions dynamically. freetoolkitapp pairs with Meta Tag Generator for exporting tags, Word Counter for character discipline, and Open Graph Generator when social previews diverge from blue-link SERPs. Calibrate expectations with Search Console performance reports after launch.",
     howToUse: [
       "Draft title and description separately from keywords—readability wins clicks when rankings are equal.",
       "Watch pixel width, not only character count—wide letters burn budget faster.",
@@ -1588,7 +1588,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Competitors?", answer: "Ethical SERP writing avoids trademark misuse in titles—lawyers care." }
     ],
     seo: [
-      "SERP Preview tool searches sit between vanity and strategy. FreeToolKit anchors preview in pixel reality and rewrite humility—Google owes you nothing, users owe you even less if you bait-and-switch.",
+      "SERP Preview tool searches sit between vanity and strategy. freetoolkitapp anchors preview in pixel reality and rewrite humility—Google owes you nothing, users owe you even less if you bait-and-switch.",
       "Long-tail: “google serp snippet preview tool” should admit mobile truncation—half your readers never see desktop fantasy.",
       "Pair with Meta Tag Generator so pretty preview becomes actual exported tags, not only screenshots in Slack.",
       "Teachers can show before/after CTR case studies ethically sourced—statistics without fearmongering.",
@@ -1603,7 +1603,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "study-timer": {
     intro:
-      "Study Timer structures focus intervals—Pomodoro cousins, exam countdowns, reading blocks—so attention has edges. Timers do not replace sleep or tutoring; they reduce “just five more minutes” infinity loops. FreeToolKit pairs with Pomodoro Timer for classic cadence, Assignment Planner when tasks need sequencing, and Word Counter when essay goals are word-based rather than time-based. Calibrate lengths to your actual attention span, not influencer TikTok defaults.",
+      "Study Timer structures focus intervals—Pomodoro cousins, exam countdowns, reading blocks—so attention has edges. Timers do not replace sleep or tutoring; they reduce “just five more minutes” infinity loops. freetoolkitapp pairs with Pomodoro Timer for classic cadence, Assignment Planner when tasks need sequencing, and Word Counter when essay goals are word-based rather than time-based. Calibrate lengths to your actual attention span, not influencer TikTok defaults.",
     howToUse: [
       "Pick one task label before starting—vague timers invite tab hopping.",
       "Set realistic durations; if you never finish 25 minutes, try 15 first—shame is not pedagogy.",
@@ -1667,7 +1667,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Integration?", answer: "Calendar blocks plus timer beats timer alone—systems thinking." }
     ],
     seo: [
-      "Study Timer searches mix overwhelmed students with productivity influencers selling grind. FreeToolKit advocates humane durations and break ergonomics without moralizing rest as laziness.",
+      "Study Timer searches mix overwhelmed students with productivity influencers selling grind. freetoolkitapp advocates humane durations and break ergonomics without moralizing rest as laziness.",
       "Long-tail: “online study timer for exams” should mention institution integrity rules—cheating ruins tool reputation unfairly.",
       "Pair with Assignment Planner when the bottleneck is not time slices but unknown task order—plan first, timer second.",
       "Accessibility: flashing countdowns should respect motion preferences—calm UI matters for anxious learners.",
@@ -1682,7 +1682,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "grade-percentage-calculator": {
     intro:
-      "Grade Percentage Calculator converts points earned versus points possible into a percentage—sometimes with category weights lurking in the syllabus shadows. It is arithmetic you could do on paper, but mid-semester panic prefers buttons. FreeToolKit pairs with Final Grade Calculator when futures depend on remaining assignments, Weighted Grade Calculator when categories matter, and GPA Calculator when the real question is cumulative standing. Integrity note: calculators inform effort; they do not justify fabrication.",
+      "Grade Percentage Calculator converts points earned versus points possible into a percentage—sometimes with category weights lurking in the syllabus shadows. It is arithmetic you could do on paper, but mid-semester panic prefers buttons. freetoolkitapp pairs with Final Grade Calculator when futures depend on remaining assignments, Weighted Grade Calculator when categories matter, and GPA Calculator when the real question is cumulative standing. Integrity note: calculators inform effort; they do not justify fabrication.",
     howToUse: [
       "Read whether instructor uses straight points or weighted categories—wrong model, wrong hope.",
       "Enter earned and possible points exactly as returned—rounding differences add up at term end.",
@@ -1746,7 +1746,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Academic integrity?", answer: "Calculators never justify cheating; policies always govern." }
     ],
     seo: [
-      "Grade Percentage Calculator queries spike before midterms when hope meets spreadsheet. FreeToolKit encourages syllabus-first thinking so students email professors better questions than “is this right?” with no attachment.",
+      "Grade Percentage Calculator queries spike before midterms when hope meets spreadsheet. freetoolkitapp encourages syllabus-first thinking so students email professors better questions than “is this right?” with no attachment.",
       "Long-tail: “calculate grade percentage from points” should warn about dropped assignments and LMS divergence—accuracy is contextual.",
       "Pair with Final Grade Calculator when the emotional question is future finals, not past quizzes.",
       "First-gen student support offices can link here with advising scripts—numbers reduce shame when framed kindly.",
@@ -1761,7 +1761,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "palworld-breeding-calculator": {
     intro:
-      "Palworld breeding calculators estimate offspring pals, traits, and combo paths given parent pairs—community datamines meet spreadsheet obsession. Game patches shift stats; calculators go stale overnight. FreeToolKit frames results as community models, not official Pocketpair gospel. Pair with Study Timer ironically when “one more breed test” steals sleep, and Percentage Calculator when you pretend breeding odds are rational investments instead of dopamine slots.",
+      "Palworld breeding calculators estimate offspring pals, traits, and combo paths given parent pairs—community datamines meet spreadsheet obsession. Game patches shift stats; calculators go stale overnight. freetoolkitapp frames results as community models, not official Pocketpair gospel. Pair with Study Timer ironically when “one more breed test” steals sleep, and Percentage Calculator when you pretend breeding odds are rational investments instead of dopamine slots.",
     howToUse: [
       "Confirm game version and patch date on calculator page—drift invalidates yesterday’s god-roll recipe.",
       "Enter parent pals accurately—including passive skills if tool supports—small inputs swing outputs.",
@@ -1825,7 +1825,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Time management?", answer: "Pair with Pomodoro Timer to cap sessions healthily." }
     ],
     seo: [
-      "Palworld breeding calculator SEO is a moving target—patches reprint the meta weekly. FreeToolKit anchors pages in version discipline so Google snippets do not promise combos dead since Tuesday.",
+      "Palworld breeding calculator SEO is a moving target—patches reprint the meta weekly. freetoolkitapp anchors pages in version discipline so Google snippets do not promise combos dead since Tuesday.",
       "Long-tail: “palworld best breeding combos” should cite uncertainty—RNG and patches laugh at permanence.",
       "Pair with Study Timer as gentle ribbing when students game instead of essay—balance narrative without scolding.",
       "Streamers linking calculators should disclose patch date in video description—SEO and ethics align.",
@@ -1840,7 +1840,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-email-writer": {
     intro:
-      "AI Email Writer drafts professional messages—follow-ups, cold outreach, apologies, meeting recaps—starting from bullet points you supply. It is a language accelerant, not a mind reader: tone, facts, and policy compliance stay your job. FreeToolKit pairs with Grammar Fixer before send, Word Counter when brevity matters, and Explain Simple when you must translate jargon for non-technical recipients. Never paste secrets, patient data, or unreleased financials into any browser model without clearance.",
+      "AI Email Writer drafts professional messages—follow-ups, cold outreach, apologies, meeting recaps—starting from bullet points you supply. It is a language accelerant, not a mind reader: tone, facts, and policy compliance stay your job. freetoolkitapp pairs with Grammar Fixer before send, Word Counter when brevity matters, and Explain Simple when you must translate jargon for non-technical recipients. Never paste secrets, patient data, or unreleased financials into any browser model without clearance.",
     howToUse: [
       "List goal, audience, constraints (length, formality, deadline) before generating—garbage prompts yield garbage diplomacy.",
       "Insert only minimum necessary context—assume prompts may be logged per vendor policy.",
@@ -1904,7 +1904,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Bias?", answer: "Review for stereotypes—models inherit training biases." }
     ],
     seo: [
-      "AI Email Writer pages flood search results; FreeToolKit emphasizes judgment, privacy, and manual editing so the page reads like communications coaching, not a slot machine for insincerity.",
+      "AI Email Writer pages flood search results; freetoolkitapp emphasizes judgment, privacy, and manual editing so the page reads like communications coaching, not a slot machine for insincerity.",
       "Long-tail: “polite follow up email after interview ai” should warn about name errors and fact checks—generic praise fools no hiring manager twice.",
       "Pair with Grammar Fixer when your voice is right but mechanics wobble—stacked tools beat monoculture output.",
       "Accessibility: plain-language email helps recipients with cognitive load—AI can help if humans remove jargon responsibly.",
@@ -1919,7 +1919,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-homework-helper": {
     intro:
-      "AI Homework Helper clarifies concepts, suggests outlines, and points to next study steps from prompts you write. It is not a substitute for doing assigned work when your syllabus forbids it. FreeToolKit pairs with Explain Simple for younger reading levels, Study Timer for execution discipline, and Word Counter when page limits discipline arguments. Integrity framing stays central: learning beats transcript optimization.",
+      "AI Homework Helper clarifies concepts, suggests outlines, and points to next study steps from prompts you write. It is not a substitute for doing assigned work when your syllabus forbids it. freetoolkitapp pairs with Explain Simple for younger reading levels, Study Timer for execution discipline, and Word Counter when page limits discipline arguments. Integrity framing stays central: learning beats transcript optimization.",
     howToUse: [
       "Paste the assignment prompt plus what you tried—models tutor better with evidence of struggle.",
       "Ask for Socratic hints rather than full solutions when policies require—keeps learning active.",
@@ -1983,7 +1983,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Exams?", answer: "Assume proctoring policies forbid undisclosed assistance—prepare without shortcuts." }
     ],
     seo: [
-      "AI Homework Helper SEO is ethically charged. FreeToolKit centers learning outcomes, syllabus compliance, and fact-checking so pages do not read like cheat sheet vending.",
+      "AI Homework Helper SEO is ethically charged. freetoolkitapp centers learning outcomes, syllabus compliance, and fact-checking so pages do not read like cheat sheet vending.",
       "Long-tail: “ai homework help step by step hints” matches ethical use cases—hint scaffolding beats full solution dumps.",
       "Pair with Explain Simple when reading level must drop without losing concept accuracy—stacked pedagogy.",
       "Teachers googling classroom policy language can link here for student-facing nuance—reduce ambiguous bans.",
@@ -1998,7 +1998,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-interview-answer-generator": {
     intro:
-      "AI Interview Answer Generator turns your experience bullets into STAR-style responses—Situation, Task, Action, Result—for behavioral interviews. It cannot invent accomplishments you did not achieve; interviewers probe depth. FreeToolKit pairs with Resume ATS Checker when stories should align with resume lines, Grammar Fixer before mock interviews, and Word Counter when answers must fit one-minute spoken pacing. Practice aloud, not only silent reading.",
+      "AI Interview Answer Generator turns your experience bullets into STAR-style responses—Situation, Task, Action, Result—for behavioral interviews. It cannot invent accomplishments you did not achieve; interviewers probe depth. freetoolkitapp pairs with Resume ATS Checker when stories should align with resume lines, Grammar Fixer before mock interviews, and Word Counter when answers must fit one-minute spoken pacing. Practice aloud, not only silent reading.",
     howToUse: [
       "Feed real projects with metrics you can defend—fabrication fails follow-up questions.",
       "Ask for 60-second and 2-minute versions—recruiters time you.",
@@ -2062,7 +2062,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Disclosure?", answer: "If employer asks, be honest about assistance used in prep—policies vary." }
     ],
     seo: [
-      "AI Interview Answer Generator queries spike before recruiting season. FreeToolKit refuses to glamorize fabrication—specific true metrics beat lyrical AI fluff in panels.",
+      "AI Interview Answer Generator queries spike before recruiting season. freetoolkitapp refuses to glamorize fabrication—specific true metrics beat lyrical AI fluff in panels.",
       "Long-tail: “star method interview answer examples software engineer” should emphasize follow-up depth—surface stories fail when interviewers drill.",
       "Pair with Resume ATS Checker so resume bullets and spoken stories align—contradictions sink offers.",
       "Career centers at universities can link here with ethics preamble—reduce black-market essay energy leaking into interviews.",
@@ -2077,7 +2077,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-linkedin-summary-generator": {
     intro:
-      "AI LinkedIn Summary Generator drafts headline-adjacent about text from your career facts—tone from crisp technical to warm narrative. LinkedIn is public professional theater; authenticity still matters because recruiters read between buzzwords. FreeToolKit pairs with Resume ATS Checker for keyword alignment, Grammar Fixer for final polish, and Word Counter when LinkedIn truncates visually. Never publish claims you cannot defend in reference checks.",
+      "AI LinkedIn Summary Generator drafts headline-adjacent about text from your career facts—tone from crisp technical to warm narrative. LinkedIn is public professional theater; authenticity still matters because recruiters read between buzzwords. freetoolkitapp pairs with Resume ATS Checker for keyword alignment, Grammar Fixer for final polish, and Word Counter when LinkedIn truncates visually. Never publish claims you cannot defend in reference checks.",
     howToUse: [
       "List roles, years, domains, measurable wins before generating—specificity reduces generic soup.",
       "Pick tone: operator versus researcher versus people leader—mixing all three reads muddy.",
@@ -2141,7 +2141,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Updates?", answer: "Refresh after major projects—stale dates imply stagnation." }
     ],
     seo: [
-      "AI LinkedIn Summary Generator SERPs are crowded with identical voice. FreeToolKit pushes evidence-backed lines and public-profile humility so readers trust you enough to click connect.",
+      "AI LinkedIn Summary Generator SERPs are crowded with identical voice. freetoolkitapp pushes evidence-backed lines and public-profile humility so readers trust you enough to click connect.",
       "Long-tail: “linkedin about section examples software engineer” should warn against framework soup—depth beats list length.",
       "Pair with Resume ATS Checker when hunting roles where keyword alignment still matters in human review too.",
       "Career coaches can assign “annotate every claim with proof” homework after AI first draft—pedagogy first.",
@@ -2156,7 +2156,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-resume-cover-letter": {
     intro:
-      "AI Resume Cover Letter tools adapt your experience to a job description—mapping skills, reordering bullets, drafting tailored letters. They cannot ethically invent employment or degrees. FreeToolKit pairs with Resume ATS Checker for machine-parse realities, Grammar Fixer for final polish, and Word Counter when one-page discipline matters. Hiring managers still smell generic letters; specificity and truthful metrics differentiate.",
+      "AI Resume Cover Letter tools adapt your experience to a job description—mapping skills, reordering bullets, drafting tailored letters. They cannot ethically invent employment or degrees. freetoolkitapp pairs with Resume ATS Checker for machine-parse realities, Grammar Fixer for final polish, and Word Counter when one-page discipline matters. Hiring managers still smell generic letters; specificity and truthful metrics differentiate.",
     howToUse: [
       "Paste job description plus your resume facts—explicitly forbid inventing roles in prompt if tool allows.",
       "Highlight three must-match requirements from posting—ask AI to map evidence bullets to each.",
@@ -2220,7 +2220,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Privacy?", answer: "Redact customer names and unreleased product codenames." }
     ],
     seo: [
-      "AI Resume Cover Letter SERPs tempt shortcut seekers. FreeToolKit repeats: verification beats velocity—one honest application beats fifty fiction blasts.",
+      "AI Resume Cover Letter SERPs tempt shortcut seekers. freetoolkitapp repeats: verification beats velocity—one honest application beats fifty fiction blasts.",
       "Long-tail: “tailor resume to job description ai” should foreground truthfulness—ATS gaming without skill depth fails phone screens.",
       "Pair with Resume ATS Checker when parsing doubts keep you awake—machines and humans both judge.",
       "University career services can quote anti-fabrication paragraphs in workshops—reduce catfishing employers.",
@@ -2235,7 +2235,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-study-notes": {
     intro:
-      "AI Study Notes transforms lectures, readings, or messy highlights into structured outlines—definitions, timelines, comparison tables. It accelerates sense-making, not magic retention: you still must review spaced repetition style. FreeToolKit pairs with AI Text Summarizer for shorter distillations, Study Timer for review blocks, and Assignment Planner when deadlines multiply. Integrity: generate notes from sources you have rights to use.",
+      "AI Study Notes transforms lectures, readings, or messy highlights into structured outlines—definitions, timelines, comparison tables. It accelerates sense-making, not magic retention: you still must review spaced repetition style. freetoolkitapp pairs with AI Text Summarizer for shorter distillations, Study Timer for review blocks, and Assignment Planner when deadlines multiply. Integrity: generate notes from sources you have rights to use.",
     howToUse: [
       "Upload or paste source text you legally possess—copyright matters for long excerpts.",
       "Specify output structure: outline, glossary, flashcard Q/A—structure reduces edit time.",
@@ -2299,7 +2299,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Exams?", answer: "Closed-book rules may ban certain materials—follow instructions." }
     ],
     seo: [
-      "AI Study Notes SEO competes with brainrot hustle content. FreeToolKit advocates lawful sources, verification, and spaced review so the page feels like learning science, not cheat automation.",
+      "AI Study Notes SEO competes with brainrot hustle content. freetoolkitapp advocates lawful sources, verification, and spaced review so the page feels like learning science, not cheat automation.",
       "Long-tail: “ai study notes from lecture transcript” must mention recording laws and FERPA—tech is never only tech.",
       "Pair with Study Timer so note generation converts to scheduled retrieval practice.",
       "Disability offices recommending AI note assistance should still pair with human notetaker options—policy nuance.",
@@ -2314,7 +2314,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "ai-text-summarizer": {
     intro:
-      "AI Text Summarizer condenses articles, reports, threads, and policy PDFs into shorter forms—executive summaries, bullet takeaways, TL;DR. Summaries trade detail for speed; they can omit the one sentence that mattered legally or medically. FreeToolKit pairs with Transcript Summarizer when source is video captions, Explain Simple when audience needs plain language, and Word Counter when summary must fit character caps for newsletters.",
+      "AI Text Summarizer condenses articles, reports, threads, and policy PDFs into shorter forms—executive summaries, bullet takeaways, TL;DR. Summaries trade detail for speed; they can omit the one sentence that mattered legally or medically. freetoolkitapp pairs with Transcript Summarizer when source is video captions, Explain Simple when audience needs plain language, and Word Counter when summary must fit character caps for newsletters.",
     howToUse: [
       "Specify target length and audience (“executive”, “patient”, “student”)—defaults mis-target tone.",
       "Ask for “key uncertainties” or “what was omitted” meta section when stakes high—forces model caution.",
@@ -2378,7 +2378,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Citations?", answer: "Summaries for academic work still need citations to source." }
     ],
     seo: [
-      "AI Text Summarizer SERPs promise instant clarity; FreeToolKit foregrounds verification, negation risk, and citation ethics so the page reads like editorial policy, not content laundering.",
+      "AI Text Summarizer SERPs promise instant clarity; freetoolkitapp foregrounds verification, negation risk, and citation ethics so the page reads like editorial policy, not content laundering.",
       "Long-tail: “summarize long article for newsletter ai” should mention character limits and link to originals—newsletter readers trust sources.",
       "Pair with Transcript Summarizer when source started as video—modalities differ.",
       "Newsrooms considering AI summary widgets should read liability paragraphs—defamation still lands on publisher.",
@@ -2393,7 +2393,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "transcript-summarizer": {
     intro:
-      "Transcript Summarizer condenses spoken-word text—Zoom captions, podcast transcripts, interview recordings—into action items and chapter headings. Accuracy depends on transcript quality: crosstalk, accents, and domain jargon trip ASR. FreeToolKit pairs with AI Text Summarizer for written sources, Word Counter when pull quotes must fit social caps, and Remove Extra Spaces when VTT files paste ugly. Consent laws for recording vary; this page nudges you toward them.",
+      "Transcript Summarizer condenses spoken-word text—Zoom captions, podcast transcripts, interview recordings—into action items and chapter headings. Accuracy depends on transcript quality: crosstalk, accents, and domain jargon trip ASR. freetoolkitapp pairs with AI Text Summarizer for written sources, Word Counter when pull quotes must fit social caps, and Remove Extra Spaces when VTT files paste ugly. Consent laws for recording vary; this page nudges you toward them.",
     howToUse: [
       "Start from accurate transcript—edit obvious ASR errors before summarizing or errors compound.",
       "Label speakers if possible—summaries without attribution confuse decisions.",
@@ -2457,7 +2457,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Education?", answer: "Follow school recording policies—FERPA may apply." }
     ],
     seo: [
-      "Transcript Summarizer SEO rides podcast boom and remote work fatigue. FreeToolKit stresses consent, quote verification, and ASR hygiene so summaries do not become libel shorthand.",
+      "Transcript Summarizer SEO rides podcast boom and remote work fatigue. freetoolkitapp stresses consent, quote verification, and ASR hygiene so summaries do not become libel shorthand.",
       "Long-tail: “zoom meeting transcript summary action items” should mention speaker labels and owners—otherwise action items float ownerless.",
       "Pair with AI Text Summarizer when hybrid doc includes slides plus chat log—modalities merge carefully.",
       "Accessibility advocates should insist transcripts publish first—summary is convenience layer.",
@@ -2472,7 +2472,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "explain-simple": {
     intro:
-      "Explain Simple rewrites jargon-heavy paragraphs into plain language for kids, beginners, or ESL readers—without defaulting to insulting oversimplification of serious topics. It is a communication aid, not an authority on truth: facts still need sources. FreeToolKit pairs with AI Text Summarizer when length must shrink, Grammar Fixer when output goes to public blog, and Word Counter when newsletters cap length. Use age-appropriate care on sensitive news.",
+      "Explain Simple rewrites jargon-heavy paragraphs into plain language for kids, beginners, or ESL readers—without defaulting to insulting oversimplification of serious topics. It is a communication aid, not an authority on truth: facts still need sources. freetoolkitapp pairs with AI Text Summarizer when length must shrink, Grammar Fixer when output goes to public blog, and Word Counter when newsletters cap length. Use age-appropriate care on sensitive news.",
     howToUse: [
       "Specify target reading level or audience age band—precision improves tone.",
       "Provide source paragraph you have rights to adapt—copyright still applies.",
@@ -2536,7 +2536,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Voice?", answer: "Edit to match publication voice—AI defaults generic." }
     ],
     seo: [
-      "Explain Simple searches intersect accessibility, ESL, and science communication. FreeToolKit refuses to equate simplicity with inaccuracy—good plain language keeps uncertainty visible.",
+      "Explain Simple searches intersect accessibility, ESL, and science communication. freetoolkitapp refuses to equate simplicity with inaccuracy—good plain language keeps uncertainty visible.",
       "Long-tail: “explain this paragraph to me like im 5” memes aside, real pedagogy needs respectful tone for adults new to domain.",
       "Pair with AI Text Summarizer when length and reading level both must drop—two knobs, two passes.",
       "Government digital services teams should test simplified text with real users—AI draft, user research verifies.",
@@ -2551,7 +2551,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "grammar-fixer": {
     intro:
-      "Grammar Fixer suggests punctuation, agreement, and clarity fixes for sentences you paste—useful before emails, essays, and support macros ship. It is not a plagiarism bypass or a guarantee of publication quality: voice, argument, and citations remain yours. FreeToolKit pairs with Word Counter for limits, AI Email Writer for structural drafts, and Explain Simple when readers need simpler vocabulary after grammar passes.",
+      "Grammar Fixer suggests punctuation, agreement, and clarity fixes for sentences you paste—useful before emails, essays, and support macros ship. It is not a plagiarism bypass or a guarantee of publication quality: voice, argument, and citations remain yours. freetoolkitapp pairs with Word Counter for limits, AI Email Writer for structural drafts, and Explain Simple when readers need simpler vocabulary after grammar passes.",
     howToUse: [
       "Paste smaller chunks for best focus—entire thesis at once overwhelms context window and you.",
       "Specify style guide (APA, Chicago, AP) if tool supports—defaults may mismatch course.",
@@ -2615,7 +2615,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Accessibility?", answer: "Grammar alone does not create accessible structure—use headings and alt text." }
     ],
     seo: [
-      "Grammar Fixer SERPs oscillate between student panic and professional polish. FreeToolKit distinguishes mechanical correctness from thinking—good sentences can still argue wrongly.",
+      "Grammar Fixer SERPs oscillate between student panic and professional polish. freetoolkitapp distinguishes mechanical correctness from thinking—good sentences can still argue wrongly.",
       "Long-tail: “fix grammar in my essay online” should repeat academic integrity nuance—institutions evolve detectors and policies together.",
       "Pair with Word Counter when trimming to page limits—grammar passes sometimes shorten brutally.",
       "ESL professionals deserve dignity framing—grammar tools assist, not imply deficiency.",
@@ -2630,7 +2630,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
 
   "resume-ats-checker": {
     intro:
-      "Resume ATS Checker estimates how machine-parse friendly your resume is—headings, dates, section labels, keyword overlap with a job description. ATS is not a monolith; vendors differ wildly. FreeToolKit pairs with AI Resume Cover Letter for tailoring narrative, Grammar Fixer for polish, and Word Counter for density control. Humans still hire humans; ATS is a gate, not the destination.",
+      "Resume ATS Checker estimates how machine-parse friendly your resume is—headings, dates, section labels, keyword overlap with a job description. ATS is not a monolith; vendors differ wildly. freetoolkitapp pairs with AI Resume Cover Letter for tailoring narrative, Grammar Fixer for polish, and Word Counter for density control. Humans still hire humans; ATS is a gate, not the destination.",
     howToUse: [
       "Paste job description keywords honestly matched to your experience—no stuffing fiction.",
       "Use standard section headers (Experience, Education, Skills)—creative names confuse parsers sometimes.",
@@ -2694,7 +2694,7 @@ export const indexedToolRichPacks: Partial<Record<string, Partial<Tool>>> = {
       { question: "Accessibility?", answer: "Simple headings and lists help humans and parsers—parallel benefit." }
     ],
     seo: [
-      "Resume ATS Checker SEO is snake-oil adjacent. FreeToolKit admits vendor opacity and centers truthful tailoring plus human referral pathways when machines mis-score you.",
+      "Resume ATS Checker SEO is snake-oil adjacent. freetoolkitapp admits vendor opacity and centers truthful tailoring plus human referral pathways when machines mis-score you.",
       "Long-tail: “ats resume checker free online” should warn about scanned PDFs—most failures are format, not fate.",
       "Pair with AI Resume Cover Letter when keyword alignment must match narrative arc—coherence sells.",
       "University career centers can teach parser basics without dehumanizing hiring—balance matters.",

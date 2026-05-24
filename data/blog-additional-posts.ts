@@ -18,13 +18,13 @@ export const additionalBlogPosts: BlogPost[] = [
         paragraphs: [
           "Browser-based tools load like a normal website, run inside your browser tab, and usually disappear when you close the page. They excel at single-purpose jobs: merge a few PDFs, compress an image, format JSON, generate a password, or draft an email outline. Because they avoid installation friction, they are ideal when you are on a borrowed laptop, a locked-down work machine, or a phone where app stores are inconvenient.",
           "Desktop software still matters when you need deep file control, batch automation, offline guarantees, or industry-specific compliance features. Photoshop, Acrobat Pro, VS Code, and dedicated accounting suites exist because professionals push files through repeatable pipelines that browsers were never meant to host alone.",
-          "The real question is not \"which is better\" but \"which risk profile and depth level matches this task.\" FreeToolKit focuses on browser-first workflows for everyday productivity while being transparent about limits: very large files, proprietary fonts, complex PDF forms, or regulated data may still belong in a desktop tool your organization approves."
+          "The real question is not \"which is better\" but \"which risk profile and depth level matches this task.\" freetoolkitapp focuses on browser-first workflows for everyday productivity while being transparent about limits: very large files, proprietary fonts, complex PDF forms, or regulated data may still belong in a desktop tool your organization approves."
         ]
       },
       {
         heading: "Privacy and data residency",
         paragraphs: [
-          "Many FreeToolKit PDF and image utilities run locally in your browser, which means files never intentionally leave your device. AI-assisted pages, however, must send text (and sometimes images) to model providers to generate a response. Treat every AI box like a shared printer: do not paste secrets, unreleased financials, or patient identifiers.",
+          "Many freetoolkitapp PDF and image utilities run locally in your browser, which means files never intentionally leave your device. AI-assisted pages, however, must send text (and sometimes images) to model providers to generate a response. Treat every AI box like a shared printer: do not paste secrets, unreleased financials, or patient identifiers.",
           "Desktop apps can also phone home. The difference is packaging: installers sometimes include update channels, crash reporters, and cloud sync you may not notice. Browser tools make the network boundary obvious—you opened a URL—so security reviews are often faster for contractors who are not allowed to install binaries.",
           "If you work under GDPR, HIPAA, FERPA, or similar regimes, your compliance officer should approve both the browser vendor and any AI backend. Document retention policies still apply even when \"nothing is saved\" on the server, because logs, crash dumps, or misconfigured caches can exist anywhere in the chain."
         ]
@@ -48,11 +48,11 @@ export const additionalBlogPosts: BlogPost[] = [
         heading: "A simple decision checklist",
         paragraphs: [
           "Ask: Is the file sensitive? If yes, prefer offline or IT-approved desktop workflows unless security reviewed the browser tool. Ask: Is the job repetitive at scale? If yes, script it or use desktop batching. Ask: Do I only need a quick one-off? Browser tools usually win on time-to-value.",
-          "FreeToolKit aims to sit in the \"high-trust everyday work\" quadrant: clear disclosures, educational articles, predictable outputs, and links to adjacent tools so you can finish a pipeline without opening ten random ad-heavy sites. When a job exceeds browser limits, we would rather you know early than discover it after wasting an afternoon."
+          "freetoolkitapp aims to sit in the \"high-trust everyday work\" quadrant: clear disclosures, educational articles, predictable outputs, and links to adjacent tools so you can finish a pipeline without opening ten random ad-heavy sites. When a job exceeds browser limits, we would rather you know early than discover it after wasting an afternoon."
         ]
       },
       {
-        heading: "Putting it together with FreeToolKit",
+        heading: "Putting it together with freetoolkitapp",
         paragraphs: [
           "A realistic mixed workflow: compress images in the browser, draft captions with AI assistance, export PDFs locally from your word processor, then merge those PDFs in the browser before upload. Each step uses the lightest trustworthy tool for the subtask.",
           "Bookmark category hubs such as PDF & Image, AI Tools, and Developer so you are not hunting through search results each time. Pair guides from the blog with the tool pages—guides explain why; tools execute how.",
@@ -109,7 +109,7 @@ export const additionalBlogPosts: BlogPost[] = [
         paragraphs: [
           "Redacted government filings, medical records, or merger agreements should follow IT-approved tooling. Browser converters may be fine for drafts, but final packets may need certified redaction features, digital signatures, or long-term archival formats like PDF/A.",
           "That does not diminish browser tools for homework, small business invoices, resume tweaks, or blog drafts. Match the tool to the stakes.",
-          "FreeToolKit publishes long-form guides next to utilities so visitors understand tradeoffs. Our goal is fewer disappointed users who thought PDF-to-Word was lossless magic."
+          "freetoolkitapp publishes long-form guides next to utilities so visitors understand tradeoffs. Our goal is fewer disappointed users who thought PDF-to-Word was lossless magic."
         ]
       }
     ]
@@ -137,7 +137,7 @@ export const additionalBlogPosts: BlogPost[] = [
         heading: "Questions to ask any free tool site",
         paragraphs: [
           "Does the page claim files stay in your browser? If yes, open dev tools offline test: disconnect Wi-Fi after load—if core features break entirely, the claim may be marketing, not engineering.",
-          "Does the site require an account for a task that should not need one? Unnecessary accounts expand the attack surface. FreeToolKit keeps many flows login-free for that reason.",
+          "Does the site require an account for a task that should not need one? Unnecessary accounts expand the attack surface. freetoolkitapp keeps many flows login-free for that reason.",
           "Does the site bundle unrelated downloads, aggressive popups, or permission prompts? Those are trust signals in the wrong direction. Ad-supported layouts can be legitimate, but they should not trick users into clicking fake download buttons."
         ]
       },
@@ -146,7 +146,7 @@ export const additionalBlogPosts: BlogPost[] = [
         paragraphs: [
           "Duplicate originals before compressing, rotating, or merging. Use descriptive filenames (`2026-05-taxes-source.pdf` vs `document1.pdf`). Keep a dated archive folder so you can roll back when an experiment goes wrong.",
           "Use a password manager with generated credentials instead of reusing passwords discovered via a generator copied into email. Generators create randomness; managers store it safely.",
-          "On shared computers, prefer private browsing windows for sensitive tasks and fully quit the browser afterward. Local drafts in FreeToolKit AI tools persist in localStorage—clear site data if the machine is not yours."
+          "On shared computers, prefer private browsing windows for sensitive tasks and fully quit the browser afterward. Local drafts in freetoolkitapp AI tools persist in localStorage—clear site data if the machine is not yours."
         ]
       },
       {
@@ -158,7 +158,7 @@ export const additionalBlogPosts: BlogPost[] = [
         ]
       },
       {
-        heading: "How FreeToolKit fits your checklist",
+        heading: "How freetoolkitapp fits your checklist",
         paragraphs: [
           "We publish policies, disclaimers, and contact channels so you can perform due diligence. Tool pages explain browser vs server flows where relevant, and we avoid fake social proof.",
           "Pair security habits with practical utilities: compress PDFs before email, verify file checksums when downloading installers, and rotate passwords after any suspected leak.",

@@ -33,7 +33,7 @@ export const contentClusters: ContentCluster[] = [
     priority: 1,
     categories: ["PDF Tools"],
     topLevelCategories: ["PDF & Image"],
-    toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "extract-pdf-pages", "rotate-pdf", "pdf-to-word", "word-to-pdf", "image-to-pdf", "add-text-to-pdf", "pdf-to-jpg", "pdf-unlock", "pdf-to-excel", "excel-to-pdf", "ocr-pdf", "pdf-watermark", "pdf-password-protector", "pdf-metadata-editor", "pdf-reader-online", "compare-pdf-files"],
+    toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "extract-pdf-pages", "rotate-pdf", "pdf-to-word", "word-to-pdf", "image-to-pdf", "add-text-to-pdf", "pdf-to-jpg", "edit-pdf"],
     blogSlugs: ["how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work", "pdf-to-word-conversion-quality"]
   },
   {
@@ -43,7 +43,7 @@ export const contentClusters: ContentCluster[] = [
     priority: 2,
     categories: ["Image Tools"],
     topLevelCategories: ["PDF & Image"],
-    toolSlugs: ["image-compressor", "image-resizer", "png-to-jpg", "jpg-to-png", "webp-converter", "image-cropper", "image-to-base64", "image-rotator", "image-converter", "image-watermark", "image-metadata", "image-color-picker", "image-dpi-checker", "image-grayscale", "image-to-word", "ai-image-to-word", "heic-to-jpg", "svg-to-png", "png-to-webp", "webp-to-png", "background-remover", "passport-photo-maker", "blur-image", "favicon-generator", "photo-collage-maker", "youtube-thumbnail-downloader", "image-upscaler"],
+    toolSlugs: ["image-compressor", "image-resizer", "png-to-jpg", "jpg-to-png", "webp-converter", "image-cropper", "image-rotator", "image-watermark", "image-grayscale", "heic-to-jpg", "svg-to-png", "png-to-webp", "webp-to-png", "passport-photo-maker", "image-to-pdf"],
     blogSlugs: ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online", "best-free-online-tools-for-daily-work"]
   },
   {
@@ -52,8 +52,8 @@ export const contentClusters: ContentCluster[] = [
     description: "Grades, GPA, attendance, study focus, writing checks, and career preparation for students.",
     priority: 3,
     categories: ["Student Tools"],
-    topLevelCategories: ["Student", "AI Tools"],
-    toolSlugs: ["gpa-calculator", "cgpa-calculator", "grade-percentage-calculator", "final-grade-calculator", "weighted-grade-calculator", "attendance-calculator", "study-timer", "gpa-to-percentage-converter", "ai-study-notes", "explain-simple", "ai-resume-cover-letter", "resume-ats-checker", "word-counter", "grammar-fixer", "apa-citation-generator", "mla-citation-generator", "harvard-reference-generator", "pomodoro-timer", "flashcard-generator", "assignment-planner", "study-schedule-generator", "scientific-calculator", "ai-homework-helper", "ai-essay-writer"],
+    topLevelCategories: ["AI Tools"],
+    toolSlugs: ["ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "grammar-fixer", "ai-essay-writer"],
     blogSlugs: ["best-free-student-tools", "how-to-calculate-gpa", "word-counter-guide"]
   },
   {
@@ -63,7 +63,7 @@ export const contentClusters: ContentCluster[] = [
     priority: 4,
     categories: ["AI Tools"],
     topLevelCategories: ["AI Tools"],
-    toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "keyword-extractor", "grammar-fixer", "title-generator", "bio-generator", "faq-generator", "text-to-bullet-points", "ai-email-writer", "chat-reply-generator", "content-rewriter", "productivity-assistant", "ai-caption-generator", "ai-youtube-title-generator", "ai-hashtag-generator", "ai-study-notes", "explain-simple", "ai-resume-cover-letter", "resume-ats-checker", "ai-humanizer", "ai-homework-helper", "ai-essay-writer", "ai-prompt-generator", "ai-interview-answer-generator", "ai-linkedin-summary-generator", "ai-business-name-generator", "ai-notes-cleaner"],
+    toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "ai-email-writer", "content-rewriter", "ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "ai-essay-writer", "ai-interview-answer-generator", "ai-linkedin-summary-generator"],
     blogSlugs: ["best-free-student-tools", "word-counter-guide", "best-free-online-tools-for-daily-work"]
   },
   {
@@ -72,19 +72,9 @@ export const contentClusters: ContentCluster[] = [
     description: "Age, units, percentages, discounts, BMI, interest, EMI, time zones, and practical daily calculations.",
     priority: 5,
     categories: ["Calculator Tools"],
-    topLevelCategories: ["Everyday"],
-    toolSlugs: ["age-calculator", "unit-converter", "percentage-calculator", "discount-calculator", "bmi-calculator", "loan-emi-calculator", "interest-calculator", "time-zone-converter", "shift-hours-calculator"],
+    topLevelCategories: ["Calculators"],
+    toolSlugs: ["age-calculator", "unit-converter", "percentage-calculator", "discount-calculator", "bmi-calculator", "loan-emi-calculator", "interest-calculator", "scientific-calculator"],
     blogSlugs: ["best-free-online-tools-for-daily-work", "best-free-student-tools"]
-  },
-  {
-    id: "text-cleanup",
-    name: "Text cleanup and formatting",
-    description: "Word counting, case conversion, whitespace cleanup, duplicate removal, sorting, and text formatting.",
-    priority: 6,
-    categories: ["Text Tools"],
-    topLevelCategories: ["Everyday"],
-    toolSlugs: ["word-counter", "case-converter", "text-formatter", "duplicate-line-remover", "random-text-generator", "text-sorter", "remove-extra-spaces"],
-    blogSlugs: ["word-counter-guide", "best-free-online-tools-for-daily-work", "best-free-student-tools"]
   },
   {
     id: "developer-utilities",
@@ -92,19 +82,9 @@ export const contentClusters: ContentCluster[] = [
     description: "JSON formatting, URL encoding, UUID generation, Base64 conversion, QR codes, and technical cleanup tasks.",
     priority: 7,
     categories: ["Developer Tools"],
-    topLevelCategories: ["Developer", "Everyday"],
-    toolSlugs: ["json-formatter", "url-encoder-decoder", "uuid-generator", "base64-encoder-decoder", "qr-code-generator", "regex-tester", "jwt-decoder", "sql-formatter", "html-formatter", "css-formatter", "markdown-previewer", "json-validator", "curl-to-fetch"],
+    topLevelCategories: ["Developer"],
+    toolSlugs: ["json-formatter", "url-encoder-decoder", "base64-encoder-decoder", "regex-tester", "jwt-decoder", "sql-formatter", "json-validator", "curl-to-fetch"],
     blogSlugs: ["best-free-online-tools-for-daily-work", "password-generator-guide", "browser-tools-vs-desktop-software"]
-  },
-  {
-    id: "security-basics",
-    name: "Security basics",
-    description: "Strong random passwords, safe credential habits, identifiers, and everyday security support.",
-    priority: 8,
-    categories: ["Security Tools"],
-    topLevelCategories: ["Everyday"],
-    toolSlugs: ["password-generator", "uuid-generator", "base64-encoder-decoder", "password-strength-checker", "sha256-generator", "md5-generator", "random-token-generator", "file-checksum"],
-    blogSlugs: ["password-generator-guide", "best-free-online-tools-for-daily-work", "privacy-friendly-online-tools-checklist"]
   },
   {
     id: "seo-publishing",
@@ -112,29 +92,9 @@ export const contentClusters: ContentCluster[] = [
     description: "Metadata, Open Graph, robots.txt, sitemaps, SERP previews, keyword density, slugs, and schema markup.",
     priority: 9,
     categories: ["SEO Tools"],
-    topLevelCategories: ["Developer", "Everyday"],
+    topLevelCategories: ["SEO Tools"],
     toolSlugs: ["meta-tag-generator", "open-graph-generator", "robots-txt-generator", "sitemap-generator", "serp-preview", "keyword-density-checker", "slug-generator", "schema-markup-generator"],
     blogSlugs: ["best-free-online-tools-for-daily-work", "word-counter-guide"]
-  },
-  {
-    id: "social-media-publishing",
-    name: "Social media publishing utilities",
-    description: "Caption formatting, hashtags, tags, character counts, short bios, and creator publishing helpers.",
-    priority: 10,
-    categories: ["Social Media Tools", "AI Tools"],
-    topLevelCategories: ["AI Tools", "Everyday"],
-    toolSlugs: ["hashtag-counter", "instagram-caption-formatter", "tiktok-caption-generator", "youtube-tags-extractor", "twitter-character-counter", "social-bio-generator", "ai-caption-generator", "ai-youtube-title-generator", "ai-hashtag-generator"],
-    blogSlugs: ["best-free-online-tools-for-daily-work", "word-counter-guide"]
-  },
-  {
-    id: "gaming-utilities",
-    name: "Gaming utilities",
-    description: "Practical browser helpers for breeding outcomes, sensitivity conversion, crafting requirements, and type matchup checks.",
-    priority: 11,
-    categories: ["Gaming Tools"],
-    topLevelCategories: ["Social Media Tools", "Everyday"],
-    toolSlugs: ["palworld-breeding-calculator", "valorant-sensitivity-converter", "minecraft-crafting-calculator", "pokemon-type-calculator"],
-    blogSlugs: ["palworld-breeding-guide"]
   }
 ];
 
@@ -186,7 +146,7 @@ export const relatedToolsByTool: Partial<Record<string, string[]>> = {
   "compress-pdf": ["merge-pdf", "split-pdf", "pdf-to-jpg", "extract-pdf-pages"],
   "merge-pdf": ["split-pdf", "compress-pdf", "word-to-pdf", "pdf-to-word"],
   "split-pdf": ["extract-pdf-pages", "merge-pdf", "compress-pdf", "rotate-pdf"],
-  "image-compressor": ["image-resizer", "webp-converter", "png-to-jpg", "image-converter"],
+  "image-compressor": ["image-resizer", "webp-converter", "png-to-jpg", "png-to-webp"],
   "image-resizer": ["image-compressor", "image-cropper", "webp-converter", "image-to-pdf"],
   "png-to-jpg": ["jpg-to-png", "webp-converter", "image-compressor", "image-resizer"],
   "jpg-to-png": ["png-to-jpg", "webp-converter", "image-compressor", "png-to-webp"],
@@ -194,7 +154,7 @@ export const relatedToolsByTool: Partial<Record<string, string[]>> = {
   "gpa-calculator": ["cgpa-calculator", "final-grade-calculator", "weighted-grade-calculator", "grade-percentage-calculator"],
   "word-counter": ["case-converter", "remove-extra-spaces", "text-formatter", "grammar-fixer"],
   "password-generator": ["uuid-generator", "base64-encoder-decoder", "json-formatter"],
-  "heic-to-jpg": ["image-converter", "png-to-jpg", "webp-converter", "image-compressor"],
+  "heic-to-jpg": ["png-to-jpg", "webp-converter", "image-compressor", "jpg-to-png"],
   "meta-tag-generator": ["open-graph-generator", "serp-preview", "sitemap-generator", "robots-txt-generator"],
   "open-graph-generator": ["meta-tag-generator", "serp-preview", "sitemap-generator", "robots-txt-generator"],
   "hashtag-counter": ["word-counter", "serp-preview", "case-converter", "text-formatter"],
@@ -203,12 +163,12 @@ export const relatedToolsByTool: Partial<Record<string, string[]>> = {
   "minecraft-crafting-calculator": ["palworld-breeding-calculator", "percentage-calculator", "scientific-calculator", "word-counter"],
   "pokemon-type-calculator": ["palworld-breeding-calculator", "percentage-calculator", "unit-converter", "word-counter"],
   "qr-code-generator": ["url-encoder-decoder", "uuid-generator", "json-formatter", "base64-encoder-decoder"],
-  "age-calculator": ["unit-converter", "percentage-calculator", "assignment-planner", "bmi-calculator"],
-  "percentage-calculator": ["discount-calculator", "grade-percentage-calculator", "gpa-calculator", "loan-emi-calculator"],
+  "age-calculator": ["unit-converter", "percentage-calculator", "bmi-calculator", "interest-calculator"],
+  "percentage-calculator": ["discount-calculator", "loan-emi-calculator", "bmi-calculator", "unit-converter"],
   "image-to-pdf": ["merge-pdf", "compress-pdf", "image-compressor", "rotate-pdf"],
-  "word-to-pdf": ["word-counter", "merge-pdf", "add-text-to-pdf", "split-pdf"],
-  "svg-to-png": ["png-to-jpg", "webp-converter", "favicon-generator", "image-resizer"],
-  "png-to-webp": ["webp-to-png", "webp-converter", "image-compressor", "image-converter"],
+  "word-to-pdf": ["merge-pdf", "add-text-to-pdf", "split-pdf", "pdf-to-word"],
+  "svg-to-png": ["png-to-jpg", "webp-converter", "image-resizer", "png-to-webp"],
+  "png-to-webp": ["webp-to-png", "webp-converter", "image-compressor", "jpg-to-png"],
   "webp-to-png": ["png-to-webp", "png-to-jpg", "image-compressor", "jpg-to-png"],
   "background-remover": ["passport-photo-maker", "image-watermark", "image-resizer", "image-compressor"],
   "passport-photo-maker": ["image-resizer", "background-remover", "image-compressor", "image-cropper"],

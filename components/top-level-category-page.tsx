@@ -19,13 +19,11 @@ import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema";
 
 const categoryBadges: Record<TopLevelCategory, string[]> = {
-  Everyday: ["Text", "Calculators", "QR", "Security"],
-  "AI Tools": ["Writing", "Resume", "Captions", "Productivity"],
-  Student: ["Grades", "GPA", "Attendance", "Study"],
-  Developer: ["JSON", "URLs", "UUIDs", "Base64"],
+  "AI Tools": ["Writing", "Resume", "Grammar", "Summaries"],
+  Developer: ["JSON", "Regex", "JWT", "SQL"],
   "PDF & Image": ["PDF", "Images", "Converters", "Browser-based"],
-  "SEO Tools": ["Meta tags", "SERP preview", "Robots & sitemaps", "Browser-based"],
-  "Social Media Tools": ["Captions", "Hashtags", "Bios", "Counters"]
+  "SEO Tools": ["Meta tags", "SERP preview", "Robots & sitemaps", "Schema"],
+  Calculators: ["BMI", "EMI", "Percentages", "Units"]
 };
 
 export function TopLevelCategoryPage({ category }: { category: TopLevelCategory }) {
@@ -46,21 +44,21 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
   ]);
 
   return (
-    <main>
+    <main className="mesh-bg min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Container className="max-w-6xl py-10 sm:py-12">
-      <PageHeader eyebrow="FreeToolKit productivity category" title={category} description={topLevelCategoryIntros[category]} badges={categoryBadges[category]} />
+      <PageHeader eyebrow="freetoolkitapp productivity category" title={category} description={topLevelCategoryIntros[category]} badges={categoryBadges[category]} />
 
       <Card className="mt-8 p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-lg font-bold tracking-tight text-slate-950">Related sections</h2>
-            <p className="mt-1 text-sm leading-relaxed text-slate-600">Older category pages still work and remain useful for focused browsing.</p>
+            <h2 className="text-lg font-bold tracking-tight text-ink-primary">Related sections</h2>
+            <p className="mt-1 text-sm leading-relaxed text-ink-muted">Older category pages still work and remain useful for focused browsing.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {oldLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+              <Link key={link.href} href={link.href} className="pill-link">
                 {link.label}
               </Link>
             ))}
@@ -70,8 +68,8 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
 
       {featuredTools.length ? (
         <section className="mt-10">
-          <p className="text-sm font-black uppercase tracking-wide text-brand-600">Featured tools</p>
-          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">Start with the core {category.toLowerCase()} workflows</h2>
+          <p className="text-sm font-black uppercase tracking-wide text-indigo-400">Featured tools</p>
+          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-ink-primary">Start with the core {category.toLowerCase()} workflows</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featuredTools.map((tool) => (
               <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={toolHref(tool)} category={tool.category} badge={tool.badge} />
@@ -83,11 +81,11 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
       <CategoryToolSearch tools={categoryTools} />
       <RelatedBlogPosts posts={featuredGuides} title={`Featured ${category.toLowerCase()} guides`} />
 
-      <section className="prose-lite mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="prose-lite mt-12 rounded-2xl border border-white/[0.08] bg-surface-card p-6 shadow-sm">
         <h2>About {category.toLowerCase()} tools</h2>
         {seo.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         <p>
-          FreeToolKit is designed for fast, no-signup workflows on mobile and desktop. Use the search box above to filter this category, or open <Link href="/all-tools">All Tools</Link> to browse the full directory of free AI and everyday productivity tools.
+          freetoolkitapp is designed for fast, no-signup workflows on mobile and desktop. Use the search box above to filter this category, or open <Link href="/all-tools">All Tools</Link> to browse the full directory of free AI and everyday productivity tools.
         </p>
       </section>
       <FAQ items={seo.faqs} />
