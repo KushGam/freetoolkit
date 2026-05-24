@@ -43,7 +43,7 @@ export function Footer() {
             </a>
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {["No signup", "Browser-first", "Founder-led", "Editorial guides"].map((item) => (
+            {["No signup", "Browser-first", "Founder-led", "Privacy-conscious"].map((item) => (
               <span key={item} className="rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-ink-muted">
                 {item}
               </span>

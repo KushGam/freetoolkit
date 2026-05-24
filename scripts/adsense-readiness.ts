@@ -49,6 +49,23 @@ function main() {
   const errors: string[] = [];
   const warnings: string[] = [];
 
+  const adsTxtPath = path.join(root, "public", "ads.txt");
+  const requiredAdsLine = "google.com, pub-7576421865674261, DIRECT, f08c47fec0942fa0";
+  if (!fs.existsSync(adsTxtPath)) {
+    errors.push("public/ads.txt is missing — required for AdSense seller authorization");
+  } else {
+    const adsBody = fs.readFileSync(adsTxtPath, "utf8");
+    if (!adsBody.includes(requiredAdsLine)) {
+      errors.push(`public/ads.txt must include: ${requiredAdsLine}`);
+    }
+    if (adsBody.includes("<html") || adsBody.includes("<!DOCTYPE")) {
+      errors.push("public/ads.txt must be plain text, not HTML");
+    }
+  }
+  if (fs.existsSync(path.join(root, "app", "ads.txt", "route.ts"))) {
+    errors.push("Remove app/ads.txt/route.ts — use public/ads.txt only (duplicate ads.txt)");
+  }
+
   const sitemapPaths = new Set(collectSitemapPaths());
   if (!sitemapPaths.size) {
     warnings.push("No sitemap URLs found under public/. Run `npm run build` (postbuild runs next-sitemap) before adsense-check for sitemap assertions.");

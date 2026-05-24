@@ -16,7 +16,7 @@ export function HomeTrustStrip() {
         {founder.name}
       </a>
       <span aria-hidden="true"> · </span>
-      Browser-first file tools
+      Browser-first — many PDF &amp; image tools run in your browser
       <span aria-hidden="true"> · </span>
       <Link href="/about" className="font-medium text-indigo-400 transition hover:text-ink-primary">
         About →

@@ -65,7 +65,11 @@ export default function PrivacyPolicyPage() {
             Where required by law (including EEA/UK visitors), we present consent options before loading non-essential advertising or analytics scripts. Essential cookies needed for security and basic site operation may still apply.
           </p>
           <p>
-            After AdSense approval, our ads.txt file at <code className="text-ink-secondary">/ads.txt</code> will list authorized ad sellers. Until then, the placeholder file indicates the site is preparing for monetization review.
+            Our authorized digital sellers are listed in <code className="text-ink-secondary">/ads.txt</code> at the site root (for example{" "}
+            <a className="font-bold text-indigo-400 hover:text-ink-primary" href="https://www.freetoolkitapp.com/ads.txt" rel="noopener noreferrer">
+              freetoolkitapp.com/ads.txt
+            </a>
+            ). Google and other ad partners use this file to verify which sellers may monetize inventory on our domain.
           </p>
 
           <h2>AI processing</h2>

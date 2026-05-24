@@ -54,6 +54,13 @@ const nextConfig = {
         ]
       },
       {
+        source: "/ads.txt",
+        headers: [
+          { key: "Content-Type", value: "text/plain; charset=utf-8" },
+          { key: "Cache-Control", value: "public, max-age=86400" }
+        ]
+      },
+      {
         source: "/:path*\\.(ico|png|jpg|jpeg|gif|webp|svg|js|css|woff|woff2)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
