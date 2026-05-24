@@ -6,7 +6,7 @@ import { ConsentLoader } from "@/components/ConsentLoader";
 import { AdSlot } from "@/components/AdSlot";
 import { DeferredAnalytics } from "@/components/DeferredAnalytics";
 import { buildGlobalSchemaGraph } from "@/lib/schema";
-import { siteUrl, siteName } from "@/lib/utils";
+import { siteUrl, siteName, adsensePubId } from "@/lib/utils";
 import "./globals.css";
 
 const inter = Inter({
@@ -85,6 +85,10 @@ export const metadata: Metadata = {
       "max-snippet": -1,
       "max-video-preview": -1
     }
+  },
+
+  other: {
+    "google-adsense-account": adsensePubId
   }
 };
 

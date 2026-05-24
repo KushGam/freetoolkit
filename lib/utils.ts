@@ -18,6 +18,8 @@ export function slugToTitle(slug: string) {
 
 export const siteUrl = "https://www.freetoolkitapp.com";
 export const siteName = "freetoolkitapp";
+/** Google AdSense publisher ID — also used in public/ads.txt and site verification meta. */
+export const adsensePubId = "ca-pub-7576421865674261";
 /** Monogram — first letter of freetoolkitapp */
 export const siteLogoMark = "f";
 

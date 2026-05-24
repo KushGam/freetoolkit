@@ -8,7 +8,9 @@ declare global {
   }
 }
 
-const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "ca-pub-7576421865674261";
+import { adsensePubId } from "@/lib/utils";
+
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || adsensePubId;
 const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
 const SCRIPT_ID = "freetoolkit-adsbygoogle";
 
