@@ -23,7 +23,7 @@ const categoryBadges: Record<TopLevelCategory, string[]> = {
   Developer: ["JSON", "Regex", "JWT", "SQL"],
   "PDF & Image": ["PDF", "Images", "Converters", "Browser-based"],
   "SEO Tools": ["Meta tags", "SERP preview", "Robots & sitemaps", "Schema"],
-  Calculators: ["BMI", "EMI", "Percentages", "Units"]
+  Calculators: ["GPA", "BMI", "EMI", "Percentages", "Units"]
 };
 
 export function TopLevelCategoryPage({ category }: { category: TopLevelCategory }) {

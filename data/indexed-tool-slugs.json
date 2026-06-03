@@ -48,6 +48,7 @@
   "url-encoder-decoder",
   "curl-to-fetch",
   "base64-encoder-decoder",
+  "gpa-calculator",
   "bmi-calculator",
   "loan-emi-calculator",
   "percentage-calculator",

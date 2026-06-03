@@ -10,19 +10,62 @@ import { formatBytes } from "@/lib/utils";
 
 type Output = { url: string; name: string; size: number; type?: string };
 
-const gradePoints: Record<string, number> = {
-  "A+": 4,
-  A: 4,
-  "A-": 3.7,
-  "B+": 3.3,
-  B: 3,
-  "B-": 2.7,
-  "C+": 2.3,
-  C: 2,
-  "C-": 1.7,
-  D: 1,
-  F: 0
+const gpaScales = {
+  standard: {
+    label: "4.0 standard",
+    max: 4,
+    grades: {
+      "A+": 4,
+      A: 4,
+      "A-": 3.7,
+      "B+": 3.3,
+      B: 3,
+      "B-": 2.7,
+      "C+": 2.3,
+      C: 2,
+      "C-": 1.7,
+      D: 1,
+      F: 0
+    }
+  },
+  weighted: {
+    label: "5.0 weighted",
+    max: 5,
+    grades: {
+      "A+": 5,
+      A: 5,
+      "A-": 4.7,
+      "B+": 4.3,
+      B: 4,
+      "B-": 3.7,
+      "C+": 3.3,
+      C: 3,
+      "C-": 2.7,
+      D: 2,
+      F: 0
+    }
+  },
+  simple: {
+    label: "Simple A-F",
+    max: 4,
+    grades: {
+      A: 4,
+      B: 3,
+      C: 2,
+      D: 1,
+      F: 0
+    }
+  }
 };
+
+type GpaScaleKey = keyof typeof gpaScales;
+type GpaCourse = { name: string; credits: number; grade: string };
+
+const defaultGpaRows: GpaCourse[] = [
+  { name: "Course 1", credits: 3, grade: "A" },
+  { name: "Course 2", credits: 3, grade: "B+" },
+  { name: "Course 3", credits: 4, grade: "A-" }
+];
 
 function downloadBlob(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob);
@@ -487,31 +530,185 @@ function PdfTool({ mode }: { mode: "merge" | "split" | "compress" | "rotate" | "
 }
 
 function GpaCalculator() {
-  const [rows, setRows] = useState([{ name: "", credits: 3, grade: "A" }, { name: "", credits: 3, grade: "B+" }]);
-  const result = useMemo(() => {
-    const credits = rows.reduce((sum, row) => sum + Number(row.credits || 0), 0);
-    const points = rows.reduce((sum, row) => sum + Number(row.credits || 0) * gradePoints[row.grade], 0);
-    return credits ? points / credits : 0;
-  }, [rows]);
+  const [rows, setRows] = useState<GpaCourse[]>(defaultGpaRows);
+  const [scale, setScale] = useState<GpaScaleKey>("standard");
+  const [target, setTarget] = useState(3.5);
+  const [futureCredits, setFutureCredits] = useState(12);
+
+  const scaleConfig = gpaScales[scale];
+  const gradeEntries = Object.entries(scaleConfig.grades);
+
+  const summary = useMemo(() => {
+    const activeRows = rows.filter((row) => Number(row.credits) > 0);
+    const credits = activeRows.reduce((sum, row) => sum + Number(row.credits || 0), 0);
+    const qualityPoints = activeRows.reduce((sum, row) => {
+      const points = scaleConfig.grades[row.grade as keyof typeof scaleConfig.grades] ?? 0;
+      return sum + Number(row.credits || 0) * points;
+    }, 0);
+    const gpa = credits ? qualityPoints / credits : 0;
+    const sorted = activeRows
+      .map((row) => ({
+        ...row,
+        points: scaleConfig.grades[row.grade as keyof typeof scaleConfig.grades] ?? 0
+      }))
+      .sort((a, b) => Number(b.credits) * b.points - Number(a.credits) * a.points);
+    const neededFutureGpa = futureCredits > 0 ? ((target * (credits + futureCredits)) - qualityPoints) / futureCredits : null;
+    const bestLift = activeRows
+      .map((row, index) => {
+        const currentPoints = scaleConfig.grades[row.grade as keyof typeof scaleConfig.grades] ?? 0;
+        const liftedGpa = credits ? (qualityPoints - Number(row.credits || 0) * currentPoints + Number(row.credits || 0) * scaleConfig.max) / credits : 0;
+        return { index, lift: Math.max(0, liftedGpa - gpa), name: row.name || `Course ${index + 1}` };
+      })
+      .sort((a, b) => b.lift - a.lift)[0];
+
+    return {
+      activeRows,
+      credits,
+      qualityPoints,
+      gpa,
+      strongest: sorted[0],
+      neededFutureGpa,
+      bestLift
+    };
+  }, [futureCredits, rows, scaleConfig, target]);
+
+  function updateRow(index: number, changes: Partial<GpaCourse>) {
+    setRows(rows.map((row, rowIndex) => rowIndex === index ? { ...row, ...changes } : row));
+  }
+
+  function addCourse() {
+    setRows([...rows, { name: `Course ${rows.length + 1}`, credits: 3, grade: "A" }]);
+  }
+
+  function reset() {
+    setRows(defaultGpaRows);
+    setScale("standard");
+    setTarget(3.5);
+    setFutureCredits(12);
+  }
+
+  function changeScale(nextScale: GpaScaleKey) {
+    const nextGrades = gpaScales[nextScale].grades;
+    setScale(nextScale);
+    setRows(rows.map((row) => (row.grade in nextGrades ? row : { ...row, grade: "A" })));
+  }
+
+  const targetState = summary.gpa >= target ? "Target met" : summary.neededFutureGpa === null ? "Add future credits" : summary.neededFutureGpa > scaleConfig.max ? "Reach is above scale" : "Still reachable";
+  const gpaTone = summary.gpa >= target ? "text-emerald-300" : summary.neededFutureGpa !== null && summary.neededFutureGpa <= scaleConfig.max ? "text-amber-300" : "text-rose-300";
+
   return (
-    <div>
-      <div className="grid gap-3">
-        {rows.map((row, index) => (
-          <div key={index} className="grid gap-3 rounded-2xl bg-surface-card p-3 md:grid-cols-[1fr_130px_130px_auto]">
-            <Input placeholder="Course name" value={row.name} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, name: event.target.value } : item))} />
-            <Input type="number" min={0} step={0.5} value={row.credits} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, credits: Number(event.target.value) } : item))} />
-            <Select value={row.grade} onChange={(event) => setRows(rows.map((item, i) => i === index ? { ...item, grade: event.target.value } : item))}>{Object.keys(gradePoints).map((grade) => <option key={grade}>{grade}</option>)}</Select>
-            <SecondaryButton onClick={() => setRows(rows.filter((_, i) => i !== index))}>Remove</SecondaryButton>
+    <div className="space-y-5">
+      <div className="overflow-hidden rounded-2xl border border-indigo-400/20 bg-gradient-to-br from-surface-card via-brand-50 to-surface-section shadow-glow">
+        <div className="grid gap-5 p-5 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-wide text-indigo-300">Smart GPA calculator</p>
+            <div className="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
+              <p className="text-6xl font-black leading-none tracking-tight text-ink-primary">{summary.gpa.toFixed(2)}</p>
+              <div className="pb-1">
+                <p className="text-sm font-black text-ink-secondary">on a {scaleConfig.max.toFixed(1)} scale</p>
+                <p className={`mt-1 text-sm font-black ${gpaTone}`}>{targetState}</p>
+              </div>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-xl border border-white/[0.08] bg-surface-card p-3">
+                <p className="text-[11px] font-black uppercase tracking-wide text-ink-muted">Credits</p>
+                <p className="mt-1 text-2xl font-black text-ink-primary">{summary.credits.toFixed(1)}</p>
+              </div>
+              <div className="rounded-xl border border-white/[0.08] bg-surface-card p-3">
+                <p className="text-[11px] font-black uppercase tracking-wide text-ink-muted">Quality points</p>
+                <p className="mt-1 text-2xl font-black text-ink-primary">{summary.qualityPoints.toFixed(1)}</p>
+              </div>
+              <div className="rounded-xl border border-white/[0.08] bg-surface-card p-3">
+                <p className="text-[11px] font-black uppercase tracking-wide text-ink-muted">Courses</p>
+                <p className="mt-1 text-2xl font-black text-ink-primary">{summary.activeRows.length}</p>
+              </div>
+            </div>
           </div>
-        ))}
+
+          <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-4">
+            <p className="text-xs font-black uppercase tracking-wide text-ink-muted">Target planner</p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              <label className="text-sm font-bold text-ink-secondary">
+                Grade scale
+                <Select className="mt-2" value={scale} onChange={(event) => changeScale(event.target.value as GpaScaleKey)}>
+                  {(Object.keys(gpaScales) as GpaScaleKey[]).map((key) => <option key={key} value={key}>{gpaScales[key].label}</option>)}
+                </Select>
+              </label>
+              <label className="text-sm font-bold text-ink-secondary">
+                Target GPA
+                <Input className="mt-2" type="number" min={0} max={scaleConfig.max} step={0.01} value={target} onChange={(event) => setTarget(Number(event.target.value || 0))} />
+              </label>
+              <label className="text-sm font-bold text-ink-secondary">
+                Future credits to model
+                <Input className="mt-2" type="number" min={0} step={0.5} value={futureCredits} onChange={(event) => setFutureCredits(Number(event.target.value || 0))} />
+              </label>
+            </div>
+            <p className="mt-4 rounded-xl border border-amber-300/20 bg-amber-300/10 p-3 text-sm font-bold leading-6 text-amber-100">
+              {summary.neededFutureGpa === null
+                ? "Enter future credits to see what GPA you need next."
+                : summary.gpa >= target
+                  ? `You are ${Math.max(0, summary.gpa - target).toFixed(2)} above your target.`
+                  : summary.neededFutureGpa > scaleConfig.max
+                    ? `You would need ${summary.neededFutureGpa.toFixed(2)} next term, above this scale's maximum.`
+                    : `You need about ${summary.neededFutureGpa.toFixed(2)} across the next ${futureCredits.toFixed(1)} credits.`}
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <SecondaryButton onClick={() => setRows([...rows, { name: "", credits: 3, grade: "A" }])}>Add course</SecondaryButton>
-        <SecondaryButton onClick={() => setRows([{ name: "", credits: 3, grade: "A" }, { name: "", credits: 3, grade: "B+" }])}>Reset</SecondaryButton>
+
+      <div className="grid gap-3">
+        {rows.map((row, index) => {
+          const points = scaleConfig.grades[row.grade as keyof typeof scaleConfig.grades] ?? 0;
+          const courseQualityPoints = Number(row.credits || 0) * points;
+          return (
+            <div key={index} className="grid gap-3 rounded-2xl border border-white/[0.08] bg-surface-card p-3 shadow-sm lg:grid-cols-[minmax(0,1fr)_120px_130px_130px_auto] lg:items-end">
+              <label className="text-xs font-black uppercase tracking-wide text-ink-muted">
+                Course
+                <Input className="mt-2" placeholder="Course name" value={row.name} onChange={(event) => updateRow(index, { name: event.target.value })} />
+              </label>
+              <label className="text-xs font-black uppercase tracking-wide text-ink-muted">
+                Credits
+                <Input className="mt-2" type="number" min={0} step={0.5} value={row.credits} onChange={(event) => updateRow(index, { credits: Number(event.target.value || 0) })} />
+              </label>
+              <label className="text-xs font-black uppercase tracking-wide text-ink-muted">
+                Grade
+                <Select className="mt-2" value={row.grade} onChange={(event) => updateRow(index, { grade: event.target.value })}>
+                  {gradeEntries.map(([grade, value]) => <option key={grade} value={grade}>{grade} ({value.toFixed(1)})</option>)}
+                </Select>
+              </label>
+              <div className="rounded-xl border border-white/[0.08] bg-surface-section px-3 py-2">
+                <p className="text-[11px] font-black uppercase tracking-wide text-ink-muted">Points</p>
+                <p className="mt-1 text-sm font-black text-ink-primary">{courseQualityPoints.toFixed(1)}</p>
+              </div>
+              <SecondaryButton className="lg:w-auto" onClick={() => setRows(rows.length > 1 ? rows.filter((_, rowIndex) => rowIndex !== index) : rows)} disabled={rows.length === 1}>
+                Remove
+              </SecondaryButton>
+            </div>
+          );
+        })}
       </div>
-      <div className="mt-5 rounded-2xl border border-indigo-400/20 bg-indigo-500/10 p-5 shadow-sm">
-        <p className="text-sm font-bold text-indigo-400">Formula: total grade points / total credit hours</p>
-        <p className="mt-2 text-4xl font-black text-indigo-400">{result.toFixed(2)}</p>
+
+      <div className="flex flex-wrap gap-3">
+        <Button onClick={addCourse}>Add course</Button>
+        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <ResultCard title="Formula" className="border-indigo-400/20 bg-indigo-500/10">
+          <p className="text-sm font-bold leading-6 text-indigo-100">GPA = total quality points divided by total credit hours.</p>
+          <p className="mt-2 text-sm font-semibold text-ink-muted">
+            {summary.credits ? `${summary.qualityPoints.toFixed(2)} / ${summary.credits.toFixed(2)} = ${summary.gpa.toFixed(2)}` : "Add credit hours to calculate GPA."}
+          </p>
+        </ResultCard>
+        <ResultCard title="Most impact" className="border-emerald-300/20 bg-emerald-300/10">
+          <p className="text-sm font-bold leading-6 text-emerald-100">
+            {summary.strongest ? `${summary.strongest.name || "A course"} contributes the most quality points right now.` : "Add a course to see contribution insight."}
+          </p>
+          {summary.bestLift && summary.bestLift.lift > 0 ? <p className="mt-2 text-sm font-semibold text-ink-muted">Improving {summary.bestLift.name} to the top grade could lift GPA by about {summary.bestLift.lift.toFixed(2)}.</p> : null}
+        </ResultCard>
+        <ResultCard title="Planning note" className="border-white/[0.08] bg-surface-card">
+          <p className="text-sm font-bold leading-6 text-ink-secondary">This is an estimate. Schools may use different plus/minus, honors, repeated-course, pass/fail, or rounding rules.</p>
+        </ResultCard>
       </div>
     </div>
   );

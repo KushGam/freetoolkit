@@ -315,14 +315,14 @@ const coreTools: Tool[] = [
   {
     slug: "gpa-calculator",
     title: "GPA Calculator",
-    category: "Student Tools",
+    category: "Calculator Tools",
     popular: true,
-    description: "Calculate weighted GPA from course credits and letter grades.",
-    intro: "Calculate GPA online free using course credits and letter grades. This student-friendly calculator uses a common 4.0 scale, shows the formula, and needs no signup.",
-    metaTitle: "GPA Calculator Online Free | Weighted 4.0 GPA",
-    metaDescription: "Calculate GPA online free with credits and letter grades. Get a weighted 4.0 GPA estimate fast in your browser with no signup and clear instant results.",
-    howToUse: ["Add one row for each course.", "Enter the course name if you want to label it.", "Enter credit hours for each course.", "Choose the letter grade.", "Review the weighted GPA result and formula."],
-    features: ["Weighted GPA based on credit hours", "Common 4.0 grade mapping", "Add and remove course rows", "Works in your browser with no signup", "Useful for planning semester outcomes"],
+    description: "Calculate GPA from course credits and grades with scale selection, target planning, and smart course insights.",
+    intro: "Calculate GPA online free using course credits and letter grades. This smart calculator supports common GPA scales, shows target planning, highlights course impact, and needs no signup.",
+    metaTitle: "GPA Calculator Online Free | Smart Weighted GPA",
+    metaDescription: "Calculate GPA online free with credits, grades, GPA scale selection, target planning, and smart course insights. Fast browser tool with no signup.",
+    howToUse: ["Choose the GPA scale that best matches your school policy.", "Add one row for each course.", "Enter credit hours and select the letter grade for each course.", "Set a target GPA and future credits if you want planning guidance.", "Review the weighted GPA, formula, and course impact insights."],
+    features: ["Weighted GPA based on credit hours", "4.0 standard, 5.0 weighted, and simple A-F scale options", "Target GPA planner for future credits", "Smart course impact notes", "Works in your browser with no signup"],
     faq: [
       { question: "What GPA scale does this calculator use?", answer: "It uses a common 4.0 scale where A+ and A are 4.0, A- is 3.7, B+ is 3.3, and F is 0." },
       { question: "Is this an official GPA result?", answer: "No. It is an estimate. Always check your school policy because grade scales and rules can vary." },
@@ -485,7 +485,7 @@ export const topLevelCategoryIntros: Record<TopLevelCategory, string> = {
   Developer:
     "Developer tools for JSON, regex, JWT, SQL, URLs, Base64, and cURL-to-fetch conversion—fast copy-paste workflows in the browser.",
   Calculators:
-    "Everyday calculators for BMI, loans, percentages, discounts, age, interest, units, and scientific math—instant results with no signup."
+    "Everyday calculators for GPA, BMI, loans, percentages, discounts, age, interest, units, and scientific math—instant results with no signup."
 };
 
 export const topLevelCategoryOldLinks: Record<TopLevelCategory, Array<{ label: string; href: string }>> = {
