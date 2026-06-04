@@ -61,9 +61,9 @@ module.exports = {
     "/calculator-tools",
     "/text-tools",
     "/security-tools",
-    "/sitemap"
+    "/sitemap",
+    "/all-tools"
   ],
-  additionalPaths: async (config) => [await config.transform(config, "/all-tools")],
   robotsTxtOptions: {
     policies: [
       {

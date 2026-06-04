@@ -3,13 +3,12 @@ import { AllToolsSearch } from "@/components/AllToolsSearch";
 import { Container, PageHeader } from "@/components/ui";
 import { canonicalUrl } from "@/lib/utils";
 
-export function generateMetadata({ searchParams }: { searchParams?: { q?: string } }): Metadata {
-  const hasQuery = Boolean(searchParams?.q?.trim());
+export function generateMetadata(): Metadata {
   return {
     title: "All Free Productivity Tools",
     description: "Search every curated freetoolkitapp tool across AI, PDF & Image, SEO, Developer, and Calculators.",
     alternates: { canonical: canonicalUrl("/all-tools") },
-    robots: hasQuery ? { index: false, follow: true } : { index: true, follow: true },
+    robots: { index: false, follow: true },
     openGraph: {
       title: "All Free Productivity Tools",
       description: "Find free browser-based tools for AI workflows, PDFs, images, SEO, developers, and calculators.",
