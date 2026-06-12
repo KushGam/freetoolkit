@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { getTool, toolHref, topLevelCategories, topLevelCategoryRoutes } from "@/data/tools";
-import { SiteLogo } from "@/components/SiteLogo";
-import { founder, siteContactEmail } from "@/data/site-trust";
-import { siteName } from "@/lib/utils";
+import { topLevelCategories, topLevelCategoryRoutes } from "@/data/tools";
+import { founder } from "@/data/site-trust";
 
 const legalLinks = [
   { href: "/about", label: "About" },
@@ -18,33 +16,30 @@ const exploreLinks = [
   { href: "/sitemap", label: "HTML sitemap" }
 ];
 
+const tagPills = ["No signup", "Browser-first", "Founder-led", "Privacy-conscious"];
+
+function FooterLogo() {
+  return (
+    <Link href="/" className="font-heading text-[17px] font-extrabold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold" aria-label="freetoolkitapp home">
+      <span className="text-text">free</span>
+      <span className="text-gold">toolkit</span>
+      <span className="text-text">app</span>
+    </Link>
+  );
+}
+
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-white/10 bg-black">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1.35fr)_repeat(4,minmax(0,1fr))] lg:px-8">
+    <footer className="border-t border-border bg-bg2 pt-16 pb-8">
+      <div className="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <SiteLogo />
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-muted">
-            Founder-led productivity toolkit — curated PDF, image, AI, SEO, developer, and calculator tools. Built for depth, speed, and privacy-conscious workflows.
-          </p>
-          <p className="mt-3 text-sm">
-            <a className="font-medium text-indigo-400 transition hover:text-ink-primary" href={`mailto:${siteContactEmail}`}>
-              {siteContactEmail}
-            </a>
-          </p>
-          <p className="mt-2 text-sm">
-            <a
-              className="text-ink-muted transition hover:text-ink-secondary"
-              href={founder.linkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {founder.name} on LinkedIn →
-            </a>
+          <FooterLogo />
+          <p className="mt-3 max-w-[240px] text-[13px] leading-relaxed text-text-2">
+            Founder-led productivity toolkit — curated PDF, image, AI, SEO, developer, and calculator tools.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {["No signup", "Browser-first", "Founder-led", "Privacy-conscious"].map((item) => (
-              <span key={item} className="rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-ink-muted">
+            {tagPills.map((item) => (
+              <span key={item} className="rounded border border-border bg-bg3 px-2 py-1 text-[10px] font-semibold text-text-3">
                 {item}
               </span>
             ))}
@@ -52,11 +47,11 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-ink-secondary">Trust &amp; legal</h3>
-          <ul className="mt-4 grid gap-2 text-sm text-ink-muted">
+          <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-3">Trust &amp; legal</h3>
+          <ul className="grid gap-2.5">
             {legalLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="transition hover:text-ink-secondary">
+                <Link href={link.href} className="text-[13px] text-text-2 transition hover:text-gold">
                   {link.label}
                 </Link>
               </li>
@@ -65,50 +60,43 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-ink-secondary">Explore</h3>
-          <ul className="mt-4 grid gap-2 text-sm text-ink-muted">
+          <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-3">Explore</h3>
+          <ul className="grid gap-2.5">
             {exploreLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="transition hover:text-ink-secondary">
+                <Link href={link.href} className="text-[13px] text-text-2 transition hover:text-gold">
                   {link.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <h3 className="mt-6 text-sm font-semibold text-ink-secondary">Categories</h3>
-          <ul className="mt-4 grid gap-2 text-sm text-ink-muted">
+        </div>
+
+        <div>
+          <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-3">Categories</h3>
+          <ul className="grid gap-2.5">
             {topLevelCategories.map((category) => (
               <li key={category}>
-                <Link href={topLevelCategoryRoutes[category]} className="transition hover:text-ink-secondary">
+                <Link href={topLevelCategoryRoutes[category]} className="text-[13px] text-text-2 transition hover:text-gold">
                   {category}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-
-        <div>
-          <h3 className="text-sm font-semibold text-ink-secondary">Popular tools</h3>
-          <ul className="mt-4 grid gap-2 text-sm text-ink-muted">
-            {["merge-pdf", "compress-pdf", "image-compressor", "ai-resume-cover-letter", "grammar-fixer"].map((slug) => {
-              const tool = getTool(slug);
-              if (!tool) return null;
-              return (
-                <li key={slug}>
-                  <Link href={toolHref(tool)} className="transition hover:text-ink-secondary">
-                    {tool.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} {siteName}. Operated by {founder.name}.</p>
-          <p className="text-xs sm:max-w-lg sm:text-right">Independent productivity tools publisher · freetoolkitapp.com</p>
+      <div className="mx-auto mt-14 max-w-6xl border-t border-border px-6 pt-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-[12px] text-text-3">
+          <p>© {new Date().getFullYear()} freetoolkitapp · Operated by {founder.name}</p>
+          <a
+            className="transition hover:text-gold"
+            href={founder.linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {founder.name} on LinkedIn →
+          </a>
         </div>
       </div>
     </footer>

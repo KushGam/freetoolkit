@@ -13,7 +13,7 @@ export const founder = {
 export const brandMission =
   "freetoolkitapp helps people finish real work — compress a PDF, fix a resume, generate meta tags — with fast browser tools, clear instructions, and no account required.";
 
-export const curatedToolCount = 57;
+export const curatedToolCount = 69;
 
 export type PrivacyTier = "local" | "ai" | "hybrid" | "client";
 
@@ -53,8 +53,7 @@ const hybridToolSlugs = new Set([
   "ocr-pdf",
   "pdf-to-excel",
   "image-to-word",
-  "ai-image-to-word",
-  "invoice-generator"
+  "ai-image-to-word"
 ]);
 
 const aiToolSlugs = new Set([

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AuthorByline } from "@/components/AuthorByline";
 import { FAQ } from "@/components/FAQ";
 import { RelatedBlogPosts } from "@/components/RelatedBlogPosts";
-import { Badge, Container, PageHeader, ToolCard } from "@/components/ui";
+import { ToolCard } from "@/components/ui";
 import { blogHref, blogPosts, getBlogFaqs, getBlogPost, getBlogRelatedToolLinks, getRelatedBlogPosts } from "@/data/blog";
 import { isBlogIndexedForSearch } from "@/data/indexing-policy";
 import { categoryRoutes } from "@/data/tools";
+import { founder } from "@/data/site-trust";
 import { buildBlogPostingSchema, buildBreadcrumbSchema, buildFaqSchema, withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
 
@@ -100,7 +100,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     return (
       <>
         {paragraph.slice(0, startIndex)}
-        <Link href={match.href} className="font-semibold text-indigo-400 transition hover:text-ink-primary">
+        <Link href={match.href} className="font-semibold text-gold transition hover:brightness-110">
           {paragraph.slice(startIndex, endIndex)}
         </Link>
         {paragraph.slice(endIndex)}
@@ -109,76 +109,58 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <main className="mesh-bg min-h-screen">
+    <main className="min-h-screen bg-bg pt-[60px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <Container className="max-w-5xl py-10">
-        <Link href="/blog" className="text-sm font-black text-indigo-400 transition hover:text-ink-primary">
-          ← Back to blog
-        </Link>
 
-        <PageHeader
-          className="mt-5 text-left"
-          eyebrow={post.category}
-          title={post.title}
-          description={post.description}
-          badges={[formatDate(post.publishedAt), post.readingTime]}
-        />
-        <AuthorByline publishedAt={post.publishedAt} />
-
-        <div className="mt-10 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-2xl border border-white/[0.08] bg-surface-card p-5 shadow-sm">
-              <p className="text-xs font-black uppercase tracking-wide text-indigo-400">Contents</p>
-              <nav className="mt-3 grid gap-2" aria-label="Table of contents">
-                {post.content.map((section) => (
-                  <a key={section.heading} href={`#${section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`} className="text-sm font-bold leading-6 text-ink-muted hover:text-indigo-400">
-                    {section.heading}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
-          <article className="max-w-3xl">
-            {post.content.map((section) => (
-              <section key={section.heading} id={section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")} className="scroll-mt-24 mt-10 first:mt-0">
-                <h2 className="font-display text-3xl font-bold tracking-tight text-ink-primary">{section.heading}</h2>
-                <div className="mt-4 space-y-5">
-                  {section.paragraphs.map((paragraph) => (
-                    <p key={paragraph} className="text-base leading-8 text-ink-secondary">
-                      {linkifyParagraph(paragraph)}
-                    </p>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </article>
+      <header className="border-b border-border px-6 py-12">
+        <div className="mx-auto max-w-2xl">
+          <Link href="/blog" className="text-sm font-medium text-text-2 transition hover:text-gold">
+            ← Back to blog
+          </Link>
+          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.08em] text-gold">{post.category}</p>
+          <h1 className="mt-3 font-heading text-[clamp(28px,4vw,42px)] font-extrabold tracking-tight text-text">{post.title}</h1>
+          <p className="mt-4 text-[13px] text-text-3">
+            {founder.name} · {formatDate(post.publishedAt)} · {post.readingTime}
+          </p>
         </div>
+      </header>
 
+      <article className="prose-site mx-auto max-w-2xl px-6 py-12">
+        {post.content.map((section) => (
+          <section
+            key={section.heading}
+            id={section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
+            className="scroll-mt-24 mt-10 first:mt-0"
+          >
+            <h2>{section.heading}</h2>
+            <div className="space-y-5">
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{linkifyParagraph(paragraph)}</p>
+              ))}
+            </div>
+          </section>
+        ))}
+      </article>
+
+      <div className="mx-auto max-w-2xl px-6 pb-16">
         <RelatedBlogPosts posts={relatedPosts} />
         <FAQ items={faqs} />
 
         {relatedTools.length ? (
-          <section className="mt-14 border-t border-white/[0.08] pt-10">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <Badge className="border-indigo-400/20 bg-indigo-500/10 text-[11px] font-black uppercase tracking-wide text-indigo-400">Related tools</Badge>
-                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink-primary">Try the tools mentioned in this guide</h2>
-              </div>
-              <Link href="/all-tools" className="text-sm font-black text-indigo-400 transition hover:text-ink-primary">
-                See all tools →
-              </Link>
-            </div>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <section className="mt-14 border-t border-border pt-10">
+            <h2 className="font-heading text-2xl font-bold text-text">Try the tools mentioned in this guide</h2>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {relatedTools.map((tool) => (
                 <ToolCard key={tool.slug} title={tool.title} description={tool.description} href={tool.href} category={tool.category} badge={tool.badge} />
               ))}
             </div>
           </section>
         ) : null}
-        <section className="mt-10 rounded-2xl border border-white/[0.08] bg-surface-card p-5 shadow-sm">
-          <p className="text-xs font-black uppercase tracking-wide text-indigo-400">Continue the workflow</p>
+
+        <section className="mt-10 rounded-2xl border border-border bg-bg2 p-5">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-text-3">Continue the workflow</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link href={blogCategoryRouteMap[post.category] ?? "/all-tools"} className="pill-link">
               Explore category tools
@@ -191,7 +173,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </Link>
           </div>
         </section>
-      </Container>
+      </div>
     </main>
   );
 }

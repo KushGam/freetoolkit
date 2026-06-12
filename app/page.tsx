@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
-import { HomeSeoContent } from "@/components/HomeSeoContent";
-import { HomeToolSearch } from "@/components/HomeToolSearch";
-import { HomeTrustStrip } from "@/components/HomeTrustStrip";
-import { Badge, Card, CategoryCard, Container, ToolCard } from "@/components/ui";
-import { blogHref, blogPosts } from "@/data/blog";
-import { isToolIndexedForSearch } from "@/data/indexing-policy";
-import { getToolsByTopLevelCategory, tools, toolHref, topLevelCategories, topLevelCategoryRoutes, type Tool, type TopLevelCategory } from "@/data/tools";
+import { GhostButton, PrimaryButton, SecondaryButton } from "@/components/Buttons";
+import { CategoryHubCard } from "@/components/CategoryHubCard";
+import { Divider } from "@/components/ui/Divider";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { ToolCard } from "@/components/ui/ToolCard";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -24,327 +22,332 @@ export const metadata: Metadata = {
   }
 };
 
-const popularSlugs = [
-  "merge-pdf",
-  "compress-pdf",
-  "image-compressor",
-  "ai-resume-cover-letter",
-  "pdf-to-word",
-  "grammar-fixer"
+const stats = [
+  { value: "69", label: "Curated tools" },
+  { value: "5", label: "Tool categories" },
+  { value: "0", label: "Signups needed" },
+  { value: "100%", label: "Free forever" }
 ];
 
-const recentlyAddedSlugs = [
-  "meta-tag-generator",
-  "open-graph-generator",
-  "robots-txt-generator",
-  "sitemap-generator",
-  "schema-markup-generator",
-  "resume-ats-checker"
-];
-
-const secondaryPopularSlugs = [
-  "split-pdf",
-  "pdf-to-jpg",
-  "webp-converter",
-  "bmi-calculator",
-  "json-formatter",
-  "paraphrasing-tool"
-];
-
-const heroTools = [
+const categories = [
   {
-    title: "Merge PDF",
-    copy: "Combine documents in your browser",
-    icon: "PDF",
-    href: "/merge-pdf"
+    emoji: "🤖",
+    title: "AI Tools",
+    href: "/ai-tools",
+    accent: "#a78bfa",
+    description: "Resumes, grammar, study notes, paraphrasing.",
+    tags: ["Resume Writer", "Grammar Fixer", "Study Notes"]
   },
   {
-    title: "Image Compressor",
-    copy: "Shrink photos before upload",
-    icon: "IMG",
-    href: "/image-compressor"
+    emoji: "📄",
+    title: "PDF & Image",
+    href: "/pdf-image",
+    accent: "#f87171",
+    description: "Merge, split, compress, convert, resize.",
+    tags: ["Merge PDF", "Compress", "HEIC→JPG"]
   },
   {
-    title: "AI Resume Writer",
-    copy: "Draft resumes & cover letters",
-    icon: "AI",
-    href: "/ai-resume-cover-letter"
+    emoji: "📈",
+    title: "SEO Tools",
+    href: "/seo-tools",
+    accent: "#34d399",
+    description: "Meta tags, Open Graph, schema, SERP preview.",
+    tags: ["Meta Tags", "Schema", "SERP Preview"]
+  },
+  {
+    emoji: "⌨️",
+    title: "Developer",
+    href: "/developer",
+    accent: "#60a5fa",
+    description: "JSON, regex, JWT, SQL, Base64, cURL→fetch.",
+    tags: ["JSON Format", "JWT Decode", "Regex"]
+  },
+  {
+    emoji: "🧮",
+    title: "Calculators",
+    href: "/calculators",
+    accent: "#fbbf24",
+    description: "BMI, loan EMI, percentages, age, units.",
+    tags: ["EMI Calc", "BMI", "GPA"]
   }
 ];
 
-const categoryDetails: Record<TopLevelCategory, { href: string; icon: string; description: string }> = {
-  "AI Tools": {
-    href: topLevelCategoryRoutes["AI Tools"],
-    icon: "AI",
-    description: "Resume writing, grammar, essays, study notes, summarizing, paraphrasing, and interview prep."
-  },
-  "PDF & Image": {
-    href: topLevelCategoryRoutes["PDF & Image"],
-    icon: "DOC",
-    description: "Merge, split, compress, convert, resize, crop, and watermark PDFs and images."
-  },
-  "SEO Tools": {
-    href: topLevelCategoryRoutes["SEO Tools"],
-    icon: "SEO",
-    description: "Meta tags, Open Graph, robots.txt, sitemaps, SERP previews, slugs, and schema markup."
-  },
-  Developer: {
-    href: topLevelCategoryRoutes.Developer,
-    icon: "DEV",
-    description: "JSON, regex, JWT, SQL, URL encoding, Base64, and cURL-to-fetch conversion."
-  },
-  Calculators: {
-    href: topLevelCategoryRoutes.Calculators,
-    icon: "CAL",
-    description: "BMI, loan EMI, percentages, discounts, age, interest, units, and scientific math."
-  }
-};
-
-const trustBadges = ["No signup", "Browser-based", "Founder-led", "Curated quality"];
+const trendingTools = [
+  { slug: "merge-pdf", category: "pdf", name: "Merge PDF", desc: "Combine multiple PDFs in your browser.", privacy: "🔒 Browser only", featured: false },
+  { slug: "compress-pdf", category: "pdf", name: "Compress PDF", desc: "Reduce size without uploading to any server.", privacy: "🔒 No upload", featured: false },
+  { slug: "heic-to-jpg", category: "img", name: "HEIC to JPG", desc: "Convert iPhone photos to JPG. No install.", privacy: "🔒 Browser only", featured: true },
+  { slug: "image-compressor", category: "img", name: "Image Compressor", desc: "Compress JPG, PNG, WebP with quality slider.", privacy: "🔒 Browser only", featured: false },
+  { slug: "resume-ats-checker", category: "ai", name: "Resume ATS Checker", desc: "Match resume to job description. Free.", privacy: "✦ AI powered", featured: true },
+  { slug: "ai-resume-cover-letter", category: "ai", name: "AI Resume Writer", desc: "Draft tailored resumes and cover letters.", privacy: "✦ AI powered", featured: false },
+  { slug: "loan-emi-calculator", category: "calc", name: "Loan EMI Calculator", desc: "Home loan EMI with prepayment. India-ready.", privacy: "⚡ Instant", featured: true },
+  { slug: "json-formatter", category: "dev", name: "JSON Formatter", desc: "Format, validate, minify JSON. Zero ads.", privacy: "🔒 Client side", featured: false },
+  { slug: "jwt-decoder", category: "dev", name: "JWT Decoder", desc: "Decode JWT tokens. Nothing sent to server.", privacy: "🔒 No upload", featured: false }
+];
 
 const whyCards = [
+  { icon: "🎯", title: "Focused catalog", copy: "69 curated tools instead of hundreds of thin pages. Every tool earns its place." },
+  { icon: "🔒", title: "Private by design", copy: "PDF and image tools run locally in your browser. Your files never leave your device." },
+  { icon: "⚡", title: "No signup ever", copy: "Open a tool, finish the job, and leave. No account required." },
+  { icon: "📖", title: "Editorial depth", copy: "Every tool page has how-to steps, FAQs, use cases, and related guides." }
+];
+
+const blogPosts = [
   {
-    title: "Focused catalog",
-    copy: "About 60 high-traffic tools instead of hundreds of thin utilities—better depth, clearer topical authority."
+    tag: "PDF Guides",
+    href: "/blog/how-to-compress-pdf-files",
+    title: "How to Compress PDF Files Online",
+    description: "Practical ways to reduce PDF size and when browser tools help.",
+    readTime: "5 min read"
   },
   {
-    title: "Private by design",
-    copy: "File tools run in your browser where possible. AI tools use only the text or image needed for your request."
+    tag: "Image Guides",
+    href: "/blog/how-to-compress-images-without-losing-quality",
+    title: "Compress Images Without Losing Quality",
+    description: "Reduce JPG, PNG, WebP sizes while keeping them sharp.",
+    readTime: "5 min read"
   },
   {
-    title: "No signup",
-    copy: "Open a tool, finish the job, and leave. No account wall or dashboard required."
-  },
-  {
-    title: "Editorial depth",
-    copy: "Each tool page includes how-to steps, FAQs, use cases, and links to related workflows."
+    tag: "Image Guides",
+    href: "/blog/png-vs-jpg-vs-webp",
+    title: "PNG vs JPG vs WebP: Which Format?",
+    description: "Compare formats so you can pick the right one every time.",
+    readTime: "6 min read"
   }
 ];
 
-const homeFaqs = [
-  ["Is freetoolkitapp free to use?", "Yes. All curated tools are free with no signup required."],
-  ["Are my files uploaded?", "Many PDF and image tools process files locally in your browser. AI tools send only the text or image needed to generate results."],
-  [
-    "What tools are most popular?",
-    "Merge PDF, Compress PDF, Image Compressor, PDF to Word, AI Resume Writer, and Grammar Fixer are common starting points."
-  ],
-  ["Does freetoolkitapp work on mobile?", "Yes. Layouts and controls are built for phones, tablets, and desktops."],
-  ["Can I use these tools for work or study?", "Yes—for documents, applications, content workflows, calculations, and developer tasks. Always review AI outputs before submitting."]
-];
+function LockIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </svg>
+  );
+}
 
-function pickIndexedTools(slugs: string[]) {
-  return slugs
-    .map((slug) => tools.find((tool) => tool.slug === slug))
-    .filter((tool): tool is Tool => tool !== undefined)
-    .filter((tool) => isToolIndexedForSearch(tool.slug));
+function UserIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+      <path d="M5 12l5 5L19 7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function SearchIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3-3" strokeLinecap="round" />
+    </svg>
+  );
 }
 
 export default function HomePage() {
-  const trendingTools = pickIndexedTools(popularSlugs);
-  const popularTools = pickIndexedTools(secondaryPopularSlugs);
-  const recentlyAddedTools = pickIndexedTools(recentlyAddedSlugs);
-  const latestPosts = blogPosts
-    .filter((post) => post.slug !== "valorant-sensitivity-guide" && post.slug !== "palworld-breeding-guide")
-    .slice(0, 3);
-
   return (
-    <main className="mesh-bg overflow-hidden">
-      <section className="relative border-b border-white/10">
-        <Container className="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_400px] lg:py-24">
-          <div className="max-w-4xl text-center lg:text-left">
-            <Badge className="mx-auto lg:mx-0">Modern AI productivity toolkit · no signup</Badge>
-            <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-gradient sm:text-5xl lg:mx-0 lg:text-6xl">
-              PDF, image &amp; AI tools — curated for quality
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-ink-muted sm:text-lg lg:mx-0">
-              Merge and compress PDFs, optimize images, draft AI resumes, fix grammar, and ship SEO metadata — about 60 deep tools, not hundreds of thin pages.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:justify-start">
-              <Link href="/all-tools" className="btn-primary text-center">
-                Browse all tools
-              </Link>
-              <Link href="/pdf-image" className="btn-secondary text-center">
-                PDF &amp; Image hub
-              </Link>
-            </div>
-            <div className="mx-auto mt-6 text-left lg:mx-0">
-              <HomeToolSearch />
-            </div>
-            <HomeTrustStrip />
-            <div className="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-2 lg:mx-0 lg:justify-start">
-              {trustBadges.map((badge) => (
-                <span key={badge} className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-ink-muted">
-                  {badge}
-                </span>
-              ))}
-            </div>
+    <main className="bg-bg">
+      {/* Hero */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-[60px] text-center sm:px-6">
+        <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden md:block" aria-hidden="true">
+          <div className="absolute -left-20 -top-32 h-[500px] w-[500px] animate-drift rounded-full bg-[#F5A623] opacity-[0.18] blur-[100px]" />
+          <div className="absolute -right-16 top-10 h-[400px] w-[400px] animate-drift-alt rounded-full bg-[#7c3aed] opacity-[0.14] blur-[100px]" />
+          <div className="absolute -bottom-16 left-[35%] h-[300px] w-[300px] animate-drift rounded-full bg-[#0ea5e9] opacity-[0.11] blur-[80px]" />
+        </div>
+
+        <div className="relative z-10 mx-auto w-full max-w-3xl">
+          <span className="mb-7 inline-flex min-h-[32px] items-center gap-2 rounded-full border border-[rgba(245,166,35,0.28)] bg-[rgba(245,166,35,0.1)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-gold sm:px-4 sm:py-1.5 sm:text-[11px]">
+            <span className="hidden h-1.5 w-1.5 animate-pulse-dot rounded-full bg-gold md:inline-block" />
+            69 tools · no signup · browser-first
+          </span>
+
+          <h1 className="mb-5 font-heading text-[clamp(28px,6vw,70px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-text">
+            The toolkit that gets
+            <br />
+            <span className="text-shimmer">things done</span>
+          </h1>
+
+          <p className="mx-auto mb-8 max-w-[520px] text-[15px] leading-relaxed text-text-2 sm:text-[17px]">
+            PDF, image, AI, SEO, developer, and calculator tools —
+            curated for quality, not quantity. Open a tool, finish the job, leave.
+          </p>
+
+          <form action="/all-tools" method="get" className="relative mx-auto mb-8 w-full sm:max-w-[480px]">
+            <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-3">
+              <SearchIcon />
+            </span>
+            <input
+              type="search"
+              name="q"
+              placeholder='Search — try "heic to jpg" or "json formatter"'
+              autoComplete="off"
+              className="min-h-[48px] w-full rounded-xl border border-border-hi bg-bg3 py-3 pl-11 pr-4 text-[16px] text-text placeholder:text-text-3 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold-glow sm:text-sm"
+            />
+          </form>
+
+          <div className="mb-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+            <PrimaryButton href="/all-tools" className="w-full min-h-[48px] py-3 text-[15px] sm:w-auto">
+              Browse all tools →
+            </PrimaryButton>
+            <SecondaryButton href="/pdf-image" className="w-full min-h-[48px] py-3 text-[15px] sm:w-auto">
+              PDF &amp; Image hub
+            </SecondaryButton>
           </div>
-          <div className="relative mx-auto hidden w-full max-w-md lg:block">
-            <div className="glass-panel overflow-hidden rounded-2xl p-5 shadow-glow">
-              <div className="mb-4 flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-ink-muted">Start fast</p>
-                <Link href="/all-tools" className="text-xs text-ink-muted hover:text-ink-secondary">
-                  All tools →
-                </Link>
-              </div>
-              <div className="grid gap-2">
-                {heroTools.map((tool) => (
-                  <Link
-                    key={tool.href}
-                    href={tool.href}
-                    className="group flex items-center gap-4 rounded-lg border border-white/10 bg-white/[0.02] p-4 transition hover:border-white/20 hover:bg-white/[0.05]"
-                  >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-[10px] font-semibold text-ink-muted">
-                      {tool.icon}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-medium text-ink-secondary group-hover:text-white">{tool.title}</span>
-                      <span className="block text-xs text-ink-muted">{tool.copy}</span>
-                    </span>
-                    <span className="ml-auto text-ink-muted group-hover:text-ink-secondary" aria-hidden="true">→</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] font-medium text-text-3 sm:text-[12px]">
+            <span className="flex items-center gap-1.5">
+              <LockIcon />
+              No file uploads for PDF/image
+            </span>
+            <span className="flex items-center gap-1.5">
+              <UserIcon />
+              Founder-led by Kushal Gautam
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckIcon />
+              ~69 curated tools
+            </span>
           </div>
-        </Container>
+        </div>
       </section>
 
-      <Container className="max-w-6xl py-10">
-        <section>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-ink-muted">Trending now</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink-primary sm:text-4xl">High-traffic productivity tools</h2>
+      {/* Stats */}
+      <section className="border-y border-border bg-bg2 py-5 sm:py-7">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 px-4 sm:grid-cols-4 sm:px-6">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={`px-4 py-5 text-center sm:px-6 sm:py-7 ${index < 2 ? "border-b border-border sm:border-b-0" : ""} ${index % 2 === 0 ? "sm:border-r sm:border-border" : ""}`}
+            >
+              <p className="font-heading text-[24px] font-extrabold text-gold sm:text-[30px]">{stat.value}</p>
+              <p className="mt-1.5 text-[11px] font-medium text-text-3 sm:text-[12px]">{stat.label}</p>
             </div>
-            <Link href="/all-tools" className="text-sm font-medium text-ink-muted transition hover:text-ink-secondary">
-              View all tools →
-            </Link>
+          ))}
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* Categories */}
+      <section className="py-12 md:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <SectionHeader
+            eyebrow="Platform categories"
+            title="Browse by what you need"
+            subtitle="Five focused hubs — each built for depth over quantity."
+          />
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+            {categories.map((cat) => (
+              <CategoryHubCard key={cat.href} {...cat} />
+            ))}
           </div>
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* Trending */}
+      <section className="py-12 md:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <SectionHeader
+            eyebrow="Trending now"
+            title="Tools people use every day"
+            subtitle="No filler — every tool here solves a real recurring problem."
+          />
+          <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {trendingTools.map((tool) => (
-              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
+              <ToolCard key={tool.slug} {...tool} />
             ))}
           </div>
-        </section>
-
-        <AdSlot type="responsive" />
-
-        <section className="mt-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-indigo-400">Platform categories</p>
-          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Browse by Category</h2>
-          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {topLevelCategories.map((category) => {
-              const details = categoryDetails[category];
-              const categoryTools = getToolsByTopLevelCategory(category)
-                .filter((tool) => isToolIndexedForSearch(tool.slug))
-                .slice(0, 3);
-              return (
-                <CategoryCard key={category} title={category} description={details.description} href={details.href} icon={details.icon} tools={categoryTools.map((tool) => tool.title)} />
-              );
-            })}
+          <div className="mt-10 text-center">
+            <SecondaryButton href="/all-tools">View all 69 tools →</SecondaryButton>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-16">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-indigo-400">Popular tools</p>
-              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Quick tools people use every day</h2>
-            </div>
-            <Link href="/calculators" className="text-sm font-medium text-ink-muted transition hover:text-ink-secondary">
-              Browse calculators →
-            </Link>
-          </div>
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {popularTools.map((tool) => (
-              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
+      <AdSlot type="responsive" />
+
+      <Divider />
+
+      {/* Why */}
+      <section className="bg-bg2 py-20 md:py-12 lg:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <SectionHeader eyebrow="Why freetoolkitapp" title="Built different by design" />
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {whyCards.map((card) => (
+              <div key={card.title} className="rounded-2xl border border-border bg-bg3 p-5 sm:p-7">
+                <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-white/[0.04] text-xl">
+                  {card.icon}
+                </span>
+                <h3 className="mb-2 text-[15px] font-semibold text-text">{card.title}</h3>
+                <p className="text-[13px] leading-relaxed text-text-2">{card.copy}</p>
+              </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-16">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-indigo-400">Recently added</p>
-              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Fresh utilities worth bookmarking</h2>
-            </div>
-            <Link href="/all-tools" className="text-sm font-medium text-ink-muted transition hover:text-ink-secondary">
-              Browse directory →
-            </Link>
-          </div>
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {recentlyAddedTools.map((tool) => (
-              <ToolCard key={tool!.slug} title={tool!.title} description={tool!.description} href={toolHref(tool!)} category={tool!.category} badge={tool!.badge} />
-            ))}
-          </div>
-        </section>
+      <Divider />
 
-        <section className="mt-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-indigo-400">Trust basics</p>
-          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Why freetoolkitapp?</h2>
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {whyCards.map((card, index) => (
-              <Card key={card.title} className="p-5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-surface-section text-xs font-semibold text-indigo-400">0{index + 1}</span>
-                <h3 className="mt-4 text-lg font-bold tracking-tight text-ink-primary">{card.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-ink-muted">{card.copy}</p>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <HomeSeoContent />
-
-        <section className="mt-16">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-indigo-400">Latest guides</p>
-              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Learn the fastest tool workflows</h2>
-            </div>
-            <Link href="/blog" className="text-sm font-semibold text-indigo-400 hover:text-ink-primary">
-              Read the blog →
-            </Link>
-          </div>
-          <div className="mt-7 grid gap-4 md:grid-cols-3">
-            {latestPosts.map((post) => (
-              <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-indigo-400/30">
-                <Card className="flex h-full flex-col p-6  group-hover:border-indigo-400/30">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-indigo-400">{post.category}</p>
-                  <h3 className="mt-3 text-lg font-bold tracking-tight text-ink-primary group-hover:text-indigo-400">{post.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-6 text-ink-muted">{post.description}</p>
-                  <p className="mt-4 text-xs font-bold text-ink-muted">{post.readingTime}</p>
-                </Card>
+      {/* Blog */}
+      <section className="py-12 md:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <SectionHeader eyebrow="Latest guides" title="Learn the fastest workflows" />
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
+            {blogPosts.map((post) => (
+              <Link
+                key={post.href}
+                href={post.href}
+                className="group flex flex-col rounded-2xl border border-border bg-bg2 p-6 transition-all hover:border-border-hi focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              >
+                <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-gold">{post.tag}</p>
+                <h3 className="mb-2 text-[15px] font-semibold leading-snug text-text">{post.title}</h3>
+                <p className="mb-4 flex-1 text-[13px] leading-relaxed text-text-2">{post.description}</p>
+                <p className="text-[11px] text-text-3">{post.readTime}</p>
               </Link>
             ))}
           </div>
-        </section>
-
-        <section className="mt-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-indigo-400">FAQ</p>
-          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Questions about freetoolkitapp</h2>
-          <div className="mt-7 grid gap-4 md:grid-cols-2">
-            {homeFaqs.map(([question, answer]) => (
-              <Card key={question} className="p-6">
-                <h3 className="text-base font-bold tracking-tight text-ink-primary">{question}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{answer}</p>
-              </Card>
-            ))}
+          <div className="mt-10 text-center">
+            <GhostButton href="/blog">Read all guides →</GhostButton>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-16 rounded-2xl border border-indigo-400/20 bg-gradient-to-br from-surface-card to-surface-main p-6 text-center shadow-glow sm:p-10">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">Start with a free tool now</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-ink-muted">
-            Pick a popular tool and finish your next PDF, image, or writing task in a few clicks.
-          </p>
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/merge-pdf" className="btn-primary">Merge PDF</Link>
-            <Link href="/image-compressor" className="btn-secondary">Compress an Image</Link>
-            <Link href="/ai-resume-cover-letter" className="btn-secondary">Draft a Resume</Link>
+      <Divider />
+
+      {/* CTA */}
+      <section className="py-12 md:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-bg2 p-8 text-center sm:p-12 md:p-16">
+            <div
+              className="pointer-events-none absolute left-1/2 top-0 hidden h-[200px] w-[500px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgba(245,166,35,0.12)_0%,transparent_70%)] md:block"
+              aria-hidden="true"
+            />
+            <div className="relative z-10">
+              <h2 className="mb-3 font-heading text-[22px] font-extrabold leading-[1.1] tracking-[-0.025em] text-text sm:text-[28px] md:text-[30px]">
+                Start with a free tool now
+              </h2>
+              <p className="relative z-10 mb-8 text-[14px] text-text-2 sm:text-[15px]">Pick a tool and finish your next task in seconds.</p>
+              <div className="relative z-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+                <PrimaryButton href="/merge-pdf" className="w-full min-h-[48px] sm:w-auto">
+                  Merge PDF
+                </PrimaryButton>
+                <SecondaryButton href="/image-compressor" className="w-full min-h-[48px] sm:w-auto">
+                  Compress an image
+                </SecondaryButton>
+                <SecondaryButton href="/ai-resume-cover-letter" className="w-full min-h-[48px] sm:w-auto">
+                  Draft a resume
+                </SecondaryButton>
+              </div>
+            </div>
           </div>
-        </section>
-      </Container>
+        </div>
+      </section>
     </main>
   );
 }

@@ -3768,83 +3768,67 @@ export const richToolPacks: Partial<Record<string, Partial<Tool>>> = {
     ]
   },
   "loan-emi-calculator": {
+    metaTitle: "Home Loan EMI Calculator India 2026 — With Prepayment & Amortisation",
+    metaDescription:
+      "Free home loan EMI calculator for India. Calculate monthly EMI, total interest, prepayment savings, and full amortisation schedule. Covers SBI, HDFC, ICICI rates. No signup.",
     intro:
-      "Loan / EMI Calculator estimates equated monthly installment payments for amortizing loans given principal, annual interest rate, and tenure in months or years. EMI math assumes a standard flat payment schedule—real banks may add fees, insurance, balloon payments, or variable rates that change midstream. freetoolkitapp helps you ballpark housing, auto, or education loans before you sit with a loan officer who has authoritative disclosures.",
+      "Calculate your home loan EMI, total interest payable, prepayment savings, and month-by-month amortisation schedule. India-specific with current bank rates for SBI, HDFC, ICICI, and more — runs entirely in your browser.",
     howToUse: [
-      "Gather principal, nominal annual interest rate, and loan term in consistent units (months vs years).",
-      "Confirm whether the quoted rate is APR with fees rolled in or nominal note rate—enter the number your paperwork labels clearly.",
-      "Run baseline EMI, then adjust tenure slightly to see sensitivity—longer terms lower EMI but raise total interest paid.",
-      "Add planned extra payments only if your tool mode supports it; otherwise model prepayments mentally with finance spreadsheets.",
-      "Compare fixed vs floating assumptions separately—floating EMI changes when indexes move.",
-      "Screenshot outputs when negotiating between two lender offers with different fees hidden in APR.",
-      "Pair with Interest Calculator when you need simple interest on short-term notes instead of amortization.",
-      "For student loans with grace periods, remember first payment dates differ—cashflow timing matters as much as EMI magnitude.",
-      "Always read official Loan Estimate or Truth in Lending documents before signing; this page is educational only."
+      "Select your loan type — Home Loan, Car Loan, Personal Loan, or Education Loan — from the tabs at the top.",
+      "Enter the principal loan amount in rupees using the slider or type directly. For home loans in India, typical amounts range from ₹20 lakh to ₹1 crore.",
+      "Set the annual interest rate. Use the current rates shown below the input as a quick reference — SBI, HDFC, ICICI, and Axis Bank rates are listed.",
+      "Choose your loan tenure in years. Home loans in India typically run 10 to 30 years. Longer tenure means lower EMI but more total interest paid.",
+      "Your EMI, total interest, and total payable amount update instantly. The pie chart shows the principal vs interest split.",
+      "Scroll to the Prepayment section to see how a lump sum payment reduces your tenure and total interest. Enter any prepayment amount and frequency.",
+      "Review the full amortisation table showing month-by-month principal, interest, and outstanding balance for your entire loan tenure.",
+      "Use the Rate Comparison section to compare EMIs across different interest rates from major Indian banks side by side."
     ],
     features: [
-      "Amortizing EMI estimate for quick what-if housing, auto, and personal loan planning",
-      "Sensitivity intuition: see how rate or tenure tweaks move monthly obligations",
-      "Pairs with Interest Calculator, Percentage Calculator, and Unit Converter for broader finance literacy lessons",
-      "Browser-based convenience for pre-appointment homework without installing spreadsheets",
-      "Explicit disclaimers that lenders add fees, insurance, and taxes beyond EMI",
-      "Educational framing about total interest paid over life of loan—not just monthly affordability",
-      "Mobile-friendly numeric layout for side-by-side dealer negotiations on phones",
-      "Encourages printing or screenshotting scenarios for couples planning budgets jointly"
+      "India-specific defaults: loan amounts in ₹ lakhs and crores, tenures up to 30 years, and interest rates matching current RBI repo-linked rates",
+      "Prepayment calculator shows exactly how many months you save and total interest saved by making extra payments — the single most useful insight for home loan borrowers",
+      "Full amortisation schedule downloadable as CSV — useful for filing Section 24 interest deduction claims during ITR",
+      "Bank rate comparison table shows EMI for SBI, HDFC Bank, ICICI Bank, Kotak, and Axis Bank side by side at their current published rates",
+      "Loan affordability check: enter your monthly income and the tool flags whether your EMI is within the recommended 40–50% EMI-to-income ratio",
+      "Works for all major Indian loan types: home loan, car loan, personal loan, education loan, loan against property, and gold loan",
+      "Runs entirely in your browser — no data submitted to any server, no signup, no ads in the calculator"
     ],
     useCases: [
-      "Example: a first-time homebuyer compares 6.5% vs 7.0% APR scenarios on the same principal to see monthly payment deltas before open houses.",
-      "Example: a car buyer checks whether stretching from 60 to 72 months keeps EMI under a self-imposed cash-flow cap.",
-      "Example: an international student models education loan repayment in USD while earnings may happen in another currency—FX risk still manual.",
-      "Example: a small business owner evaluates equipment financing EMI versus leasing monthly outflows qualitatively.",
-      "Example: a couple decides whether paying points upfront lowers EMI enough to justify liquidity hit—two calculator passes plus fee math.",
-      "Example: a credit counselor workshop demos how doubling payments on high-interest cards differs from amortized EMI loans—pair concepts carefully.",
-      "Example: a podcast listener sanity-checks influencer “passive income” real estate claims using realistic rates."
+      "A first-time home buyer in Bengaluru is comparing a ₹60 lakh loan at SBI's 8.5% rate vs HDFC's 8.75% rate over 20 years. The rate comparison tab shows the EMI difference and total interest difference of ₹2.3 lakh over the tenure.",
+      "A salaried employee in Mumbai wants to know if a ₹45 lakh home loan EMI fits within 40% of their ₹1.2 lakh monthly income. The affordability check instantly confirms the safe loan amount.",
+      "A borrower who received a bonus wants to make a ₹2 lakh prepayment on their existing ₹50 lakh home loan. The prepayment calculator shows they will save ₹8.4 lakh in interest and finish 3 years early.",
+      "A CA helping a client prepare their ITR needs the year-wise interest paid breakdown for Section 24(b) deduction. The amortisation table exports to CSV with the annual interest summary.",
+      "A car buyer comparing a 5-year vs 7-year loan tenure on a ₹8 lakh car loan wants to see the EMI difference and total cost difference before deciding.",
+      "A student taking a ₹15 lakh education loan with a 2-year moratorium wants to understand their EMI once repayment begins and the total interest accumulated during the study period."
     ],
     tips: [
-      "Add property tax, insurance, and HOA manually when modeling housing—PITI is not just EMI.",
-      "Watch origination fees expressed as percent of loan—they affect APR more than note rate alone.",
-      "For auto loans, gap insurance and warranties bundled into principal change effective rate—read contracts.",
-      "If rates drop, refinancing break-even math needs closing costs divided by monthly savings—use spreadsheets for detail.",
-      "Biweekly payment hacks approximate one extra monthly payment per year—verify lender crediting rules before assuming.",
-      "Round EMI to currency precision your bank actually withdraws—some use ceiling functions.",
-      "Stress-test EMI against three months emergency fund targets, not just current paycheck comfort.",
-      "Variable income households should model lower income months explicitly, not average months only.",
-      "Never share loan account numbers in browser tabs on shared PCs while modeling."
-    ],
-    commonMistakes: [
-      "Assuming EMI equals affordable housing—ignoring maintenance, utilities, and commute costs.",
-      "Entering annual rate as monthly without dividing—off by 12x disaster.",
-      "Ignoring balloon payments or interest-only periods at loan start—schedule types vary.",
-      "Trusting dealer “special payment” math without reading loan contract APR boxes.",
-      "Comparing 0% promos without noting deferred interest traps if balance remains at promo end.",
-      "Forgetting PMI on mortgages below 20% down—monthly cash need jumps.",
-      "Believing longer tenure “saves money” when it often increases total interest paid."
+      "The EMI formula is: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1] where P is principal, R is monthly interest rate (annual rate ÷ 12 ÷ 100), and N is tenure in months. Understanding this helps you verify any bank's calculation.",
+      "Always check the Effective Interest Rate (EIR) — banks in India sometimes quote flat rates for car and personal loans which are roughly double the reducing-balance rate.",
+      "Making prepayments in the first 5 years of a home loan saves far more interest than the same prepayment amount made in later years, because early EMIs are heavily interest-weighted.",
+      "Under Section 24(b) of the Income Tax Act, you can claim up to ₹2 lakh deduction per year on home loan interest for a self-occupied property. Use the amortisation table's annual interest column to determine your eligible deduction.",
+      "Under Section 80C, you can claim up to ₹1.5 lakh deduction on the principal repayment portion of your home loan EMI each year.",
+      "Women borrowers get a 0.05% to 0.1% concession on home loan interest rates from most Indian banks, which saves ₹50,000–₹1.5 lakh over a 20-year tenure on a ₹50 lakh loan.",
+      "RBI's repo rate directly impacts floating rate home loans. When RBI cuts rates, ask your bank to reset your rate rather than waiting for automatic adjustment — many banks delay this.",
+      "The PMAY (Pradhan Mantri Awas Yojana) credit-linked subsidy can reduce your effective loan cost by ₹2.67 lakh for EWS/LIG categories. Check eligibility before calculating your final EMI."
     ],
     faq: [
-      { question: "Is this official loan paperwork?", answer: "No. Lenders produce binding disclosures. This tool educates and estimates only." },
-      { question: "Does it include taxes and insurance?", answer: "Unless you add them separately in your own notes, assume not—mortgage PITI is broader than EMI." },
-      { question: "What about variable rates?", answer: "You can rerun scenarios when indexes change; no crystal ball exists for future rates." },
-      { question: "Why is my bank’s EMI different?", answer: "Fees, rounding, day-count conventions, and promotional schedules differ. Trust bank software for legal amounts due." },
-      { question: "Can I model extra payments?", answer: "Some spreadsheets model amortization schedules with extra principal explicitly; this page focuses on baseline intuition." },
-      { question: "Does this predict approval?", answer: "No. Debt-to-income, credit scores, and underwriting rules determine approval." },
-      { question: "Student loans vs mortgages?", answer: "Different grace periods, deferment, and forgiveness programs—read federal vs private terms." },
-      { question: "Is biweekly the same as semi-monthly?", answer: "No. Biweekly yields 26 half-payments yearly; semi-monthly yields 24—prepayment effects differ." },
-      { question: "Currency precision?", answer: "Round per currency rules; yen loans behave differently than cent-based USD loans psychologically even if math similar." },
-      { question: "Should I leverage to the max because EMI fits?", answer: "Liquidity and risk tolerance matter—talk to a fiduciary advisor for holistic planning." }
+      { question: "What is the EMI formula used by Indian banks?", answer: "Indian banks use the reducing-balance method: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1]. P is the principal, R is the monthly interest rate (annual rate divided by 12 and by 100), and N is the total number of monthly instalments. This calculator uses this exact formula, matching results from SBI, HDFC, and ICICI." },
+      { question: "What is a good home loan interest rate in India in 2026?", answer: "As of 2026, home loan interest rates in India range from approximately 8.35% to 9.5% per annum depending on the lender, loan amount, and your CIBIL score. SBI offers rates starting at 8.5%, HDFC Bank from 8.6%, and ICICI Bank from 8.75%. Rates above 800 CIBIL score typically qualify for the lowest tier." },
+      { question: "How much home loan can I get on a ₹1 lakh monthly salary?", answer: "Most Indian banks follow a 40–50% EMI-to-income ratio. On a ₹1 lakh salary, banks will typically approve an EMI of ₹40,000–₹50,000 per month. At 8.5% interest for 20 years, this supports a home loan of approximately ₹42 lakh to ₹52 lakh, depending on existing obligations." },
+      { question: "Does prepayment really save significant money on a home loan?", answer: "Yes — significantly. On a ₹50 lakh loan at 8.5% for 20 years, a single ₹2 lakh prepayment made in year 3 saves approximately ₹6–8 lakh in total interest and reduces tenure by 18–24 months. The earlier you prepay, the higher the savings, because early EMIs are interest-heavy." },
+      { question: "What is the difference between fixed rate and floating rate home loans in India?", answer: "Fixed rate loans have the same interest rate for the entire tenure, giving payment certainty but typically at 0.5–1% higher rate. Floating rate loans are linked to the RBI repo rate and adjust when the benchmark changes. Most Indian home loans today are floating rate (RLLR-linked) and benefit when RBI cuts rates." },
+      { question: "Can I claim tax benefits on home loan EMI in India?", answer: "Yes. Under Section 24(b), you can claim up to ₹2 lakh per year deduction on interest paid for a self-occupied home. Under Section 80C, the principal repayment portion (up to ₹1.5 lakh per year) is deductible. For a let-out property, there is no cap on interest deduction under the old tax regime." },
+      { question: "How is home loan EMI different from car loan and personal loan EMI?", answer: "The EMI formula is the same, but the parameters differ. Home loans have the lowest rates (8.5–9.5%) and longest tenures (up to 30 years). Car loans typically have rates of 8.5–12% and tenures of 3–7 years. Personal loans are the most expensive at 10–24% with tenures of 1–5 years. Use the loan type tabs to compare." },
+      { question: "What happens to my EMI if RBI changes the repo rate?", answer: "For floating-rate home loans linked to the RBI repo rate (RLLR), a 0.25% repo rate cut typically reduces your interest rate by the same amount within 3 months. On a ₹50 lakh loan for 20 years, a 0.25% rate cut reduces your EMI by approximately ₹800–₹900 per month and saves roughly ₹2 lakh in total interest." }
     ],
     seo: [
-      "Loan EMI Calculator traffic correlates with Fed announcements, spring home listings, and graduation season—money anxiety spikes predictably. freetoolkitapp anchors that anxiety with transparent formulas: principal, rate, term, payment. The emotional work of saying no to too much house still belongs to you, but at least the arithmetic is not mysterious.",
-      "Mortgage shoppers should pair EMI estimates with property tax databases and insurance quotes—PITI shocks first-time buyers who modeled principal and interest only.",
-      "Auto shoppers should negotiate total price before discussing monthly payment tricks dealers use to hide longer terms.",
-      "International students should model currency risk explicitly if future earnings may not match loan currency.",
-      "Small business lenders may add covenants beyond EMI—cash flow coverage ratios matter as much as monthly debits.",
-      "Financial influencers promising passive income via leverage should be stress-tested with higher rate scenarios here before you copy trades.",
-      "Accessibility: large numeric outputs help low-vision users compare lender PDFs without spreadsheet zoom.",
-      "Developers building lending products should cross-check amortization math against this baseline when writing unit tests.",
-      "Journalists writing household debt stories should cite central bank data, not anecdotal EMI vibes alone.",
-      "Therapists note money arguments spike around undisclosed debt—shared calculator screenshots can start honest conversations.",
-      "Climate-conscious buyers might weigh shorter loan terms to align financing with EV replacement cycles—scenario modeling helps.",
-      "Finally, read blog guides on student money and everyday calculators when EMI is one line in a broader budget spreadsheet."
+      "Home loan EMI calculator searches spike every spring in India as families compare Bengaluru, Mumbai, and Delhi listings before monsoon moving season. freetoolkitapp answers that search with reducing-balance math identical to SBI, HDFC, and ICICI disclosures—not flat-rate shortcuts that confuse first-time borrowers.",
+      "Prepayment is the insight most generic EMI calculators skip. A ₹2 lakh lump sum in year three on a ₹50 lakh loan can save more interest than the same payment in year fifteen because amortisation front-loads interest. This page models that explicitly.",
+      "Section 24(b) and Section 80C deductions make year-wise interest and principal columns more valuable than a single EMI number. Export the amortisation CSV when your CA asks for ITR supporting schedules.",
+      "Bank rate tables drift quarterly with RBI repo moves. Use the comparison grid to sanity-check broker quotes, then verify the exact offer letter before paying processing fees.",
+      "Affordability is not EMI alone—maintenance, society charges, and commute costs sit outside this calculator. Still, the 40% EMI-to-income guardrail prevents the most common over-borrowing mistake salaried applicants make.",
+      "Women borrowers, PMAY subsidies, and floating-rate resets are India-specific nuances global calculators ignore. Read the tips section before treating any output as a sanction letter.",
+      "Car and personal loans share the same formula but wildly different rate bands. Switch loan-type tabs instead of retyping defaults when comparing a home loan with a vehicle loan.",
+      "Nothing you enter is uploaded. Run scenarios for bonuses, inheritances, or rate-reset negotiations privately on your phone before calling your relationship manager."
     ]
   },
   "unit-converter": {

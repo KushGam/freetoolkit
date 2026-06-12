@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { ToolCard as DesignToolCard } from "@/components/ui/ToolCard";
 import { cn } from "@/lib/utils";
 
 export function Container({ className, children }: { className?: string; children: React.ReactNode }) {
@@ -123,7 +124,7 @@ export function ToolCard({
   description,
   href,
   category,
-  badge
+  badge: _badge
 }: {
   title: string;
   description: string;
@@ -132,32 +133,12 @@ export function ToolCard({
   badge?: string;
 }) {
   return (
-    <Link
-      href={href}
-      prefetch={false}
-      className="group flex h-full min-h-52 flex-col rounded-xl border border-white/[0.08] bg-surface-card p-5 shadow-card transition hover:border-indigo-400/25 hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-indigo-400/30"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] bg-surface-section text-[10px] font-semibold text-ink-muted">
-          {category ? toolIcons[category] ?? "TOOL" : "TOOL"}
-        </div>
-        <span className="text-lg text-ink-muted transition group-hover:text-indigo-400" aria-hidden="true">
-          →
-        </span>
-      </div>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {category ? (
-          <span className="rounded-md bg-surface-section px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-ink-muted">
-            {category}
-          </span>
-        ) : null}
-        {badge ? (
-          <span className="rounded-md border border-white/[0.08] px-2 py-1 text-[10px] font-medium text-ink-secondary">{badge}</span>
-        ) : null}
-      </div>
-      <h3 className="mt-3 text-base font-semibold text-ink-primary group-hover:text-white">{title}</h3>
-      <p className="mt-2 flex-1 text-sm leading-6 text-ink-muted">{description}</p>
-    </Link>
+    <DesignToolCard
+      slug={href.replace(/^\//, "")}
+      name={title}
+      desc={description}
+      category={category ?? "Tool"}
+    />
   );
 }
 

@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Syne } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ConsentLoader } from "@/components/ConsentLoader";
@@ -11,8 +11,16 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-inter",
-  display: "swap",
+  display: "swap"
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-syne",
+  display: "swap"
 });
 
 export const metadata: Metadata = {
@@ -36,11 +44,11 @@ export const metadata: Metadata = {
     "student tools",
     "developer tools",
     "browser-based tools",
-    "free utilities",
+    "free utilities"
   ],
 
   alternates: {
-    canonical: siteUrl,
+    canonical: siteUrl
   },
 
   openGraph: {
@@ -60,9 +68,9 @@ export const metadata: Metadata = {
         url: `${siteUrl}/og-image.png?v=2`,
         width: 1200,
         height: 630,
-        alt: "freetoolkitapp — Free AI & Everyday Productivity Tools",
-      },
-    ],
+        alt: "freetoolkitapp — Free AI & Everyday Productivity Tools"
+      }
+    ]
   },
 
   twitter: {
@@ -73,7 +81,7 @@ export const metadata: Metadata = {
     description:
       "Free browser-based tools for AI writing, PDFs, images, resumes, calculators, students, and developers.",
 
-    images: [`${siteUrl}/og-image.png?v=2`],
+    images: [`${siteUrl}/og-image.png?v=2`]
   },
   robots: {
     index: true,
@@ -92,20 +100,28 @@ export const metadata: Metadata = {
   }
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover"
+};
+
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
   const globalSchema = buildGlobalSchemaGraph();
 
   return (
-    <html lang="en" className={`${inter.variable} dark`}>
-      <body className="mesh-bg min-h-screen antialiased text-ink-primary">
+    <html lang="en" className={`${inter.variable} ${syne.variable} dark`}>
+      <body className="relative min-h-screen bg-bg antialiased text-text">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }} />
-        <Header />
-        {children}
-        <Footer />
+        <div className="relative z-10">
+          <Header />
+          {children}
+          <Footer />
+        </div>
         <AdSlot />
         <DeferredAnalytics />
         <ConsentLoader />

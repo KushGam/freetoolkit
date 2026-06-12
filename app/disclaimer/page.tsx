@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
-import { Card, Container, PageHeader } from "@/components/ui";
 import { canonicalUrl } from "@/lib/utils";
 import { withoutBrandSuffix } from "@/lib/schema";
 
@@ -20,16 +20,16 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   return (
-    <main className="mesh-bg min-h-screen">
-      <Container className="max-w-4xl py-12 sm:py-16">
-        <PageHeader
+    <main className="min-h-screen bg-bg pt-[60px]">
+      <div className="mx-auto max-w-2xl px-6 py-16">
+        <SectionHeader
           eyebrow="Legal"
           title="Disclaimer"
-          description="freetoolkitapp provides browser-based utilities and guides. Please read this page before relying on any output for important decisions."
-          badges={["As-is tools", "Review outputs", "Not professional advice"]}
+          subtitle="freetoolkitapp provides browser-based utilities and guides. Please read this page before relying on any output for important decisions."
+          align="left"
         />
         <TrustCallout className="mt-6" />
-        <Card className="prose-lite mt-6 p-6 sm:p-8">
+        <div className="prose-site mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
           <h2>General</h2>
           <p>
             freetoolkitapp (the “site”) offers free online tools, articles, and educational content. All materials are provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied, including fitness for a particular purpose, accuracy, completeness, or non-infringement.
@@ -79,8 +79,8 @@ export default function DisclaimerPage() {
             <Link href="/terms" className="font-bold text-indigo-400 hover:text-ink-primary">Terms of Use</Link> and{" "}
             <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link>.
           </p>
-        </Card>
-      </Container>
+        </div>
+      </div>
     </main>
   );
 }

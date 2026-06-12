@@ -1,5 +1,6 @@
 import { newTools } from "./new-tools";
 import { expandedTools } from "./expanded-tools";
+import { highTrafficTools, highTrafficSlugs } from "./high-traffic-tools";
 import { applyIndexedRichPack } from "./indexed-tool-rich-packs";
 import { applyIndexedSupplement } from "./indexed-tool-supplements";
 import { applyRichToolPack } from "./rich-tool-packs";
@@ -451,7 +452,9 @@ import indexedToolSlugs from "./indexed-tool-slugs.json";
 
 const retainedSet = new Set(indexedToolSlugs as string[]);
 
-const allTools: Tool[] = [...coreTools, ...newTools, ...expandedTools]
+const baseTools: Tool[] = [...coreTools, ...newTools, ...expandedTools].filter((tool) => !highTrafficSlugs.has(tool.slug));
+
+const allTools: Tool[] = [...baseTools, ...highTrafficTools]
   .map(applyRichToolPack)
   .map(applyIndexedRichPack)
   .map(applyIndexedSupplement)
@@ -533,6 +536,7 @@ export function getTopLevelCategory(tool: Tool): TopLevelCategory {
   if (tool.category === "SEO Tools") return "SEO Tools";
   if (tool.category === "Developer Tools") return "Developer";
   if (tool.category === "Calculator Tools") return "Calculators";
+  if (tool.category === "Text Tools" || tool.category === "Student Tools") return "AI Tools";
   if (tool.category === "PDF Tools" || tool.category === "Image Tools") return "PDF & Image";
   return "Calculators";
 }

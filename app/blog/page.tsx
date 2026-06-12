@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Badge, Card, Container, PageHeader } from "@/components/ui";
 import { blogHref, blogPosts } from "@/data/blog";
 import { isBlogIndexedForSearch } from "@/data/indexing-policy";
 import { canonicalUrl } from "@/lib/utils";
@@ -20,52 +19,34 @@ export const metadata: Metadata = {
 };
 
 const indexedBlogPosts = blogPosts.filter((post) => isBlogIndexedForSearch(post.slug));
-const categories = Array.from(new Set(indexedBlogPosts.map((post) => post.category)));
 
 export default function BlogPage() {
   return (
-    <main className="mesh-bg min-h-screen">
-      <Container className="max-w-7xl py-10">
-        <PageHeader
-          eyebrow="freetoolkitapp guides"
-          title="Practical guides for free online tools"
-          description="Learn how to handle common PDF, image, writing, study, gaming, security, and productivity tasks with simple browser-based workflows."
-          badges={categories}
-        />
+    <main className="min-h-screen bg-bg pt-[60px]">
+      <header className="border-b border-border bg-bg2 px-6 py-16 text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-gold">Blog &amp; Guides</p>
+        <h1 className="mt-2 font-heading text-[42px] font-extrabold tracking-tight text-text">Learn the fastest workflows</h1>
+        <p className="mx-auto mt-3 max-w-xl text-[17px] text-text-2">
+          Practical guides for PDF, image, AI, SEO, and developer tools.
+        </p>
+      </header>
 
-        <section className="mt-10">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-black uppercase tracking-wide text-indigo-400">Latest articles</p>
-              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-primary">Tool guides and workflow tips</h2>
-            </div>
-            <Link href="/all-tools" className="text-sm font-black text-indigo-400 transition hover:text-ink-primary">
-              Browse all tools →
+      <section className="mx-auto max-w-4xl px-6 py-16">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {indexedBlogPosts.map((post) => (
+            <Link
+              key={post.slug}
+              href={blogHref(post)}
+              className="group flex flex-col rounded-2xl border border-border bg-bg2 p-6 transition-all hover:border-border-hi focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-gold">{post.category}</p>
+              <h2 className="mb-2 text-[15px] font-semibold leading-snug text-text">{post.title}</h2>
+              <p className="mb-4 flex-1 text-[13px] leading-relaxed text-text-2">{post.description}</p>
+              <p className="text-[11px] text-text-3">{post.readingTime}</p>
             </Link>
-          </div>
-
-          <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {indexedBlogPosts.map((post) => (
-              <Link key={post.slug} href={blogHref(post)} className="group block h-full focus:outline-none focus:ring-4 focus:ring-indigo-400/30">
-                <Card className="flex h-full flex-col p-6  group-hover:border-indigo-400/30">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge className="border-indigo-400/20 bg-indigo-500/10 text-[11px] font-black uppercase tracking-wide text-indigo-400">{post.category}</Badge>
-                    <span className="text-xs font-bold text-ink-muted">{post.readingTime}</span>
-                  </div>
-                  <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink-primary group-hover:text-indigo-400">{post.title}</h3>
-                  <p className="mt-3 flex-1 text-sm leading-7 text-ink-muted">{post.description}</p>
-                  <div className="mt-5 flex items-center justify-between gap-4 border-t border-white/[0.08] pt-4">
-                    <time className="text-xs font-bold text-ink-muted" dateTime={post.publishedAt}>
-                      {new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(new Date(`${post.publishedAt}T00:00:00Z`))}
-                    </time>
-                    <span className="text-sm font-black text-indigo-400 transition group-hover:translate-x-1">Read guide →</span>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </Container>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
-import { AllToolsSearch } from "@/components/AllToolsSearch";
-import { Container, PageHeader } from "@/components/ui";
+import { Suspense } from "react";
+import AllToolsPageClient from "./AllToolsPageClient";
 import { canonicalUrl } from "@/lib/utils";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "All Free Productivity Tools",
-    description: "Search every curated freetoolkitapp tool across AI, PDF & Image, SEO, Developer, and Calculators.",
+    title: "All 58 Free Online Tools — No Signup",
+    description:
+      "Browse all 58 free browser-based tools. PDF, image, AI, SEO, developer, and calculator tools. No signup, no upload, instant results.",
     alternates: { canonical: canonicalUrl("/all-tools") },
-    robots: { index: false, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1
+      }
+    },
     openGraph: {
       title: "All Free Productivity Tools",
       description: "Find free browser-based tools for AI workflows, PDFs, images, SEO, developers, and calculators.",
@@ -18,18 +29,18 @@ export function generateMetadata(): Metadata {
   };
 }
 
-export default function AllToolsPage({ searchParams }: { searchParams?: { q?: string } }) {
+export default function AllToolsPage() {
   return (
-    <main className="mesh-bg min-h-screen">
-      <Container className="max-w-6xl py-10">
-      <PageHeader
-        eyebrow="Searchable toolkit"
-        title="All freetoolkitapp tools"
-        description="Search every curated freetoolkitapp tool across AI Tools, PDF & Image, SEO Tools, Developer, and Calculators. Tools are organized for quick access and designed to work without login."
-        badges={["AI Tools", "PDF & Image", "SEO Tools", "Developer", "Calculators"]}
-      />
-      <div className="mt-8"><AllToolsSearch initialQuery={searchParams?.q ?? ""} /></div>
-      </Container>
-    </main>
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-bg pt-[60px]">
+          <section className="px-4 py-16 text-center sm:px-6">
+            <p className="text-text-2">Loading tools catalog…</p>
+          </section>
+        </main>
+      }
+    >
+      <AllToolsPageClient />
+    </Suspense>
   );
 }

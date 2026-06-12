@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FounderCard } from "@/components/FounderCard";
+import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
-import { Card, Container, PageHeader } from "@/components/ui";
 import { brandMission, curatedToolCount, founder, siteContactEmail, siteUpdates } from "@/data/site-trust";
 import { buildBreadcrumbSchema, buildPersonSchema, buildWebPageSchema } from "@/lib/schema";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
@@ -32,22 +32,22 @@ export default function AboutPage() {
   });
 
   return (
-    <main className="mesh-bg min-h-screen">
+    <main className="min-h-screen bg-bg pt-[60px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonSchema()) }} />
-      <Container className="max-w-4xl py-12 sm:py-16">
-        <PageHeader
+      <div className="mx-auto max-w-2xl px-6 py-16">
+        <SectionHeader
           eyebrow="About"
           title="About freetoolkitapp"
-          description="freetoolkitapp is an independent productivity site built by Kushal Gautam — free browser tools and practical guides for PDFs, images, writing, SEO, and everyday work. No signup walls. No tool spam."
-          badges={["Founder-led", "Browser-first", `${curatedToolCount} curated tools`, "Editorial guides"]}
+          subtitle="freetoolkitapp is an independent productivity site built by Kushal Gautam — free browser tools and practical guides for PDFs, images, writing, SEO, and everyday work. No signup walls. No tool spam."
+          align="left"
         />
 
         <FounderCard />
         <TrustCallout className="mt-6" />
 
-        <Card className="prose-lite mt-6 p-6 sm:p-8">
+        <div className="prose-site mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
           <h2>Why freetoolkitapp exists</h2>
           <p>
             I built freetoolkitapp after watching too many “free tool” sites optimize for ad clicks instead of outcomes — thin pages, duplicate copy, and utilities that barely work. I wanted the opposite: a small, curated catalog where every page explains what the tool does, when it fails, and how to verify results before you submit them anywhere important.
@@ -146,8 +146,8 @@ export default function AboutPage() {
             </a>
             .
           </p>
-        </Card>
-      </Container>
+        </div>
+      </div>
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
-import { Card, Container, PageHeader } from "@/components/ui";
 import { canonicalUrl } from "@/lib/utils";
 import { withoutBrandSuffix } from "@/lib/schema";
 
@@ -21,16 +21,16 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="mesh-bg min-h-screen">
-      <Container className="max-w-4xl py-12 sm:py-16">
-        <PageHeader
+    <main className="min-h-screen bg-bg pt-[60px]">
+      <div className="mx-auto max-w-2xl px-6 py-16">
+        <SectionHeader
           eyebrow="Legal"
           title="Privacy Policy"
-          description="Last updated: May 14, 2026. This policy explains how freetoolkitapp treats information when you use our free tools, read guides, or contact the team."
-          badges={["No account required", "Browser-first design", "Transparency"]}
+          subtitle="Last updated: May 14, 2026. This policy explains how freetoolkitapp treats information when you use our free tools, read guides, or contact the team."
+          align="left"
         />
         <TrustCallout className="mt-6" />
-        <Card className="prose-lite mt-6 p-6 sm:p-8">
+        <div className="prose-site mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
           <h2>Who we are</h2>
           <p>
             freetoolkitapp (“freetoolkitapp”, “we”, “us”) operates freetoolkitapp.com as a founder-led collection of browser-based productivity utilities, educational articles, and optional AI-assisted features. The site is built and maintained by Kushal Gautam. The service is designed so that many tasks can be completed without creating an account.
@@ -109,8 +109,8 @@ export default function PrivacyPolicyPage() {
             <Link href="/disclaimer" className="font-bold text-indigo-400 hover:text-ink-primary">Disclaimer</Link>, and{" "}
             <Link href="/contact" className="font-bold text-indigo-400 hover:text-ink-primary">Contact</Link> pages.
           </p>
-        </Card>
-      </Container>
+        </div>
+      </div>
     </main>
   );
 }

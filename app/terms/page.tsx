@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
-import { Card, Container, PageHeader } from "@/components/ui";
 import { withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
 
@@ -19,16 +19,16 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <main className="mesh-bg min-h-screen">
-      <Container className="max-w-4xl py-12 sm:py-16">
-        <PageHeader
+    <main className="min-h-screen bg-bg pt-[60px]">
+      <div className="mx-auto max-w-2xl px-6 py-16">
+        <SectionHeader
           eyebrow="Legal"
           title="Terms of Use"
-          description="Simple terms for using freetoolkitapp's AI tools, file tools, SEO helpers, social media utilities, calculators, and browser-based workflows."
-          badges={["Use responsibly", "Review results", "As-is tools"]}
+          subtitle="Simple terms for using freetoolkitapp's AI tools, file tools, SEO helpers, social media utilities, calculators, and browser-based workflows."
+          align="left"
         />
         <TrustCallout className="mt-6" />
-        <Card className="prose-lite mt-6 p-6 sm:p-8">
+        <div className="prose-site mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
           <p>
             These Terms of Use explain how you may use freetoolkitapp. The site is built as a practical toolkit for everyday productivity, education, content work, file preparation, SEO tasks, social media workflows, resumes, calculators, and lightweight technical utilities.
           </p>
@@ -107,8 +107,8 @@ export default function TermsPage() {
             <Link href="/contact" className="font-bold text-indigo-400 hover:text-ink-primary">contact page</Link>, or review the{" "}
             <Link href="/privacy-policy" className="font-bold text-indigo-400 hover:text-ink-primary">Privacy Policy</Link>.
           </p>
-        </Card>
-      </Container>
+        </div>
+      </div>
     </main>
   );
 }

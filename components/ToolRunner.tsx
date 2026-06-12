@@ -5,6 +5,18 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploadDropzone } from "@/components/FileUploadDropzone";
 import { GeminiAiTool } from "@/components/tools/GeminiAiTool";
 import { ShiftHoursCalculator } from "@/components/tools/ShiftHoursCalculator";
+import { WordCounterTool } from "@/components/tools/WordCounterTool";
+import { CharacterCounterTool } from "@/components/tools/CharacterCounterTool";
+import { QrCodeGeneratorTool } from "@/components/tools/QrCodeGeneratorTool";
+import { PasswordGeneratorTool } from "@/components/tools/PasswordGeneratorTool";
+import { PomodoroTimerTool } from "@/components/tools/PomodoroTimerTool";
+import { CaseConverterTool } from "@/components/tools/CaseConverterTool";
+import { RandomNumberGeneratorTool } from "@/components/tools/RandomNumberGeneratorTool";
+import { InvoiceGeneratorClientTool } from "@/components/tools/InvoiceGeneratorClientTool";
+import { TypingSpeedTestTool } from "@/components/tools/TypingSpeedTestTool";
+import { ReadabilityCheckerTool } from "@/components/tools/ReadabilityCheckerTool";
+import { MarkdownToHtmlTool } from "@/components/tools/MarkdownToHtmlTool";
+import { LoanEmiCalculator } from "@/components/tools/LoanEmiCalculator";
 import { Button, Input, ResultCard, SecondaryButton, Select, Textarea } from "@/components/ui";
 import { formatBytes } from "@/lib/utils";
 
@@ -2017,26 +2029,6 @@ function PercentageCalculator() {
   );
 }
 
-function LoanEmiCalculator() {
-  const [amount, setAmount] = useState(25000);
-  const [rate, setRate] = useState(6.5);
-  const [years, setYears] = useState(5);
-  const months = years * 12;
-  const monthlyRate = rate / 12 / 100;
-  const emi = monthlyRate ? amount * monthlyRate * ((1 + monthlyRate) ** months) / (((1 + monthlyRate) ** months) - 1) : amount / months;
-  const total = emi * months;
-  return (
-    <div>
-      <div className="grid gap-4 sm:grid-cols-3">
-        <label className="text-sm font-bold text-ink-secondary">Loan amount <Input className="mt-2" type="number" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-ink-secondary">Annual interest % <Input className="mt-2" type="number" step={0.01} value={rate} onChange={(event) => setRate(Number(event.target.value))} /></label>
-        <label className="text-sm font-bold text-ink-secondary">Term in years <Input className="mt-2" type="number" step={0.5} value={years} onChange={(event) => setYears(Number(event.target.value))} /></label>
-      </div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-3"><ResultBox label="Monthly EMI" value={`$${emi.toFixed(2)}`} /><ResultBox label="Total interest" value={`$${(total - amount).toFixed(2)}`} /><ResultBox label="Total payment" value={`$${total.toFixed(2)}`} /></div>
-    </div>
-  );
-}
-
 const fallbackTimeZones = [
   ["Pacific/Auckland", "Auckland, New Zealand"],
   ["Australia/Sydney", "Sydney, Australia"],
@@ -3752,7 +3744,6 @@ const utilityLabels: Record<string, { label: string; placeholder: string; button
   "apa-citation-generator": { label: "Source details", placeholder: "Author, year, title, website/book/journal, URL, accessed date...", button: "Generate citation draft" },
   "mla-citation-generator": { label: "Source details", placeholder: "Author, title, container, publisher, date, URL...", button: "Generate citation draft" },
   "harvard-reference-generator": { label: "Source details", placeholder: "Author, year, title, publisher/site, URL...", button: "Generate reference draft" },
-  "pomodoro-timer": { label: "Session plan", placeholder: "25 minute focus, 5 minute break, 4 rounds", button: "Create timer plan" },
   "flashcard-generator": { label: "Notes or terms", placeholder: "Paste notes or key terms, one per line.", button: "Generate flashcards" },
   "assignment-planner": { label: "Assignment details", placeholder: "Topic, due date, requirements, milestones...", button: "Create plan" },
   "study-schedule-generator": { label: "Subjects and available time", placeholder: "Math exam Friday, English essay Monday, 2 hours per day...", button: "Create schedule" },
@@ -4959,9 +4950,10 @@ export function ToolRunner({ slug }: { slug: string }) {
     "cgpa-calculator": <CgpaCalculator />,
     "grade-percentage-calculator": <GradePercentageCalculator />,
     "study-timer": <StudyTimer />,
-    "word-counter": <WordCounter />,
-    "qr-code-generator": <QrCodeGenerator />,
-    "case-converter": <CaseConverter />,
+    "word-counter": <WordCounterTool />,
+    "character-counter": <CharacterCounterTool />,
+    "qr-code-generator": <QrCodeGeneratorTool />,
+    "case-converter": <CaseConverterTool />,
     "word-to-pdf": <WordToPdf />,
     "pdf-to-word": <PdfToWord />,
     "pdf-to-jpg": <PdfToJpg />,
@@ -4971,7 +4963,7 @@ export function ToolRunner({ slug }: { slug: string }) {
     "pdf-unlock": <PdfUnlockTool />,
     "url-encoder-decoder": <UrlEncoderDecoder />,
     "json-formatter": <JsonFormatter />,
-    "password-generator": <PasswordGenerator />,
+    "password-generator": <PasswordGeneratorTool />,
     "uuid-generator": <UuidGenerator />,
     "base64-encoder-decoder": <Base64EncoderDecoder />,
     "age-calculator": <AgeCalculator />,
@@ -5006,7 +4998,12 @@ export function ToolRunner({ slug }: { slug: string }) {
     "image-dpi-checker": <ImageMetadataTool dpiOnly />,
     "image-grayscale": <AdvancedImageConverter mode="grayscale" />,
     "image-upscaler": <ImageUpscalerTool />,
-    "invoice-generator": <InvoiceGeneratorTool />,
+    "invoice-generator": <InvoiceGeneratorClientTool />,
+    "pomodoro-timer": <PomodoroTimerTool />,
+    "random-number-generator": <RandomNumberGeneratorTool />,
+    "typing-speed-test": <TypingSpeedTestTool />,
+    "readability-checker": <ReadabilityCheckerTool />,
+    "markdown-to-html": <MarkdownToHtmlTool />,
     "add-text-to-pdf": <AddTextToPdf />,
     "ai-resume-cover-letter": <AiResumeCoverLetterGenerator />,
     "ai-text-summarizer": <GeminiAiTool slug="ai-text-summarizer" />,

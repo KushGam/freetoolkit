@@ -56,5 +56,16 @@
   "age-calculator",
   "scientific-calculator",
   "unit-converter",
-  "interest-calculator"
+  "interest-calculator",
+  "word-counter",
+  "character-counter",
+  "qr-code-generator",
+  "password-generator",
+  "pomodoro-timer",
+  "case-converter",
+  "random-number-generator",
+  "invoice-generator",
+  "typing-speed-test",
+  "readability-checker",
+  "markdown-to-html"
 ]

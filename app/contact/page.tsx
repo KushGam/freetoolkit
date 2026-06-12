@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
-import { Card, Container, PageHeader } from "@/components/ui";
 import { founder, siteContactEmail } from "@/data/site-trust";
 import { buildBreadcrumbSchema } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
@@ -48,18 +48,24 @@ export default function ContactPage() {
   ]);
 
   return (
-    <main className="mesh-bg min-h-screen">
+    <main className="min-h-screen bg-bg pt-[60px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Container className="max-w-4xl py-12 sm:py-16">
-        <PageHeader
+      <div className="mx-auto max-w-2xl px-6 py-16">
+        <SectionHeader
           eyebrow="Contact"
           title="Contact freetoolkitapp"
-          description={`We read every message. ${founder.name} operates the site directly — please avoid sending confidential documents or secrets by email.`}
-          badges={["Feedback", "Bug reports", "Privacy questions", "Tool ideas"]}
+          subtitle={`We read every message. ${founder.name} operates the site directly — please avoid sending confidential documents or secrets by email.`}
+          align="left"
         />
         <TrustCallout className="mt-6" />
 
-        <Card className="prose-lite mt-6 p-6 sm:p-8">
+        <div className="prose-site mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
+          <div className="not-prose mb-8 rounded-2xl border border-border bg-bg3 p-6">
+            <p className="text-[13px] text-text-2">Email us directly:</p>
+            <a className="mt-2 block font-mono text-lg text-gold hover:brightness-110" href={`mailto:${siteContactEmail}`}>
+              {siteContactEmail}
+            </a>
+          </div>
           <h2>Email</h2>
           <p>
             Write to{" "}
@@ -118,8 +124,8 @@ export default function ContactPage() {
             <Link href="/disclaimer" className="font-bold text-indigo-400 hover:text-ink-primary">Disclaimer</Link>. Learn more about how the site works on the{" "}
             <Link href="/about" className="font-bold text-indigo-400 hover:text-ink-primary">About page</Link>.
           </p>
-        </Card>
-      </Container>
+        </div>
+      </div>
     </main>
   );
 }
