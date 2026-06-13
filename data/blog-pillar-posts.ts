@@ -522,5 +522,275 @@ export const pillarBlogPosts: BlogPost[] = [
         ]
       }
     ]
+  },
+  {
+    slug: "home-loan-emi-calculator-india",
+    title: "Home Loan EMI Calculator India 2026 — Formula, Prepayment & Tax Benefits",
+    description:
+      "Everything Indian home buyers need to know — EMI formula, prepayment impact, current bank rates, Section 24 tax benefits, and affordability rules.",
+    category: "Calculator Guides",
+    publishedAt: "2025-12-15",
+    readingTime: "8 min read",
+    relatedTools: ["loan-emi-calculator", "interest-calculator"],
+    keywords: [
+      "home loan emi calculator india 2026",
+      "home loan EMI formula",
+      "prepayment savings",
+      "Section 24 tax deduction",
+      "SBI HDFC home loan rates",
+      "loan affordability India"
+    ],
+    content: [
+      {
+        heading: "What is EMI and how is it calculated?",
+        paragraphs: [
+          "EMI — Equated Monthly Instalment — is the fixed amount you repay every month on a home loan. It blends principal (the amount borrowed) and interest so the loan is fully repaid by the end of the tenure. Indian banks quote annual interest rates, but EMI math uses the monthly rate.",
+          "The standard formula is: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1], where P is principal in rupees, R is the monthly interest rate (annual rate ÷ 12 ÷ 100), and N is tenure in months. A ₹50 lakh loan at 8.65% per year for 20 years (240 months) gives R = 0.007208 and EMI ≈ ₹43,735 per month.",
+          "In the early years, most of each EMI goes to interest, not principal. On that ₹50 lakh example, month one might allocate roughly ₹36,000 to interest and only ₹7,700 to principal. That is why prepaying in the first five years saves far more than prepaying near the end — you are attacking interest while it is still heavy.",
+          "Use the Home Loan EMI Calculator India on freetoolkitapp to avoid manual errors. Enter loan amount, rate, and tenure in years; the tool shows EMI, total interest, and a full amortisation schedule you can export for tax filing or comparison shopping."
+        ]
+      },
+      {
+        heading: "Current home loan rates in India (2026)",
+        paragraphs: [
+          "Most Indian home loans are floating and linked to the RBI repo rate through benchmarks like RLLR (Repo Linked Lending Rate). When the RBI cuts or hikes rates, your EMI or tenure typically adjusts after the reset period stated in your loan agreement.",
+          "Indicative rates from major lenders in early 2026 (subject to change and credit profile): SBI around 8.50%, HDFC Bank 8.60%, ICICI Bank 8.75%, Kotak Mahindra Bank 8.70%, Axis Bank 8.75%, Punjab National Bank 8.55%, and Bank of Baroda 8.40%. Always confirm the exact offer sheet from your branch.",
+          "Women borrowers often receive a 0.05–0.10 percentage point concession on home loan rates at several public and private banks. Co-borrowing with a woman applicant can reduce lifetime interest meaningfully on large tickets.",
+          "Compare offers on the same day — rates move with policy announcements. The Interest Calculator on freetoolkitapp helps sanity-check total interest across scenarios when you are deciding between lenders or tenures."
+        ]
+      },
+      {
+        heading: "How much home loan can I get on my salary?",
+        paragraphs: [
+          "Banks in India typically cap total EMIs (including any existing loans) at 40–50% of net monthly income. Lenders also apply FOIR (Fixed Obligation to Income Ratio) rules and minimum credit score thresholds before sanctioning.",
+          "Rough affordability guide (illustrative, not a bank offer): monthly salary ₹50,000 → max EMI about ₹20,000–25,000 → loan roughly ₹21–26 lakh at 8.65% for 20 years. Salary ₹1,00,000 → max EMI ₹40,000–50,000 → loan about ₹42–52 lakh. Salary ₹2,00,000 → max EMI ₹80,000–1,00,000 → loan roughly ₹84 lakh–1.04 crore.",
+          "Your actual sanction depends on age, employer stability, existing EMIs, property value, and LTV (loan-to-value) caps — usually up to 80–90% of property value for salaried applicants. Self-employed borrowers face stricter income assessment.",
+          "Before visiting a bank, run the affordability tab in the Home Loan EMI Calculator India with your net salary and existing obligations. Knowing your comfortable EMI range prevents over-borrowing and protects monthly cash flow after possession."
+        ]
+      },
+      {
+        heading: "How prepayment saves you lakhs",
+        paragraphs: [
+          "Prepayment means paying extra principal before schedule — from a bonus, inheritance, or systematic savings. On floating-rate home loans, RBI rules generally allow prepayment without penalty; fixed-rate products may carry charges — read your sanction letter.",
+          "Example: ₹50 lakh loan at 8.65% for 20 years, EMI ₹43,735. A ₹2 lakh prepayment in year three can save roughly ₹7.8 lakh in total interest and finish the loan about 22 months early, assuming you keep EMI unchanged and apply prepayment to principal.",
+          "The rule of thumb: prepay in the first five years for maximum impact because the interest component is highest. Even one annual prepayment of ₹1–2 lakh can shorten a 20-year loan dramatically compared with identical prepayment in year fifteen.",
+          "Our EMI calculator includes a prepayment tab — model lump-sum or annual prepayments and compare total interest with and without extra payments. Export the amortisation table to see month-by-month principal reduction."
+        ]
+      },
+      {
+        heading: "Section 24(b) and Section 80C tax benefits",
+        paragraphs: [
+          "Under the old Indian tax regime, Section 24(b) allows deduction of up to ₹2 lakh per year on interest paid for a self-occupied home loan. Section 80C allows up to ₹1.5 lakh per year on principal repayment (shared with PPF, ELSS, and other 80C instruments).",
+          "Example at 30% tax slab: ₹2 lakh interest deduction saves about ₹60,000 in tax per year; ₹1.5 lakh principal under 80C saves about ₹45,000 if you have not exhausted the 80C bucket elsewhere. Combined, tax efficiency can materially improve post-tax EMI cost.",
+          "These benefits apply under the old tax regime only. The new regime has lower slab rates but does not offer Section 24(b) or 80C home loan deductions. Run both scenarios with a CA before choosing regime for the assessment year.",
+          "Keep the bank’s interest certificate and principal statement for ITR filing. The amortisation export from the EMI calculator helps reconcile expected interest with the certificate banks issue each financial year."
+        ]
+      },
+      {
+        heading: "Fixed vs floating rate — which to choose?",
+        paragraphs: [
+          "Fixed-rate home loans lock your interest for an initial period (or full tenure on rare products). You get payment certainty but usually pay 0.5–1.0 percentage point more than floating rates at origination.",
+          "Floating-rate loans move with benchmark resets — typically cheaper at the start and flexible when RBI is in a cutting cycle. When rates rise, either EMI increases or tenure extends depending on your bank’s policy.",
+          "In a environment where RBI is expected to cut repo rates, floating is often preferred for new borrowers who can absorb mild EMI volatility. If you need strict budgeting for the first five years and can pay the premium, a hybrid fixed-then-floating product may fit.",
+          "Regardless of product type, stress-test +2% rate hikes in the EMI calculator. If a 2% shock breaks your budget, borrow less or extend tenure cautiously — do not rely on future income growth alone."
+        ]
+      },
+      {
+        heading: "Step-by-step: how to use our EMI calculator",
+        paragraphs: [
+          "Open the Home Loan EMI Calculator India at freetoolkitapp. Enter loan amount in rupees (e.g. 5000000 for ₹50 lakh), annual interest rate (e.g. 8.65), and tenure in years (e.g. 20). Results update instantly: monthly EMI, total payment, total interest, and principal vs interest split.",
+          "Switch to the prepayment tab to add lump-sum or recurring prepayments. Compare scenarios side by side — useful when deciding whether to prepay home loan versus invest in mutual funds.",
+          "Use the bank comparison section to line up SBI, HDFC, ICICI, and other indicative rates against your ticket size. Scroll the amortisation table for month-wise principal and interest — the same figures banks use for annual interest certificates.",
+          "Download or copy the schedule before signing a sanction letter. If the bank’s EMI differs by more than a few rupees, verify processing fees, insurance bundling, or whether they quoted a promotional rate with a reset clause."
+        ]
+      },
+      {
+        heading: "Frequently asked questions",
+        paragraphs: [
+          "What is the minimum down payment for a home loan in India? Banks usually finance 80–90% of property value; you fund the balance plus registration and stamp duty from savings. A larger down payment lowers EMI and total interest.",
+          "Can I change EMI or tenure after taking the loan? Yes — most lenders allow tenure extension or EMI increase on request. Prepayment reduces outstanding principal; you can then ask to reset EMI downward.",
+          "Does CIBIL score affect home loan rates? Yes. Scores above 750 typically access better pricing. Resolve overdue credit card or personal loan dues six months before applying.",
+          "Is home loan insurance mandatory? Not legally mandatory, but banks often bundle term insurance or property insurance. Compare standalone policies — bundled premiums are not always cheapest.",
+          "Should I choose 15-year or 20-year tenure? Shorter tenure means higher EMI but much lower total interest. If EMI at 15 years stays within 40% of income, prefer shorter tenure when cash flow allows."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "word-count-guide-essays-social-media",
+    title: "Word Count Guide: Ideal Length for Essays, Emails, Social Posts & More",
+    description:
+      "Word count matters more than most writers realise. Here are the ideal lengths for every type of writing — from college essays to Twitter threads.",
+    category: "Text Guides",
+    publishedAt: "2026-02-18",
+    readingTime: "7 min read",
+    relatedTools: ["word-counter", "character-counter", "paraphrasing-tool"],
+    keywords: [
+      "word counter online free for essays",
+      "essay word count limits",
+      "social media character limits",
+      "meta description length",
+      "LinkedIn post length",
+      "blog post word count SEO"
+    ],
+    content: [
+      {
+        heading: "Why word count matters for different content types",
+        paragraphs: [
+          "Word count is not vanity — it is a constraint engine. College portals reject essays that exceed limits by one word. Google uses content depth as a quality signal for competitive queries. Social platforms truncate posts mid-sentence when you ignore character caps.",
+          "Professional writers track count because editing is faster with a target. A 300-word executive summary forces clarity; a 2,000-word guide forces structure. Without a number, drafts balloon or shrink unpredictably.",
+          "Students lose marks when assignments specify 1,500 words and they submit 900 — not always because ideas are weak, but because they never measured. A free Word & Character Counter removes guesswork before submission.",
+          "SEO teams align title tags, meta descriptions, and body length with SERP patterns. Matching intent beats arbitrary length, but knowing benchmarks prevents under-building pages that cannot compete."
+        ]
+      },
+      {
+        heading: "College and university essay word counts",
+        paragraphs: [
+          "US Common App personal statement: 250–650 words hard cap. Supplemental essays: often 150–300 words each — read each college’s prompt separately. Scholarship essays: commonly 500–1,000 words unless the foundation specifies otherwise.",
+          "UK UCAS personal statement: 4,000 characters (including spaces), roughly 600 words. Individual university supplements may add shorter prompts. Indian university SOPs for abroad applications often target 800–1,000 words.",
+          "Coursework essays in UK and Indian universities frequently specify 1,500–2,500 words with ±10% tolerance. Exceeding tolerance can cap grades regardless of quality — count before export, not after PDF conversion.",
+          "When trimming, cut redundant examples first, not evidence. When expanding, add analysis linking evidence to thesis — never padding with adjectives. The Word & Character Counter shows both words and characters for UCAS-style limits."
+        ]
+      },
+      {
+        heading: "Professional writing word counts",
+        paragraphs: [
+          "Cover letters: 250–400 words, one page. Recruiters skim in seconds — lead with role fit and one quantified win. Executive summaries: 200–300 words at the top of proposals; decision-makers may read only this section.",
+          "LinkedIn About summary: 200–300 words recommended; only the first ~200 characters show before “see more.” Front-load role, niche, and proof. Professional emails: 50–200 words — one ask per message, bullet tasks when listing three or more items.",
+          "Internal memos and project updates: 300–600 words with headings. Longer documents belong in attachments with a short email wrapper. Respect reader time — word count discipline signals professionalism.",
+          "Use the Character Counter when platforms measure characters (LinkedIn, SMS-style fields). Use Word & Character Counter for Word-exported drafts where footnotes or headers might skew counts."
+        ]
+      },
+      {
+        heading: "Blog and content writing benchmarks",
+        paragraphs: [
+          "Short blog posts: 600–900 words for narrow how-to answers. Standard SEO articles: 1,200–1,800 words when covering a topic competitors treat in depth. Comprehensive guides (pillar content): 2,000–4,000 words with clear H2 structure and original examples.",
+          "Google does not reward length alone — it rewards satisfaction. For competitive informational queries, 1,500–2,500 words is a common band because it allows definitions, steps, pitfalls, and FAQs without fluff.",
+          "Product descriptions: 100–300 words for catalog items; 400–800 for high-consideration purchases needing specs and use cases. Landing pages: hero plus scannable sections — total word count matters less than clarity above the fold.",
+          "Before publishing, count the draft and compare to top-ranking pages for your keyword. If you are 40% shorter with no unique angle, expand or differentiate — do not publish thin content hoping to rank."
+        ]
+      },
+      {
+        heading: "Social media character and word limits",
+        paragraphs: [
+          "Twitter/X: 280 characters (~40–50 words). Threads chain posts — each segment still obeys the cap. LinkedIn posts: 3,000 characters (~500 words), but engagement often peaks before 1,300 characters unless storytelling demands more.",
+          "Instagram captions: 2,200 characters (~380 words). Bio: 150 characters — pack role and CTA. Facebook allows 63,206 characters but posts around 477 characters see stronger engagement for link shares.",
+          "YouTube title: 100 characters max, ~60 visible in search — put keywords first. Description: 5,000 characters; first 150 characters matter for search snippets. TikTok captions: 4,000 characters but on-screen text should stay minimal.",
+          "Always draft in a Character Counter when a platform measures characters, not words. Pasting from Word includes smart quotes and hidden spaces that can break limits — paste plain text and recount."
+        ]
+      },
+      {
+        heading: "SEO metadata character limits",
+        paragraphs: [
+          "Title tag: 50–60 characters to avoid truncation in Google desktop results. Place primary keyword near the start; brand suffix at end: “Keyword Phrase | Brand”. Each URL needs a unique title.",
+          "Meta description: 140–155 characters. Summarise the page accurately, include keyword naturally, end with soft CTA (“Learn how”, “Compare rates”). Does not directly rank but affects click-through rate.",
+          "URL slug: short, hyphenated, main keyword only — avoid dates unless news. Open Graph title can match or slightly expand page title for social shares.",
+          "Use freetoolkitapp SEO tools alongside counting — Meta Tag Generator and SERP Preview help visualise how length choices appear in results before deploy."
+        ]
+      },
+      {
+        heading: "How to count words accurately",
+        paragraphs: [
+          "Open the Word & Character Counter, paste your draft, and read words, characters (with and without spaces), sentences, and reading time. No signup — processing stays in the browser.",
+          "Word count vs character count: essays usually specify words; social and UCAS specify characters. Never assume they are interchangeable — 600 words can be 3,400–3,800 characters depending on vocabulary.",
+          "Google Docs and Microsoft Word sometimes differ by 1–3% because of hyphenation, footnotes, and text boxes. For high-stakes submissions, use the same counter you used while editing for the final check.",
+          "Pair counting with Paraphrasing Tool only when you need to shorten while keeping meaning — never to evade plagiarism detection. Count again after paraphrase; length shifts."
+        ]
+      },
+      {
+        heading: "Frequently asked questions",
+        paragraphs: [
+          "Do admissions officers count words manually? Many systems auto-reject over-limit uploads; human readers notice padding. Stay inside stated limits.",
+          "What is ideal blog length for SEO in 2026? Match search intent — often 1,200–2,000 words for guides, shorter for defined answers. Quality and structure beat raw length.",
+          "Does LinkedIn count hashtags in the character limit? Yes — everything in the post body counts toward 3,000 characters.",
+          "How do I count words in a PDF? Copy text into Word & Character Counter. Scanned PDFs without text layer need OCR first.",
+          "Should meta descriptions always be 155 characters? Aim 140–155; Google may rewrite snippets anyway, but well-written descriptions improve CTR when shown."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "free-tools-students-india",
+    title: "20 Best Free Online Tools for Students in India (2026)",
+    description:
+      "From GPA calculations to resume writing, home loan planning to study timers — these are the 20 most useful free browser tools for Indian students in 2026.",
+    category: "Student Guides",
+    publishedAt: "2026-06-02",
+    readingTime: "8 min read",
+    relatedTools: ["gpa-calculator", "ai-study-notes", "resume-ats-checker", "loan-emi-calculator", "pomodoro-timer"],
+    keywords: [
+      "free online tools for students india 2026",
+      "student productivity tools",
+      "GPA calculator India",
+      "resume ATS checker free",
+      "study timer online",
+      "education loan EMI calculator"
+    ],
+    content: [
+      {
+        heading: "Study and academic tools",
+        paragraphs: [
+          "GPA Calculator — compute semester GPA and cumulative CGPA using Indian and international grading scales. Enter course credits and grades; export results for scholarship forms. Essential before placement season when companies ask for consistent GPA formatting.",
+          "AI Study Notes — paste textbook excerpts or lecture bullets to generate structured summaries, key terms, and review questions. Runs in the browser; edit output before treating it as final notes. Pair with your own handwriting for retention.",
+          "Pomodoro Timer — 25-minute focus blocks with short breaks. The most evidence-backed study rhythm for exam prep when phone distractions are high. Set task label before each round to track what you finished.",
+          "Word & Character Counter — hit assignment word limits, verify essay length, check UCAS character caps. Faster than Word for quick paste-and-count during all-nighters.",
+          "Readability Checker — score clarity before submitting reports or SOP drafts. Fix sentences recruiters and professors skim past."
+        ]
+      },
+      {
+        heading: "Career and job application tools",
+        paragraphs: [
+          "AI Resume & Cover Letter Generator — tailor bullets to a job description. Start from your master CV; generate a focused version per company. Always fact-check numbers and dates before PDF export.",
+          "Resume ATS Checker — paste resume and job description to see keyword match and formatting risks. Most campus placements use ATS before human shortlists — aim for 70%+ keyword alignment without keyword stuffing.",
+          "AI LinkedIn Summary Generator — craft About section for placement recruiters who search LinkedIn before interview day. First 200 characters matter most.",
+          "Grammar Fixer — polish SOPs, emails to professors, and cover letters. Fix tense consistency and article errors Indian English writers often miss.",
+          "Paraphrasing Tool — rephrase quoted material or simplify dense textbook language while keeping meaning. Cite sources; do not use to mask plagiarism."
+        ]
+      },
+      {
+        heading: "Financial planning tools",
+        paragraphs: [
+          "Home Loan EMI Calculator India — plan education loan and future home loan EMIs before signing. Model prepayment from internship savings to see interest saved. Critical when families co-borrow for education.",
+          "Interest Calculator — compare fixed deposit and recurring deposit returns for stipend savings. Understand effective annual yield before locking money during college.",
+          "Percentage Calculator — quick grade conversions, discount math during internships, markup calculations for side projects. Small tool, daily use."
+        ]
+      },
+      {
+        heading: "Document and file tools",
+        paragraphs: [
+          "Merge PDF — combine assignment PDFs, ID scans, and signed forms for single-upload university portals. Order files before merging.",
+          "Compress PDF — shrink transcripts and project reports under 2–5 MB email and portal limits. Compress once, verify readability at 100% zoom.",
+          "HEIC to JPG — convert iPhone photos for government and job application forms that reject Apple’s default format. Local conversion — photos do not upload to a server."
+        ]
+      },
+      {
+        heading: "Developer tools (for CS students)",
+        paragraphs: [
+          "JSON Formatter — debug API lab assignments and prettify minified responses from Postman. Validate syntax before submitting code samples.",
+          "Base64 Encoder / Decoder — understand encoding exercises in web development courses. Decode sample payloads safely in browser.",
+          "Regex Tester — test patterns for parsing assignments and hackathon prototypes without installing plugins.",
+          "QR Code Generator — event posters, project demos, and club registration links. Generate PNG locally for print."
+        ]
+      },
+      {
+        heading: "Why these tools are ideal for Indian students",
+        paragraphs: [
+          "All listed tools are free without subscription traps — important when budgets are tight. No signup required for core workflows — works on shared college lab PCs where you cannot install software.",
+          "Mobile-friendly layouts suit students who primarily use phones — common outside tier-1 cities. Browser-based processing means no admin rights needed on library computers.",
+          "Privacy-forward file tools process locally when possible — sensitive marksheets and ID scans stay on device. Always verify each tool’s page description for your specific file type.",
+          "Bookmark this guide and the Home Loan EMI Calculator India guide if you are planning education loans or family property decisions alongside studies — financial literacy compounds like GPA."
+        ]
+      },
+      {
+        heading: "Frequently asked questions",
+        paragraphs: [
+          "Are these tools really free for Indian students? Yes — freetoolkitapp does not charge for listed utilities. Avoid unrelated sites that ask for card details to “unlock” exports.",
+          "Do I need VPN or special browser? Modern Chrome, Edge, or Firefox on Android or Windows works for most tools. Keep browser updated for HEIC decode support.",
+          "Can I use AI tools for college assignments? Follow your institution’s academic integrity policy. AI drafts are starting points; submission should reflect your understanding.",
+          "Which tool helps most for placements? Resume ATS Checker plus AI Resume & Cover Letter Generator — used together per job posting — improve shortlist odds most measurably.",
+          "How do I plan education loan repayment? Model EMI in Home Loan EMI Calculator India using course duration plus grace period. Compare with expected starting salary using 40% EMI-to-income rule."
+        ]
+      }
+    ]
   }
 ];

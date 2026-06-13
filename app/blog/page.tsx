@@ -5,8 +5,9 @@ import { isBlogIndexedForSearch } from "@/data/indexing-policy";
 import { canonicalUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "freetoolkitapp Blog | Free Tool Guides for PDFs, Images, AI, and Daily Work",
-  description: "Read practical freetoolkitapp guides for PDF workflows, image optimization, student tools, writing utilities, gaming helpers, online security, and everyday productivity.",
+  title: "FreeToolKit Blog | Free Tool Guides — PDF, Image, AI, India",
+  description:
+    "Practical guides for PDF tools, image converters, EMI calculators, resume writing, and productivity tools. Free, no signup.",
   keywords: ["freetoolkitapp blog", "online tool guides", "PDF guides", "image tool guides", "student tools", "productivity tools"],
   alternates: { canonical: canonicalUrl("/blog") },
   openGraph: {

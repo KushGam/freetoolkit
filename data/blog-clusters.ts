@@ -23,7 +23,7 @@ export const blogClusters: BlogCluster[] = [
     hubPath: "/pdf-image",
     targetKeywords: ["compress pdf online", "merge pdf free", "split pdf", "pdf to word"],
     toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "pdf-to-word", "word-to-pdf", "pdf-to-jpg", "edit-pdf", "add-text-to-pdf"],
-    blogSlugs: ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality"],
+    blogSlugs: ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality", "how-to-compress-pdf-for-email"],
     status: "live",
     wordTarget: "Pillar live (~2400 words); spokes 1500–2500 each"
   },
@@ -34,7 +34,7 @@ export const blogClusters: BlogCluster[] = [
     hubPath: "/pdf-image",
     targetKeywords: ["compress image online", "png to jpg", "webp converter", "resize image"],
     toolSlugs: ["image-compressor", "png-to-jpg", "webp-converter", "image-resizer", "heic-to-jpg"],
-    blogSlugs: ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
+    blogSlugs: ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online", "heic-to-jpg-converter-guide", "image-format-converter-guide"],
     status: "live",
     wordTarget: "Pillar live (~2300 words); format + resize spokes linked"
   },
@@ -45,7 +45,7 @@ export const blogClusters: BlogCluster[] = [
     hubPath: "/ai-tools",
     targetKeywords: ["ai resume generator", "ats resume checker", "ai cover letter", "resume keywords"],
     toolSlugs: ["ai-resume-cover-letter", "resume-ats-checker", "ai-linkedin-summary-generator", "ai-email-writer"],
-    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide"],
+    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide", "how-to-pass-ats-resume-screening", "how-to-write-linkedin-summary", "free-tools-students-india"],
     status: "live",
     wordTarget: "Pillar live (~2200 words); ethical AI + ATS formatting"
   },
@@ -67,9 +67,9 @@ export const blogClusters: BlogCluster[] = [
     hubPath: "/seo-tools",
     targetKeywords: ["meta tag generator", "schema markup", "robots txt", "sitemap generator"],
     toolSlugs: ["meta-tag-generator", "open-graph-generator", "schema-markup-generator", "robots-txt-generator", "sitemap-generator", "serp-preview"],
-    blogSlugs: ["best-free-online-tools-for-daily-work"],
-    status: "planned",
-    wordTarget: "Pillar: launch checklist for new sites"
+    blogSlugs: ["best-free-online-tools-for-daily-work", "meta-tags-seo-guide"],
+    status: "live",
+    wordTarget: "Pillar: launch checklist for new sites; meta tags spoke live"
   },
   {
     id: "developer-productivity",
@@ -78,7 +78,7 @@ export const blogClusters: BlogCluster[] = [
     hubPath: "/developer",
     targetKeywords: ["json formatter", "jwt decoder", "regex tester", "base64 encode"],
     toolSlugs: ["json-formatter", "json-validator", "jwt-decoder", "regex-tester", "base64-encoder-decoder", "url-encoder-decoder"],
-    blogSlugs: ["browser-tools-vs-desktop-software"],
+    blogSlugs: ["browser-tools-vs-desktop-software", "qr-code-generator-guide", "json-formatter-developer-guide"],
     status: "live",
     wordTarget: "Expand with JWT debugging + API workflow post"
   },
@@ -92,6 +92,28 @@ export const blogClusters: BlogCluster[] = [
     blogSlugs: ["privacy-friendly-online-tools-checklist", "browser-tools-vs-desktop-software"],
     status: "live",
     wordTarget: "Trust pillar for E-E-A-T and AdSense depth"
+  },
+  {
+    id: "calculator-india",
+    pillarTitle: "Home Loan & Health Calculators for India",
+    pillarSlug: "home-loan-emi-calculator-india",
+    hubPath: "/calculators",
+    targetKeywords: ["home loan emi calculator india", "bmi calculator india", "loan affordability"],
+    toolSlugs: ["loan-emi-calculator", "bmi-calculator", "interest-calculator", "percentage-calculator", "age-calculator"],
+    blogSlugs: ["home-loan-emi-calculator-india", "bmi-calculator-india-guide", "how-to-calculate-gpa", "best-free-student-tools"],
+    status: "live",
+    wordTarget: "EMI pillar live; BMI India spoke; GPA cross-link"
+  },
+  {
+    id: "student-india-2026",
+    pillarTitle: "20 Best Free Online Tools for Students in India",
+    pillarSlug: "free-tools-students-india",
+    hubPath: "/ai-tools",
+    targetKeywords: ["free tools students india", "GPA calculator", "resume ATS", "study timer"],
+    toolSlugs: ["gpa-calculator", "ai-study-notes", "resume-ats-checker", "pomodoro-timer", "word-counter"],
+    blogSlugs: ["free-tools-students-india", "best-free-student-tools", "how-to-pass-ats-resume-screening", "pomodoro-technique-study-guide", "typing-speed-improvement-guide"],
+    status: "live",
+    wordTarget: "Pillar live (~2000 words); ATS and study spokes linked"
   }
 ];
 

@@ -34,7 +34,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["PDF Tools"],
     topLevelCategories: ["PDF & Image"],
     toolSlugs: ["compress-pdf", "merge-pdf", "split-pdf", "extract-pdf-pages", "rotate-pdf", "pdf-to-word", "word-to-pdf", "image-to-pdf", "add-text-to-pdf", "pdf-to-jpg", "edit-pdf"],
-    blogSlugs: ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work", "pdf-to-word-conversion-quality"]
+    blogSlugs: ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work", "pdf-to-word-conversion-quality", "how-to-compress-pdf-for-email"]
   },
   {
     id: "image-optimization",
@@ -44,7 +44,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["Image Tools"],
     topLevelCategories: ["PDF & Image"],
     toolSlugs: ["image-compressor", "image-resizer", "png-to-jpg", "jpg-to-png", "webp-converter", "image-cropper", "image-rotator", "image-watermark", "image-grayscale", "heic-to-jpg", "svg-to-png", "png-to-webp", "webp-to-png", "passport-photo-maker", "image-to-pdf"],
-    blogSlugs: ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online", "best-free-online-tools-for-daily-work"]
+    blogSlugs: ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online", "best-free-online-tools-for-daily-work", "heic-to-jpg-converter-guide", "image-format-converter-guide"]
   },
   {
     id: "student-success",
@@ -53,8 +53,8 @@ export const contentClusters: ContentCluster[] = [
     priority: 3,
     categories: ["Student Tools"],
     topLevelCategories: ["AI Tools"],
-    toolSlugs: ["ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "grammar-fixer"],
-    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "how-to-calculate-gpa", "word-counter-guide"]
+    toolSlugs: ["ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "grammar-fixer", "pomodoro-timer", "typing-speed-test", "gpa-calculator"],
+    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "how-to-calculate-gpa", "word-counter-guide", "how-to-pass-ats-resume-screening", "how-to-write-linkedin-summary", "free-tools-students-india", "pomodoro-technique-study-guide", "typing-speed-improvement-guide", "word-count-guide-essays-social-media"]
   },
   {
     id: "ai-writing-productivity",
@@ -64,7 +64,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["AI Tools"],
     topLevelCategories: ["AI Tools"],
     toolSlugs: ["ai-text-summarizer", "paraphrasing-tool", "grammar-fixer", "ai-email-writer", "ai-study-notes", "ai-resume-cover-letter", "resume-ats-checker", "ai-linkedin-summary-generator"],
-    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide", "best-free-online-tools-for-daily-work"]
+    blogSlugs: ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide", "best-free-online-tools-for-daily-work", "how-to-write-linkedin-summary", "word-count-guide-essays-social-media", "how-to-create-invoice-freelancer"]
   },
   {
     id: "calculator-utilities",
@@ -74,7 +74,7 @@ export const contentClusters: ContentCluster[] = [
     categories: ["Calculator Tools"],
     topLevelCategories: ["Calculators"],
     toolSlugs: ["age-calculator", "unit-converter", "percentage-calculator", "discount-calculator", "bmi-calculator", "loan-emi-calculator", "interest-calculator", "scientific-calculator"],
-    blogSlugs: ["best-free-online-tools-for-daily-work", "best-free-student-tools"]
+    blogSlugs: ["best-free-online-tools-for-daily-work", "best-free-student-tools", "home-loan-emi-calculator-india", "bmi-calculator-india-guide", "how-to-calculate-gpa"]
   },
   {
     id: "developer-utilities",
@@ -83,8 +83,8 @@ export const contentClusters: ContentCluster[] = [
     priority: 7,
     categories: ["Developer Tools"],
     topLevelCategories: ["Developer"],
-    toolSlugs: ["json-formatter", "url-encoder-decoder", "base64-encoder-decoder", "regex-tester", "jwt-decoder", "sql-formatter", "json-validator", "curl-to-fetch"],
-    blogSlugs: ["best-free-online-tools-for-daily-work", "password-generator-guide", "browser-tools-vs-desktop-software"]
+    toolSlugs: ["json-formatter", "url-encoder-decoder", "base64-encoder-decoder", "regex-tester", "jwt-decoder", "sql-formatter", "json-validator", "curl-to-fetch", "qr-code-generator"],
+    blogSlugs: ["best-free-online-tools-for-daily-work", "password-generator-guide", "browser-tools-vs-desktop-software", "qr-code-generator-guide", "json-formatter-developer-guide"]
   },
   {
     id: "seo-publishing",
@@ -94,18 +94,18 @@ export const contentClusters: ContentCluster[] = [
     categories: ["SEO Tools"],
     topLevelCategories: ["SEO Tools"],
     toolSlugs: ["meta-tag-generator", "open-graph-generator", "robots-txt-generator", "sitemap-generator", "serp-preview", "keyword-density-checker", "slug-generator", "schema-markup-generator"],
-    blogSlugs: ["best-free-online-tools-for-daily-work", "word-counter-guide"]
+    blogSlugs: ["best-free-online-tools-for-daily-work", "word-counter-guide", "meta-tags-seo-guide"]
   }
 ];
 
 export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
-  "compress-pdf": ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
+  "compress-pdf": ["how-to-compress-pdf-for-email", "complete-pdf-workflow-guide", "how-to-compress-pdf-files"],
   "merge-pdf": ["complete-pdf-workflow-guide", "how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
   "split-pdf": ["complete-pdf-workflow-guide", "how-to-compress-pdf-files", "how-to-merge-pdf-files-online"],
   "image-compressor": ["complete-image-optimization-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp"],
   "image-resizer": ["complete-image-optimization-guide", "how-to-resize-images-online", "how-to-compress-images-without-losing-quality"],
   "ai-resume-cover-letter": ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide"],
-  "resume-ats-checker": ["resume-ats-complete-guide", "best-free-student-tools", "word-counter-guide"],
+  "resume-ats-checker": ["how-to-pass-ats-resume-screening", "resume-ats-complete-guide", "best-free-student-tools"],
   "png-to-jpg": ["complete-image-optimization-guide", "png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
   "jpg-to-png": ["complete-image-optimization-guide", "png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
   "webp-converter": ["complete-image-optimization-guide", "png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality"],
@@ -117,12 +117,12 @@ export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
   "palworld-breeding-calculator": ["palworld-breeding-guide"],
   "minecraft-crafting-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
   "pokemon-type-calculator": ["palworld-breeding-guide", "best-free-online-tools-for-daily-work"],
-  "qr-code-generator": ["best-free-online-tools-for-daily-work", "browser-tools-vs-desktop-software", "privacy-friendly-online-tools-checklist"],
+  "qr-code-generator": ["qr-code-generator-guide", "best-free-online-tools-for-daily-work", "browser-tools-vs-desktop-software"],
   "age-calculator": ["best-free-online-tools-for-daily-work", "best-free-student-tools"],
   "percentage-calculator": ["best-free-online-tools-for-daily-work", "best-free-student-tools"],
   "image-to-pdf": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files", "best-free-online-tools-for-daily-work"],
   "word-to-pdf": ["how-to-merge-pdf-files-online", "pdf-to-word-conversion-quality", "word-counter-guide"],
-  "heic-to-jpg": ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
+  "heic-to-jpg": ["heic-to-jpg-converter-guide", "how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp"],
   "svg-to-png": ["how-to-compress-images-without-losing-quality", "png-vs-jpg-vs-webp", "how-to-resize-images-online"],
   "png-to-webp": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality", "how-to-resize-images-online"],
   "webp-to-png": ["png-vs-jpg-vs-webp", "how-to-compress-images-without-losing-quality", "best-free-online-tools-for-daily-work"],
@@ -141,7 +141,15 @@ export const relatedBlogsByTool: Partial<Record<string, string[]>> = {
   "pdf-metadata-editor": ["pdf-to-word-conversion-quality", "how-to-merge-pdf-files-online", "best-free-online-tools-for-daily-work"],
   "compare-pdf-files": ["pdf-to-word-conversion-quality", "how-to-merge-pdf-files-online", "how-to-compress-pdf-files"],
   "pdf-reader-online": ["how-to-merge-pdf-files-online", "how-to-compress-pdf-files", "best-free-online-tools-for-daily-work"],
-  "pdf-password-protector": ["password-generator-guide", "privacy-friendly-online-tools-checklist", "how-to-merge-pdf-files-online"]
+  "pdf-password-protector": ["password-generator-guide", "privacy-friendly-online-tools-checklist", "how-to-merge-pdf-files-online"],
+  "loan-emi-calculator": ["home-loan-emi-calculator-india", "best-free-online-tools-for-daily-work", "how-to-calculate-gpa"],
+  "bmi-calculator": ["bmi-calculator-india-guide", "home-loan-emi-calculator-india", "best-free-online-tools-for-daily-work"],
+  "json-formatter": ["json-formatter-developer-guide", "best-free-online-tools-for-daily-work", "password-generator-guide"],
+  "pomodoro-timer": ["pomodoro-technique-study-guide", "best-free-student-tools", "free-tools-students-india"],
+  "typing-speed-test": ["typing-speed-improvement-guide", "pomodoro-technique-study-guide", "best-free-student-tools"],
+  "invoice-generator": ["how-to-create-invoice-freelancer", "best-free-online-tools-for-daily-work", "word-counter-guide"],
+  "meta-tag-generator": ["meta-tags-seo-guide", "best-free-online-tools-for-daily-work", "word-counter-guide"],
+  "ai-linkedin-summary-generator": ["how-to-write-linkedin-summary", "how-to-pass-ats-resume-screening", "best-free-student-tools"]
 };
 
 export const relatedToolsByTool: Partial<Record<string, string[]>> = {
