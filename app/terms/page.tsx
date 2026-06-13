@@ -4,11 +4,13 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
 import { withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: withoutBrandSuffix("Terms of Use | freetoolkitapp"),
   description: "Read the freetoolkitapp terms for AI tools, file conversion tools, SEO tools, social media tools, calculators, and browser-based utilities.",
   alternates: { canonical: canonicalUrl("/terms") },
+  robots: indexRobots,
   openGraph: {
     title: withoutBrandSuffix("Terms of Use | freetoolkitapp"),
     description: "Terms for using freetoolkitapp's free AI, file, SEO, social media, student, calculator, and browser-based productivity tools.",

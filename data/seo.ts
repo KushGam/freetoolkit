@@ -208,6 +208,20 @@ export const categorySeo: Record<ToolCategory, CategorySeo> = {
   }
 };
 
+/** Hero intros for top-level hub pages (100–200 words, unique per category). */
+export const topLevelCategoryHubIntros: Record<TopLevelCategory, string> = {
+  "PDF & Image":
+    "The PDF & Image hub covers browser-based tools for the full document and media lifecycle. PDF utilities merge separate files into one submission-ready packet, split long documents by chapter, compress oversized attachments before email, rotate mis-scanned pages, extract only the pages you need, and convert between PDF and Word. Image tools handle format conversion (JPG, PNG, WebP, HEIC, SVG), compression for web and email, cropping and resizing for social platforms, watermarks, grayscale filters, and passport-style photo prep. All tools run in your browser where supported — files are not uploaded to a server for many workflows. Start with Merge PDF or Compress PDF for documents, and Image Compressor or HEIC to JPG for photos.",
+  "AI Tools":
+    "The AI Tools hub groups writing and career assistants that draft content you must always review before submitting. Use AI Resume & Cover Letter and Resume ATS Checker for job applications, Grammar Fixer and Paraphrasing Tool for polishing essays and emails, AI Study Notes and AI Text Summarizer for exam prep, and AI LinkedIn Summary Generator for your professional profile. Every output is a starting draft — verify facts, dates, and tone against your real experience. Tools run through a protected generation flow with a simple mobile-friendly interface. Pair AI drafts with Word Counter when assignments have strict length limits.",
+  "SEO Tools":
+    "The SEO Tools hub helps you ship clean metadata without wrestling with boilerplate HTML. Generate title tags, meta descriptions, canonical URLs, and viewport tags with Meta Tag Generator; craft Facebook and LinkedIn previews with Open Graph Generator; draft robots.txt rules and XML sitemap entries; preview how titles render in Google with SERP Preview; check keyword density; build schema markup JSON-LD; and create URL slugs from headlines. These utilities reduce technical mistakes — duplicate titles, truncated descriptions, conflicting robots directives — so your content strategy has a cleaner baseline. They do not guarantee rankings; quality and relevance still matter.",
+  Developer:
+    "The Developer hub collects fast browser utilities for everyday technical cleanup. Format and validate JSON, decode JWT claims, test regex patterns, prettify SQL, convert curl commands to fetch snippets, encode and decode URLs and Base64 strings, and generate QR codes for demos or documentation. Nothing replaces production security review, but these tools save minutes when you are debugging API responses, reading log excerpts, or preparing support messages. Processing stays in the browser for supported workflows — paste, transform, copy. Pair JSON Formatter with JSON Validator when you are unsure whether the issue is syntax or readability.",
+  Calculators:
+    "The Calculators hub covers everyday math Indian students and professionals use most: GPA and grade planning, BMI with Asian cut-off context, home loan EMI with prepayment modelling, percentage and discount math, age and date differences, unit conversion, compound interest, and scientific expressions. Every result is an estimate based on values you enter — confirm financial, medical, or academic decisions with official sources. Calculators run instantly in the browser with no signup. Use Loan EMI Calculator India alongside our home loan guide when planning education or housing loans, and BMI Calculator with the India BMI guide for healthier context."
+};
+
 export const topLevelCategorySeo: Record<TopLevelCategory, Pick<CategorySeo, "body" | "faqs">> = {
   "AI Tools": {
     body: categorySeo["AI Tools"].body,

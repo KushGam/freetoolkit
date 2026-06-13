@@ -5,11 +5,13 @@ import { TrustCallout } from "@/components/TrustCallout";
 import { founder, siteContactEmail } from "@/data/site-trust";
 import { buildBreadcrumbSchema } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: "Contact freetoolkitapp",
   description: "Contact Kushal Gautam at freetoolkitapp for feedback, bug reports, privacy questions, or responsible tool suggestions.",
   alternates: { canonical: canonicalUrl("/contact") },
+  robots: indexRobots,
   openGraph: {
     title: "Contact freetoolkitapp",
     description: "Reach the freetoolkitapp founder for feedback, bugs, or tool ideas.",

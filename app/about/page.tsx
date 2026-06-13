@@ -6,12 +6,14 @@ import { TrustCallout } from "@/components/TrustCallout";
 import { brandMission, curatedToolCount, founder, siteContactEmail, siteUpdates } from "@/data/site-trust";
 import { buildBreadcrumbSchema, buildPersonSchema, buildWebPageSchema } from "@/lib/schema";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: "About freetoolkitapp",
   description:
     "freetoolkitapp is a founder-led productivity site by Kushal Gautam — curated browser tools for PDFs, images, AI drafting, SEO, developers, and calculators. Learn our mission, privacy stance, and editorial standards.",
   alternates: { canonical: canonicalUrl("/about") },
+  robots: indexRobots,
   openGraph: {
     title: "About freetoolkitapp — Founder-led productivity toolkit",
     description: "Mission, editorial standards, and privacy-first approach for freetoolkitapp's curated browser tools and guides.",

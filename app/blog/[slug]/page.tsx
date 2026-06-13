@@ -10,6 +10,7 @@ import { categoryRoutes } from "@/data/tools";
 import { founder } from "@/data/site-trust";
 import { buildBlogPostingSchema, buildBreadcrumbSchema, buildFaqSchema, withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots, noindexRobots } from "@/lib/seo-robots";
 
 type BlogPostPageProps = {
   params: { slug: string };
@@ -48,7 +49,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
     description: post.description,
     keywords: post.keywords,
     alternates: { canonical },
-    robots: indexed ? { index: true, follow: true } : { index: false, follow: true },
+    robots: indexed ? indexRobots : noindexRobots,
     openGraph: {
       title: post.title,
       description: post.description,

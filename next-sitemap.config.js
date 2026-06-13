@@ -58,11 +58,14 @@ module.exports = {
     "/image-tools",
     "/developer-tools",
     "/student-tools",
+    "/student-tools/*",
     "/calculator-tools",
     "/text-tools",
     "/security-tools",
-    "/sitemap",
-    "/all-tools"
+    "/shift-hours-calculator",
+    "/ai-essay-writer",
+    "/ai-interview-answer-generator",
+    "/content-rewriter"
   ],
   robotsTxtOptions: {
     policies: [

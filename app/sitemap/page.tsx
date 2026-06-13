@@ -5,6 +5,7 @@ import { blogHref, getIndexedBlogPosts } from "@/data/blog";
 import { getToolsByTopLevelCategory, topLevelCategories, topLevelCategoryRoutes, toolHref, type TopLevelCategory } from "@/data/tools";
 import { isToolIndexedForSearch } from "@/data/indexing-policy";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 import { withoutBrandSuffix } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Browse every freetoolkitapp category hub, featured legal pages, blog guides, and links into the full tool directory for crawlers and visitors.",
   alternates: { canonical: canonicalUrl("/sitemap") },
-  robots: { index: true, follow: true }
+  robots: indexRobots
 };
 
 const staticLinks: Array<{ href: string; label: string; description: string; external?: boolean }> = [

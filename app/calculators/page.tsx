@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { TopLevelCategoryPage } from "@/components/top-level-category-page";
 import { siteUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: "Free Online Calculators | GPA, BMI, Loan EMI, Percentage & More",
   description: "Free browser calculators for GPA, BMI, loan EMI, percentages, discounts, age, interest, units, and scientific math. No signup required.",
   keywords: ["calculator tools", "GPA calculator", "BMI calculator", "percentage calculator", "loan EMI calculator", "unit converter"],
   alternates: { canonical: `${siteUrl}/calculators` },
+  robots: indexRobots,
   openGraph: {
     title: "Free Online Calculators | freetoolkitapp",
     description: "Everyday math calculators that run instantly in your browser.",

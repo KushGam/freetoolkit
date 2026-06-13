@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 import { withoutBrandSuffix } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     url: canonicalUrl("/privacy-policy"),
     type: "website"
   },
-  robots: { index: true, follow: true }
+  robots: indexRobots
 };
 
 export default function PrivacyPolicyPage() {

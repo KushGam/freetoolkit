@@ -61,6 +61,10 @@ const nextConfig = {
         ]
       },
       {
+        source: "/all-tools",
+        headers: [{ key: "X-Robots-Tag", value: "index, follow" }]
+      },
+      {
         source: "/:path*\\.(ico|png|jpg|jpeg|gif|webp|svg|js|css|woff|woff2)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" }

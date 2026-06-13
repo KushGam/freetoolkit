@@ -7,12 +7,14 @@ import { Divider } from "@/components/ui/Divider";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ToolCard } from "@/components/ui/ToolCard";
 import { canonicalUrl, siteUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: "Modern AI Productivity Toolkit | PDF, Image & SEO Tools",
   description: "Free browser tools for AI writing, PDFs, images, SEO metadata, developer utilities, and calculators. Curated for quality—no signup required.",
   keywords: ["free online tools", "AI tools", "PDF tools", "image tools", "SEO tools", "productivity tools", "developer tools"],
   alternates: { canonical: canonicalUrl("/") },
+  robots: indexRobots,
   openGraph: {
     title: "freetoolkitapp — Modern AI Productivity Toolkit",
     description: "Curated free tools for AI writing, PDFs, images, SEO, developers, and everyday calculations.",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SectionHeader } from "@/components/SectionHeader";
 import { TrustCallout } from "@/components/TrustCallout";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 import { withoutBrandSuffix } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   description:
     "Important disclaimer for freetoolkitapp: AI outputs, calculations, file conversions, and third-party services are provided as-is for informational and productivity use.",
   alternates: { canonical: canonicalUrl("/disclaimer") },
+  robots: indexRobots,
   openGraph: {
     title: "Disclaimer | freetoolkitapp",
     description: "How to interpret AI results, file tools, calculators, and educational content on freetoolkitapp.",
@@ -50,10 +52,21 @@ export default function DisclaimerPage() {
           <p>
             Calculators and grade estimators perform arithmetic based on the values you enter. They do not replace official transcripts, payroll systems, medical devices, financial statements, or institution-specific grading rules. Always confirm important numbers with an authoritative source.
           </p>
+          <p>
+            Home loan EMI, BMI, GPA, percentage, discount, age, interest, and unit conversion tools on freetoolkitapp provide planning estimates only. Indian home loan EMI figures depend on bank policies, credit score, and floating-rate resets — use our calculator as a starting point, not a sanction letter. BMI uses population cut-offs that may not fit every individual; consult a clinician for health decisions.
+          </p>
 
           <h2>File and document tools</h2>
           <p>
             PDF, image, and conversion tools may alter layout, fonts, metadata, accessibility tags, or embedded content. Many workflows run in your browser, which improves privacy for supported formats but still depends on your device memory, browser version, and file complexity. Back up originals before processing sensitive documents.
+          </p>
+          <p>
+            Merge PDF, Split PDF, Compress PDF, PDF to Word, and image converters cannot recover password-protected files, repair corrupted scans, or guarantee portal acceptance. Government and university upload limits change — verify file size and format requirements on the destination site before submitting.
+          </p>
+
+          <h2>Resume, ATS, and career tools</h2>
+          <p>
+            Resume ATS Checker scores keyword overlap and formatting risks — it does not guarantee interviews or hiring decisions. AI Resume & Cover Letter and AI LinkedIn Summary outputs require human editing; never submit generated text without verifying employment dates, metrics, and credentials.
           </p>
 
           <h2>Third-party trademarks and games</h2>

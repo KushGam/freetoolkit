@@ -138,7 +138,7 @@ function main() {
         errors.push(`Sitemap must not include noindex blog path ${excluded}`);
       }
     }
-    const thinHubs = ["/all-tools", "/social-media-tools", "/gaming-tools", "/pdf-tools", "/image-tools", "/developer-tools", "/student-tools", "/calculator-tools", "/text-tools", "/security-tools", "/sitemap"];
+    const thinHubs = ["/social-media-tools", "/gaming-tools", "/pdf-tools", "/image-tools", "/developer-tools", "/student-tools", "/calculator-tools", "/text-tools", "/security-tools", "/everyday", "/student", "/privacy", "/ai-essay-writer", "/ai-interview-answer-generator", "/content-rewriter", "/shift-hours-calculator"];
     for (const hub of thinHubs) {
       if (sitemapPaths.has(hub)) {
         errors.push(`Sitemap should exclude thin or duplicate hub ${hub}`);

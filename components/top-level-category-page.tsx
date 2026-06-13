@@ -5,13 +5,12 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ToolBadge } from "@/components/ui/ToolBadge";
 import { ToolCard } from "@/components/ui/ToolCard";
 import { getBlogPostsBySlugs } from "@/data/blog";
-import { topLevelCategorySeo } from "@/data/seo";
+import { topLevelCategoryHubIntros, topLevelCategorySeo } from "@/data/seo";
 import { getToolPrivacyTier } from "@/data/site-trust";
 import { getBlogSlugsForCategory } from "@/data/tool-relations";
 import {
   getTool,
   getToolsByTopLevelCategory,
-  topLevelCategoryIntros,
   topLevelCategoryRoutes,
   type TopLevelCategory
 } from "@/data/tools";
@@ -63,7 +62,7 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
           <h1 className="mt-3 font-heading text-[clamp(40px,6vw,70px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-text">
             {category}
           </h1>
-          <p className="mt-3 max-w-xl text-[17px] leading-relaxed text-text-2">{topLevelCategoryIntros[category]}</p>
+          <p className="mt-3 max-w-xl text-[17px] leading-relaxed text-text-2">{topLevelCategoryHubIntros[category]}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             {[`${categoryTools.length} tools`, "Free", "No signup"].map((pill) => (
               <span

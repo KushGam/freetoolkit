@@ -4,6 +4,7 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { categoryRoutes, getTool, tools, toolHref } from "@/data/tools";
 import { buildBreadcrumbSchema, buildFaqSchema, buildHowToSchema, buildToolSoftwareSchema, buildWebPageSchema, withoutBrandSuffix } from "@/lib/schema";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots, noindexRobots } from "@/lib/seo-robots";
 import { isToolIndexedForSearch } from "@/data/indexing-policy";
 
 /** Only pre-built tool slugs are valid; unknown paths return a real 404. */
@@ -23,7 +24,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: cleanTitle,
     description: tool.metaDescription,
     alternates: { canonical },
-    robots: indexed ? { index: true, follow: true } : { index: false, follow: true },
+    robots: indexed ? indexRobots : noindexRobots,
     openGraph: {
       title: cleanTitle,
       description: tool.metaDescription,

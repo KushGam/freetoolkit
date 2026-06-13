@@ -3,6 +3,7 @@ import Link from "next/link";
 import { blogHref, blogPosts } from "@/data/blog";
 import { isBlogIndexedForSearch } from "@/data/indexing-policy";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: "FreeToolKit Blog | Free Tool Guides — PDF, Image, AI, India",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     "Practical guides for PDF tools, image converters, EMI calculators, resume writing, and productivity tools. Free, no signup.",
   keywords: ["freetoolkitapp blog", "online tool guides", "PDF guides", "image tool guides", "student tools", "productivity tools"],
   alternates: { canonical: canonicalUrl("/blog") },
+  robots: indexRobots,
   openGraph: {
     title: "freetoolkitapp Blog | Practical Guides for Free Online Tools",
     description: "Helpful guides for using free browser-based tools for PDFs, images, writing, study, security, and daily productivity.",

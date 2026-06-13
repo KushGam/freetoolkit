@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import AllToolsPageClient from "./AllToolsPageClient";
 import { canonicalUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export function generateMetadata(): Metadata {
   return {
@@ -9,17 +10,7 @@ export function generateMetadata(): Metadata {
     description:
       "Browse all 58 free browser-based tools. PDF, image, AI, SEO, developer, and calculator tools. No signup, no upload, instant results.",
     alternates: { canonical: canonicalUrl("/all-tools") },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1
-      }
-    },
+    robots: indexRobots,
     openGraph: {
       title: "All Free Productivity Tools",
       description: "Find free browser-based tools for AI workflows, PDFs, images, SEO, developers, and calculators.",

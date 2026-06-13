@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { TopLevelCategoryPage } from "@/components/top-level-category-page";
 import { categorySeo } from "@/data/seo";
 import { siteUrl } from "@/lib/utils";
+import { indexRobots } from "@/lib/seo-robots";
 
 export const metadata: Metadata = {
   title: categorySeo["AI Tools"].title,
   description: categorySeo["AI Tools"].description,
   keywords: categorySeo["AI Tools"].keywords,
   alternates: { canonical: `${siteUrl}/ai-tools` },
+  robots: indexRobots,
   openGraph: {
     title: categorySeo["AI Tools"].title,
     description: categorySeo["AI Tools"].description,
