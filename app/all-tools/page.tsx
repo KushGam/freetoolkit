@@ -3,12 +3,13 @@ import { Suspense } from "react";
 import AllToolsPageClient from "./AllToolsPageClient";
 import { canonicalUrl } from "@/lib/utils";
 import { indexRobots } from "@/lib/seo-robots";
+import { curatedToolCount } from "@/data/site-trust";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "All 58 Free Online Tools — No Signup",
+    title: `All ${curatedToolCount} Free Online Tools — No Signup`,
     description:
-      "Browse all 58 free browser-based tools. PDF, image, AI, SEO, developer, and calculator tools. No signup, no upload, instant results.",
+      `Browse all ${curatedToolCount} free browser-based tools. PDF, image, AI, SEO, developer, and calculator tools. No signup, no upload, instant results.`,
     alternates: { canonical: canonicalUrl("/all-tools") },
     robots: indexRobots,
     openGraph: {

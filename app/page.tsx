@@ -155,14 +155,14 @@ export default function HomePage() {
   return (
     <main className="bg-bg">
       {/* Hero */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-[60px] text-center sm:px-6">
+      <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 pt-[60px] text-center sm:px-6">
         <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden md:block" aria-hidden="true">
           <div className="absolute -left-20 -top-32 h-[500px] w-[500px] animate-drift rounded-full bg-[#F5A623] opacity-[0.18] blur-[100px]" />
           <div className="absolute -right-16 top-10 h-[400px] w-[400px] animate-drift-alt rounded-full bg-[#7c3aed] opacity-[0.14] blur-[100px]" />
-          <div className="absolute -bottom-16 left-[35%] h-[300px] w-[300px] animate-drift rounded-full bg-[#0ea5e9] opacity-[0.11] blur-[80px]" />
+          <div className="absolute -bottom-16 left-1/2 h-[300px] w-[300px] -translate-x-1/2 animate-drift rounded-full bg-[#0ea5e9] opacity-[0.11] blur-[80px]" />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-3xl">
+        <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center text-center">
           <span className="mb-7 inline-flex min-h-[32px] items-center gap-2 rounded-full border border-[rgba(245,166,35,0.28)] bg-[rgba(245,166,35,0.1)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-gold sm:px-4 sm:py-1.5 sm:text-[11px]">
             <span className="hidden h-1.5 w-1.5 animate-pulse-dot rounded-full bg-gold md:inline-block" />
             69 tools · no signup · browser-first
@@ -192,9 +192,9 @@ export default function HomePage() {
             />
           </form>
 
-          <div className="mb-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <div className="mb-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
             <PrimaryButton href="/all-tools" className="w-full min-h-[48px] py-3 text-[15px] sm:w-auto">
-              Browse all tools →
+              All tools →
             </PrimaryButton>
             <SecondaryButton href="/pdf-image" className="w-full min-h-[48px] py-3 text-[15px] sm:w-auto">
               PDF &amp; Image hub

@@ -13,20 +13,20 @@ import { LazyToolRunner } from "@/components/LazyToolRunner";
 function privacyPill(tier: ReturnType<typeof getToolPrivacyTier>) {
   if (tier === "ai") {
     return (
-      <span className="inline-flex shrink-0 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-[11px] font-semibold text-violet-400 sm:ml-auto">
+      <span className="inline-flex shrink-0 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-[11px] font-semibold text-violet-400">
         ✦ AI powered
       </span>
     );
   }
   if (tier === "hybrid") {
     return (
-      <span className="inline-flex shrink-0 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold text-amber-400 sm:ml-auto">
+      <span className="inline-flex shrink-0 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold text-amber-400">
         ⚡ Hybrid
       </span>
     );
   }
   return (
-    <span className="inline-flex shrink-0 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-[11px] font-semibold text-green-400 sm:ml-auto">
+    <span className="inline-flex shrink-0 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-[11px] font-semibold text-green-400">
       🔒 Browser only
     </span>
   );
@@ -48,16 +48,16 @@ export function ToolLayout({ tool }: { tool: Tool }) {
 
   return (
     <main className="min-h-screen max-w-full bg-bg pt-[60px]">
-      <header className="border-b border-border bg-bg2 px-4 py-6 sm:px-6 sm:py-8">
-        <div className="mx-auto max-w-4xl">
-          <nav className="text-[12px] text-text-3" aria-label="Breadcrumb">
+      <header className="border-b border-border bg-bg2 px-4 py-6 text-center sm:px-6 sm:py-8">
+        <div className="mx-auto flex max-w-4xl flex-col items-center">
+          <nav className="w-full text-[12px] text-text-3" aria-label="Breadcrumb">
             <Link
               href={hubUrl}
-              className="flex min-h-[44px] items-center gap-1 text-text-2 transition hover:text-gold sm:hidden"
+              className="inline-flex min-h-[44px] items-center justify-center gap-1 text-text-2 transition hover:text-gold sm:hidden"
             >
               ← Back
             </Link>
-            <div className="hidden items-center gap-1.5 sm:flex">
+            <div className="hidden items-center justify-center gap-1.5 sm:flex">
               <Link href="/" className="transition hover:text-gold">
                 Home
               </Link>
@@ -66,18 +66,20 @@ export function ToolLayout({ tool }: { tool: Tool }) {
                 {tool.category}
               </Link>
               <span className="text-border-hi">/</span>
-              <span className="max-w-[200px] truncate text-text-2">{tool.title}</span>
+              <span className="max-w-[280px] truncate text-text-2">{tool.title}</span>
             </div>
           </nav>
 
-          <div className="mt-3 flex flex-wrap items-start gap-2 sm:mt-4 sm:gap-4">
+          <div className="mt-3 flex flex-col items-center gap-2 sm:mt-4 sm:gap-3">
             <ToolBadge category={tool.category} />
-            <h1 className="min-w-0 flex-1 font-heading text-[clamp(20px,4vw,36px)] font-extrabold tracking-tight text-text">
+            <h1 className="font-heading text-[clamp(22px,4vw,36px)] font-extrabold tracking-tight text-text">
               {tool.title}
             </h1>
+            {privacyPill(privacyTier)}
           </div>
-          <div className="mt-2 flex items-center gap-2 sm:mt-0">{privacyPill(privacyTier)}</div>
-          <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-text-2 sm:text-[15px]">{tool.intro}</p>
+          <p className="mx-auto mt-3 max-w-2xl text-[14px] leading-relaxed text-text-2 sm:mt-4 sm:text-[15px]">
+            {tool.intro}
+          </p>
         </div>
       </header>
 

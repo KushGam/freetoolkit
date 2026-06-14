@@ -88,7 +88,7 @@ export function Footer() {
 
       <div className="mx-auto mt-14 max-w-6xl border-t border-border px-6 pt-6">
         <div className="flex flex-wrap items-center justify-between gap-3 text-[12px] text-text-3">
-          <p>© {new Date().getFullYear()} freetoolkitapp · Operated by {founder.name}</p>
+          <p suppressHydrationWarning>© {new Date().getFullYear()} freetoolkitapp · Operated by {founder.name}</p>
           <a
             className="transition hover:text-gold"
             href={founder.linkedinUrl}

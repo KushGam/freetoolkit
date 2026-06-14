@@ -52,18 +52,18 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <section className="relative overflow-hidden border-b border-border bg-bg2 px-6 py-16">
+      <section className="relative overflow-hidden border-b border-border bg-bg2 px-6 py-16 text-center">
         <div
-          className={`pointer-events-none absolute -right-10 top-0 h-80 w-80 rounded-full opacity-[0.12] blur-[120px] ${meta.orb}`}
+          className={`pointer-events-none absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full opacity-[0.12] blur-[120px] ${meta.orb}`}
           aria-hidden="true"
         />
-        <div className="relative mx-auto max-w-5xl">
+        <div className="relative mx-auto flex max-w-5xl flex-col items-center">
           <ToolBadge category={meta.badgeCategory} />
           <h1 className="mt-3 font-heading text-[clamp(40px,6vw,70px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-text">
             {category}
           </h1>
-          <p className="mt-3 max-w-xl text-[17px] leading-relaxed text-text-2">{topLevelCategoryHubIntros[category]}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <p className="mt-3 max-w-3xl text-[17px] leading-relaxed text-text-2">{topLevelCategoryHubIntros[category]}</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             {[`${categoryTools.length} tools`, "Free", "No signup"].map((pill) => (
               <span
                 key={pill}

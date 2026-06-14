@@ -351,12 +351,12 @@ export default function AllToolsPageClient() {
   return (
     <main className="min-h-screen bg-bg pt-[60px]">
       {/* Zone 1 — Hero */}
-      <section className="relative overflow-hidden px-4 pb-12 pt-12 text-center sm:px-6 md:py-16 md:pt-[60px]">
+      <section className="relative flex w-full flex-col items-center overflow-hidden px-4 pb-12 pt-12 text-center sm:px-6 md:py-16 md:pt-[60px]">
         <div
           className="pointer-events-none absolute left-1/2 top-0 hidden h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-gold opacity-[0.08] blur-[120px] md:block"
           aria-hidden="true"
         />
-        <div className="relative z-10 mx-auto max-w-3xl">
+        <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgba(245,166,35,0.25)] bg-[rgba(245,166,35,0.1)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-gold">
             {TOTAL_TOOLS} tools · free · no signup
           </span>
