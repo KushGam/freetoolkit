@@ -38,7 +38,7 @@ export default function AboutPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonSchema()) }} />
-      <div className="mx-auto max-w-2xl px-6 py-16">
+      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <SectionHeader
           eyebrow="About"
           title="About freetoolkitapp"
@@ -49,7 +49,7 @@ export default function AboutPage() {
         <FounderCard />
         <TrustCallout className="mt-6" />
 
-        <div className="prose-site mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
+        <div className="prose-site mt-10 rounded-2xl border border-border bg-bg2 p-5 sm:mt-12 sm:p-8">
           <h2>Why freetoolkitapp exists</h2>
           <p>
             I built freetoolkitapp after watching too many “free tool” sites optimize for ad clicks instead of outcomes — thin pages, duplicate copy, and utilities that barely work. I wanted the opposite: a small, curated catalog where every page explains what the tool does, when it fails, and how to verify results before you submit them anywhere important.
@@ -57,7 +57,7 @@ export default function AboutPage() {
           <p>
             I am {founder.name}, an independent builder who writes many of the guides, tests tools in real browsers (Chrome, Safari, Firefox on desktop and mobile), and ships fixes when behavior changes. This is not a faceless content farm — you can verify who operates the site on this page, on{" "}
             <a className="font-bold text-indigo-400 hover:text-ink-primary" href={founder.linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a>, and via email at{" "}
-            <a className="font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a>.
+            <a className="break-all font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a>.
           </p>
 
           <h2>Mission</h2>
@@ -132,7 +132,7 @@ export default function AboutPage() {
           <p>
             Feedback keeps the platform accurate. If a tool behaves unexpectedly on your browser, or you want a responsible new utility, reach out via the{" "}
             <Link href="/contact" className="font-bold text-indigo-400 hover:text-ink-primary">contact page</Link> or email{" "}
-            <a className="font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a>. {founder.name} reads messages even if replies are not instant.
+            <a className="break-all font-bold text-indigo-400" href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a>. {founder.name} reads messages even if replies are not instant.
           </p>
 
           <h2>Operator</h2>
@@ -142,7 +142,7 @@ export default function AboutPage() {
               {founder.name}
             </a>
             . You can verify the live domain at{" "}
-            <a className="font-bold text-indigo-400" href={siteUrl}>{siteUrl.replace("https://", "")}</a> or view the founder profile on{" "}
+            <a className="break-all font-bold text-indigo-400" href={siteUrl}>{siteUrl.replace("https://", "")}</a> or view the founder profile on{" "}
             <a className="font-bold text-indigo-400 hover:text-ink-primary" href={founder.linkedinUrl} target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>

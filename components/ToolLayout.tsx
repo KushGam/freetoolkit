@@ -7,7 +7,7 @@ import { ToolLongFormContent } from "@/components/ToolLongFormContent";
 import { ToolBadge } from "@/components/ui/ToolBadge";
 import { getBlogPostsForTool } from "@/data/blog";
 import { getToolPrivacyTier } from "@/data/site-trust";
-import { categoryRoutes, getRelatedTools, type Tool } from "@/data/tools";
+import { categoryRoutes, getRelatedTools, tools, type Tool } from "@/data/tools";
 import { LazyToolRunner } from "@/components/LazyToolRunner";
 
 function privacyPill(tier: ReturnType<typeof getToolPrivacyTier>) {
@@ -36,6 +36,10 @@ export function ToolLayout({ tool }: { tool: Tool }) {
   const relatedBlogPosts = getBlogPostsForTool(tool.slug);
   const privacyTier = getToolPrivacyTier(tool);
   const hubUrl = categoryRoutes[tool.category];
+  const toolNameLower = tool.title.toLowerCase();
+  const crossCategoryTools = tools
+    .filter((candidate) => candidate.slug !== tool.slug && candidate.category !== tool.category && !candidate.href)
+    .slice(0, 2);
 
   const categoryCopy =
     tool.category === "Image Tools"
@@ -48,7 +52,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
 
   return (
     <main className="min-h-screen max-w-full bg-bg pt-[60px]">
-      <header className="border-b border-border bg-bg2 px-4 py-6 text-center sm:px-6 sm:py-8">
+      <header className="border-b border-border bg-bg2 px-4 py-5 text-center sm:px-6 sm:py-8">
         <div className="mx-auto flex max-w-4xl flex-col items-center">
           <nav className="w-full text-[12px] text-text-3" aria-label="Breadcrumb">
             <Link
@@ -66,18 +70,18 @@ export function ToolLayout({ tool }: { tool: Tool }) {
                 {tool.category}
               </Link>
               <span className="text-border-hi">/</span>
-              <span className="max-w-[280px] truncate text-text-2">{tool.title}</span>
+              <span className="max-w-[220px] truncate text-text-2 md:max-w-[280px]">{tool.title}</span>
             </div>
           </nav>
 
           <div className="mt-3 flex flex-col items-center gap-2 sm:mt-4 sm:gap-3">
             <ToolBadge category={tool.category} />
             <h1 className="font-heading text-[clamp(22px,4vw,36px)] font-extrabold tracking-tight text-text">
-              {tool.title}
+              {tool.title} — Free Online Tool
             </h1>
             {privacyPill(privacyTier)}
           </div>
-          <p className="mx-auto mt-3 max-w-2xl text-[14px] leading-relaxed text-text-2 sm:mt-4 sm:text-[15px]">
+          <p className="mx-auto mt-3 max-w-2xl text-[13px] leading-relaxed text-text-2 sm:mt-4 sm:text-[15px]">
             {tool.intro}
           </p>
         </div>
@@ -94,7 +98,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
         <section className="grid gap-6 md:grid-cols-2">
           <div className="rounded-2xl border border-border bg-bg2 p-4 sm:p-6">
-            <h2 className="font-heading text-[18px] font-bold text-text sm:text-xl">How to use {tool.title}</h2>
+            <h2 className="font-heading text-[18px] font-bold text-text sm:text-xl">How to use {toolNameLower} online for free</h2>
             <ol className="mt-4 grid list-decimal gap-3 pl-5 text-[14px] leading-relaxed text-text-2 sm:text-sm">
               {tool.howToUse.map((step) => (
                 <li key={step}>{step}</li>
@@ -102,7 +106,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
             </ol>
           </div>
           <div className="rounded-2xl border border-border bg-bg2 p-4 sm:p-6">
-            <h2 className="font-heading text-[18px] font-bold text-text sm:text-xl">Why use this tool?</h2>
+            <h2 className="font-heading text-[18px] font-bold text-text sm:text-xl">Why use our free {toolNameLower}?</h2>
             <ul className="mt-4 grid gap-3 text-[14px] leading-relaxed text-text-2 sm:text-sm">
               {tool.features.map((feature) => (
                 <li key={feature}>• {feature}</li>
@@ -159,7 +163,7 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           </section>
         )}
 
-        <FAQ items={tool.faq} />
+        <FAQ items={tool.faq} title={`Frequently asked questions about ${toolNameLower}`} />
         <RelatedBlogPosts posts={relatedBlogPosts} title={`Guides for ${tool.title}`} />
         <section className="mt-8 rounded-2xl border border-border bg-bg2 p-4 sm:p-5">
           <p className="text-[11px] font-bold uppercase tracking-widest text-text-3">Browse hierarchy</p>
@@ -176,6 +180,16 @@ export function ToolLayout({ tool }: { tool: Tool }) {
           </div>
         </section>
         <RelatedTools tools={getRelatedTools(tool)} />
+        <section className="mt-8 rounded-2xl border border-border bg-bg2 p-4 sm:p-5">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-text-3">You might also like</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {crossCategoryTools.map((candidate) => (
+              <Link key={candidate.slug} href={`/${candidate.slug}`} className="pill-link min-h-[44px]">
+                {candidate.title}
+              </Link>
+            ))}
+          </div>
+        </section>
         <AdSlot size="responsive" />
       </div>
     </main>

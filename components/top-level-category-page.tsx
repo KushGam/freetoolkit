@@ -52,17 +52,17 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <section className="relative overflow-hidden border-b border-border bg-bg2 px-6 py-16 text-center">
+      <section className="relative overflow-hidden border-b border-border bg-bg2 px-4 py-12 text-center sm:px-6 sm:py-16">
         <div
           className={`pointer-events-none absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full opacity-[0.12] blur-[120px] ${meta.orb}`}
           aria-hidden="true"
         />
         <div className="relative mx-auto flex max-w-5xl flex-col items-center">
           <ToolBadge category={meta.badgeCategory} />
-          <h1 className="mt-3 font-heading text-[clamp(40px,6vw,70px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-text">
+          <h1 className="mt-3 font-heading text-[clamp(30px,8vw,70px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-text">
             {category}
           </h1>
-          <p className="mt-3 max-w-3xl text-[17px] leading-relaxed text-text-2">{topLevelCategoryHubIntros[category]}</p>
+          <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-text-2 sm:text-[17px]">{topLevelCategoryHubIntros[category]}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {[`${categoryTools.length} tools`, "Free", "No signup"].map((pill) => (
               <span
@@ -76,7 +76,7 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-16">
+      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
         <SectionHeader eyebrow="All tools" title={`${category} tools`} align="left" />
         <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {categoryTools.map((tool) => (
@@ -92,7 +92,7 @@ export function TopLevelCategoryPage({ category }: { category: TopLevelCategory 
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 pb-16">
+      <section className="mx-auto max-w-5xl px-4 pb-12 sm:px-6 sm:pb-16">
         <RelatedBlogPosts posts={featuredGuides} title={`Featured ${category.toLowerCase()} guides`} />
         <div className="prose-lite mt-12 rounded-2xl border border-border bg-bg2 p-6 sm:p-8">
           <h2>About {category.toLowerCase()} tools</h2>

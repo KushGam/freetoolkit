@@ -87,11 +87,11 @@ export function buildBreadcrumbSchema(items: Array<{ name: string; href: string 
 export function buildToolSoftwareSchema(input: { name: string; description: string; href: string }) {
   return {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "WebApplication",
     name: input.name,
     description: input.description,
-    applicationCategory: "WebApplication",
-    operatingSystem: "Any",
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Web Browser",
     url: canonicalUrl(input.href),
     offers: {
       "@type": "Offer",

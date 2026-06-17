@@ -18,24 +18,35 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const tool = getTool(params.slug);
   if (!tool) return {};
   const canonical = canonicalUrl(toolHref(tool));
-  const cleanTitle = withoutBrandSuffix(tool.metaTitle);
+  const cleanName = withoutBrandSuffix(tool.title);
+  const title = `${cleanName} Online Free — No Signup`;
+  const baseBenefit = tool.description.replace(/\.+$/, "");
+  const rawMeta = `${cleanName} free online. ${baseBenefit}. Works in your browser — no upload, no signup, no watermark. Try it now.`;
+  const description = rawMeta.length > 160 ? `${rawMeta.slice(0, 157).trimEnd()}...` : rawMeta;
   const indexed = isToolIndexedForSearch(tool.slug);
   return {
-    title: cleanTitle,
-    description: tool.metaDescription,
+    title,
+    description,
+    keywords: [
+      `${cleanName.toLowerCase()} online free`,
+      cleanName.toLowerCase(),
+      `${cleanName.toLowerCase()} tool`,
+      `${tool.category.toLowerCase()} tools`,
+      "no signup"
+    ],
     alternates: { canonical },
     robots: indexed ? indexRobots : noindexRobots,
     openGraph: {
-      title: cleanTitle,
-      description: tool.metaDescription,
+      title,
+      description,
       url: canonical,
       siteName: "freetoolkitapp",
       type: "website"
     },
     twitter: {
       card: "summary_large_image",
-      title: cleanTitle,
-      description: tool.metaDescription
+      title,
+      description
     }
   };
 }

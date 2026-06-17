@@ -10,6 +10,16 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   swcMinify: true,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        canvas: false,
+        fs: false
+      };
+    }
+    return config;
+  },
   async redirects() {
     return [
       {

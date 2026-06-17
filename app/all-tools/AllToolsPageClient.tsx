@@ -351,13 +351,13 @@ export default function AllToolsPageClient() {
   return (
     <main className="min-h-screen bg-bg pt-[60px]">
       {/* Zone 1 — Hero */}
-      <section className="relative flex w-full flex-col items-center overflow-hidden px-4 pb-12 pt-12 text-center sm:px-6 md:py-16 md:pt-[60px]">
+      <section className="relative flex w-full flex-col items-center overflow-hidden px-4 pb-10 pt-10 text-center sm:px-6 md:py-16 md:pt-[60px]">
         <div
           className="pointer-events-none absolute left-1/2 top-0 hidden h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-gold opacity-[0.08] blur-[120px] md:block"
           aria-hidden="true"
         />
         <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgba(245,166,35,0.25)] bg-[rgba(245,166,35,0.1)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-gold">
+          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgba(245,166,35,0.25)] bg-[rgba(245,166,35,0.1)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.06em] text-gold sm:px-4 sm:text-[11px] sm:tracking-widest">
             {TOTAL_TOOLS} tools · free · no signup
           </span>
           <h1 className="mb-3 font-heading text-[clamp(26px,5vw,52px)] font-extrabold leading-tight tracking-tight text-text">
@@ -396,7 +396,7 @@ export default function AllToolsPageClient() {
             ) : null}
           </div>
 
-          <div className="scrollbar-hide -mx-4 mt-5 flex gap-2 overflow-x-auto whitespace-nowrap px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0">
+          <div className="scrollbar-hide -mx-4 mt-4 flex gap-2 overflow-x-auto whitespace-nowrap px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0">
             <button
               type="button"
               onClick={() => handleCategoryClick("all")}

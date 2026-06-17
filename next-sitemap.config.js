@@ -42,6 +42,7 @@ function shouldExcludeFromSitemap(path) {
 module.exports = {
   siteUrl: "https://www.freetoolkitapp.com",
   generateRobotsTxt: true,
+  changefreq: "daily",
   exclude: [
     "/api/*",
     "/robots.txt",
@@ -72,7 +73,7 @@ module.exports = {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/"]
+        disallow: ["/api/", "/_next/"]
       }
     ]
   },
@@ -80,10 +81,27 @@ module.exports = {
     if (shouldExcludeFromSitemap(path)) {
       return null;
     }
+    const normalized = normalizePath(path);
+    let priority = 0.7;
+    if (normalized === "/") priority = 1.0;
+    else if (indexedToolPaths.has(normalized)) priority = 0.9;
+    else if (
+      normalized === "/ai-tools" ||
+      normalized === "/pdf-image" ||
+      normalized === "/developer" ||
+      normalized === "/calculators" ||
+      normalized === "/seo-tools" ||
+      normalized === "/all-tools"
+    ) {
+      priority = 0.8;
+    } else if (normalized.startsWith("/blog/")) {
+      priority = 0.6;
+    }
+
     return {
       loc: path,
-      changefreq: config.changefreq,
-      priority: config.priority,
+      changefreq: "daily",
+      priority,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
       alternateRefs: config.alternateRefs ?? []
     };

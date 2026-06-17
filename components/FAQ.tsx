@@ -1,9 +1,15 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
-export function FAQ({ items }: { items: Array<{ question: string; answer: string }> }) {
+export function FAQ({
+  items,
+  title = "Frequently asked questions"
+}: {
+  items: Array<{ question: string; answer: string }>;
+  title?: string;
+}) {
   return (
     <section className="mt-12">
-      <SectionHeader eyebrow="FAQ" title="Frequently asked questions" align="left" />
+      <SectionHeader eyebrow="FAQ" title={title} align="left" />
       <div className="mt-6">
         {items.map((item) => (
           <div key={item.question} className="mb-3 rounded-xl border border-border bg-bg3 p-5">
